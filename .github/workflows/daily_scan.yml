@@ -1,0 +1,36 @@
+name: Akcios Ujsag Vadaszat
+
+on:
+  schedule:
+    - cron: '0 5,11,17 * * *'
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Kod letöltése
+        uses: actions/checkout@v4
+
+      - name: Python beállítása
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+
+      - name: Függőségek telepítése
+        run: |
+          pip install -r requirements.txt
+
+      - name: Vadász script futtatása
+        run: |
+          python get_flyers.py
+
+      - name: Eredmények mentése
+        run: |
+          git config --global user.name 'AkcioRobot'
+          git config --global user.email 'robot@github.com'
+          git add assets/offers_test.json || echo "Nincs JSON"
+          git commit -m "Friss akciós linkek: $(date)" || echo "Nincs változás"
+          git push
