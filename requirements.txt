@@ -1,3 +1,7 @@
+Flask
+openai
+gunicorn
 requests
 curl_cffi
 beautifulsoup4
+
