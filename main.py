@@ -1,0 +1,99 @@
+import os
+from flask import Flask, request, jsonify
+from openai import OpenAI
+import base64
+import json
+
+app = Flask(__name__)
+
+# ==============================================================================
+# 🔒 BIZTONSÁGOS KULCS BETÖLTÉS (Render Environment-ből)
+# ==============================================================================
+# A "API_KEY" nevű változót keressük, amit a képen láttam nálad
+API_KEY = os.environ.get("API_KEY")
+
+if not API_KEY:
+    # Ha véletlenül mégsem lenne beállítva, hibaüzenetet adunk a logban
+    print("❌ HIBA: Nem találom az API_KEY környezeti változót!")
+else:
+    print(f"✅ API Kulcs sikeresen betöltve a titkos tárolóból.")
+
+client = OpenAI(api_key=API_KEY)
+
+def encode_image(image_file):
+    return base64.b64encode(image_file.read()).decode('utf-8')
+
+@app.route('/', methods=['GET'])
+def index():
+    return "Bevasarlo Backend (OpenAI GPT-4o) is running!"
+
+@app.route('/analyze', methods=['POST'])
+def analyze_image():
+    if 'image' not in request.files:
+        return jsonify({"error": "Nincs kép feltöltve"}), 400
+    
+    image = request.files['image']
+    base64_image = encode_image(image)
+
+    print("\n📸 --- KÉP ÉRKEZETT ---")
+    print("Elemzés indítása a GPT-4o modellel...")
+
+    try:
+        response = client.chat.completions.create(
+            model="gpt-4o",
+            messages=[
+                {
+                    "role": "system",
+                    "content": """
+                    Te egy profi magyar áruházi adatfeldolgozó AI vagy.
+                    A feladatod: Kinyerni az adatokat egy termék fotójáról.
+                    
+                    A következő adatokat keresd meg és add vissza SZIGORÚAN JSON formátumban:
+                    1. "product_name": A termék pontos neve (Márka + Típus).
+                    2. "packaging": Kiszerelés (pl. "500 g", "1,5 l", "10 db"). Ha nincs, legyen "".
+                    3. "price_single": Az 1 darabos ár. CSAK SZÁM! (pl. 1299).
+                    4. "price_multi": A több darabos ár (pl. "2 db esetén"). CSAK SZÁM! Ha nincs, legyen "".
+                    5. "multi_condition": A feltétel (pl. "2 db esetén"). Ha nincs, legyen "".
+                    6. "unit_price": Egységár (pl. "2499 Ft/kg"). Ezt szövegesen hagyd meg.
+
+                    Válasz formátum (JSON):
+                    {
+                        "product_name": "...",
+                        "packaging": "...",
+                        "price_single": "...",
+                        "price_multi": "...",
+                        "multi_condition": "...",
+                        "unit_price": "..."
+                    }
+                    """
+                },
+                {
+                    "role": "user",
+                    "content": [
+                        {"type": "text", "text": "Elemezd a képet és add vissza a JSON-t!"},
+                        {
+                            "type": "image_url",
+                            "image_url": {
+                                "url": f"data:image/jpeg;base64,{base64_image}"
+                            }
+                        },
+                    ],
+                }
+            ],
+            response_format={"type": "json_object"},
+            max_tokens=300
+        )
+
+        result_content = response.choices[0].message.content
+        print("✅ SIKER! A GPT válasza:")
+        print(result_content)
+        
+        return result_content, 200, {'Content-Type': 'application/json'}
+
+    except Exception as e:
+        print(f"❌ HIBA TÖRTÉNT: {str(e)}")
+        return jsonify({"error": str(e)}), 500
+
+if __name__ == '__main__':
+    port = int(os.environ.get('PORT', 5000)) # A Render dinamikus portot ad
+    app.run(host='0.0.0.0', port=port)
