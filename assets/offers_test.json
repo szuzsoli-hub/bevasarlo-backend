@@ -1,5 +1,5 @@
 {
-    "last_updated": "2026-02-11 14:39:54.457480",
+    "last_updated": "2026-02-11 19:58:01.662859",
     "flyers": [
         {
             "store": "Penny",
@@ -32,22 +32,6 @@
             "url": "https://files.rewe.co.at/PennyIntLeaflet/HU/eletmod/?utm_source=penny&utm_medium=web&utm_content=desktop-reklamujsagok_page&utm_term=WELLBEING",
             "validity_start": "N/A",
             "validity_end": "N/A"
-        },
-        {
-            "store": "Auchan",
-            "type": "online_viewer",
-            "title": "Szupermarket ajánlataink",
-            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr06/2026-02-05-02-11-heti-szupermarket-ajanlataink/",
-            "validity_start": "2026-02-02",
-            "validity_end": "2026-02-11"
-        },
-        {
-            "store": "Auchan",
-            "type": "online_viewer",
-            "title": "Kéthetes Szupermarket ajánlataink",
-            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr06/2026-02-05-02-18-kethetes-szupermarket-ajanlataink/",
-            "validity_start": "2026-02-02",
-            "validity_end": "2026-02-18"
         },
         {
             "store": "Auchan",
@@ -96,6 +80,22 @@
             "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr06/2026-02-05-03-04-textil-ajanlataink/",
             "validity_start": "2026-02-02",
             "validity_end": "2026-03-04"
+        },
+        {
+            "store": "Auchan",
+            "type": "online_viewer",
+            "title": "Szupermarket ajánlataink",
+            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr06/2026-02-05-02-11-heti-szupermarket-ajanlataink/",
+            "validity_start": "2026-02-02",
+            "validity_end": "2026-02-11"
+        },
+        {
+            "store": "Auchan",
+            "type": "online_viewer",
+            "title": "Kéthetes Szupermarket ajánlataink",
+            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr06/2026-02-05-02-18-kethetes-szupermarket-ajanlataink/",
+            "validity_start": "2026-02-02",
+            "validity_end": "2026-02-18"
         },
         {
             "store": "Aldi",
