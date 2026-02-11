@@ -1,7 +1,9 @@
 Flask
-openai
 gunicorn
 requests
 curl_cffi
 beautifulsoup4
-
+openai
+python-dotenv
+pdf2image
+Pillow
