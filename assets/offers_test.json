@@ -1,5 +1,5 @@
 {
-    "last_updated": "2026-02-11 08:00:45.566811",
+    "last_updated": "2026-02-11 14:39:54.457480",
     "flyers": [
         {
             "store": "Penny",
@@ -374,16 +374,16 @@
             "type": "online_viewer",
             "title": "Aktuális Príma 5 katalógus",
             "url": "https://e.issuu.com/embed.html?d=prima_47_het_205x293mm_scpaper&hideIssuuLogo=true&hideShareButton=true&u=dataedgekft",
-            "validity_start": "2026-02-05",
-            "validity_end": "2026-02-11"
+            "validity_start": "2026-02-12",
+            "validity_end": "2026-02-18"
         },
         {
             "store": "CBA",
             "type": "online_viewer",
             "title": "Aktuális Príma 5 katalógus",
             "url": "https://e.issuu.com/embed.html?d=p5_m_rahalom_2022_okt_ber_szorolap_v03&hideIssuuLogo=true&hideShareButton=true&u=dataedgekft",
-            "validity_start": "2026-02-05",
-            "validity_end": "2026-02-11"
+            "validity_start": "2026-02-12",
+            "validity_end": "2026-02-18"
         },
         {
             "store": "COOP",
