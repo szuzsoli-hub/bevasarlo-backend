@@ -1,27 +1,11 @@
 {
-    "last_updated": "2026-02-11 19:58:01.662859",
+    "last_updated": "2026-02-12 07:57:59.322570",
     "flyers": [
         {
             "store": "Penny",
             "type": "online_viewer",
-            "title": "Penny Akciós Újság (06. hét)",
-            "url": "https://files.rewe.co.at/PennyIntLeaflet/HU/202606/?utm_source=penny&utm_medium=web&utm_content=desktop&utm_campaign=kw06",
-            "validity_start": "N/A",
-            "validity_end": "N/A"
-        },
-        {
-            "store": "Penny",
-            "type": "online_viewer",
-            "title": "Penny Akciós Újság (06. hét)",
-            "url": "https://files.rewe.co.at/PennyIntLeaflet/HU/202606/?utm_source=penny&utm_medium=web&utm_content=desktop&utm_campaign=kw05",
-            "validity_start": "N/A",
-            "validity_end": "N/A"
-        },
-        {
-            "store": "Penny",
-            "type": "online_viewer",
             "title": "Penny Akciós Újság (07. hét)",
-            "url": "https://files.rewe.co.at/PennyIntLeaflet/HU/202607/?utm_source=penny&utm_medium=web&utm_content=desktop&utm_campaign=kw06",
+            "url": "https://files.rewe.co.at/PennyIntLeaflet/HU/202607/?utm_source=penny&utm_medium=web&utm_content=desktop&utm_campaign=kw07",
             "validity_start": "N/A",
             "validity_end": "N/A"
         },
@@ -36,18 +20,10 @@
         {
             "store": "Auchan",
             "type": "online_viewer",
-            "title": "Hipermarket ajánlataink",
-            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr06/2026-02-05-02-11-heti-hipermarket-ajanlataink/",
-            "validity_start": "2026-02-02",
-            "validity_end": "2026-02-11"
-        },
-        {
-            "store": "Auchan",
-            "type": "online_viewer",
-            "title": "Ázsiai hetek",
-            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr05/2026-01-29-02-11-azsiai-hetek/",
-            "validity_start": "2026-01-26",
-            "validity_end": "2026-02-11"
+            "title": "Heti Hipermarket ajánlataink",
+            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr07/2026-02-12-02-18-heti-hipermarket-ajanlataink/",
+            "validity_start": "2026-02-09",
+            "validity_end": "2026-02-18"
         },
         {
             "store": "Auchan",
@@ -84,17 +60,17 @@
         {
             "store": "Auchan",
             "type": "online_viewer",
-            "title": "Szupermarket ajánlataink",
-            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr06/2026-02-05-02-11-heti-szupermarket-ajanlataink/",
+            "title": "Kéthetes Szupermarket ajánlataink",
+            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr06/2026-02-05-02-18-kethetes-szupermarket-ajanlataink/",
             "validity_start": "2026-02-02",
-            "validity_end": "2026-02-11"
+            "validity_end": "2026-02-18"
         },
         {
             "store": "Auchan",
             "type": "online_viewer",
-            "title": "Kéthetes Szupermarket ajánlataink",
-            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr06/2026-02-05-02-18-kethetes-szupermarket-ajanlataink/",
-            "validity_start": "2026-02-02",
+            "title": "Heti Szupermarket ajánlataink",
+            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr07/2026-02-12-02-18-heti-szupermarket-ajanlatok/",
+            "validity_start": "2026-02-09",
             "validity_end": "2026-02-18"
         },
         {
@@ -199,22 +175,6 @@
             "title": "2025. ősz",
             "url": "https://www.lidl.hu/l/hu/ujsag/lidl-parkside-barkacs-magazin-2025/ar/0?lf=HHZ",
             "validity_start": "N/A",
-            "validity_end": "N/A"
-        },
-        {
-            "store": "Tesco",
-            "type": "online_viewer",
-            "title": "Tesco Hipermarket",
-            "url": "https://www.tesco.hu/akciok/katalogusok/hipermarket/tesco-ujsag-2026-02-05/1",
-            "validity_start": "2026-02-05",
-            "validity_end": "N/A"
-        },
-        {
-            "store": "Tesco",
-            "type": "online_viewer",
-            "title": "Tesco Szupermarket",
-            "url": "https://www.tesco.hu/akciok/katalogusok/szupermarket/tesco-ujsag-2026-02-05/1",
-            "validity_start": "2026-02-05",
             "validity_end": "N/A"
         },
         {
