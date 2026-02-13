@@ -1,5 +1,5 @@
 {
-    "last_updated": "2026-02-12 19:51:55.421719",
+    "last_updated": "2026-02-13 07:56:00.545974",
     "flyers": [
         {
             "store": "Penny",
@@ -194,83 +194,19 @@
             "validity_end": "N/A"
         },
         {
-            "store": "SPAR",
+            "store": "Tesco",
             "type": "online_viewer",
-            "title": "SPAR Újság",
-            "url": "https://szorolap.spar.hu/spar/260212-1-spar-szorolap/ViewPdf.ashx",
-            "validity_start": "2026-02-12",
+            "title": "Tesco Hipermarket",
+            "url": "https://www.tesco.hu/akciok/katalogusok/hipermarket/tesco-ujsag-2026-02-19/1",
+            "validity_start": "2026-02-19",
             "validity_end": "N/A"
         },
         {
-            "store": "SPAR",
+            "store": "Tesco",
             "type": "online_viewer",
-            "title": "INTERSPAR Szórólap",
-            "url": "https://szorolap.spar.hu/interspar/260212-2-interspar-szorolap/ViewPdf.ashx",
-            "validity_start": "2026-02-12",
-            "validity_end": "N/A"
-        },
-        {
-            "store": "SPAR",
-            "type": "online_viewer",
-            "title": "INTERSPAR Szórólap",
-            "url": "https://szorolap.spar.hu/interspar/240307-2-interspar-szorolap-p/ViewPdf.ashx",
-            "validity_start": "2024-03-07",
-            "validity_end": "N/A"
-        },
-        {
-            "store": "SPAR",
-            "type": "online_viewer",
-            "title": "INTERSPAR Szórólap",
-            "url": "https://szorolap.spar.hu/interspar/240229-2-interspar-szorolap-m/ViewPdf.ashx",
-            "validity_start": "2024-02-29",
-            "validity_end": "N/A"
-        },
-        {
-            "store": "SPAR",
-            "type": "online_viewer",
-            "title": "SPAR EXTRA",
-            "url": "https://szorolap.spar.hu/spar-extra/260212-3-spar-extra-ajanlat/ViewPdf.ashx",
-            "validity_start": "2026-02-12",
-            "validity_end": "N/A"
-        },
-        {
-            "store": "SPAR",
-            "type": "online_viewer",
-            "title": "SPAR EXTRA",
-            "url": "https://szorolap.spar.hu/spar-extra/240229-3-spar-extra-ajanlat/ViewPdf.ashx",
-            "validity_start": "2024-02-29",
-            "validity_end": "N/A"
-        },
-        {
-            "store": "SPAR",
-            "type": "online_viewer",
-            "title": "SPAR Market",
-            "url": "https://szorolap.spar.hu/spar-market/260212-4-spar-market-city-spar/ViewPdf.ashx",
-            "validity_start": "2026-02-12",
-            "validity_end": "N/A"
-        },
-        {
-            "store": "SPAR",
-            "type": "online_viewer",
-            "title": "SPAR Market",
-            "url": "https://szorolap.spar.hu/spar-market/240229-4-spar-market/ViewPdf.ashx",
-            "validity_start": "2024-02-29",
-            "validity_end": "N/A"
-        },
-        {
-            "store": "SPAR",
-            "type": "online_viewer",
-            "title": "SPAR Market",
-            "url": "https://szorolap.spar.hu/spar-market/240229-5-spar-partner-cegled-nyitas/ViewPdf.ashx",
-            "validity_start": "2024-02-29",
-            "validity_end": "N/A"
-        },
-        {
-            "store": "SPAR",
-            "type": "online_viewer",
-            "title": "SPAR Újság",
-            "url": "https://szorolap.spar.hu/egyeb/240229-1-hatosagi-akcios-elelmiszerkosar/ViewPdf.ashx",
-            "validity_start": "2024-02-29",
+            "title": "Tesco Szupermarket",
+            "url": "https://www.tesco.hu/akciok/katalogusok/szupermarket/tesco-ujsag-2026-02-19/1",
+            "validity_start": "2026-02-19",
             "validity_end": "N/A"
         },
         {
