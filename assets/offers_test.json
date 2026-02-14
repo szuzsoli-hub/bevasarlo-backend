@@ -1,5 +1,5 @@
 {
-    "last_updated": "2026-02-14 07:22:31.154910",
+    "last_updated": "2026-02-14 11:44:45.704182",
     "flyers": [
         {
             "store": "Penny",
@@ -84,6 +84,38 @@
         {
             "store": "Aldi",
             "type": "online_viewer",
+            "title": "ALDI online akciós újság 08. hét",
+            "url": "https://szorolap.aldi.hu/online_akcios_ujsag_2026_02_19_kw08_psf9y3ck",
+            "validity_start": "N/A",
+            "validity_end": "N/A"
+        },
+        {
+            "store": "Aldi",
+            "type": "online_viewer",
+            "title": "ALDI Középső sor termékei - 8. hét",
+            "url": "https://szorolap.aldi.hu/aldi_kozepso_sor_2026_02_19_kw08_hkk3z8ax",
+            "validity_start": "N/A",
+            "validity_end": "N/A"
+        },
+        {
+            "store": "Aldi",
+            "type": "online_viewer",
+            "title": "ALDI Utazás - KW08",
+            "url": "https://szorolap.aldi.hu/aldi_utazas_2026_02_19_kw08_963xe2q6",
+            "validity_start": "N/A",
+            "validity_end": "N/A"
+        },
+        {
+            "store": "Aldi",
+            "type": "online_viewer",
+            "title": "Újranyitás - KW08",
+            "url": "https://szorolap.aldi.hu/online_ujranyitas_akcios_ujsag_2026_02_19_kw08_tbh54ctt",
+            "validity_start": "N/A",
+            "validity_end": "N/A"
+        },
+        {
+            "store": "Aldi",
+            "type": "online_viewer",
             "title": "ALDI online akciós újság 7. hét",
             "url": "https://szorolap.aldi.hu/online_akcios_ujsag_2026_02_12_kw07_29k4k99c",
             "validity_start": "N/A",
@@ -102,30 +134,6 @@
             "type": "online_viewer",
             "title": "ALDI Utazás - 03. hét",
             "url": "https://szorolap.aldi.hu/aldi_utazas_2026_02_12_kw07_4f8vst0d",
-            "validity_start": "N/A",
-            "validity_end": "N/A"
-        },
-        {
-            "store": "Aldi",
-            "type": "online_viewer",
-            "title": "ALDI online akciós újság 06. hét",
-            "url": "https://szorolap.aldi.hu/online_akcios_ujsag_2026_02_05_kw06_8ajf6j9x",
-            "validity_start": "N/A",
-            "validity_end": "N/A"
-        },
-        {
-            "store": "Aldi",
-            "type": "online_viewer",
-            "title": "ALDI Középső sor termékei - 6. hét",
-            "url": "https://szorolap.aldi.hu/aldi_kozepso_sor_2026_02_05_kw06_hxp30hmj",
-            "validity_start": "N/A",
-            "validity_end": "N/A"
-        },
-        {
-            "store": "Aldi",
-            "type": "online_viewer",
-            "title": "ALDI Utazás - KW06",
-            "url": "https://szorolap.aldi.hu/aldi_utazas_2026_02_05_kw06_4ljz1ys1",
             "validity_start": "N/A",
             "validity_end": "N/A"
         },
