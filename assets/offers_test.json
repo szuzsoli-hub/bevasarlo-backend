@@ -1,5 +1,5 @@
 {
-    "last_updated": "2026-02-15 11:44:43.478325",
+    "last_updated": "2026-02-15 17:54:32.628691",
     "flyers": [
         {
             "store": "Penny",
@@ -264,6 +264,14 @@
             "url": "https://katalogus.metro.hu/sirha-katalogus-2026-03/page/1",
             "validity_start": "2026-02-01",
             "validity_end": "2026-02-28"
+        },
+        {
+            "store": "Metro",
+            "type": "online_viewer",
+            "title": "Márkák katalógus 2026/02",
+            "url": "https://katalogus.metro.hu/markak-katalogus-2026-02/page/1",
+            "validity_start": "2026-02-01",
+            "validity_end": "2026-02-14"
         },
         {
             "store": "Metro",
