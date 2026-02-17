@@ -1,0 +1,54 @@
+name: Akcios Ujsag Linkvadasz (Automata)
+
+on:
+  schedule:
+    - cron: '0 5,11,17 * * *' # Futás: 5:00, 11:00, 17:00 UTC
+  workflow_dispatch: # Kézi indítás lehetősége gombnyomásra
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write # Engedély a JSON mentéséhez
+    
+    steps:
+      - name: Kód letöltése
+        uses: actions/checkout@v4
+
+      - name: Python beállítása
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+
+      # --- FONTOS: CHROME TELEPÍTÉSE A COOPHOZ ---
+      - name: Chrome és Driver telepítése
+        uses: browser-actions/setup-chrome@latest
+        with:
+          chrome-version: stable
+      
+      - name: Függőségek telepítése
+        run: |
+          pip install -r requirements.txt
+
+      # --- ITT FUT AZ ÚJ SCRIPTED ---
+      - name: Master Scanner futtatása
+        run: |
+          # Ez gyártja le a flyers.json-t
+          python master_scanner.py
+
+      # --- EREDMÉNYEK MENTÉSE ---
+      - name: JSON feltöltése az assets mappába
+        run: |
+          git config --global user.name 'AkcioRobot'
+          git config --global user.email 'robot@github.com'
+          
+          # Létrehozzuk az assets mappát, ha nincs
+          mkdir -p assets
+          
+          # A script a gyökérbe mentette a flyers.json-t, most áttesszük a helyére
+          mv flyers.json assets/flyers.json
+          
+          # Feltöltjük a GitHubra
+          git add assets/flyers.json
+          git commit -m "Friss újság linkek: $(date)" || echo "Nincs változás"
+          git push
