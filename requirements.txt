@@ -7,3 +7,5 @@ openai
 python-dotenv
 pdf2image
 Pillow
+selenium
+webdriver-manager
