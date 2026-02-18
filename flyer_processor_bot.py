@@ -23,7 +23,6 @@ from curl_cffi import requests as cffi_requests
 # 0. KONFIGURÁCIÓ & ENV
 # ==============================
 
-# ITT A MÓDOSÍTÁS: Az assets mappába dolgozunk!
 INPUT_FILE = 'assets/flyers.json'
 OUTPUT_FILE = 'assets/universal_output.json'
 
@@ -32,7 +31,6 @@ load_dotenv(os.path.join(base_dir, ".env"))
 
 # Google Kulcs Kezelés (Felhő kompatibilis)
 if not os.getenv("GOOGLE_APPLICATION_CREDENTIALS"):
-    # Ha nincs beállítva, feltételezzük, hogy a fájl a gyökérben van (GitHub Actions generálja)
     os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "google_key.json"
 
 openai_key = os.getenv("OPENAI_API_KEY")
@@ -49,14 +47,35 @@ if not os.path.exists(TEMP_DIR):
 
 
 # ===============================================================================
-# 1. MODUL: A PROFI FELDERÍTŐK (Hagyjuk a kódban, de most nem hívjuk meg) 🕵️‍♂️
+# 1. MODUL: COOP NÉV JAVÍTÓ (Amit kértél) 🛠️
 # ===============================================================================
 
-def scan_rest_stores():
-    # Ezt a részt most nem használjuk, mert a flyers.json-ból dolgozunk
-    found_flyers = []
-    # ... (A kód marad érintetlen, de inaktív)
-    return found_flyers
+def get_refined_store_name(store_base, url, title):
+    """
+    A link és a cím alapján kitalálja a PONTOS hálózatnevet.
+    """
+    s = store_base.lower()
+    u = url.lower()
+    t = title.lower() if title else ""
+
+    # --- COOP DETEKTÍV ---
+    if "coop" in s:
+        if "mecsek" in u or "mecsek" in t: return "Coop Mecsek Füszért"
+        if "tisza" in u or "tisza" in t or "szolnok" in u: return "Tisza-Coop"
+        if "alfold" in u or "alföld" in t or "kecskemét" in t: return "Alföld Pro-Coop"
+        if "hetforras" in u or "hétforrás" in t or "szombathely" in t: return "Hétforrás"
+        if "eszak-kelet" in u or "észak" in t or "miskolc" in t or "debrecen" in t: return "Észak-Kelet Pro-Coop"
+        if "honi" in u or "honi" in t: return "Honi-Coop"
+        if "polus" in u or "pólus" in t: return "Pólus-Coop"
+        return store_base
+
+    # --- CBA / PRÍMA DETEKTÍV ---
+    if "cba" in s or "príma" in s or "prima" in s:
+        if "prima" in u or "príma" in t or "prima" in s:
+            return "CBA Príma"
+        return "CBA"
+
+    return store_base
 
 
 # ===============================================================================
@@ -67,7 +86,7 @@ def capture_pages_with_selenium(target_url, store_name):
     print(f"\n📸 2. LÉPÉS: Fotózás indul ({store_name}): {target_url}")
 
     chrome_options = Options()
-    chrome_options.add_argument("--headless") # Felhőben kötelező!
+    chrome_options.add_argument("--headless")  # FELHŐ MIATT KÖTELEZŐ!
     chrome_options.add_argument("--window-size=1920,1080")
     chrome_options.add_argument("--disable-gpu")
     chrome_options.add_argument("--no-sandbox")
@@ -258,9 +277,11 @@ def interpret_text_with_ai(full_text, page_num, store_name):
 
 
 def process_images_with_ai(captured_data, flyer_meta):
-    print(f"\n🧠 AI Feldolgozás: {flyer_meta['store']}...")
+    # ITT A JAVÍTÁS: COOP NÉV PONTOSÍTÁS
+    refined_name = get_refined_store_name(flyer_meta['store'], flyer_meta['url'], flyer_meta.get('title', ''))
+    
+    print(f"\n🧠 AI Feldolgozás: {refined_name}...")
     results = []
-    # Ha nincs a linkben érvényesség, akkor "Keresés..."
     detected_validity = flyer_meta.get('validity', "Keresés...")
 
     for item in captured_data:
@@ -268,7 +289,7 @@ def process_images_with_ai(captured_data, flyer_meta):
             full_text = google_ocr(item['image_path'])
             if not re.search(r"\d", full_text): continue
 
-            structured = interpret_text_with_ai(full_text, item['page_num'], flyer_meta['store'])
+            structured = interpret_text_with_ai(full_text, item['page_num'], refined_name)
 
             if item['page_num'] == 1 and structured.get("ervenyesseg"):
                 raw_val = structured.get("ervenyesseg")
@@ -281,8 +302,8 @@ def process_images_with_ai(captured_data, flyer_meta):
                 if not re.search(r"\d", product.get("ar", "")): continue
 
                 record = {
-                    "bolt": flyer_meta['store'],
-                    "ujsag": flyer_meta.get('title', f"{flyer_meta['store']} Akciós Újság"),
+                    "bolt": refined_name, # JAVÍTOTT NÉV HASZNÁLATA
+                    "ujsag": flyer_meta.get('title', f"{refined_name} Akciós Újság"),
                     "ervenyesseg": detected_validity,
                     "nev": product.get("nev"),
                     "ar": product.get("ar"),
@@ -302,27 +323,28 @@ def process_images_with_ai(captured_data, flyer_meta):
 
 
 # ===============================================================================
-# FŐVEZÉRLŐ (FELHŐBARÁT & ASSET OLVASÓ) ☁️📂
+# FŐVEZÉRLŐ (ASSET OLVASÓ MÓD)
 # ===============================================================================
 
 if __name__ == "__main__":
-    print("=== FLYER PROCESSZOR BOT (v11.0 - Asset Reader) ===")
+    print("=== BEVÁSÁRLÓ ROBOT: PROCESSOR MÓD ===")
 
-    # 1. Beolvassuk a már létező flyers.json-t az asset mappából
+    # 1. Bemenet olvasása
     if not os.path.exists(INPUT_FILE):
-        print(f"❌ HIBA: Nem találom a bemeneti fájlt: {INPUT_FILE}")
-        print("   -> Futtasd előbb a Linkvadászt!")
+        print(f"❌ Nincs bemeneti fájl: {INPUT_FILE}")
         exit()
 
     with open(INPUT_FILE, 'r', encoding='utf-8') as f:
         data = json.load(f)
         flyers = data.get("flyers", [])
+    
+    print(f"📋 Feldolgozandó újságok száma: {len(flyers)}")
 
-    print(f"📋 Betöltve {len(flyers)} db újság link az {INPUT_FILE}-ból.")
-
+    # 2. Meglévő adatok betöltése (opcionális, ha hozzáírni akarsz)
     all_products = []
+    # Ha szeretnéd megtartani a régieket, itt be lehet tölteni, de most tiszta lappal indulunk a kérésed szerint.
 
-    # 2. Végigmegyünk a listán és feldolgozzuk
+    # 3. Feldolgozás
     for flyer in flyers:
         print(f"\n------------------------------------------------")
         print(f"🚀 Feldolgozás indul: {flyer['store']}")
@@ -333,18 +355,16 @@ if __name__ == "__main__":
             store_results = process_images_with_ai(pages, flyer)
             all_products.extend(store_results)
 
-            # Takarítás
             for p in pages:
                 try:
-                    if os.path.exists(p['image_path']):
-                        os.remove(p['image_path'])
+                    os.remove(p['image_path'])
                 except:
                     pass
         else:
             print(f"⚠️ Nem sikerült fotózni: {flyer['store']}")
 
-    # 3. Mentés az assets mappába
+    # 4. Mentés
     with open(OUTPUT_FILE, "w", encoding="utf-8") as f:
         json.dump(all_products, f, ensure_ascii=False, indent=2)
 
-    print(f"\n🏁 KÉSZ! Összesen {len(all_products)} termék mentve ide: {OUTPUT_FILE}")
+    print(f"\n🏁 KÉSZ! Összesen {len(all_products)} termék mentve: {OUTPUT_FILE}")
