@@ -116,11 +116,7 @@ def scan_spar():
     found = []
     try:
         # Itt használjuk a curl_cffi-t, ahogy a jó kódban volt
-        response = requests.get(url, impersonate="chrome124", headers=headers, timeout=20) # FIGYELEM: Itt a curl_cffi requests-ét kell használni, de a te kódodban importálva van! 
-        # A te kódodban 'requests' a sima requests, 'cffi_requests' a curl_cffi. 
-        # A beküldött kódodban 'from curl_cffi import requests' volt, ami felülírta a simát.
-        # Itt most cffi_requests-et használok a biztonság kedvéért, mert a fájl elején így importáltuk.
-        
+        # Mivel a fájl elején "from curl_cffi import requests as cffi_requests" van, ezért itt cffi_requests-et használunk.
         response = cffi_requests.get(url, impersonate="chrome124", headers=headers, timeout=20)
 
         if response.status_code != 200:
