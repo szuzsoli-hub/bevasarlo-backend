@@ -99,11 +99,11 @@ def scan_metro():
 
 
 def scan_spar():
-    # --- JAVÍTOTT SPAR SCANNER (A MŰKÖDŐ KÓD ALAPJÁN) ---
-    print("\n--- SPAR Szkennelés (Célzott Keresés - curl_cffi) ---")
+    # --- JAVÍTOTT SPAR SCANNER (SESSION IZOLÁCIÓVAL + DEBUG) ---
+    print("\n--- SPAR Szkennelés (ISOLATED SESSION MÓD) ---")
     url = "https://www.spar.hu/ajanlatok"
 
-    # Erős böngésző álcázás (Anti-Bot védelem ellen) - A működő kódból
+    # Erős böngésző álcázás
     headers = {
         'accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8',
         'accept-language': 'hu-HU,hu;q=0.9,en-US;q=0.8,en;q=0.7',
@@ -115,28 +115,36 @@ def scan_spar():
     found = []
 
     try:
-        print(f"📡 Kapcsolódás: {url} ...")
-        # Itt a Master importját (cffi_requests) használjuk, de a működő logikával
-        response = cffi_requests.get(url, impersonate="chrome124", headers=headers, timeout=20)
+        # ✅ Session használata az izolációhoz (ez a kulcs!)
+        print(f"📡 Kapcsolódás Session-ön keresztül: {url} ...")
+        
+        with cffi_requests.Session() as session:
+            response = session.get(url, impersonate="chrome124", headers=headers, timeout=20)
+
+        # ✅ Debug infók (Hogy lásd a konzolon mi történik)
+        print(f"🔍 DEBUG: HTTP Status: {response.status_code}")
+        print(f"🔍 DEBUG: Content Size: {len(response.text)} bytes")
 
         if response.status_code != 200:
             print(f"❌ HIBA: A szerver {response.status_code} kóddal válaszolt!")
             return []
+        
+        # Ha a tartalom gyanúsan kicsi (blokkolás gyanú)
+        if len(response.text) < 5000:
+            print("⚠️ FIGYELEM: A válasz gyanúsan rövid! Lehet, hogy Captcha vagy blokkolás van.")
 
         soup = BeautifulSoup(response.text, 'html.parser')
         links = soup.find_all('a', href=True)
-        print(f"🔎 Talált linkek száma: {len(links)} db")
+        print(f"🔎 Nyers linkek száma: {len(links)} db")
 
         seen_urls = set()
-
-        # Időkapu logika a működő kódból
         today = datetime.date.today()
         cutoff_date = today - datetime.timedelta(days=30)
 
         for a in links:
             raw_href = a['href']
 
-            # --- 1. SZŰRŐ: Érdekes lehet ez a link? ---
+            # --- 1. SZŰRŐ ---
             is_interesting = False
             if 'spar' in raw_href.lower() and ('ajanlatok' in raw_href.lower() or 'szorolap' in raw_href.lower()):
                 is_interesting = True
@@ -144,7 +152,7 @@ def scan_spar():
             if not is_interesting:
                 continue
 
-            # PDF és egyéb szemetek kizárása
+            # PDF szűrés
             if "getPdf" in raw_href or ".pdf" in raw_href or "ViewPdf" in raw_href:
                 continue
 
@@ -156,32 +164,28 @@ def scan_spar():
             if full_url in seen_urls:
                 continue
 
-            # --- 3. DÁTUM KINYERÉSE (A pontos regex a működő kódból) ---
+            # --- 3. DÁTUM KINYERÉSE ---
             date_match = re.search(r'(2[4-6])(0[1-9]|1[0-2])(0[1-9]|[12]\d|3[01])', full_url)
             validity_str = "Keresés..."
 
             if date_match:
                 y_str, m_str, d_str = date_match.groups()
                 try:
-                    # Dátum validálás
                     year = 2000 + int(y_str)
                     month = int(m_str)
                     day = int(d_str)
-
                     flyer_date = datetime.date(year, month, day)
 
-                    # Ha túl régi, eldobjuk
                     if flyer_date < cutoff_date:
                         continue
 
-                    # Érvényességi idő számítás
                     end_date = flyer_date + datetime.timedelta(days=6)
                     validity_str = f"{flyer_date.strftime('%Y.%m.%d')}-{end_date.strftime('%Y.%m.%d')}"
 
                 except ValueError:
-                    continue  # Nem valós dátum
+                    continue 
             else:
-                continue # Ha nincs dátum, a működő kód is átugorja
+                continue
 
             # --- 4. CÍM GENERÁLÁS ---
             title = "SPAR Újság"
@@ -192,11 +196,9 @@ def scan_spar():
             elif "spar-extra" in full_url.lower():
                 title = "SPAR Partner (Extra)"
 
-            # --- TALÁLAT! ---
+            # --- 5. BIZTOS HOZZÁADÁS ---
             print(f"✅ TALÁLAT: {title} | {validity_str} | {full_url}")
-
-            # Közvetlenül hozzáadjuk, kikerülve a külső analyze_link-et, 
-            # mivel a működő kód is saját szűrést használt.
+            
             found.append({
                 "store": "Spar",
                 "title": title,
