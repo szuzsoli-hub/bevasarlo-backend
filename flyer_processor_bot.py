@@ -2,8 +2,6 @@ import os
 import time
 import json
 import re
-import requests
-from bs4 import BeautifulSoup
 from dotenv import load_dotenv
 from openai import OpenAI
 from google.cloud import vision
@@ -17,19 +15,18 @@ from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.action_chains import ActionChains
-from curl_cffi import requests as cffi_requests
 
 # ==============================
 # 0. KONFIGURÁCIÓ & ENV
 # ==============================
 
-INPUT_FILE = 'assets/flyers.json'
-OUTPUT_FILE = 'assets/universal_output.json'
+INPUT_FILE = 'flyers.json'           # A friss linkek (A modulból)
+OUTPUT_FILE = 'universal_output.json' # A kész adatbázis (B modul)
 
 base_dir = os.path.dirname(os.path.abspath(__file__))
 load_dotenv(os.path.join(base_dir, ".env"))
 
-# Google Kulcs Kezelés (Felhő kompatibilis)
+# GitHub Actions környezetben a secretből jön, lokálisan a fájlból/env-ből
 if not os.getenv("GOOGLE_APPLICATION_CREDENTIALS"):
     os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "google_key.json"
 
@@ -47,53 +44,19 @@ if not os.path.exists(TEMP_DIR):
 
 
 # ===============================================================================
-# 1. MODUL: COOP NÉV JAVÍTÓ (Amit kértél) 🛠️
-# ===============================================================================
-
-def get_refined_store_name(store_base, url, title):
-    """
-    A link és a cím alapján kitalálja a PONTOS hálózatnevet.
-    """
-    s = store_base.lower()
-    u = url.lower()
-    t = title.lower() if title else ""
-
-    # --- COOP DETEKTÍV ---
-    if "coop" in s:
-        if "mecsek" in u or "mecsek" in t: return "Coop Mecsek Füszért"
-        if "tisza" in u or "tisza" in t or "szolnok" in u: return "Tisza-Coop"
-        if "alfold" in u or "alföld" in t or "kecskemét" in t: return "Alföld Pro-Coop"
-        if "hetforras" in u or "hétforrás" in t or "szombathely" in t: return "Hétforrás"
-        if "eszak-kelet" in u or "észak" in t or "miskolc" in t or "debrecen" in t: return "Észak-Kelet Pro-Coop"
-        if "honi" in u or "honi" in t: return "Honi-Coop"
-        if "polus" in u or "pólus" in t: return "Pólus-Coop"
-        return store_base
-
-    # --- CBA / PRÍMA DETEKTÍV ---
-    if "cba" in s or "príma" in s or "prima" in s:
-        if "prima" in u or "príma" in t or "prima" in s:
-            return "CBA Príma"
-        return "CBA"
-
-    return store_base
-
-
-# ===============================================================================
-# 2. MODUL: A FOTÓS 📸
+# 1. MODUL: A FOTÓS (Capture) 📸
 # ===============================================================================
 
 def capture_pages_with_selenium(target_url, store_name):
-    print(f"\n📸 2. LÉPÉS: Fotózás indul ({store_name}): {target_url}")
+    print(f"\n📸 FOTÓZÁS INDUL ({store_name}): {target_url}")
 
     chrome_options = Options()
-    chrome_options.add_argument("--headless")  # FELHŐ MIATT KÖTELEZŐ!
+    chrome_options.add_argument("--headless") # GitHub Actions miatt kötelező!
     chrome_options.add_argument("--window-size=1920,1080")
     chrome_options.add_argument("--disable-gpu")
     chrome_options.add_argument("--no-sandbox")
     chrome_options.add_argument("--disable-dev-shm-usage")
-    chrome_options.add_argument(
-        "user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36")
-    chrome_options.add_argument("--disable-blink-features=AutomationControlled")
+    chrome_options.add_argument("user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36")
 
     captured_data = []
 
@@ -101,122 +64,57 @@ def capture_pages_with_selenium(target_url, store_name):
         service = Service(ChromeDriverManager().install())
         driver = webdriver.Chrome(service=service, options=chrome_options)
         driver.get(target_url)
-        time.sleep(10)
+        time.sleep(8) 
 
-        # --- 1. METRO: TABULÁTOR ---
-        if store_name == "Metro":
-            print("⌨️ METRO: Tabulátoros kuki-gyilkos...")
-            actions = ActionChains(driver)
-            try:
-                driver.find_element(By.TAG_NAME, "body").click()
-            except:
-                pass
-            hit = False
-            for i in range(40):
-                actions.send_keys(Keys.TAB).perform()
-                time.sleep(0.1)
-                try:
-                    active = driver.switch_to.active_element
-                    txt = active.text.lower()
-                    if "rendben" in txt or "elfogad" in txt or "hozzájárulok" in txt or "allow" in txt:
-                        active.send_keys(Keys.ENTER)
-                        print(f"✅ METRO Kuki kilőve: {txt}")
-                        hit = True
-                        time.sleep(3)
-                        break
-                except:
-                    pass
-            if not hit:
-                actions.send_keys(Keys.ENTER).perform()
-                time.sleep(2)
+        # SÜTI KEZELÉS
+        try:
+            buttons = driver.find_elements(By.TAG_NAME, "button")
+            for btn in buttons:
+                txt = btn.text.lower()
+                if any(x in txt for x in ["elfogad", "accept", "mindent", "ok", "rendben"]):
+                    driver.execute_script("arguments[0].click();", btn)
+                    time.sleep(1)
+                    break
+        except:
+            pass
+        
+        # Zavaró elemek törlése
+        try:
+            driver.execute_script("""
+                document.querySelectorAll('div[class*="cookie"], div[id*="cookie"], #onetrust-banner-sdk').forEach(el => el.remove());
+            """)
+        except:
+            pass
 
-        # --- 2. CBA (MINDEN TÍPUS): KUKI KILLER ---
-        elif "CBA" in store_name:
-            print(f"... {store_name} Kuki keresése ...")
-            try:
-                gombok = driver.find_elements(By.TAG_NAME, "button")
-                clicked = False
-                for gomb in gombok:
-                    txt = gomb.text.lower()
-                    if "összes" in txt and "elfogad" in txt:
-                        gomb.click()
-                        print(f"✅ {store_name} Kuki gomb megnyomva.")
-                        clicked = True
-                        time.sleep(2)
-                        break
-                if not clicked:
-                    driver.execute_script("""
-                        var divs = document.querySelectorAll('div');
-                        for (var i = 0; i < divs.length; i++) {
-                            var style = window.getComputedStyle(divs[i]);
-                            if (style.position === 'fixed' && style.top === '0px' && parseInt(style.zIndex) > 10) {
-                                divs[i].remove();
-                            }
-                        }
-                    """)
-            except:
-                pass
-
-        # --- 3. EGYÉB (Spar, Tesco) ---
-        else:
-            try:
-                if store_name == "Spar":
-                    try:
-                        gombok = driver.find_elements(By.TAG_NAME, "button")
-                        for gomb in gombok:
-                            if "elfogad" in gomb.text.lower() or "accept" in gomb.text.lower():
-                                gomb.click()
-                                break
-                    except:
-                        pass
-
-                driver.execute_script("""
-                    var elements = document.querySelectorAll('div, section, footer, header, aside, span, p');
-                    for (var i = 0; i < elements.length; i++) {
-                        var el = elements[i];
-                        var style = window.getComputedStyle(el);
-                        if ((style.position === 'fixed' || style.position === 'absolute') && parseInt(style.zIndex) > 50) {
-                            if (!el.className.includes('nav') && !el.className.includes('menu')) el.remove();
-                        }
-                    }
-                    document.body.style.overflow = 'auto'; 
-                """)
-                time.sleep(2)
-            except:
-                pass
-
-        # FOTÓZÁS
-        for i in range(3):
+        # FOTÓZÁS (TESZT: CSAK 2 OLDAL!)
+        for i in range(2): 
             page_num = i + 1
             fajl_nev = os.path.join(TEMP_DIR, f"{store_name}_oldal_{page_num}.png")
+            
+            if i > 0:
+                body = driver.find_element(By.TAG_NAME, 'body')
+                body.send_keys(Keys.ARROW_RIGHT)
+                time.sleep(3)
+
             driver.save_screenshot(fajl_nev)
-
-            print(f"   -> {store_name} {page_num}. oldal mentve.")
-
             captured_data.append({
                 "image_path": fajl_nev,
                 "page_url": driver.current_url,
                 "page_num": page_num
             })
-
-            try:
-                body = driver.find_element(By.TAG_NAME, 'body')
-                body.send_keys(Keys.ARROW_RIGHT)
-                time.sleep(4)
-            except:
-                break
+            print(f"   -> {page_num}. oldal lefotózva.")
 
         return captured_data
 
     except Exception as e:
-        print(f"❌ Hiba ({store_name}): {e}")
+        print(f"❌ Hiba a fotózásnál ({store_name}): {e}")
         return []
     finally:
         if 'driver' in locals(): driver.quit()
 
 
 # ===============================================================================
-# 3. MODUL: AZ AGY 🧠
+# 2. MODUL: AZ AGY - DÁTUM ELLENŐRZÉS (BOUNCER) 🧠
 # ===============================================================================
 
 def google_ocr(image_path):
@@ -226,43 +124,31 @@ def google_ocr(image_path):
     if response.error.message: return ""
     return response.full_text_annotation.text
 
-
 def interpret_text_with_ai(full_text, page_num, store_name):
-    date_instruction = ""
-    if page_num == 1:
-        date_instruction = "FELADAT 1: KERESD MEG AZ ÉRVÉNYESSÉGI IDŐT (YYYY.MM.DD-YYYY.MM.DD) a címlapon!"
+    # Dátum instrukció csak az első oldalon
+    date_instr = "FELADAT 1: KERESD MEG AZ ÉRVÉNYESSÉGI IDŐT (YYYY.MM.DD-YYYY.MM.DD) a címlapon!" if page_num == 1 else ""
 
     prompt = f"""
     Ez a(z) {store_name} akciós újság {page_num}. oldala.
-    {date_instruction}
+    {date_instr}
 
-    FELADAT 2: Keresd ki a termékeket.
-    SZIGORÚ SZABÁLYOK:
-    1. 'nev': Csak a termék neve (pl. "Kígyóuborka").
-    2. 'ar': Legkedvezőbb ár (pl. "549 Ft").
+    FELADAT 2: Gyűjtsd ki az élelmiszer és vegyi áru termékeket JSON-be.
+    SZŰRÉS: Ne vegyél fel marketing dumát, receptet, vagy non-food (ruha, barkács) terméket, csak ha egyértelműen élelmiszer/vegyi áru.
 
-    3. 'ar_info': Kiszerelés ÉS EGYSÉGÁR (FONTOS!)
-       - KÖTELEZŐ MEGKERESNI AZ EGYSÉGÁRAT! (pl. "Ft/kg", "Ft/l", "Ft/db").
-       - Formátum: "[Súly/Darab] / [Egységár]"
-       - Példa: "1 kg / 1299 Ft/kg" vagy "125 g / 3500 Ft/kg".
-
-    4. KÜLÖNLEGES ESETEK:
-       - Ha az ár feltételhez kötött (pl. Clubcard), 'ar_info2': "Részletes feltételek az újságban!".
+    MEZŐK:
+    - 'nev': Termék neve.
+    - 'ar': Ár.
+    - 'ar_info': Kiszerelés ÉS egységár. HA VAN "/kg" vagy "/l" a képen, azt KÖTELEZŐ ideírni!
+    - 'ar_info2': Feltételek (pl. "Csak 2 db esetén"). Ha nincs, legyen null.
 
     JSON FORMAT:
     {{
-      "ervenyesseg": "2026.02.12-2026.02.18",
+      "ervenyesseg": "2026.02.12-2026.02.18", 
       "termekek": [
-        {{
-          "nev": "Termék neve",
-          "ar": "1299 Ft",
-          "ar_info": "1 kg / 1299 Ft/kg",
-          "ar_info2": null,
-          "kategoria_dontes": "marad"
-        }}
+        {{ "nev": "...", "ar": "...", "ar_info": "...", "ar_info2": null, "kategoria_dontes": "marad" }}
       ]
     }}
-
+    
     OCR SZÖVEG:
     {full_text}
     """
@@ -275,96 +161,175 @@ def interpret_text_with_ai(full_text, page_num, store_name):
     )
     return json.loads(response.choices[0].message.content)
 
+def check_validity_date(date_string):
+    """
+    Központi Dátum Ellenőr.
+    True = Érvényes
+    False = Lejárt (Azonnali törlés)
+    """
+    if not date_string: return True # Ha nincs adat, a biztonság kedvéért átengedjük (User check)
+    
+    try:
+        # Dátum keresés (YYYY.MM.DD vagy YYYY-MM-DD)
+        dates = re.findall(r'\d{4}[\.\-]\d{2}[\.\-]\d{2}', str(date_string))
+        
+        if dates:
+            # Az utolsó dátum a lejárati idő
+            end_date_str = dates[-1].replace('-', '.')
+            end_date = datetime.datetime.strptime(end_date_str, "%Y.%m.%d").date()
+            today = datetime.date.today()
+            
+            if end_date < today:
+                return False # LEJÁRT
+            else:
+                return True # MÉG JÓ
+                
+    except Exception:
+        pass 
+        
+    return True
 
 def process_images_with_ai(captured_data, flyer_meta):
-    # ITT A JAVÍTÁS: COOP NÉV PONTOSÍTÁS
-    refined_name = get_refined_store_name(flyer_meta['store'], flyer_meta['url'], flyer_meta.get('title', ''))
-    
-    print(f"\n🧠 AI Feldolgozás: {refined_name}...")
+    print(f"🧠 AI Elemzés: {flyer_meta['store']}...")
     results = []
-    detected_validity = flyer_meta.get('validity', "Keresés...")
+    detected_validity = flyer_meta.get('validity', "N/A")
 
     for item in captured_data:
         try:
             full_text = google_ocr(item['image_path'])
-            if not re.search(r"\d", full_text): continue
+            if not full_text: 
+                os.remove(item['image_path'])
+                continue
 
-            structured = interpret_text_with_ai(full_text, item['page_num'], refined_name)
+            structured = interpret_text_with_ai(full_text, item['page_num'], flyer_meta['store'])
 
-            if item['page_num'] == 1 and structured.get("ervenyesseg"):
-                raw_val = structured.get("ervenyesseg")
-                if len(raw_val) > 5:
-                    detected_validity = raw_val
-                    print(f"📅 DETEKTÁLT DÁTUM: {detected_validity}")
+            # --- 1. BOUNCER: FRISS ÚJSÁG DÁTUM ELLENŐRZÉS ---
+            if item['page_num'] == 1:
+                if structured.get("ervenyesseg"):
+                    detected_validity = structured.get("ervenyesseg")
+                    # Ha az AI szerint a címlapon lévő dátum lejárt -> KUKA
+                    if not check_validity_date(detected_validity):
+                        print(f"⛔ BOUNCER: Ez az újság lejárt ({detected_validity}), teljes törlés! - {flyer_meta['title']}")
+                        os.remove(item['image_path'])
+                        return [] # Üres lista = Az egész újság kuka
 
             for product in structured.get("termekek", []):
-                if product.get("kategoria_dontes") != "marad": continue
-                if not re.search(r"\d", product.get("ar", "")): continue
+                if product.get("kategoria_dontes") == "marad":
+                    record = {
+                        "bolt": flyer_meta['store'],
+                        "ujsag": flyer_meta['title'],
+                        "ervenyesseg": detected_validity,
+                        "nev": product.get("nev"),
+                        "ar": product.get("ar"),
+                        "ar_info": product.get("ar_info"),
+                        "ar_info2": product.get("ar_info2"),
+                        "forrasLink": flyer_meta['url']
+                    }
+                    results.append(record)
+                    print(f"      + {record['nev']} | {record['ar']}")
 
-                record = {
-                    "bolt": refined_name, # JAVÍTOTT NÉV HASZNÁLATA
-                    "ujsag": flyer_meta.get('title', f"{refined_name} Akciós Újság"),
-                    "ervenyesseg": detected_validity,
-                    "nev": product.get("nev"),
-                    "ar": product.get("ar"),
-                    "ar_info": product.get("ar_info", ""),
-                    "ar_info2": product.get("ar_info2"),
-                    "oldalszam": item['page_num'],
-                    "forrasLink": item['page_url']
-                }
-                results.append(record)
-                warn = "⚠️" if record['ar_info2'] else ""
-                print(f"      + {record['nev']} | {record['ar']} | {record['ar_info']} {warn}")
+            os.remove(item['image_path'])
 
         except Exception as e:
-            print(f"⚠️ Hiba: {e}")
+            print(f"⚠️ Hiba az AI feldolgozásnál: {e}")
+            if os.path.exists(item['image_path']):
+                os.remove(item['image_path'])
 
     return results
 
 
 # ===============================================================================
-# FŐVEZÉRLŐ (ASSET OLVASÓ MÓD)
+# FŐVEZÉRLŐ (TISZTÍTÁS + BOUNCER + DEDUPLIKÁCIÓ) 🧹⛔💰
 # ===============================================================================
 
 if __name__ == "__main__":
-    print("=== BEVÁSÁRLÓ ROBOT: PROCESSOR MÓD ===")
+    print("=== PROFESSZOR BOT: TOTAL CLEANUP VERZIÓ (v6.0) ===")
+    print(f"📅 Mai dátum: {datetime.date.today()}")
 
-    # 1. Bemenet olvasása
+    # 1. Friss linkek betöltése (Ez a referencia!)
     if not os.path.exists(INPUT_FILE):
-        print(f"❌ Nincs bemeneti fájl: {INPUT_FILE}")
+        print("❌ Nincs flyers.json! Futtasd a Linkvadászt előbb.")
         exit()
-
-    with open(INPUT_FILE, 'r', encoding='utf-8') as f:
-        data = json.load(f)
-        flyers = data.get("flyers", [])
     
-    print(f"📋 Feldolgozandó újságok száma: {len(flyers)}")
+    with open(INPUT_FILE, 'r', encoding='utf-8') as f:
+        new_flyers_data = json.load(f)
+        current_flyers = new_flyers_data.get("flyers", [])
+        
+    current_active_urls = [f['url'] for f in current_flyers]
+    print(f"📋 Aktív újságok linkjei (Web): {len(current_active_urls)}")
 
-    # 2. Meglévő adatok betöltése (opcionális, ha hozzáírni akarsz)
-    all_products = []
-    # Ha szeretnéd megtartani a régieket, itt be lehet tölteni, de most tiszta lappal indulunk a kérésed szerint.
+    # 2. Régi adatok betöltése
+    old_products = []
+    if os.path.exists(OUTPUT_FILE):
+        try:
+            with open(OUTPUT_FILE, 'r', encoding='utf-8') as f:
+                old_products = json.load(f)
+        except:
+            old_products = []
 
-    # 3. Feldolgozás
-    for flyer in flyers:
-        print(f"\n------------------------------------------------")
-        print(f"🚀 Feldolgozás indul: {flyer['store']}")
+    # 3. KÉT-LÉPCSŐS TISZTÍTÁS (RÉGI ADATOK SZŰRÉSE)
+    final_products = []
+    kept_count = 0
+    dropped_link = 0
+    dropped_date = 0
+    
+    print("♻️  Régi adatok ellenőrzése...")
+    for product in old_products:
+        p_link = product.get('forrasLink')
+        p_date = product.get('ervenyesseg')
+        
+        # A) Link ellenőrzés: Még kint van a boltnál?
+        if p_link not in current_active_urls:
+            dropped_link += 1
+            continue # Töröljük, mert a bolt levette a linket
+            
+        # B) Dátum ellenőrzés: A JSON-ban tárolt dátum lejárt-e mára?
+        if not check_validity_date(p_date):
+            dropped_date += 1
+            continue # Töröljük, mert lejárt az ideje
+            
+        # Ha mindkettőn átment -> MEGTARTJUK
+        final_products.append(product)
+        kept_count += 1
 
-        pages = capture_pages_with_selenium(flyer['url'], flyer['store'])
+    print(f"   -> Megtartva: {kept_count}")
+    print(f"   -> Törölve (Hibás link): {dropped_link}")
+    print(f"   -> Törölve (Lejárt dátum): {dropped_date}")
+    
+    # Jegyezzük meg, miket tartottunk meg (URL alapján), hogy ne dolgozzuk fel újra
+    processed_urls_in_output = set()
+    for p in final_products:
+        processed_urls_in_output.add(p['forrasLink'])
 
+    # 4. ÚJ LINKKEK FELDOLGOZÁSA (BOUNCER MÓD)
+    for flyer in current_flyers:
+        url = flyer['url']
+        
+        # DEDUPLIKÁCIÓ: Ha már megvan a tisztított listában -> SKIP
+        if url in processed_urls_in_output:
+            print(f"⏩ SKIP (Érvényes és kész): {flyer['store']} - {flyer['title']}")
+            continue 
+        
+        # HA ÚJ -> FELDOLGOZÁS INDUL
+        print(f"\n🆕 ÚJ ÚJSÁG! Vizsgálat indul: {flyer['store']}")
+        pages = capture_pages_with_selenium(url, flyer['store'])
+        
         if pages:
-            store_results = process_images_with_ai(pages, flyer)
-            all_products.extend(store_results)
-
-            for p in pages:
-                try:
-                    os.remove(p['image_path'])
-                except:
-                    pass
+            # Itt fut le a BOUNCER (process_images_with_ai).
+            # Ha az AI szerint az 1. oldal dátuma lejárt, üres listát ad vissza.
+            new_items = process_images_with_ai(pages, flyer)
+            
+            if new_items:
+                final_products.extend(new_items)
+                print(f"✅ SIKER! {len(new_items)} db termék hozzáadva.")
+            else:
+                print("🚫 BLOKKOLVA (Lejárt újság).")
         else:
-            print(f"⚠️ Nem sikerült fotózni: {flyer['store']}")
+            print("⚠️ Nem sikerült a fotózás.")
 
-    # 4. Mentés
+    # 5. VÉGSŐ MENTÉS
+    # Itt felülírjuk a fájlt a tisztított + új listával
     with open(OUTPUT_FILE, "w", encoding="utf-8") as f:
-        json.dump(all_products, f, ensure_ascii=False, indent=2)
+        json.dump(final_products, f, ensure_ascii=False, indent=2)
 
-    print(f"\n🏁 KÉSZ! Összesen {len(all_products)} termék mentve: {OUTPUT_FILE}")
+    print(f"\n🏁 KÉSZ! Végső adatbázis: {len(final_products)} termék.")
