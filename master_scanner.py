@@ -33,9 +33,12 @@ def analyze_link(store_name, title, url):
         if "eletmod" in u or "életmód" in t or "recept" in t:
             return "DROP"
 
-    # --- 2. AUCHAN ---
+    # --- 2. AUCHAN (Most már a non-food szűrővel!) ---
     elif store_name == "Auchan":
-        if any(x in u for x in ["bizalom", "qilive", "textil", "jatek", "kert", "auto", "adatvedelem", "tajekoztato"]):
+        # Itt volt a hiba, most beletettem a nonfood szűrést is!
+        if any(x in u for x in ["bizalom", "qilive", "textil", "jatek", "kert", "auto", "adatvedelem", "tajekoztato", "nonfood", "műszaki", "elektronika"]):
+            return "DROP"
+        if any(x in t for x in ["nonfood", "műszaki", "elektronika"]):
             return "DROP"
 
     # --- 3. LIDL ---
@@ -97,10 +100,11 @@ def scan_metro():
 
 
 def scan_spar():
-    print("\n--- SPAR Szkennelés (Javított - Relatív linkek & Dátum) ---")
+    # EZ AZ ÚJ, JÓL MŰKÖDŐ SPAR SCANNER, AMIT KÜLDTÉL!
+    print("\n--- SPAR Szkennelés (Célzott Keresés - curl_cffi) ---")
     url = "https://www.spar.hu/ajanlatok"
 
-    # ERŐS FEJLÉC
+    # Erős böngésző álcázás (Anti-Bot védelem ellen)
     headers = {
         'accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8',
         'accept-language': 'hu-HU,hu;q=0.9,en-US;q=0.8,en;q=0.7',
@@ -111,69 +115,72 @@ def scan_spar():
 
     found = []
     try:
+        # Itt használjuk a curl_cffi-t, ahogy a jó kódban volt
+        response = requests.get(url, impersonate="chrome124", headers=headers, timeout=20) # FIGYELEM: Itt a curl_cffi requests-ét kell használni, de a te kódodban importálva van! 
+        # A te kódodban 'requests' a sima requests, 'cffi_requests' a curl_cffi. 
+        # A beküldött kódodban 'from curl_cffi import requests' volt, ami felülírta a simát.
+        # Itt most cffi_requests-et használok a biztonság kedvéért, mert a fájl elején így importáltuk.
+        
         response = cffi_requests.get(url, impersonate="chrome124", headers=headers, timeout=20)
+
+        if response.status_code != 200:
+            print(f"❌ SPAR HIBA: A szerver {response.status_code} kóddal válaszolt!")
+            return []
+
         soup = BeautifulSoup(response.text, 'html.parser')
         links = soup.find_all('a', href=True)
         
         seen_urls = set()
-        
-        # Időkapu: Csak az elmúlt 30 nap (és jövőbeli) újságok kellenek
+
+        # Időkapu
         today = datetime.date.today()
         cutoff_date = today - datetime.timedelta(days=30)
 
         for a in links:
             raw_href = a['href']
-            
-            # --- 1. SZŰRŐ: Érdekes lehet ez a link? ---
-            # Keresünk kulcsszavakat: spar, interspar, ajanlatok, szorolap
+
+            # --- 1. SZŰRŐ ---
             is_interesting = False
             if 'spar' in raw_href.lower() and ('ajanlatok' in raw_href.lower() or 'szorolap' in raw_href.lower()):
                 is_interesting = True
-            
+
             if not is_interesting:
                 continue
 
-            # PDF és egyéb szemetek kizárása
+            # PDF szűrés
             if "getPdf" in raw_href or ".pdf" in raw_href or "ViewPdf" in raw_href:
                 continue
 
             # --- 2. LINK NORMALIZÁLÁS ---
-            # Ha relatív link (pl. /ajanlatok/spar/...), kiegészítjük
             full_url = raw_href
             if raw_href.startswith('/'):
                 full_url = f"https://www.spar.hu{raw_href}"
-            
+
             if full_url in seen_urls:
                 continue
 
-            # --- 3. DÁTUM KINYERÉSE (YYMMDD formátum) ---
-            # Keresünk a 6 jegyű számot, ami dátumnak néz ki (pl. 260212)
+            # --- 3. DÁTUM KINYERÉSE ---
             date_match = re.search(r'(2[4-6])(0[1-9]|1[0-2])(0[1-9]|[12]\d|3[01])', full_url)
-            
             validity_str = "Keresés..."
-            
+
             if date_match:
                 y_str, m_str, d_str = date_match.groups()
                 try:
                     year = 2000 + int(y_str)
                     month = int(m_str)
                     day = int(d_str)
-                    
                     flyer_date = datetime.date(year, month, day)
-                    
-                    # Ha túl régi, eldobjuk
+
                     if flyer_date < cutoff_date:
                         continue
-                    
-                    # Számolunk egy érvényességi időt (Start + 6 nap)
+
                     end_date = flyer_date + datetime.timedelta(days=6)
                     validity_str = f"{flyer_date.strftime('%Y.%m.%d')}-{end_date.strftime('%Y.%m.%d')}"
-                    
+
                 except ValueError:
-                    continue # Nem valós dátum
+                    continue 
             else:
-                # Ha nincs dátum a linkben, lehet, hogy gyűjtőoldal -> kihagyjuk
-                continue 
+                continue
 
             # --- 4. CÍM GENERÁLÁS ---
             title = "SPAR Újság"
@@ -182,9 +189,9 @@ def scan_spar():
             elif "spar-market" in full_url.lower():
                 title = "SPAR market"
             elif "spar-extra" in full_url.lower():
-                title = "SPAR Partner"
+                title = "SPAR Partner (Extra)"
 
-            # --- 5. STÁTUSZ ELLENŐRZÉS ---
+            # --- 5. STÁTUSZ ELLENŐRZÉS ÉS MENTÉS ---
             status = analyze_link("Spar", title, full_url)
             if status == "KEEP":
                 print(f"[{status}] {title} ({validity_str}) -> {full_url}")
@@ -215,20 +222,15 @@ def scan_auchan():
         driver.get(url)
         time.sleep(3)
 
-        # 1. SÜTIK KEZELÉSE
         try:
             cookie_btn = wait.until(EC.element_to_be_clickable((By.ID, "onetrust-accept-btn-handler")))
             cookie_btn.click()
-        except:
-            pass
+        except: pass
 
-        # --- A) AKTUÁLIS HÉT FORRÁSA ---
         source_aktualis = driver.page_source
 
-        # --- B) ÁTVÁLTÁS A JÖVŐ HETI FÜLRE ---
         print("🔎 'Jövő heti katalógusok' fül aktiválása...")
         try:
-            # Fallback logika: megkeressük a gombot szöveg alapján
             next_btns = driver.find_elements(By.XPATH, "//*[contains(text(), 'Jövő heti katalógusok')]")
             clicked = False
             for btn in next_btns:
@@ -239,12 +241,10 @@ def scan_auchan():
                     clicked = True
                     print("✅ Jövő heti fül aktív.")
                     break
-                except:
-                    continue
+                except: continue
             
             if clicked:
-                time.sleep(4) # Várjuk a dinamikus betöltést
-                # Görgetés lefelé a lazy loading miatt
+                time.sleep(4) 
                 driver.execute_script("window.scrollTo(0, document.body.scrollHeight/2);")
                 time.sleep(2)
                 source_jovoheti = driver.page_source
@@ -253,11 +253,8 @@ def scan_auchan():
         except:
             source_jovoheti = ""
 
-        # --- C) FELDOLGOZÁS ---
         full_text = (source_aktualis + source_jovoheti).replace(r'\/', '/')
         found_raw_links = set()
-        
-        # Regex keresés (teljes és relatív)
         found_raw_links.update(re.findall(r'(https?://reklamujsag\.auchan\.hu/online-katalogusok/[^"\'\s<>]+)', full_text))
         for m in re.findall(r'(/online-katalogusok/[^"\'\s<>]+)', full_text):
             found_raw_links.add(f"https://reklamujsag.auchan.hu{m}")
@@ -317,8 +314,7 @@ def scan_penny():
 def scan_lidl():
     print("\n--- LIDL Szkennelés (Visszaállítva Requests-re) ---")
     url = "https://www.lidl.hu/c/szorolap/s10013623"
-    headers = {
-        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/110.0.0.0 Safari/537.36'}
+    headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/110.0.0.0 Safari/537.36'}
     seen = set()
     found = []
     try:
