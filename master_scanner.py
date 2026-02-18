@@ -735,12 +735,15 @@ def main():
     all_flyers = []
 
     # --- 1. HAGYOMÁNYOS BOLTOK ---
+    # !!! FONTOS: SPAR KERÜLT ELŐRE !!!
+    all_flyers.extend(scan_spar())
+    
     all_flyers.extend(scan_penny())
     all_flyers.extend(scan_lidl())
     all_flyers.extend(scan_metro())
     all_flyers.extend(scan_tesco())
     all_flyers.extend(scan_auchan())
-    all_flyers.extend(scan_spar())
+    # A scan_spar() innen került át a lista elejére
     all_flyers.extend(scan_aldi())
     all_flyers.extend(scan_cba_combined())
 
