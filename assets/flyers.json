@@ -1,5 +1,5 @@
 {
-    "last_updated": "2026-02-18 20:14:10.946331",
+    "last_updated": "2026-02-18 20:36:14.045191",
     "flyers": [
         {
             "store": "Penny",
@@ -81,20 +81,8 @@
         },
         {
             "store": "Auchan",
-            "title": "Auchan 02 18 Kedvenc Markaink",
-            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr06/2026-02-05-02-18-kedvenc-markaink",
-            "validity": "Keresés..."
-        },
-        {
-            "store": "Auchan",
             "title": "Auchan 02 18 Kethetes Szupermarket Ajanlataink",
             "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr06/2026-02-05-02-18-kethetes-szupermarket-ajanlataink",
-            "validity": "Keresés..."
-        },
-        {
-            "store": "Auchan",
-            "title": "Auchan 04 04 Husveti Ajanlataink",
-            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr08/2026-02-19-04-04-husveti-ajanlataink",
             "validity": "Keresés..."
         },
         {
@@ -105,8 +93,20 @@
         },
         {
             "store": "Auchan",
+            "title": "Auchan 02 18 Kedvenc Markaink",
+            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr06/2026-02-05-02-18-kedvenc-markaink",
+            "validity": "Keresés..."
+        },
+        {
+            "store": "Auchan",
             "title": "Auchan 02 18 Heti Hipermarket Ajanlataink",
             "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr07/2026-02-12-02-18-heti-hipermarket-ajanlataink",
+            "validity": "Keresés..."
+        },
+        {
+            "store": "Auchan",
+            "title": "Auchan 02 18 Valentin Napi Ajanlataink",
+            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr06/2026-02-05-02-18-valentin-napi-ajanlataink",
             "validity": "Keresés..."
         },
         {
@@ -117,8 +117,8 @@
         },
         {
             "store": "Auchan",
-            "title": "Auchan 02 18 Valentin Napi Ajanlataink",
-            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr06/2026-02-05-02-18-valentin-napi-ajanlataink",
+            "title": "Auchan 04 04 Husveti Ajanlataink",
+            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr08/2026-02-19-04-04-husveti-ajanlataink",
             "validity": "Keresés..."
         },
         {
