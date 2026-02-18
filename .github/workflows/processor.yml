@@ -50,7 +50,7 @@ jobs:
           git config --global user.name "AkcioVadaszBot"
           git config --global user.email "bot@akciovadasz.hu"
           # Hozzáadjuk a generált JSON-t
-          git add universal_output.json
+          git add assets/universal_output.json
           # Ha van változás, elmentjük. Ha nincs, nem sírunk.
           git commit -m "Új termékek feldolgozva (AI) - $(date)" || echo "Nincs új adat, nem kell menteni."
           git push
