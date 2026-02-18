@@ -20,7 +20,7 @@ from selenium.webdriver.common.action_chains import ActionChains
 # 0. KONFIGURÁCIÓ & ENV
 # ==============================
 
-INPUT_FILE = 'flyers.json'  # A friss linkek (A modulból)
+INPUT_FILE = 'assets/flyers.json'  # A friss linkek (A modulból)
 OUTPUT_FILE = 'universal_output.json'  # A kész adatbázis (B modul)
 
 base_dir = os.path.dirname(os.path.abspath(__file__))
@@ -336,5 +336,6 @@ if __name__ == "__main__":
     # Itt felülírjuk a fájlt a tisztított + új listával
     with open(OUTPUT_FILE, "w", encoding="utf-8") as f:
         json.dump(final_products, f, ensure_ascii=False, indent=2)
+
 
     print(f"\n🏁 KÉSZ! Végső adatbázis: {len(final_products)} termék.")
