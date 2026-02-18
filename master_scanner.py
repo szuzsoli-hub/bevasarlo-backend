@@ -97,12 +97,14 @@ def scan_metro():
 
 
 def scan_spar():
-    print("\n--- SPAR Szkennelés (Javított v2 - Relatív linkek) ---")
+    print("\n--- SPAR Szkennelés (Javított - Relatív linkek & Dátum) ---")
     url = "https://www.spar.hu/ajanlatok"
 
+    # ERŐS FEJLÉC
     headers = {
         'accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8',
         'accept-language': 'hu-HU,hu;q=0.9,en-US;q=0.8,en;q=0.7',
+        'cache-control': 'max-age=0',
         'upgrade-insecure-requests': '1',
         'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36'
     }
@@ -111,62 +113,83 @@ def scan_spar():
     try:
         response = cffi_requests.get(url, impersonate="chrome124", headers=headers, timeout=20)
         soup = BeautifulSoup(response.text, 'html.parser')
+        links = soup.find_all('a', href=True)
+        
         seen_urls = set()
-
+        
+        # Időkapu: Csak az elmúlt 30 nap (és jövőbeli) újságok kellenek
         today = datetime.date.today()
         cutoff_date = today - datetime.timedelta(days=30)
 
-        for a in soup.find_all('a', href=True):
-            href = a['href']
+        for a in links:
+            raw_href = a['href']
             
-            # --- JAVÍTÁS: Új SPAR linkstruktúra kezelése ---
-            is_valid_flyer = False
+            # --- 1. SZŰRŐ: Érdekes lehet ez a link? ---
+            # Keresünk kulcsszavakat: spar, interspar, ajanlatok, szorolap
+            is_interesting = False
+            if 'spar' in raw_href.lower() and ('ajanlatok' in raw_href.lower() or 'szorolap' in raw_href.lower()):
+                is_interesting = True
             
-            # 1. eset: Régi típusú (szorolap.spar.hu)
-            if 'szorolap.spar.hu' in href and "ViewPdf" not in href and "getPdf" not in href:
-                 is_valid_flyer = True
+            if not is_interesting:
+                continue
+
+            # PDF és egyéb szemetek kizárása
+            if "getPdf" in raw_href or ".pdf" in raw_href or "ViewPdf" in raw_href:
+                continue
+
+            # --- 2. LINK NORMALIZÁLÁS ---
+            # Ha relatív link (pl. /ajanlatok/spar/...), kiegészítjük
+            full_url = raw_href
+            if raw_href.startswith('/'):
+                full_url = f"https://www.spar.hu{raw_href}"
             
-            # 2. eset: Új típusú (/ajanlatok/spar/...) - EZ HIÁNYZOTT!
-            elif href.startswith('/ajanlatok/') and any(x in href for x in ['/spar/', '/interspar/', '/spar-market/', '/spar-extra/']):
-                 if re.search(r'/\d{6}-', href): # Ha van benne dátumkód (pl. 260212-)
-                     is_valid_flyer = True
+            if full_url in seen_urls:
+                continue
 
-            if is_valid_flyer:
-                # Link kiegészítése
-                full_url = href
-                if not href.startswith('http'): 
-                    full_url = f"https://www.spar.hu{href}"
+            # --- 3. DÁTUM KINYERÉSE (YYMMDD formátum) ---
+            # Keressük a 6 jegyű számot, ami dátumnak néz ki (pl. 260212)
+            date_match = re.search(r'(2[4-6])(0[1-9]|1[0-2])(0[1-9]|[12]\d|3[01])', full_url)
+            
+            validity_str = "Keresés..."
+            
+            if date_match:
+                y_str, m_str, d_str = date_match.groups()
+                try:
+                    year = 2000 + int(y_str)
+                    month = int(m_str)
+                    day = int(d_str)
+                    
+                    flyer_date = datetime.date(year, month, day)
+                    
+                    # Ha túl régi, eldobjuk
+                    if flyer_date < cutoff_date:
+                        continue
+                    
+                    # Számolunk egy érvényességi időt (Start + 6 nap)
+                    end_date = flyer_date + datetime.timedelta(days=6)
+                    validity_str = f"{flyer_date.strftime('%Y.%m.%d')}-{end_date.strftime('%Y.%m.%d')}"
+                    
+                except ValueError:
+                    continue # Nem valós dátum
+            else:
+                # Ha nincs dátum a linkben, lehet, hogy gyűjtőoldal -> kihagyjuk
+                continue 
 
-                # Cím kitalálása URL alapján
-                title = "SPAR Újság"
-                if "interspar" in full_url: title = "INTERSPAR"
-                elif "market" in full_url: title = "SPAR market"
-                elif "extra" in full_url: title = "SPAR Partner"
+            # --- 4. CÍM GENERÁLÁS ---
+            title = "SPAR Újság"
+            if "interspar" in full_url.lower():
+                title = "INTERSPAR"
+            elif "spar-market" in full_url.lower():
+                title = "SPAR market"
+            elif "spar-extra" in full_url.lower():
+                title = "SPAR Partner"
 
-                # Dátum kinyerése (pl. /260212-)
-                date_match = re.search(r'(\d{2})(\d{2})(\d{2})', full_url)
-                validity = "Keresés..."
-                
-                if date_match:
-                    y, m, d = date_match.groups()
-                    try:
-                        # Dátum ellenőrzés (hogy ne legyen túl régi)
-                        flyer_date = datetime.date(2000 + int(y), int(m), int(d))
-                        if flyer_date < cutoff_date:
-                            continue # Túl régi, skip
-                        
-                        # Kiszámoljuk a végét (+6 nap), hogy legyen szép dátumunk
-                        end_date = flyer_date + datetime.timedelta(days=6)
-                        validity = f"{flyer_date.strftime('%Y.%m.%d')}-{end_date.strftime('%Y.%m.%d')}"
-                    except:
-                        pass
-
-                if full_url not in seen_urls:
-                    status = analyze_link("Spar", title, full_url)
-                    if status == "KEEP":
-                        print(f"[{status}] {title} ({validity}) -> {full_url}")
-                        found.append({"store": "Spar", "title": title, "url": full_url, "validity": validity})
-                        seen_urls.add(full_url)
+            # --- 5. STÁTUSZ ELLENŐRZÉS ---
+            status = analyze_link("Spar", title, full_url)
+            if status == "KEEP":
+                print(f"[{status}] {title} ({validity_str}) -> {full_url}")
+                found.append({"store": "Spar", "title": title, "url": full_url, "validity": validity_str})
+                seen_urls.add(full_url)
 
     except Exception as e:
         print(f"❌ Spar Hiba: {e}")
@@ -728,18 +751,34 @@ def main():
     finally:
         driver.quit()
 
-    # --- 3. COOP EREDMÉNYEK HOZZÁADÁSA A KÖZÖS LISTÁHOZ ---
-    store_names = {
-        "szolnok_abc": "Coop Szolnok ABC",
-        "hid_abc": "Coop Szolnok Híd ABC",
-        "kecskemet": "Coop Kecskemét",
-        "debrecen": "Coop Debrecen",
-        "pecs": "Coop Pécs",
-        "szombathely": "Coop Szombathely"
-    }
-
+    # --- 3. COOP EREDMÉNYEK HOZZÁADÁSA A KÖZÖS LISTÁHOZ (JAVÍTOTT NÉVADÁS) ---
+    
     for key, links in coop_results.items():
-        store_display_name = store_names.get(key, f"Coop {key}")
+        # URL alapú névmeghatározás a kért térkép szerint
+        url_to_check = links.get("aktualis_link") or links.get("jovoheti_link") or ""
+        url_lower = url_to_check.lower()
+        
+        store_display_name = f"Coop {key}" # Alapértelmezett
+
+        # TÉRKÉP ALKALMAZÁSA
+        if "mecsek" in url_lower:
+            store_display_name = "Coop Mecsek Füszért"
+        elif "tisza" in url_lower or "szolnok" in url_lower:
+            store_display_name = "Tisza-Coop"
+        elif "alfold" in url_lower or "alföld" in url_lower or "kecskemet" in url_lower:
+            store_display_name = "Alföld Pro-Coop"
+        elif "hetforras" in url_lower or "hétforrás" in url_lower or "szombathely" in url_lower:
+            store_display_name = "Hétforrás"
+        elif "eszak-kelet" in url_lower or "debrecen" in url_lower or "miskolc" in url_lower:
+            store_display_name = "Észak-Kelet Pro-Coop"
+        elif "honi" in url_lower:
+            store_display_name = "Honi-Coop"
+        elif "polus" in url_lower or "pólus" in url_lower:
+            store_display_name = "Pólus-Coop"
+
+        # TISZTÍTÓ SZABÁLY (Zrt, Kft gyilkos)
+        for bad_suffix in ["Zrt.", "Zrt", "Kft.", "Kft", "Kereskedelmi"]:
+            store_display_name = store_display_name.replace(bad_suffix, "").strip()
 
         if links.get("aktualis_link"):
             all_flyers.append({
