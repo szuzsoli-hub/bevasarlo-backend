@@ -1,6 +1,54 @@
 {
-    "last_updated": "2026-02-18 20:58:06.943029",
+    "last_updated": "2026-02-18 21:32:04.281226",
     "flyers": [
+        {
+            "store": "Spar",
+            "title": "SPAR Újság",
+            "url": "https://www.spar.hu/ajanlatok/spar/260212-1-spar-szorolap",
+            "validity": "2026.02.12-2026.02.18"
+        },
+        {
+            "store": "Spar",
+            "title": "INTERSPAR",
+            "url": "https://www.spar.hu/ajanlatok/interspar/260212-2-interspar-szorolap",
+            "validity": "2026.02.12-2026.02.18"
+        },
+        {
+            "store": "Spar",
+            "title": "SPAR Partner (Extra)",
+            "url": "https://www.spar.hu/ajanlatok/spar-extra/260212-3-spar-extra-ajanlat",
+            "validity": "2026.02.12-2026.02.18"
+        },
+        {
+            "store": "Spar",
+            "title": "SPAR market",
+            "url": "https://www.spar.hu/ajanlatok/spar-market/260212-4-spar-market-city-spar",
+            "validity": "2026.02.12-2026.02.18"
+        },
+        {
+            "store": "Spar",
+            "title": "SPAR Újság",
+            "url": "https://www.spar.hu/ajanlatok/spar/260219-1-spar-szorolap-p",
+            "validity": "2026.02.19-2026.02.25"
+        },
+        {
+            "store": "Spar",
+            "title": "INTERSPAR",
+            "url": "https://www.spar.hu/ajanlatok/interspar/260219-2-interspar-szorolap-p",
+            "validity": "2026.02.19-2026.02.25"
+        },
+        {
+            "store": "Spar",
+            "title": "SPAR Partner (Extra)",
+            "url": "https://www.spar.hu/ajanlatok/spar-extra/260219-3-spar-extra-ajanlat",
+            "validity": "2026.02.19-2026.02.25"
+        },
+        {
+            "store": "Spar",
+            "title": "SPAR market",
+            "url": "https://www.spar.hu/ajanlatok/spar-market/260219-4-spar-market-city-spar",
+            "validity": "2026.02.19-2026.02.25"
+        },
         {
             "store": "Penny",
             "title": "Penny Akciós Újság",
@@ -81,20 +129,8 @@
         },
         {
             "store": "Auchan",
-            "title": "Auchan 02 18 Kethetes Szupermarket Ajanlataink",
-            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr06/2026-02-05-02-18-kethetes-szupermarket-ajanlataink",
-            "validity": "Keresés..."
-        },
-        {
-            "store": "Auchan",
-            "title": "Auchan 02 18 Heti Hipermarket Ajanlataink",
-            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr07/2026-02-12-02-18-heti-hipermarket-ajanlataink",
-            "validity": "Keresés..."
-        },
-        {
-            "store": "Auchan",
-            "title": "Auchan 04 04 Husveti Ajanlataink",
-            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr08/2026-02-19-04-04-husveti-ajanlataink",
+            "title": "Auchan 02 18 Heti Szupermarket Ajanlatok",
+            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr07/2026-02-12-02-18-heti-szupermarket-ajanlatok",
             "validity": "Keresés..."
         },
         {
@@ -105,20 +141,32 @@
         },
         {
             "store": "Auchan",
-            "title": "Auchan 25 Heti Hipermarket Ajanlataink",
-            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr08/2026-02-19-25-heti-hipermarket-ajanlataink",
-            "validity": "Keresés..."
-        },
-        {
-            "store": "Auchan",
             "title": "Auchan 02 18 Kedvenc Markaink",
             "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr06/2026-02-05-02-18-kedvenc-markaink",
             "validity": "Keresés..."
         },
         {
             "store": "Auchan",
-            "title": "Auchan 02 18 Heti Szupermarket Ajanlatok",
-            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr07/2026-02-12-02-18-heti-szupermarket-ajanlatok",
+            "title": "Auchan 25 Heti Hipermarket Ajanlataink",
+            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr08/2026-02-19-25-heti-hipermarket-ajanlataink",
+            "validity": "Keresés..."
+        },
+        {
+            "store": "Auchan",
+            "title": "Auchan 02 18 Kethetes Szupermarket Ajanlataink",
+            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr06/2026-02-05-02-18-kethetes-szupermarket-ajanlataink",
+            "validity": "Keresés..."
+        },
+        {
+            "store": "Auchan",
+            "title": "Auchan 04 04 Husveti Ajanlataink",
+            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr08/2026-02-19-04-04-husveti-ajanlataink",
+            "validity": "Keresés..."
+        },
+        {
+            "store": "Auchan",
+            "title": "Auchan 02 18 Heti Hipermarket Ajanlataink",
+            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr07/2026-02-12-02-18-heti-hipermarket-ajanlataink",
             "validity": "Keresés..."
         },
         {
