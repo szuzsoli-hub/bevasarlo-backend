@@ -1,0 +1,56 @@
+name: Akcio Vadasz Feldolgozo (AI + OCR)
+
+on:
+  workflow_dispatch:  # Kézi indítás lehetősége (Teszteléshez)
+  workflow_run:       # Automata indítás, HA a Linkvadász végzett
+    workflows: ["Akcios Ujsag Linkvadasz (Automata)"]
+    types:
+      - completed
+
+permissions:
+  contents: write
+
+jobs:
+  process_flyers:
+    runs-on: ubuntu-latest
+    # Csak akkor fusson, ha az előző robot SIKERES volt (vagy ha kézzel indítottad)
+    if: ${{ github.event.workflow_run.conclusion == 'success' || github.event_name == 'workflow_dispatch' }}
+
+    steps:
+      - name: Kód letöltése
+        uses: actions/checkout@v4
+
+      - name: Python telepítése
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.9'
+
+      - name: Szükséges programok telepítése
+        run: |
+          pip install requests beautifulsoup4 selenium webdriver-manager openai google-cloud-vision python-dotenv curl_cffi
+
+      - name: Google Chrome telepítése (A fotózáshoz)
+        uses: browser-actions/setup-chrome@latest
+
+      - name: Titkos Google Kulcs létrehozása
+        env:
+          GOOGLE_KEY_CONTENT: ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}
+        run: |
+          # A titkos szövegből fájlt csinálunk, mert a Python ezt keresi
+          echo "$GOOGLE_KEY_CONTENT" > google_key.json
+
+      - name: 🤖 Akcióvadász Robot Indítása (2 oldal/újság teszt)
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          GOOGLE_APPLICATION_CREDENTIALS: google_key.json
+        run: python flyer_processor_bot.py
+
+      - name: Eredmény mentése (Git Commit)
+        run: |
+          git config --global user.name "AkcioVadaszBot"
+          git config --global user.email "bot@akciovadasz.hu"
+          # Hozzáadjuk a generált JSON-t
+          git add universal_output.json
+          # Ha van változás, elmentjük. Ha nincs, nem sírunk.
+          git commit -m "Új termékek feldolgozva (AI) - $(date)" || echo "Nincs új adat, nem kell menteni."
+          git push
