@@ -84,61 +84,30 @@ def analyze_link(store_name, title, url):
     return "KEEP"
 
 
-# --- ÚJ: SEGÉDFÜGGVÉNY A PONTOS CÍMEKHEZ (URL ELEMZÉS) ---
-def enhance_title(store, current_title, url):
+# --- ÚJ: CÍM GENERÁLÓ FÜGGVÉNY (SLUG ALAPJÁN) ---
+def get_slug_title(store, current_title, url):
     """
-    Kiegészíti vagy lecseréli a címet az URL-ből kinyert infók alapján.
-    Így lesz pl. 'Penny Akciós Újság' -> 'Penny Akciós Újság (08. hét)'
+    A kért boltoknál lecseréli a címet a link utolsó, beszédes részére (slug).
     """
     final_title = current_title
     
-    # --- PENNY: Hét száma az URL-ből (pl. .../202608/...) ---
-    if store == "Penny":
-        match = re.search(r'202\d(\d{2})', url)
-        if match:
-            week_num = match.group(1)
-            final_title = f"{current_title} ({week_num}. hét)"
+    # --- AUCHAN: Link vége (pl. .../2026-02-19-04-04-husveti-ajanlataink) ---
+    if store == "Auchan":
+        slug = url.split('/')[-1] # A link utolsó része a perjel után
+        if slug:
+            final_title = slug # Címnek adjuk a slug-ot
 
-    # --- TESCO: Dátum az URL-ből (pl. ...-2026-02-12/...) ---
-    elif store == "Tesco":
-        match = re.search(r'(\d{4}-\d{2}-\d{2})', url)
-        if match:
-            date_str = match.group(1).replace('-', '.')
-            # Levágjuk az évet, hogy rövidebb legyen (pl. 02.12)
-            short_date = date_str[5:] 
-            final_title = f"{current_title} ({short_date}-től)"
+    # --- ALDI: Link vége (pl. .../online_akcios_ujsag_2026_02_19_kw08_psf9y3ck) ---
+    elif store == "Aldi":
+        slug = url.split('/')[-1]
+        if slug:
+            final_title = slug
 
-    # --- AUCHAN: Dátum intervallum az URL-ből ---
-    elif store == "Auchan":
-        # pl. 2026-02-12-02-18-heti-...
-        match = re.search(r'(\d{4}-\d{2}-\d{2})[-_](\d{2}-\d{2})', url)
-        if match:
-            start_date = match.group(1).replace('-', '.') # 2026.02.12
-            end_date = match.group(2).replace('-', '.')   # 02.18
-            short_start = start_date[5:] # 02.12
-            final_title = f"{current_title.split(' ')[0]} Szupermarket ({short_start}-{end_date})"
-        else:
-            # Ha nincs intervallum, próbáljunk legalább egy kezdő dátumot
-            match_single = re.search(r'(\d{4}-\d{2}-\d{2})', url)
-            if match_single:
-                 date_str = match_single.group(1).replace('-', '.')
-                 final_title = f"Auchan ({date_str[5:]}-től)"
-
-
-    # --- LIDL: Régió vagy Hét száma az URL-ből ---
-    elif store == "Lidl":
-        # Regionális (pl. ...regionalis-akciok-budapest-szalay-utca-08het...)
-        if "regionalis" in url:
-            match = re.search(r'regionalis-akciok-(.*?)-(\d{2})het', url)
-            if match:
-                city_slug = match.group(1).replace('-', ' ').title()
-                week_num = match.group(2)
-                final_title = f"Lidl - {city_slug} ({week_num}. hét)"
-        # Normál heti (pl. ...akcios-ujsag-08-het...)
-        elif "akcios-ujsag" in url:
-             match = re.search(r'(\d{2})-het', url)
-             if match:
-                 final_title = f"Lidl Akciós Újság ({match.group(1)}. hét)"
+    # --- SPAR: Link vége a 'spar/' vagy 'interspar/' stb. után ---
+    # A SPAR Hunter már eleve az URL-ből generált címet adhat vissza, 
+    # de itt a Master Scannerben is ráerősíthetünk, ha a listát bővítjük.
+    # (Megjegyzés: A scan_spar() függvény lentebb kezeli a behívást, 
+    # de ha a beérkező adat címét módosítani akarjuk, azt ott kell majd.)
 
     return final_title
 
@@ -165,13 +134,23 @@ def scan_metro():
 
 
 def scan_spar():
-    # --- MÓDOSÍTÁS: KÜLSŐ SPAR HUNTER HÍVÁSA ---
     print("\n--- SPAR Szkennelés (Külső modul: spar_hunter.py) ---")
     try:
-        # Itt hívjuk meg a másik fájlban lévő, bizonyítottan működő függvényt
-        found = scan_spar_only()
-        print(f"✅ Master Scanner átvette a SPAR adatokat: {len(found)} db")
-        return found
+        found_raw = scan_spar_only()
+        found_processed = []
+        
+        # ITT VALÓSÍTJUK MEG A SPAR CÍM CSERÉT (URL SLUG ALAPJÁN)
+        for item in found_raw:
+            url = item['url']
+            # Kivágjuk az utolsó részt: pl. '260212-1-spar-szorolap'
+            slug = url.rstrip('/').split('/')[-1]
+            
+            # Frissítjük a címet a slug-ra
+            item['title'] = slug
+            found_processed.append(item)
+            
+        print(f"✅ Master Scanner átvette és átnevezte a SPAR adatokat: {len(found_processed)} db")
+        return found_processed
     except Exception as e:
         print(f"❌ Hiba a külső SPAR modul futtatásakor: {e}")
         return []
@@ -238,6 +217,7 @@ def scan_auchan():
             full_link = full_link.rstrip('/').rstrip("'").rstrip('"').split('?')[0]
             if full_link in seen_links: continue
 
+            # --- EREDETI CÍM GENERÁLÁS (CSAK LOGOLÁSHOZ) ---
             slug = full_link.split('/')[-1]
             title_match = re.search(r'\d{4}-\d{2}-\d{2}-(.+)', slug)
             clean_title = title_match.group(1).replace('-', ' ').title() if title_match else slug.replace('-', ' ').title()
@@ -245,8 +225,9 @@ def scan_auchan():
 
             status = analyze_link("Auchan", title, full_link)
             if status == "KEEP":
-                # --- ÚJ: CÍM TUNINGOLÁSA ---
-                better_title = enhance_title("Auchan", title, full_link)
+                # --- ÚJ: CÍM CSERÉJE A LINK VÉGÉRE (SLUG) ---
+                better_title = get_slug_title("Auchan", title, full_link)
+                
                 print(f"[{status}] {better_title} -> {full_link}")
                 found.append({"store": "Auchan", "title": better_title, "url": full_link, "validity": "Keresés..."})
                 seen_links.add(full_link)
@@ -273,17 +254,18 @@ def scan_penny():
             for raw_link in matches:
                 clean_link = raw_link.replace('\\u002F', '/').replace('\\/', '/')
                 if '"' in clean_link: clean_link = clean_link.split('"')[0]
+                
+                # --- PENNY MARAD A RÉGI (JÓVÁHAGYVA) ---
                 title = "Penny Akciós Újság"
                 if "eletmod" in clean_link: title = "Penny Életmód"
+                
                 base_url = clean_link.split('?')[0]
                 if base_url not in processed_ids and ".jpg" not in base_url:
                     processed_ids.add(base_url)
                     status = analyze_link("Penny", title, clean_link)
                     if status == "KEEP":
-                        # --- ÚJ: CÍM TUNINGOLÁSA ---
-                        better_title = enhance_title("Penny", title, clean_link)
-                        print(f"[{status}] {better_title} -> {clean_link}")
-                        found.append({"store": "Penny", "title": better_title, "url": clean_link, "validity": "Keresés..."})
+                        print(f"[{status}] {title} -> {clean_link}")
+                        found.append({"store": "Penny", "title": title, "url": clean_link, "validity": "Keresés..."})
     except Exception as e:
         print(f"❌ Penny Hiba: {e}")
     return found
@@ -302,15 +284,16 @@ def scan_lidl():
             link = flyer.get('href')
             if not link: continue
             if not link.startswith('http'): link = f"https://www.lidl.hu{link}"
+            
             raw_title = flyer.find(class_='flyer__title')
+            # --- LIDL MARAD A RÉGI (JÓVÁHAGYVA) ---
             title = raw_title.get_text(strip=True) if raw_title else "Lidl Újság"
+            
             if link not in seen:
                 status = analyze_link("Lidl", title, link)
                 if status == "KEEP":
-                    # --- ÚJ: CÍM TUNINGOLÁSA ---
-                    better_title = enhance_title("Lidl", title, link)
-                    print(f"[{status}] {better_title} -> {link}")
-                    found.append({"store": "Lidl", "title": better_title, "url": link, "validity": "Keresés..."})
+                    print(f"[{status}] {title} -> {link}")
+                    found.append({"store": "Lidl", "title": title, "url": link, "validity": "Keresés..."})
                 seen.add(link)
     except Exception as e:
         print(f"❌ Lidl Hiba: {e}")
@@ -329,14 +312,15 @@ def scan_tesco():
             href = link['href']
             if 'tesco-ujsag' in href and ('hipermarket' in href or 'szupermarket' in href):
                 full_url = href if href.startswith('http') else f"https://www.tesco.hu{href}"
+                
+                # --- TESCO MARAD A RÉGI (JÓVÁHAGYVA) ---
                 title = "Tesco Hipermarket" if "hipermarket" in href else "Tesco Szupermarket"
+                
                 if full_url not in seen:
                     status = analyze_link("Tesco", title, full_url)
                     if status == "KEEP":
-                        # --- ÚJ: CÍM TUNINGOLÁSA ---
-                        better_title = enhance_title("Tesco", title, full_url)
-                        print(f"[{status}] {better_title} -> {full_url}")
-                        found.append({"store": "Tesco", "title": better_title, "url": full_url, "validity": "Keresés..."})
+                        print(f"[{status}] {title} -> {full_url}")
+                        found.append({"store": "Tesco", "title": title, "url": full_url, "validity": "Keresés..."})
                     seen.add(full_url)
     except Exception as e:
         print(f"❌ Tesco Hiba: {e}")
@@ -358,8 +342,11 @@ def scan_aldi():
                 if href not in seen:
                     status = analyze_link("Aldi", title, href)
                     if status == "KEEP":
-                        print(f"[{status}] {title} -> {href}")
-                        found.append({"store": "Aldi", "title": title, "url": href, "validity": "Keresés..."})
+                        # --- ÚJ: CÍM CSERÉJE A LINK VÉGÉRE (SLUG) ---
+                        better_title = get_slug_title("Aldi", title, href)
+                        
+                        print(f"[{status}] {better_title} -> {href}")
+                        found.append({"store": "Aldi", "title": better_title, "url": href, "validity": "Keresés..."})
                     seen.add(href)
     except:
         pass
@@ -373,6 +360,7 @@ def scan_cba_combined():
     try:
         response = cffi_requests.get(url_prima, impersonate="chrome110")
         if response.status_code == 200:
+            # --- CBA PRÍMA MARAD A RÉGI (JÓVÁHAGYVA) ---
             print("[KEEP] CBA Príma 5 (Szeged) -> https://prima5.hu/index.php/prima/akciok-katalogusok")
             found.append({"store": "CBA Príma", "title": "CBA Príma 5 (Szeged)",
                           "url": "https://prima5.hu/index.php/prima/akciok-katalogusok", "validity": "Keresés..."})
@@ -387,6 +375,7 @@ def scan_cba_combined():
             href = a['href']
             if "ajanlat" in href or "akcio" in href or "catalog" in href:
                 if len(href) > 20 and ("pdf" in href or "issuu" in href or "flipbook" in href):
+                    # --- CBA ORSZÁGOS MARAD A RÉGI (JÓVÁHAGYVA) ---
                     print(f"[KEEP] CBA Országos -> {href}")
                     found.append({"store": "CBA", "title": "CBA Akciós Újság", "url": href, "validity": "Keresés..."})
                     found_main = True
@@ -798,45 +787,37 @@ def main():
         for bad_suffix in ["Zrt.", "Zrt", "Kft.", "Kft", "Kereskedelmi"]:
             store_display_name = store_display_name.replace(bad_suffix, "").strip()
 
-        # --- ÚJ: CÍM TUNINGOLÁSA COOP-NÁL IS (URL ALAPJÁN) ---
+        # --- ÚJ: CÍM CSERÉJE COOP-NÁL IS (URL SLUG ALAPJÁN) ---
         if links.get("aktualis_link"):
-            # URL-ből dátumot/időszakot próbálunk lopni
-            clean_url = links["aktualis_link"]
-            title_suffix = ""
-            # pl. ...-februar-3-het...
-            date_match = re.search(r'(\d{4}-[a-z]+-\d+-het)', clean_url)
-            if date_match:
-                 # Szépen formázzuk: 2026-februar-3-het -> 2026 Február 3. hét
-                 parts = date_match.group(1).split('-')
-                 if len(parts) >= 4:
-                     title_suffix = f" ({parts[1].capitalize()} {parts[2]}. hét)"
-            
-            final_title = f"Aktuális{title_suffix}"
-            
+            url = links["aktualis_link"]
+            # Kivágjuk a link utolsó részét (pl. coop-tisza-szorolap-2026-februar-3-het-szuper-plusz)
+            # Figyelem: ha a link '/' jellel végződik, az utolsó elem üres lehet, ezért rstrip kell
+            slug = url.rstrip('/').split('/')[-1]
+            if slug:
+                final_title = slug
+            else:
+                final_title = "Aktuális"
+
             all_flyers.append({
                 "store": store_display_name,
                 "title": final_title,
-                "url": links["aktualis_link"],
+                "url": url,
                 "validity": "Keresés..."
             })
             print(f"[COOP] {store_display_name} ({final_title}) hozzáadva.")
 
         if links.get("jovoheti_link"):
-             # URL-ből dátumot/időszakot próbálunk lopni
-            clean_url = links["jovoheti_link"]
-            title_suffix = ""
-            date_match = re.search(r'(\d{4}-[a-z]+-\d+-het)', clean_url)
-            if date_match:
-                 parts = date_match.group(1).split('-')
-                 if len(parts) >= 4:
-                     title_suffix = f" ({parts[1].capitalize()} {parts[2]}. hét)"
-
-            final_title = f"Jövő heti{title_suffix}"
+            url = links["jovoheti_link"]
+            slug = url.rstrip('/').split('/')[-1]
+            if slug:
+                final_title = slug
+            else:
+                final_title = "Jövő heti"
 
             all_flyers.append({
                 "store": store_display_name,
                 "title": final_title,
-                "url": links["jovoheti_link"],
+                "url": url,
                 "validity": "Keresés..."
             })
             print(f"[COOP] {store_display_name} ({final_title}) hozzáadva.")
