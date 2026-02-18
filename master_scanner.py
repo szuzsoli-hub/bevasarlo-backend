@@ -97,10 +97,9 @@ def scan_metro():
 
 
 def scan_spar():
-    print("\n--- SPAR Szkennelés (30 napos szűrővel) ---")
+    print("\n--- SPAR Szkennelés (Javított v2 - Relatív linkek) ---")
     url = "https://www.spar.hu/ajanlatok"
 
-    # ERŐS FEJLÉC
     headers = {
         'accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8',
         'accept-language': 'hu-HU,hu;q=0.9,en-US;q=0.8,en;q=0.7',
@@ -114,49 +113,59 @@ def scan_spar():
         soup = BeautifulSoup(response.text, 'html.parser')
         seen_urls = set()
 
-        # Időkapu beállítása (Ma - 30 nap)
         today = datetime.date.today()
         cutoff_date = today - datetime.timedelta(days=30)
 
         for a in soup.find_all('a', href=True):
             href = a['href']
+            
+            # --- JAVÍTÁS: Új SPAR linkstruktúra kezelése ---
+            is_valid_flyer = False
+            
+            # 1. eset: Régi típusú (szorolap.spar.hu)
+            if 'szorolap.spar.hu' in href and "ViewPdf" not in href and "getPdf" not in href:
+                 is_valid_flyer = True
+            
+            # 2. eset: Új típusú (/ajanlatok/spar/...) - EZ HIÁNYZOTT!
+            elif href.startswith('/ajanlatok/') and any(x in href for x in ['/spar/', '/interspar/', '/spar-market/', '/spar-extra/']):
+                 if re.search(r'/\d{6}-', href): # Ha van benne dátumkód (pl. 260212-)
+                     is_valid_flyer = True
 
-            if 'szorolap.spar.hu' in href:
-                # 1. DUPLIKÁCIÓ SZŰRÉS (PDF)
-                if "getPdf.ashx" in href:
-                    continue
+            if is_valid_flyer:
+                # Link kiegészítése
+                full_url = href
+                if not href.startswith('http'): 
+                    full_url = f"https://www.spar.hu{href}"
 
-                # 2. DÁTUM SZŰRÉS (Regex)
-                # Keresünk olyat, hogy /260213 vagy /240229
-                date_match = re.search(r'/(\d{2})(\d{2})(\d{2})', href)
+                # Cím kitalálása URL alapján
+                title = "SPAR Újság"
+                if "interspar" in full_url: title = "INTERSPAR"
+                elif "market" in full_url: title = "SPAR market"
+                elif "extra" in full_url: title = "SPAR Partner"
 
+                # Dátum kinyerése (pl. /260212-)
+                date_match = re.search(r'(\d{2})(\d{2})(\d{2})', full_url)
+                validity = "Keresés..."
+                
                 if date_match:
                     y, m, d = date_match.groups()
-                    # Feltételezzük, hogy 2000-es évek (20 + 26 = 2026)
-                    flyer_date = datetime.date(2000 + int(y), int(m), int(d))
-
-                    # HA RÉGEBBI, MINT 30 NAP -> KUKA
-                    if flyer_date < cutoff_date:
-                        continue
-
-                # Ha átjutott a szűrőn:
-                title = "SPAR"
-                if "interspar" in href:
-                    title = "INTERSPAR"
-                elif "market" in href:
-                    title = "SPAR market"
-                elif "extra" in href:
-                    title = "SPAR Partner"
-
-                full_url = href
-                if not href.startswith('http'): full_url = f"https://www.spar.hu{href}"
-                if "ViewPdf.ashx" in full_url: full_url = full_url.replace("/ViewPdf.ashx", "")
+                    try:
+                        # Dátum ellenőrzés (hogy ne legyen túl régi)
+                        flyer_date = datetime.date(2000 + int(y), int(m), int(d))
+                        if flyer_date < cutoff_date:
+                            continue # Túl régi, skip
+                        
+                        # Kiszámoljuk a végét (+6 nap), hogy legyen szép dátumunk
+                        end_date = flyer_date + datetime.timedelta(days=6)
+                        validity = f"{flyer_date.strftime('%Y.%m.%d')}-{end_date.strftime('%Y.%m.%d')}"
+                    except:
+                        pass
 
                 if full_url not in seen_urls:
                     status = analyze_link("Spar", title, full_url)
                     if status == "KEEP":
-                        print(f"[{status}] {title} -> {full_url}")
-                        found.append({"store": "Spar", "title": title, "url": full_url, "validity": "Keresés..."})
+                        print(f"[{status}] {title} ({validity}) -> {full_url}")
+                        found.append({"store": "Spar", "title": title, "url": full_url, "validity": validity})
                         seen_urls.add(full_url)
 
     except Exception as e:
