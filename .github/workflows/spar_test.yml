@@ -1,0 +1,38 @@
+name: 🧪 SPAR Tesztelő (Gyors)
+
+on:
+  workflow_dispatch: # Csak kézi indításra (gombnyomásra)
+
+jobs:
+  spar-test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Kód letöltése
+        uses: actions/checkout@v4
+
+      - name: Python beállítása
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+
+      - name: Függőségek telepítése
+        run: |
+          pip install -r requirements.txt
+
+      - name: 🚀 SPAR Hunter Futtatása
+        run: |
+          echo "Indul a SPAR vadászat..."
+          python spar_hunter.py
+          echo "Futtatás kész."
+          
+      - name: 📂 Fájl ellenőrzése
+        run: |
+          # Megnézzük, létrejött-e a JSON és van-e benne tartalom
+          if [ -f spar_flyers.json ]; then
+            echo "✅ spar_flyers.json létrejött!"
+            echo "Tartalom:"
+            cat spar_flyers.json
+          else
+            echo "❌ HIBA: Nem jött létre a spar_flyers.json fájl (üres lista)!"
+            exit 1
+          fi
