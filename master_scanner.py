@@ -16,6 +16,13 @@ from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 
+# KÜLSŐ MODUL IMPORTÁLÁSA
+try:
+    from spar_hunter import scan_spar_only
+except ImportError:
+    print("⚠️ FIGYELEM: Nem találom a spar_hunter.py fájlt! A SPAR szkennelés kimarad.")
+    def scan_spar_only(): return []
+
 # --- KONFIGURÁCIÓ ---
 OUTPUT_FILE = 'flyers.json'
 
@@ -99,118 +106,16 @@ def scan_metro():
 
 
 def scan_spar():
-    # --- JAVÍTOTT SPAR SCANNER (SESSION IZOLÁCIÓVAL + DEBUG) ---
-    print("\n--- SPAR Szkennelés (ISOLATED SESSION MÓD) ---")
-    url = "https://www.spar.hu/ajanlatok"
-
-    # Erős böngésző álcázás
-    headers = {
-        'accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8',
-        'accept-language': 'hu-HU,hu;q=0.9,en-US;q=0.8,en;q=0.7',
-        'cache-control': 'max-age=0',
-        'upgrade-insecure-requests': '1',
-        'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36'
-    }
-
-    found = []
-
+    # --- MÓDOSÍTÁS: KÜLSŐ SPAR HUNTER HÍVÁSA ---
+    print("\n--- SPAR Szkennelés (Külső modul: spar_hunter.py) ---")
     try:
-        # ✅ Session használata az izolációhoz (ez a kulcs!)
-        print(f"📡 Kapcsolódás Session-ön keresztül: {url} ...")
-        
-        with cffi_requests.Session() as session:
-            response = session.get(url, impersonate="chrome124", headers=headers, timeout=20)
-
-        # ✅ Debug infók (Hogy lásd a konzolon mi történik)
-        print(f"🔍 DEBUG: HTTP Status: {response.status_code}")
-        print(f"🔍 DEBUG: Content Size: {len(response.text)} bytes")
-
-        if response.status_code != 200:
-            print(f"❌ HIBA: A szerver {response.status_code} kóddal válaszolt!")
-            return []
-        
-        # Ha a tartalom gyanúsan kicsi (blokkolás gyanú)
-        if len(response.text) < 5000:
-            print("⚠️ FIGYELEM: A válasz gyanúsan rövid! Lehet, hogy Captcha vagy blokkolás van.")
-
-        soup = BeautifulSoup(response.text, 'html.parser')
-        links = soup.find_all('a', href=True)
-        print(f"🔎 Nyers linkek száma: {len(links)} db")
-
-        seen_urls = set()
-        today = datetime.date.today()
-        cutoff_date = today - datetime.timedelta(days=30)
-
-        for a in links:
-            raw_href = a['href']
-
-            # --- 1. SZŰRŐ ---
-            is_interesting = False
-            if 'spar' in raw_href.lower() and ('ajanlatok' in raw_href.lower() or 'szorolap' in raw_href.lower()):
-                is_interesting = True
-
-            if not is_interesting:
-                continue
-
-            # PDF szűrés
-            if "getPdf" in raw_href or ".pdf" in raw_href or "ViewPdf" in raw_href:
-                continue
-
-            # --- 2. LINK NORMALIZÁLÁS ---
-            full_url = raw_href
-            if raw_href.startswith('/'):
-                full_url = f"https://www.spar.hu{raw_href}"
-
-            if full_url in seen_urls:
-                continue
-
-            # --- 3. DÁTUM KINYERÉSE ---
-            date_match = re.search(r'(2[4-6])(0[1-9]|1[0-2])(0[1-9]|[12]\d|3[01])', full_url)
-            validity_str = "Keresés..."
-
-            if date_match:
-                y_str, m_str, d_str = date_match.groups()
-                try:
-                    year = 2000 + int(y_str)
-                    month = int(m_str)
-                    day = int(d_str)
-                    flyer_date = datetime.date(year, month, day)
-
-                    if flyer_date < cutoff_date:
-                        continue
-
-                    end_date = flyer_date + datetime.timedelta(days=6)
-                    validity_str = f"{flyer_date.strftime('%Y.%m.%d')}-{end_date.strftime('%Y.%m.%d')}"
-
-                except ValueError:
-                    continue 
-            else:
-                continue
-
-            # --- 4. CÍM GENERÁLÁS ---
-            title = "SPAR Újság"
-            if "interspar" in full_url.lower():
-                title = "INTERSPAR"
-            elif "spar-market" in full_url.lower():
-                title = "SPAR market"
-            elif "spar-extra" in full_url.lower():
-                title = "SPAR Partner (Extra)"
-
-            # --- 5. BIZTOS HOZZÁADÁS ---
-            print(f"✅ TALÁLAT: {title} | {validity_str} | {full_url}")
-            
-            found.append({
-                "store": "Spar",
-                "title": title,
-                "url": full_url,
-                "validity": validity_str
-            })
-            seen_urls.add(full_url)
-
+        # Itt hívjuk meg a másik fájlban lévő, bizonyítottan működő függvényt
+        found = scan_spar_only()
+        print(f"✅ Master Scanner átvette a SPAR adatokat: {len(found)} db")
+        return found
     except Exception as e:
-        print(f"❌ KRITIKUS SPAR HIBA: {e}")
-
-    return found
+        print(f"❌ Hiba a külső SPAR modul futtatásakor: {e}")
+        return []
 
 
 def scan_auchan():
@@ -750,6 +655,7 @@ def main():
 
     # --- 1. HAGYOMÁNYOS BOLTOK ---
     # !!! FONTOS: SPAR KERÜLT ELŐRE !!!
+    # Most a külső modult hívja meg
     all_flyers.extend(scan_spar())
     
     all_flyers.extend(scan_penny())
@@ -795,7 +701,7 @@ def main():
     finally:
         driver.quit()
 
-    # --- 3. COOP EREDMÉNYEK HOZZÁADÁSA A KÖZÖS LISTÁHOZ (JAVÍTOTT NÉVADÁS) ---
+    # --- 3. COOP EREDMÉNYEK HOZZÁADÁSA A KÖZÖS LISTÁHOZ ---
     
     for key, links in coop_results.items():
         # URL alapú névmeghatározás a kért térkép szerint
@@ -851,7 +757,7 @@ def main():
     with open(OUTPUT_FILE, 'w', encoding='utf-8') as f:
         json.dump(final_json, f, ensure_ascii=False, indent=4)
 
-    print(f"\n💾 SIKER! Összesen {len(all_flyers)} db újság linkje (Hagyományos + Coop) mentve ide: {OUTPUT_FILE}")
+    print(f"\n💾 SIKER! Összesen {len(all_flyers)} db újság linkje (Hagyományos + Coop + SPAR) mentve ide: {OUTPUT_FILE}")
     print("Most ellenőrizd a JSON-t, és ha jó, indítsd a Feldolgozó Robotot!")
 
 
