@@ -100,6 +100,7 @@ def scan_spar():
     print("\n--- SPAR Szkennelés (Javított - Relatív linkek & Dátum) ---")
     url = "https://www.spar.hu/ajanlatok"
 
+    # ERŐS FEJLÉC
     headers = {
         'accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8',
         'accept-language': 'hu-HU,hu;q=0.9,en-US;q=0.8,en;q=0.7',
@@ -115,44 +116,75 @@ def scan_spar():
         links = soup.find_all('a', href=True)
         
         seen_urls = set()
+        
+        # Időkapu: Csak az elmúlt 30 nap (és jövőbeli) újságok kellenek
         today = datetime.date.today()
         cutoff_date = today - datetime.timedelta(days=30)
 
         for a in links:
             raw_href = a['href']
+            
+            # --- 1. SZŰRŐ: Érdekes lehet ez a link? ---
+            # Keresünk kulcsszavakat: spar, interspar, ajanlatok, szorolap
             is_interesting = False
             if 'spar' in raw_href.lower() and ('ajanlatok' in raw_href.lower() or 'szorolap' in raw_href.lower()):
                 is_interesting = True
             
-            if not is_interesting or any(x in raw_href for x in ["getPdf", ".pdf", "ViewPdf"]):
+            if not is_interesting:
                 continue
 
-            full_url = raw_href if not raw_href.startswith('/') else f"https://www.spar.hu{raw_href}"
+            # PDF és egyéb szemetek kizárása
+            if "getPdf" in raw_href or ".pdf" in raw_href or "ViewPdf" in raw_href:
+                continue
+
+            # --- 2. LINK NORMALIZÁLÁS ---
+            # Ha relatív link (pl. /ajanlatok/spar/...), kiegészítjük
+            full_url = raw_href
+            if raw_href.startswith('/'):
+                full_url = f"https://www.spar.hu{raw_href}"
             
             if full_url in seen_urls:
                 continue
 
+            # --- 3. DÁTUM KINYERÉSE (YYMMDD formátum) ---
+            # Keresünk a 6 jegyű számot, ami dátumnak néz ki (pl. 260212)
             date_match = re.search(r'(2[4-6])(0[1-9]|1[0-2])(0[1-9]|[12]\d|3[01])', full_url)
+            
             validity_str = "Keresés..."
             
             if date_match:
                 y_str, m_str, d_str = date_match.groups()
                 try:
-                    flyer_date = datetime.date(2000 + int(y_str), int(m_str), int(d_str))
+                    year = 2000 + int(y_str)
+                    month = int(m_str)
+                    day = int(d_str)
+                    
+                    flyer_date = datetime.date(year, month, day)
+                    
+                    # Ha túl régi, eldobjuk
                     if flyer_date < cutoff_date:
                         continue
+                    
+                    # Számolunk egy érvényességi időt (Start + 6 nap)
                     end_date = flyer_date + datetime.timedelta(days=6)
                     validity_str = f"{flyer_date.strftime('%Y.%m.%d')}-{end_date.strftime('%Y.%m.%d')}"
+                    
                 except ValueError:
-                    continue
+                    continue # Nem valós dátum
             else:
+                # Ha nincs dátum a linkben, lehet, hogy gyűjtőoldal -> kihagyjuk
                 continue 
 
+            # --- 4. CÍM GENERÁLÁS ---
             title = "SPAR Újság"
-            if "interspar" in full_url.lower(): title = "INTERSPAR"
-            elif "spar-market" in full_url.lower(): title = "SPAR market"
-            elif "spar-extra" in full_url.lower(): title = "SPAR Partner"
+            if "interspar" in full_url.lower():
+                title = "INTERSPAR"
+            elif "spar-market" in full_url.lower():
+                title = "SPAR market"
+            elif "spar-extra" in full_url.lower():
+                title = "SPAR Partner"
 
+            # --- 5. STÁTUSZ ELLENŐRZÉS ---
             status = analyze_link("Spar", title, full_url)
             if status == "KEEP":
                 print(f"[{status}] {title} ({validity_str}) -> {full_url}")
@@ -285,7 +317,8 @@ def scan_penny():
 def scan_lidl():
     print("\n--- LIDL Szkennelés (Visszaállítva Requests-re) ---")
     url = "https://www.lidl.hu/c/szorolap/s10013623"
-    headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/110.0.0.0 Safari/537.36'}
+    headers = {
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/110.0.0.0 Safari/537.36'}
     seen = set()
     found = []
     try:
@@ -362,8 +395,11 @@ def scan_cba_combined():
     try:
         response = cffi_requests.get(url_prima, impersonate="chrome110")
         if response.status_code == 200:
-            found.append({"store": "CBA Príma", "title": "CBA Príma 5 (Szeged)", "url": url_prima, "validity": "Keresés..."})
-    except: pass
+            print("[KEEP] CBA Príma 5 (Szeged) -> https://prima5.hu/index.php/prima/akciok-katalogusok")
+            found.append({"store": "CBA Príma", "title": "CBA Príma 5 (Szeged)",
+                          "url": "https://prima5.hu/index.php/prima/akciok-katalogusok", "validity": "Keresés..."})
+    except:
+        pass
     url_cba = "https://cba.hu/aktualis-ajanlataink/"
     try:
         response = cffi_requests.get(url_cba, impersonate="chrome110")
@@ -373,11 +409,14 @@ def scan_cba_combined():
             href = a['href']
             if "ajanlat" in href or "akcio" in href or "catalog" in href:
                 if len(href) > 20 and ("pdf" in href or "issuu" in href or "flipbook" in href):
+                    print(f"[KEEP] CBA Országos -> {href}")
                     found.append({"store": "CBA", "title": "CBA Akciós Újság", "url": href, "validity": "Keresés..."})
                     found_main = True
         if not found_main:
+            print("[KEEP] CBA Országos Gyűjtőoldal -> https://cba.hu/aktualis-ajanlataink/")
             found.append({"store": "CBA", "title": "CBA Akciós Újság", "url": url_cba, "validity": "Keresés..."})
-    except: pass
+    except:
+        pass
     return found
 
 
@@ -386,134 +425,311 @@ def scan_cba_combined():
 # =============================================================================
 
 def fresh_start(driver, wait):
+    """Újratölti az oldalt, hogy tiszta lappal induljon (Aktuális fül)."""
+    print("\n🔄 Oldal újratöltése (Clean State)...")
     driver.get("https://www.coop.hu/ajanlatkereso/")
     time.sleep(3)
+
+    # Süti kezelése minden egyes újratöltésnél
     try:
         wait.until(EC.element_to_be_clickable((By.XPATH, "//button[contains(text(), 'Összes süti')]"))).click()
+        print("🍪 Sütik törölve.")
     except:
+        # Ha nincs gomb, biztosra megyünk a JS törléssel
         driver.execute_script("document.querySelectorAll('.cookie-bar, #cookie-consent').forEach(el => el.remove());")
+
+    # Megnyitjuk a boltválasztót
     wait.until(EC.element_to_be_clickable((By.XPATH, "//*[contains(text(), 'Válasszon Coop üzletet')]"))).click()
     time.sleep(1)
 
 
+# 1. SZOLNOK (Dupla kör: Szolnok ABC + Híd ABC)
 def scan_szolnok(driver, wait, results):
     print("📍 SZOLNOK BEVETÉS INDUL...")
     fresh_start(driver, wait)
+
+    # 1. BOLT: 170.SZ.SZOLNOK (Csak Aktuális)
     ActionChains(driver).send_keys(Keys.TAB).perform()
+    time.sleep(0.5)
     driver.switch_to.active_element.send_keys("5000" + Keys.ENTER)
     time.sleep(5)
-    bolt1 = wait.until(EC.element_to_be_clickable((By.XPATH, "//*[contains(text(), '170.SZ.SZOLNOK')]")))
+
+    target_1 = "170.SZ.SZOLNOK"
+    print(f"🔎 [1/2] Bolt: {target_1}")
+    bolt1 = wait.until(EC.element_to_be_clickable((By.XPATH, f"//*[contains(text(), '{target_1}')]")))
+    driver.execute_script("arguments[0].scrollIntoView({block: 'center'});", bolt1)
+    time.sleep(1)
     driver.execute_script("arguments[0].click();", bolt1)
     time.sleep(6)
+
+    driver.execute_script("window.scrollBy(0, 700);")
+    time.sleep(3)
+
+    print("🎯 Szolnok ABC: Aktuális...")
     driver.execute_script("document.elementFromPoint(400, 500).click();")
     time.sleep(6)
-    for f in driver.find_elements(By.TAG_NAME, "iframe"):
+
+    iframes = driver.find_elements(By.TAG_NAME, "iframe")
+    for f in iframes:
         src = f.get_attribute("src")
-        if src and "katalogus" in src: results["szolnok_abc"]["aktualis_link"] = src; break
+        if src and "katalogus" in src:
+            results["szolnok_abc"]["aktualis_link"] = src
+            break
+
+    ActionChains(driver).send_keys(Keys.ESCAPE).perform()
+
+    # --- ÚJRAINDÍTÁS A MÁSODIK BOLT ELŐTT ---
+    fresh_start(driver, wait)
+
+    # 2. BOLT: HÍD ABC (Aktuális + Jövő heti)
+    ActionChains(driver).send_keys(Keys.TAB).perform()
+    time.sleep(0.5)
+    driver.switch_to.active_element.send_keys("5000" + Keys.ENTER)
+    time.sleep(5)
+
+    target_2 = "HÍD ABC"
+    print(f"🔎 [2/2] Bolt: {target_2}")
+    bolt2 = wait.until(EC.element_to_be_clickable((By.XPATH, f"//*[contains(text(), '{target_2}')]")))
+    driver.execute_script("arguments[0].scrollIntoView({block: 'center'});", bolt2)
+    time.sleep(1)
+    driver.execute_script("arguments[0].click();", bolt2)
+    time.sleep(6)
+
+    driver.execute_script("window.scrollBy(0, 700);")
+    time.sleep(3)
+
+    print("🎯 Híd ABC: Aktuális...")
+    driver.execute_script("document.elementFromPoint(400, 500).click();")
+    time.sleep(6)
+
+    iframes = driver.find_elements(By.TAG_NAME, "iframe")
+    for f in iframes:
+        src = f.get_attribute("src")
+        if src and "katalogus" in src:
+            results["hid_abc"]["aktualis_link"] = src
+            break
+
+    ActionChains(driver).send_keys(Keys.ESCAPE).perform()
+    time.sleep(4)
+
+    print("🎯 Híd ABC: Jövő heti...")
+    driver.execute_script("document.elementFromPoint(825, 294).click();")  # Gomb
+    time.sleep(4)
+    driver.execute_script("document.elementFromPoint(825, 600).click();")  # Újság
+    time.sleep(6)
+
+    iframes = driver.find_elements(By.TAG_NAME, "iframe")
+    for f in iframes:
+        src = f.get_attribute("src")
+        if src and "katalogus" in src:
+            results["hid_abc"]["jovoheti_link"] = src
+            break
+
     ActionChains(driver).send_keys(Keys.ESCAPE).perform()
 
 
+# 2. KECSKEMÉT
 def scan_kecskemet(driver, wait, results):
     print("📍 KECSKEMÉT BEVETÉS INDUL...")
     fresh_start(driver, wait)
+
     ActionChains(driver).send_keys(Keys.TAB).perform()
+    time.sleep(0.5)
     driver.switch_to.active_element.send_keys("6000" + Keys.ENTER)
     time.sleep(5)
+
+    print("🔎 Bolt: SZÉCHENYIVÁROSI...")
     bolt = wait.until(EC.element_to_be_clickable((By.XPATH, "//*[contains(text(), 'SZÉCHENYIVÁROSI')]")))
+    driver.execute_script("arguments[0].scrollIntoView({block: 'center'});", bolt)
+    time.sleep(1)
     driver.execute_script("arguments[0].click();", bolt)
     time.sleep(6)
+
+    driver.execute_script("window.scrollBy(0, 700);")
+    time.sleep(3)
+
+    print("🎯 Aktuális...")
     driver.execute_script("document.elementFromPoint(400, 500).click();")
     time.sleep(6)
-    for f in driver.find_elements(By.TAG_NAME, "iframe"):
+
+    iframes = driver.find_elements(By.TAG_NAME, "iframe")
+    for f in iframes:
         src = f.get_attribute("src")
-        if src and "katalogus" in src: results["kecskemet"]["aktualis_link"] = src; break
+        if src and "katalogus" in src:
+            results["kecskemet"]["aktualis_link"] = src
+            break
+
     ActionChains(driver).send_keys(Keys.ESCAPE).perform()
     time.sleep(4)
+
+    print("🎯 Jövő heti...")
     driver.execute_script("document.elementFromPoint(825, 294).click();")
     time.sleep(4)
     driver.execute_script("document.elementFromPoint(825, 600).click();")
     time.sleep(6)
-    for f in driver.find_elements(By.TAG_NAME, "iframe"):
+
+    iframes = driver.find_elements(By.TAG_NAME, "iframe")
+    for f in iframes:
         src = f.get_attribute("src")
-        if src and "katalogus" in src: results["kecskemet"]["jovoheti_link"] = src; break
+        if src and "katalogus" in src:
+            results["kecskemet"]["jovoheti_link"] = src
+            break
+
     ActionChains(driver).send_keys(Keys.ESCAPE).perform()
 
 
+# 3. DEBRECEN
 def scan_debrecen(driver, wait, results):
     print("📍 DEBRECEN BEVETÉS INDUL...")
     fresh_start(driver, wait)
+
     ActionChains(driver).send_keys(Keys.TAB).perform()
+    time.sleep(0.5)
     driver.switch_to.active_element.send_keys("4032" + Keys.ENTER)
     time.sleep(5)
-    bolt = wait.until(EC.element_to_be_clickable((By.XPATH, "//*[contains(text(), '51. SZ. ÉLELMISZERBOLT')]")))
+
+    target = "51. SZ. ÉLELMISZERBOLT"
+    print(f"🔎 Bolt: {target}")
+    bolt = wait.until(EC.element_to_be_clickable((By.XPATH, f"//*[contains(text(), '{target}')]")))
+    driver.execute_script("arguments[0].scrollIntoView({block: 'center'});", bolt)
+    time.sleep(1)
     driver.execute_script("arguments[0].click();", bolt)
     time.sleep(6)
+
+    driver.execute_script("window.scrollBy(0, 700);")
+    time.sleep(3)
+
+    print("🎯 Aktuális...")
     driver.execute_script("document.elementFromPoint(400, 500).click();")
     time.sleep(6)
-    for f in driver.find_elements(By.TAG_NAME, "iframe"):
+
+    iframes = driver.find_elements(By.TAG_NAME, "iframe")
+    for f in iframes:
         src = f.get_attribute("src")
-        if src and "katalogus" in src: results["debrecen"]["aktualis_link"] = src; break
+        if src and "katalogus" in src:
+            results["debrecen"]["aktualis_link"] = src
+            break
+
     ActionChains(driver).send_keys(Keys.ESCAPE).perform()
     time.sleep(4)
+
+    print("🎯 Jövő heti...")
     driver.execute_script("document.elementFromPoint(825, 294).click();")
     time.sleep(4)
     driver.execute_script("document.elementFromPoint(825, 600).click();")
     time.sleep(6)
-    for f in driver.find_elements(By.TAG_NAME, "iframe"):
+
+    iframes = driver.find_elements(By.TAG_NAME, "iframe")
+    for f in iframes:
         src = f.get_attribute("src")
-        if src and "katalogus" in src: results["debrecen"]["jovoheti_link"] = src; break
+        if src and "katalogus" in src:
+            results["debrecen"]["jovoheti_link"] = src
+            break
+
     ActionChains(driver).send_keys(Keys.ESCAPE).perform()
 
 
+# 4. PÉCS
 def scan_pecs(driver, wait, results):
     print("📍 PÉCS BEVETÉS INDUL...")
     fresh_start(driver, wait)
+
     ActionChains(driver).send_keys(Keys.TAB).perform()
+    time.sleep(0.5)
     driver.switch_to.active_element.send_keys("7623" + Keys.ENTER)
     time.sleep(5)
-    bolt = wait.until(EC.element_to_be_clickable((By.XPATH, "//*[contains(text(), '240 COOP ABC PÉCS')]")))
+
+    target = "240 COOP ABC PÉCS"
+    print(f"🔎 Bolt: {target}")
+    bolt = wait.until(EC.element_to_be_clickable((By.XPATH, f"//*[contains(text(), '{target}')]")))
+    driver.execute_script("arguments[0].scrollIntoView({block: 'center'});", bolt)
+    time.sleep(1)
     driver.execute_script("arguments[0].click();", bolt)
     time.sleep(6)
+
+    driver.execute_script("window.scrollBy(0, 700);")
+    time.sleep(3)
+
+    print("🎯 Aktuális...")
     driver.execute_script("document.elementFromPoint(400, 500).click();")
     time.sleep(6)
-    for f in driver.find_elements(By.TAG_NAME, "iframe"):
+
+    iframes = driver.find_elements(By.TAG_NAME, "iframe")
+    for f in iframes:
         src = f.get_attribute("src")
-        if src and "katalogus" in src: results["pecs"]["aktualis_link"] = src; break
+        if src and "katalogus" in src:
+            results["pecs"]["aktualis_link"] = src
+            break
+
     ActionChains(driver).send_keys(Keys.ESCAPE).perform()
     time.sleep(4)
+
+    print("🎯 Jövő heti...")
     driver.execute_script("document.elementFromPoint(825, 294).click();")
     time.sleep(4)
     driver.execute_script("document.elementFromPoint(825, 600).click();")
     time.sleep(6)
-    for f in driver.find_elements(By.TAG_NAME, "iframe"):
+
+    iframes = driver.find_elements(By.TAG_NAME, "iframe")
+    for f in iframes:
         src = f.get_attribute("src")
-        if src and "katalogus" in src: results["pecs"]["jovoheti_link"] = src; break
+        if src and "katalogus" in src:
+            results["pecs"]["jovoheti_link"] = src
+            break
+
     ActionChains(driver).send_keys(Keys.ESCAPE).perform()
 
 
+# 5. SZOMBATHELY (HERMÁN ABC - JAVÍTOTT TENYERELÉSSEL)
 def scan_szombathely(driver, wait, results):
     print("📍 SZOMBATHELY BEVETÉS INDUL...")
     fresh_start(driver, wait)
+
     ActionChains(driver).send_keys(Keys.TAB).perform()
+    time.sleep(0.5)
     driver.switch_to.active_element.send_keys("9700" + Keys.ENTER)
     time.sleep(5)
-    bolt = wait.until(EC.element_to_be_clickable((By.XPATH, "//*[contains(text(), 'HERMÁN ABC')]")))
+
+    target = "HERMÁN ABC"
+    print(f"🔎 Bolt: {target}")
+    bolt = wait.until(EC.element_to_be_clickable((By.XPATH, f"//*[contains(text(), '{target}')]")))
+    driver.execute_script("arguments[0].scrollIntoView({block: 'center'});", bolt)
+    time.sleep(1)
     driver.execute_script("arguments[0].click();", bolt)
     time.sleep(6)
+
+    driver.execute_script("window.scrollBy(0, 700);")
+    time.sleep(3)
+
+    # --- JAVÍTVA: Y=126 helyett Y=500 (Újság közepe) ---
+    print("🎯 Aktuális (X:493, Y:500 - TENYERELÉS)...")
     driver.execute_script("document.elementFromPoint(493, 500).click();")
     time.sleep(6)
-    for f in driver.find_elements(By.TAG_NAME, "iframe"):
+
+    iframes = driver.find_elements(By.TAG_NAME, "iframe")
+    for f in iframes:
         src = f.get_attribute("src")
-        if src and "katalogus" in src: results["szombathely"]["aktualis_link"] = src; break
+        if src and "katalogus" in src:
+            results["szombathely"]["aktualis_link"] = src
+            break
+
     ActionChains(driver).send_keys(Keys.ESCAPE).perform()
     time.sleep(4)
-    driver.execute_script("document.elementFromPoint(823, 126).click();")
+
+    # --- JAVÍTVA: Gomb: Y=126, Újság: Y=500 ---
+    print("🎯 Jövő heti (Gomb: X:823 Y:126 | Újság: X:823 Y:500)...")
+    driver.execute_script("document.elementFromPoint(823, 126).click();")  # FÜL KIVÁLASZTÁSA
     time.sleep(4)
-    driver.execute_script("document.elementFromPoint(823, 500).click();")
+    driver.execute_script("document.elementFromPoint(823, 500).click();")  # TENYERELÉS AZ ÚJSÁGRA
     time.sleep(6)
-    for f in driver.find_elements(By.TAG_NAME, "iframe"):
+
+    iframes = driver.find_elements(By.TAG_NAME, "iframe")
+    for f in iframes:
         src = f.get_attribute("src")
-        if src and "katalogus" in src: results["szombathely"]["jovoheti_link"] = src; break
+        if src and "katalogus" in src:
+            results["szombathely"]["jovoheti_link"] = src
+            break
+
     ActionChains(driver).send_keys(Keys.ESCAPE).perform()
 
 
@@ -523,7 +739,10 @@ def scan_szombathely(driver, wait, results):
 
 def main():
     print("=== MASTER SCANNER: FLAYER SCANNER + COOP ALL-IN-ONE ===")
+
     all_flyers = []
+
+    # --- 1. HAGYOMÁNYOS BOLTOK ---
     all_flyers.extend(scan_penny())
     all_flyers.extend(scan_lidl())
     all_flyers.extend(scan_metro())
@@ -533,7 +752,9 @@ def main():
     all_flyers.extend(scan_aldi())
     all_flyers.extend(scan_cba_combined())
 
-    print("\n🚀 COOP MISSZIÓ INDUL (HEADLESS)...")
+    # --- 2. COOP MISSZIÓ (Selenium) ---
+    print("\n🚀 COOP MISSZIÓ INDUL (HÁTTÉRBEN/HEADLESS)...")
+
     coop_results = {
         "szolnok_abc": {"aktualis_link": None},
         "hid_abc": {"aktualis_link": None, "jovoheti_link": None},
@@ -545,6 +766,8 @@ def main():
 
     opts = Options()
     opts.add_argument("--window-size=1920,1080")
+
+    # --- FEJLESZTÉS: HÁTTÉRBEN FUTTATÁS (HEADLESS) AKTIVÁLVA ---
     opts.add_argument("--headless")
     opts.add_argument("--disable-gpu")
     opts.add_argument("--no-sandbox")
@@ -564,29 +787,65 @@ def main():
     finally:
         driver.quit()
 
+    # --- 3. COOP EREDMÉNYEK HOZZÁADÁSA A KÖZÖS LISTÁHOZ (JAVÍTOTT NÉVADÁS) ---
+    
     for key, links in coop_results.items():
+        # URL alapú névmeghatározás a kért térkép szerint
         url_to_check = links.get("aktualis_link") or links.get("jovoheti_link") or ""
         url_lower = url_to_check.lower()
-        store_display_name = f"Coop {key}"
-        if "mecsek" in url_lower: store_display_name = "Coop Mecsek Füszért"
-        elif "tisza" in url_lower or "szolnok" in url_lower: store_display_name = "Tisza-Coop"
-        elif "alfold" in url_lower or "kecskemet" in url_lower: store_display_name = "Alföld Pro-Coop"
-        elif "hetforras" in url_lower or "szombathely" in url_lower: store_display_name = "Hétforrás"
-        elif "eszak-kelet" in url_lower or "debrecen" in url_lower: store_display_name = "Észak-Kelet Pro-Coop"
-        elif "honi" in url_lower: store_display_name = "Honi-Coop"
-        elif "polus" in url_lower: store_display_name = "Pólus-Coop"
+        
+        store_display_name = f"Coop {key}" # Alapértelmezett
 
-        for bad in ["Zrt.", "Zrt", "Kft.", "Kft", "Kereskedelmi"]: store_display_name = store_display_name.replace(bad, "").strip()
+        # TÉRKÉP ALKALMAZÁSA
+        if "mecsek" in url_lower:
+            store_display_name = "Coop Mecsek Füszért"
+        elif "tisza" in url_lower or "szolnok" in url_lower:
+            store_display_name = "Tisza-Coop"
+        elif "alfold" in url_lower or "alföld" in url_lower or "kecskemet" in url_lower:
+            store_display_name = "Alföld Pro-Coop"
+        elif "hetforras" in url_lower or "hétforrás" in url_lower or "szombathely" in url_lower:
+            store_display_name = "Hétforrás"
+        elif "eszak-kelet" in url_lower or "debrecen" in url_lower or "miskolc" in url_lower:
+            store_display_name = "Észak-Kelet Pro-Coop"
+        elif "honi" in url_lower:
+            store_display_name = "Honi-Coop"
+        elif "polus" in url_lower or "pólus" in url_lower:
+            store_display_name = "Pólus-Coop"
+
+        # TISZTÍTÓ SZABÁLY (Zrt, Kft gyilkos)
+        for bad_suffix in ["Zrt.", "Zrt", "Kft.", "Kft", "Kereskedelmi"]:
+            store_display_name = store_display_name.replace(bad_suffix, "").strip()
 
         if links.get("aktualis_link"):
-            all_flyers.append({"store": store_display_name, "title": "Aktuális", "url": links["aktualis_link"], "validity": "Keresés..."})
-        if links.get("jovoheti_link"):
-            all_flyers.append({"store": store_display_name, "title": "Jövő heti", "url": links["jovoheti_link"], "validity": "Keresés..."})
+            all_flyers.append({
+                "store": store_display_name,
+                "title": "Aktuális",
+                "url": links["aktualis_link"],
+                "validity": "Keresés..."
+            })
+            print(f"[COOP] {store_display_name} (Aktuális) hozzáadva.")
 
-    final_json = {"last_updated": str(datetime.datetime.now()), "flyers": all_flyers}
+        if links.get("jovoheti_link"):
+            all_flyers.append({
+                "store": store_display_name,
+                "title": "Jövő heti",
+                "url": links["jovoheti_link"],
+                "validity": "Keresés..."
+            })
+            print(f"[COOP] {store_display_name} (Jövő heti) hozzáadva.")
+
+    # --- 4. MENTÉS ---
+    final_json = {
+        "last_updated": str(datetime.datetime.now()),
+        "flyers": all_flyers
+    }
+
     with open(OUTPUT_FILE, 'w', encoding='utf-8') as f:
         json.dump(final_json, f, ensure_ascii=False, indent=4)
-    print(f"\n💾 SIKER! {len(all_flyers)} újság mentve ide: {OUTPUT_FILE}")
+
+    print(f"\n💾 SIKER! Összesen {len(all_flyers)} db újság linkje (Hagyományos + Coop) mentve ide: {OUTPUT_FILE}")
+    print("Most ellenőrizd a JSON-t, és ha jó, indítsd a Feldolgozó Robotot!")
+
 
 if __name__ == "__main__":
     main()
