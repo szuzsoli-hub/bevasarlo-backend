@@ -84,6 +84,65 @@ def analyze_link(store_name, title, url):
     return "KEEP"
 
 
+# --- ÚJ: SEGÉDFÜGGVÉNY A PONTOS CÍMEKHEZ (URL ELEMZÉS) ---
+def enhance_title(store, current_title, url):
+    """
+    Kiegészíti vagy lecseréli a címet az URL-ből kinyert infók alapján.
+    Így lesz pl. 'Penny Akciós Újság' -> 'Penny Akciós Újság (08. hét)'
+    """
+    final_title = current_title
+    
+    # --- PENNY: Hét száma az URL-ből (pl. .../202608/...) ---
+    if store == "Penny":
+        match = re.search(r'202\d(\d{2})', url)
+        if match:
+            week_num = match.group(1)
+            final_title = f"{current_title} ({week_num}. hét)"
+
+    # --- TESCO: Dátum az URL-ből (pl. ...-2026-02-12/...) ---
+    elif store == "Tesco":
+        match = re.search(r'(\d{4}-\d{2}-\d{2})', url)
+        if match:
+            date_str = match.group(1).replace('-', '.')
+            # Levágjuk az évet, hogy rövidebb legyen (pl. 02.12)
+            short_date = date_str[5:] 
+            final_title = f"{current_title} ({short_date}-től)"
+
+    # --- AUCHAN: Dátum intervallum az URL-ből ---
+    elif store == "Auchan":
+        # pl. 2026-02-12-02-18-heti-...
+        match = re.search(r'(\d{4}-\d{2}-\d{2})[-_](\d{2}-\d{2})', url)
+        if match:
+            start_date = match.group(1).replace('-', '.') # 2026.02.12
+            end_date = match.group(2).replace('-', '.')   # 02.18
+            short_start = start_date[5:] # 02.12
+            final_title = f"{current_title.split(' ')[0]} Szupermarket ({short_start}-{end_date})"
+        else:
+            # Ha nincs intervallum, próbáljunk legalább egy kezdő dátumot
+            match_single = re.search(r'(\d{4}-\d{2}-\d{2})', url)
+            if match_single:
+                 date_str = match_single.group(1).replace('-', '.')
+                 final_title = f"Auchan ({date_str[5:]}-től)"
+
+
+    # --- LIDL: Régió vagy Hét száma az URL-ből ---
+    elif store == "Lidl":
+        # Regionális (pl. ...regionalis-akciok-budapest-szalay-utca-08het...)
+        if "regionalis" in url:
+            match = re.search(r'regionalis-akciok-(.*?)-(\d{2})het', url)
+            if match:
+                city_slug = match.group(1).replace('-', ' ').title()
+                week_num = match.group(2)
+                final_title = f"Lidl - {city_slug} ({week_num}. hét)"
+        # Normál heti (pl. ...akcios-ujsag-08-het...)
+        elif "akcios-ujsag" in url:
+             match = re.search(r'(\d{2})-het', url)
+             if match:
+                 final_title = f"Lidl Akciós Újság ({match.group(1)}. hét)"
+
+    return final_title
+
+
 def scan_metro():
     print("\n--- METRO Szkennelés (Szigorított) ---")
     url = "https://cdn.metro-online.com/api/catalog-filter?resolution=600&feeds=metro-nagykereskedelem&collection_id=6365&metatags%5B%5D=channel=website"
@@ -186,8 +245,10 @@ def scan_auchan():
 
             status = analyze_link("Auchan", title, full_link)
             if status == "KEEP":
-                print(f"[{status}] {title} -> {full_link}")
-                found.append({"store": "Auchan", "title": title, "url": full_link, "validity": "Keresés..."})
+                # --- ÚJ: CÍM TUNINGOLÁSA ---
+                better_title = enhance_title("Auchan", title, full_link)
+                print(f"[{status}] {better_title} -> {full_link}")
+                found.append({"store": "Auchan", "title": better_title, "url": full_link, "validity": "Keresés..."})
                 seen_links.add(full_link)
 
     except Exception as e:
@@ -219,8 +280,10 @@ def scan_penny():
                     processed_ids.add(base_url)
                     status = analyze_link("Penny", title, clean_link)
                     if status == "KEEP":
-                        print(f"[{status}] {title} -> {clean_link}")
-                        found.append({"store": "Penny", "title": title, "url": clean_link, "validity": "Keresés..."})
+                        # --- ÚJ: CÍM TUNINGOLÁSA ---
+                        better_title = enhance_title("Penny", title, clean_link)
+                        print(f"[{status}] {better_title} -> {clean_link}")
+                        found.append({"store": "Penny", "title": better_title, "url": clean_link, "validity": "Keresés..."})
     except Exception as e:
         print(f"❌ Penny Hiba: {e}")
     return found
@@ -244,8 +307,10 @@ def scan_lidl():
             if link not in seen:
                 status = analyze_link("Lidl", title, link)
                 if status == "KEEP":
-                    print(f"[{status}] {title} -> {link}")
-                    found.append({"store": "Lidl", "title": title, "url": link, "validity": "Keresés..."})
+                    # --- ÚJ: CÍM TUNINGOLÁSA ---
+                    better_title = enhance_title("Lidl", title, link)
+                    print(f"[{status}] {better_title} -> {link}")
+                    found.append({"store": "Lidl", "title": better_title, "url": link, "validity": "Keresés..."})
                 seen.add(link)
     except Exception as e:
         print(f"❌ Lidl Hiba: {e}")
@@ -268,8 +333,10 @@ def scan_tesco():
                 if full_url not in seen:
                     status = analyze_link("Tesco", title, full_url)
                     if status == "KEEP":
-                        print(f"[{status}] {title} -> {full_url}")
-                        found.append({"store": "Tesco", "title": title, "url": full_url, "validity": "Keresés..."})
+                        # --- ÚJ: CÍM TUNINGOLÁSA ---
+                        better_title = enhance_title("Tesco", title, full_url)
+                        print(f"[{status}] {better_title} -> {full_url}")
+                        found.append({"store": "Tesco", "title": better_title, "url": full_url, "validity": "Keresés..."})
                     seen.add(full_url)
     except Exception as e:
         print(f"❌ Tesco Hiba: {e}")
@@ -717,8 +784,9 @@ def main():
             store_display_name = "Tisza-Coop"
         elif "alfold" in url_lower or "alföld" in url_lower or "kecskemet" in url_lower:
             store_display_name = "Alföld Pro-Coop"
+        # --- JAVÍTÁS: ITT A KÉRT MÓDOSÍTÁS ---
         elif "hetforras" in url_lower or "hétforrás" in url_lower or "szombathely" in url_lower:
-            store_display_name = "Hétforrás"
+            store_display_name = "Coop Hétforrás"
         elif "eszak-kelet" in url_lower or "debrecen" in url_lower or "miskolc" in url_lower:
             store_display_name = "Észak-Kelet Pro-Coop"
         elif "honi" in url_lower:
@@ -730,23 +798,48 @@ def main():
         for bad_suffix in ["Zrt.", "Zrt", "Kft.", "Kft", "Kereskedelmi"]:
             store_display_name = store_display_name.replace(bad_suffix, "").strip()
 
+        # --- ÚJ: CÍM TUNINGOLÁSA COOP-NÁL IS (URL ALAPJÁN) ---
         if links.get("aktualis_link"):
+            # URL-ből dátumot/időszakot próbálunk lopni
+            clean_url = links["aktualis_link"]
+            title_suffix = ""
+            # pl. ...-februar-3-het...
+            date_match = re.search(r'(\d{4}-[a-z]+-\d+-het)', clean_url)
+            if date_match:
+                 # Szépen formázzuk: 2026-februar-3-het -> 2026 Február 3. hét
+                 parts = date_match.group(1).split('-')
+                 if len(parts) >= 4:
+                     title_suffix = f" ({parts[1].capitalize()} {parts[2]}. hét)"
+            
+            final_title = f"Aktuális{title_suffix}"
+            
             all_flyers.append({
                 "store": store_display_name,
-                "title": "Aktuális",
+                "title": final_title,
                 "url": links["aktualis_link"],
                 "validity": "Keresés..."
             })
-            print(f"[COOP] {store_display_name} (Aktuális) hozzáadva.")
+            print(f"[COOP] {store_display_name} ({final_title}) hozzáadva.")
 
         if links.get("jovoheti_link"):
+             # URL-ből dátumot/időszakot próbálunk lopni
+            clean_url = links["jovoheti_link"]
+            title_suffix = ""
+            date_match = re.search(r'(\d{4}-[a-z]+-\d+-het)', clean_url)
+            if date_match:
+                 parts = date_match.group(1).split('-')
+                 if len(parts) >= 4:
+                     title_suffix = f" ({parts[1].capitalize()} {parts[2]}. hét)"
+
+            final_title = f"Jövő heti{title_suffix}"
+
             all_flyers.append({
                 "store": store_display_name,
-                "title": "Jövő heti",
+                "title": final_title,
                 "url": links["jovoheti_link"],
                 "validity": "Keresés..."
             })
-            print(f"[COOP] {store_display_name} (Jövő heti) hozzáadva.")
+            print(f"[COOP] {store_display_name} ({final_title}) hozzáadva.")
 
     # --- 4. MENTÉS ---
     final_json = {
