@@ -35,7 +35,6 @@ def analyze_link(store_name, title, url):
 
     # --- 2. AUCHAN (Most már a non-food szűrővel!) ---
     elif store_name == "Auchan":
-        # Itt volt a hiba, most beletettem a nonfood szűrést is!
         if any(x in u for x in ["bizalom", "qilive", "textil", "jatek", "kert", "auto", "adatvedelem", "tajekoztato", "nonfood", "műszaki", "elektronika"]):
             return "DROP"
         if any(x in t for x in ["nonfood", "műszaki", "elektronika"]):
@@ -100,11 +99,11 @@ def scan_metro():
 
 
 def scan_spar():
-    # EZ AZ ÚJ, JÓL MŰKÖDŐ SPAR SCANNER, AMIT KÜLDTÉL!
+    # --- JAVÍTOTT SPAR SCANNER (A MŰKÖDŐ KÓD ALAPJÁN) ---
     print("\n--- SPAR Szkennelés (Célzott Keresés - curl_cffi) ---")
     url = "https://www.spar.hu/ajanlatok"
 
-    # Erős böngésző álcázás (Anti-Bot védelem ellen)
+    # Erős böngésző álcázás (Anti-Bot védelem ellen) - A működő kódból
     headers = {
         'accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8',
         'accept-language': 'hu-HU,hu;q=0.9,en-US;q=0.8,en;q=0.7',
@@ -114,28 +113,30 @@ def scan_spar():
     }
 
     found = []
+
     try:
-        # Itt használjuk a curl_cffi-t, ahogy a jó kódban volt
-        # Mivel a fájl elején "from curl_cffi import requests as cffi_requests" van, ezért itt cffi_requests-et használunk.
+        print(f"📡 Kapcsolódás: {url} ...")
+        # Itt a Master importját (cffi_requests) használjuk, de a működő logikával
         response = cffi_requests.get(url, impersonate="chrome124", headers=headers, timeout=20)
 
         if response.status_code != 200:
-            print(f"❌ SPAR HIBA: A szerver {response.status_code} kóddal válaszolt!")
+            print(f"❌ HIBA: A szerver {response.status_code} kóddal válaszolt!")
             return []
 
         soup = BeautifulSoup(response.text, 'html.parser')
         links = soup.find_all('a', href=True)
-        
+        print(f"🔎 Talált linkek száma: {len(links)} db")
+
         seen_urls = set()
 
-        # Időkapu
+        # Időkapu logika a működő kódból
         today = datetime.date.today()
         cutoff_date = today - datetime.timedelta(days=30)
 
         for a in links:
             raw_href = a['href']
 
-            # --- 1. SZŰRŐ ---
+            # --- 1. SZŰRŐ: Érdekes lehet ez a link? ---
             is_interesting = False
             if 'spar' in raw_href.lower() and ('ajanlatok' in raw_href.lower() or 'szorolap' in raw_href.lower()):
                 is_interesting = True
@@ -143,7 +144,7 @@ def scan_spar():
             if not is_interesting:
                 continue
 
-            # PDF szűrés
+            # PDF és egyéb szemetek kizárása
             if "getPdf" in raw_href or ".pdf" in raw_href or "ViewPdf" in raw_href:
                 continue
 
@@ -155,28 +156,32 @@ def scan_spar():
             if full_url in seen_urls:
                 continue
 
-            # --- 3. DÁTUM KINYERÉSE ---
+            # --- 3. DÁTUM KINYERÉSE (A pontos regex a működő kódból) ---
             date_match = re.search(r'(2[4-6])(0[1-9]|1[0-2])(0[1-9]|[12]\d|3[01])', full_url)
             validity_str = "Keresés..."
 
             if date_match:
                 y_str, m_str, d_str = date_match.groups()
                 try:
+                    # Dátum validálás
                     year = 2000 + int(y_str)
                     month = int(m_str)
                     day = int(d_str)
+
                     flyer_date = datetime.date(year, month, day)
 
+                    # Ha túl régi, eldobjuk
                     if flyer_date < cutoff_date:
                         continue
 
+                    # Érvényességi idő számítás
                     end_date = flyer_date + datetime.timedelta(days=6)
                     validity_str = f"{flyer_date.strftime('%Y.%m.%d')}-{end_date.strftime('%Y.%m.%d')}"
 
                 except ValueError:
-                    continue 
+                    continue  # Nem valós dátum
             else:
-                continue
+                continue # Ha nincs dátum, a működő kód is átugorja
 
             # --- 4. CÍM GENERÁLÁS ---
             title = "SPAR Újság"
@@ -187,15 +192,22 @@ def scan_spar():
             elif "spar-extra" in full_url.lower():
                 title = "SPAR Partner (Extra)"
 
-            # --- 5. STÁTUSZ ELLENŐRZÉS ÉS MENTÉS ---
-            status = analyze_link("Spar", title, full_url)
-            if status == "KEEP":
-                print(f"[{status}] {title} ({validity_str}) -> {full_url}")
-                found.append({"store": "Spar", "title": title, "url": full_url, "validity": validity_str})
-                seen_urls.add(full_url)
+            # --- TALÁLAT! ---
+            print(f"✅ TALÁLAT: {title} | {validity_str} | {full_url}")
+
+            # Közvetlenül hozzáadjuk, kikerülve a külső analyze_link-et, 
+            # mivel a működő kód is saját szűrést használt.
+            found.append({
+                "store": "Spar",
+                "title": title,
+                "url": full_url,
+                "validity": validity_str
+            })
+            seen_urls.add(full_url)
 
     except Exception as e:
-        print(f"❌ Spar Hiba: {e}")
+        print(f"❌ KRITIKUS SPAR HIBA: {e}")
+
     return found
 
 
@@ -743,7 +755,6 @@ def main():
     all_flyers.extend(scan_metro())
     all_flyers.extend(scan_tesco())
     all_flyers.extend(scan_auchan())
-    # A scan_spar() innen került át a lista elejére
     all_flyers.extend(scan_aldi())
     all_flyers.extend(scan_cba_combined())
 
