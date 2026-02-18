@@ -1,5 +1,5 @@
 {
-    "last_updated": "2026-02-18 16:42:48.098259",
+    "last_updated": "2026-02-18 17:32:56.836315",
     "flyers": [
         {
             "store": "Penny",
@@ -81,32 +81,8 @@
         },
         {
             "store": "Auchan",
-            "title": "Auchan 02 18 Heti Szupermarket Ajanlatok",
-            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr07/2026-02-12-02-18-heti-szupermarket-ajanlatok",
-            "validity": "Keresés..."
-        },
-        {
-            "store": "Auchan",
-            "title": "Auchan 25 Heti Hipermarket Ajanlataink",
-            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr08/2026-02-19-25-heti-hipermarket-ajanlataink",
-            "validity": "Keresés..."
-        },
-        {
-            "store": "Auchan",
-            "title": "Auchan 02 18 Valentin Napi Ajanlataink",
-            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr06/2026-02-05-02-18-valentin-napi-ajanlataink",
-            "validity": "Keresés..."
-        },
-        {
-            "store": "Auchan",
             "title": "Auchan 02 18 Kedvenc Markaink",
             "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr06/2026-02-05-02-18-kedvenc-markaink",
-            "validity": "Keresés..."
-        },
-        {
-            "store": "Auchan",
-            "title": "Auchan 03 04 Elektronikai Ajanlataink",
-            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr08/2026-02-19-03-04-elektronikai-ajanlataink",
             "validity": "Keresés..."
         },
         {
@@ -117,14 +93,38 @@
         },
         {
             "store": "Auchan",
+            "title": "Auchan 02 18 Kethetes Szupermarket Ajanlataink",
+            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr06/2026-02-05-02-18-kethetes-szupermarket-ajanlataink",
+            "validity": "Keresés..."
+        },
+        {
+            "store": "Auchan",
+            "title": "Auchan 25 Heti Hipermarket Ajanlataink",
+            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr08/2026-02-19-25-heti-hipermarket-ajanlataink",
+            "validity": "Keresés..."
+        },
+        {
+            "store": "Auchan",
+            "title": "Auchan 02 18 Heti Szupermarket Ajanlatok",
+            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr07/2026-02-12-02-18-heti-szupermarket-ajanlatok",
+            "validity": "Keresés..."
+        },
+        {
+            "store": "Auchan",
             "title": "Auchan 04 04 Husveti Ajanlataink",
             "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr08/2026-02-19-04-04-husveti-ajanlataink",
             "validity": "Keresés..."
         },
         {
             "store": "Auchan",
-            "title": "Auchan 02 18 Kethetes Szupermarket Ajanlataink",
-            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr06/2026-02-05-02-18-kethetes-szupermarket-ajanlataink",
+            "title": "Auchan 02 18 Valentin Napi Ajanlataink",
+            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr06/2026-02-05-02-18-valentin-napi-ajanlataink",
+            "validity": "Keresés..."
+        },
+        {
+            "store": "Auchan",
+            "title": "Auchan 03 04 Elektronikai Ajanlataink",
+            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr08/2026-02-19-03-04-elektronikai-ajanlataink",
             "validity": "Keresés..."
         },
         {
@@ -155,6 +155,66 @@
             "store": "CBA",
             "title": "CBA Akciós Újság",
             "url": "https://cba.hu/aktualis-ajanlataink/",
+            "validity": "Keresés..."
+        },
+        {
+            "store": "Tisza-Coop",
+            "title": "Aktuális",
+            "url": "https://katalogus.coop.hu/coop-tisza-szorolap-2026-februar-3-het-szuper-plusz/",
+            "validity": "Keresés..."
+        },
+        {
+            "store": "Tisza-Coop",
+            "title": "Aktuális",
+            "url": "https://katalogus.coop.hu/coop-tisza-szorolap-2026-februar-3-het-abc-szuper/",
+            "validity": "Keresés..."
+        },
+        {
+            "store": "Tisza-Coop",
+            "title": "Jövő heti",
+            "url": "https://katalogus.coop.hu/coop-tisza-szorolap-2026-februar-4-het-abc-szuper/",
+            "validity": "Keresés..."
+        },
+        {
+            "store": "Alföld Pro-Coop",
+            "title": "Aktuális",
+            "url": "https://katalogus.coop.hu/coop-alfold-szorolap-2026-februar-3-het/",
+            "validity": "Keresés..."
+        },
+        {
+            "store": "Alföld Pro-Coop",
+            "title": "Jövő heti",
+            "url": "https://katalogus.coop.hu/coop-alfold-szorolap-2026-februar-4-het/",
+            "validity": "Keresés..."
+        },
+        {
+            "store": "Észak-Kelet Pro-Coop",
+            "title": "Aktuális",
+            "url": "https://katalogus.coop.hu/coop-eszak-kelet-szorolap-2026-februar-3-het/",
+            "validity": "Keresés..."
+        },
+        {
+            "store": "Észak-Kelet Pro-Coop",
+            "title": "Jövő heti",
+            "url": "https://katalogus.coop.hu/coop-eszak-kelet-szorolap-2026-februar-4-5-het/",
+            "validity": "Keresés..."
+        },
+        {
+            "store": "Coop Mecsek Füszért",
+            "title": "Aktuális",
+            "url": "https://katalogus.coop.hu/coop-mecsek-szorolap-2026-februar-3-het/",
+            "validity": "Keresés..."
+        },
+        {
+            "store": "Coop Mecsek Füszért",
+            "title": "Jövő heti",
+            "url": "https://katalogus.coop.hu/coop-mecsek-szorolap-2026-februar-4-5-het/",
+            "validity": "Keresés..."
+        },
+        {
+            "store": "Hétforrás",
+            "title": "Aktuális",
+            "url": "https://katalogus.coop.hu/coop-hetforras-szorolap-2026-februar-3-4-5-het/",
             "validity": "Keresés..."
         }
     ]
