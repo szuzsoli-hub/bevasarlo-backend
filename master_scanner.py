@@ -384,41 +384,138 @@ def scan_aldi():
     return found
 
 
-def scan_cba_combined():
-    print("\n--- CBA / Príma Szkennelés ---")
-    found = []
-    url_prima = "https://prima5.hu/index.php/prima/akciok-katalogusok"
-    try:
-        response = cffi_requests.get(url_prima, impersonate="chrome110")
-        if response.status_code == 200:
-            # --- CBA PRÍMA MARAD A RÉGI (JÓVÁHAGYVA) ---
-            print("[KEEP] CBA Príma 5 (Szeged) -> https://prima5.hu/index.php/prima/akciok-katalogusok")
-            # VALIDITY TÖRÖLVE
-            found.append({"store": "CBA Príma", "title": "CBA Príma 5 (Szeged)", "url": "https://prima5.hu/index.php/prima/akciok-katalogusok"})
-    except:
-        pass
-    url_cba = "https://cba.hu/aktualis-ajanlataink/"
-    try:
-        response = cffi_requests.get(url_cba, impersonate="chrome110")
-        soup = BeautifulSoup(response.text, 'html.parser')
-        found_main = False
-        for a in soup.find_all('a', href=True):
-            href = a['href']
-            if "ajanlat" in href or "akcio" in href or "catalog" in href:
-                if len(href) > 20 and ("pdf" in href or "issuu" in href or "flipbook" in href):
-                    # --- CBA ORSZÁGOS MARAD A RÉGI (JÓVÁHAGYVA) ---
-                    print(f"[KEEP] CBA Országos -> {href}")
-                    # VALIDITY TÖRÖLVE
-                    found.append({"store": "CBA", "title": "CBA Akciós Újság", "url": href})
-                    found_main = True
-        if not found_main:
-            print("[KEEP] CBA Országos Gyűjtőoldal -> https://cba.hu/aktualis-ajanlataink/")
-            # VALIDITY TÖRÖLVE
-            found.append({"store": "CBA", "title": "CBA Akciós Újság", "url": url_cba})
-    except:
-        pass
-    return found
+# ===============================================================================
+# --- ÚJ: CBA & PRÍMA PDF VADÁSZ MODUL (HÁLÓZATI LEHALLGATÓVAL) ---
+# ===============================================================================
 
+def _hunt_cba_prima_pdfs(url, store_name):
+    """Belső segédfüggvény: Letölti a nyers hálózati PDF linkeket a CBA/Príma weblapjáról."""
+    print(f"\n🚀 {store_name} Hálózati PDF Vadászat Indul: {url}")
+    
+    options = Options()
+    options.add_argument("--headless") # Felhő miatt kötelező
+    options.add_argument("--window-size=1920,1080")
+    options.add_argument("--disable-gpu")
+    options.add_argument("--no-sandbox")
+    options.add_argument("--disable-dev-shm-usage")
+    # Hálózati naplózás engedélyezése
+    options.set_capability("goog:loggingPrefs", {"performance": "ALL"})
+    
+    driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=options)
+    pdf_links = set()
+    
+    try:
+        driver.get(url)
+        time.sleep(5)
+        
+        # Süti eltüntetése
+        try:
+            gombok = driver.find_elements(By.TAG_NAME, "button")
+            for btn in gombok:
+                txt = btn.text.lower()
+                if "összes" in txt or "elfogad" in txt or "mindent" in txt:
+                    driver.execute_script("arguments[0].click();", btn)
+                    time.sleep(2)
+                    break
+        except:
+            pass
+
+        # Újságok "felébresztése" kattintással
+        flipbooks = driver.find_elements(By.CSS_SELECTOR, "._3d-flip-book")
+        if flipbooks:
+            for fb in flipbooks:
+                try:
+                    driver.execute_script("arguments[0].scrollIntoView({block: 'center'});", fb)
+                    time.sleep(1)
+                    driver.execute_script("arguments[0].click();", fb)
+                    time.sleep(4)
+                except:
+                    pass
+        
+        # Príma lassúsága és a biztos letöltés miatt itt 10 másodpercet várunk
+        time.sleep(10)
+
+        # Hálózati napló feldolgozása
+        logs = driver.get_log("performance")
+        for entry in logs:
+            log_message = entry.get("message")
+            if log_message:
+                try:
+                    log_data = json.loads(log_message)
+                    message = log_data.get("message", {})
+                    method = message.get("method", "")
+                    
+                    if method in ["Network.requestWillBeSent", "Network.responseReceived"]:
+                        params = message.get("params", {})
+                        req_url = params.get("request", {}).get("url", "")
+                        res_url = params.get("response", {}).get("url", "")
+                        
+                        for u in [req_url, res_url]:
+                            if u and ".pdf" in u.lower():
+                                pdf_links.add(u)
+                except:
+                    pass
+                    
+    except Exception as e:
+        print(f"❌ Hiba a(z) {store_name} PDF vadászatnál: {e}")
+    finally:
+        driver.quit()
+        
+    return pdf_links
+
+
+def scan_cba_combined():
+    print("\n--- CBA / Príma Szkennelés (PDF Vadász + Automata Dátumszűrő) ---")
+    found = []
+    today = datetime.date.today()
+    
+    # A valós végpontok amiket felfedeztünk
+    targets = [
+        ("CBA", "https://cba.hu/aktualis-ajanlataink/"),
+        ("CBA Príma", "https://prima.hu/aktualis-ajanlataink/")
+    ]
+    
+    for store_name, url in targets:
+        # 1. Kinyerjük a nyers PDF linkeket
+        pdfs = _hunt_cba_prima_pdfs(url, store_name)
+        
+        # 2. Feldolgozzuk a találatokat és kidobjuk a lejártakat
+        for pdf_url in sorted(pdfs):
+            # Cím generálása a linkből (pl. 'cba_0219-0225.pdf')
+            title = pdf_url.split('/')[-1] 
+            is_expired = False
+            
+            # Próbáljuk meg kiszedni az érvényesség végét a fájlnévből (pl. -0225.pdf)
+            date_match = re.search(r'-(\d{2})(\d{2})\.pdf', pdf_url, re.IGNORECASE)
+            if date_match:
+                month = int(date_match.group(1))
+                day = int(date_match.group(2))
+                
+                # Évszám kinyerése a mapparendszerből (pl. /2026/02/)
+                year = today.year
+                year_match = re.search(r'/(\d{4})/\d{2}/', pdf_url)
+                if year_match:
+                    year = int(year_match.group(1))
+                    
+                try:
+                    end_date = datetime.date(year, month, day)
+                    # Ha a lejárati nap régebbi, mint a mai nap, a PDF repül a kukába!
+                    if end_date < today:
+                        is_expired = True
+                except:
+                    pass # Ha valamiért rossz a dátum formátuma, inkább meghagyjuk az OCR-nek
+            
+            if is_expired:
+                print(f"[DROP] Lejárt PDF eldobva: {title}")
+            else:
+                print(f"[KEEP] {store_name} ({title}) -> {pdf_url}")
+                found.append({
+                    "store": store_name,
+                    "title": title,
+                    "url": pdf_url
+                })
+                
+    return found
 
 # =============================================================================
 # 2. RÉSZ: COOP MISSZIÓ (Selenium)
