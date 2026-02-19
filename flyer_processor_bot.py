@@ -61,13 +61,22 @@ def capture_pages_with_selenium(target_url, store_name):
     chrome_options.add_argument("--disable-gpu")
     chrome_options.add_argument("--no-sandbox")
     chrome_options.add_argument("--disable-dev-shm-usage")
-    chrome_options.add_argument("user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36")
+    
+    # --- MÓDOSÍTÁS: Szafari álcázás és anti-bot védelem a Spar miatt ---
+    chrome_options.add_argument("--disable-blink-features=AutomationControlled")
+    chrome_options.add_argument("user-agent=Mozilla/5.0 (Macintosh; Intel Mac OS X 14_4) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.4 Safari/605.1.15")
 
     captured_data = []
 
     try:
         service = Service(ChromeDriverManager().install())
         driver = webdriver.Chrome(service=service, options=chrome_options)
+        
+        # Extrém bot elrejtés JavaScripttel
+        driver.execute_cdp_cmd("Page.addScriptToEvaluateOnNewDocument", {
+            "source": "Object.defineProperty(navigator, 'webdriver', {get: () => undefined})"
+        })
+        
         driver.get(target_url)
         time.sleep(8) 
 
@@ -133,6 +142,7 @@ def interpret_text_with_ai(full_text, page_num, store_name, title_name):
     # Dátum instrukció csak az első oldalon
     date_instr = "FELADAT 1: KERESD MEG AZ ÉRVÉNYESSÉGI IDŐT (YYYY.MM.DD-YYYY.MM.DD) a szövegben!" if page_num == 1 else ""
 
+    # --- MÓDOSÍTÁS: Az árak és ár_infó formátumának okos szigorítása ---
     prompt = f"""
     Kaptál egy OCR szöveget a(z) {store_name} bolt "{title_name}" újságjának {page_num}. oldaláról.
     {date_instr}
@@ -145,10 +155,10 @@ def interpret_text_with_ai(full_text, page_num, store_name, title_name):
     Gyűjtsd ki az élelmiszer és vegyi áru termékeket JSON-be. 
     (Ha az oldal NONFOOD_MARKETING, a 'termekek' lista maradjon üresen: []).
 
-    MEZŐK:
+    MEZŐK ÉS FORMÁTUMOK:
     - 'nev': Termék neve.
-    - 'ar': Ár.
-    - 'ar_info': Kiszerelés ÉS egységár. HA VAN "/kg" vagy "/l" a képen, azt KÖTELEZŐ ideírni!
+    - 'ar': Ár. KÖTELEZŐ FORMÁTUM: A szám után mindig írd oda a valutát is! (pl. "999 Ft" vagy "229 Ft/db").
+    - 'ar_info': Kiszerelés ÉS egységár. TÖREKEDJ ERRE A FORMÁTUMRA: [Mennyiség], [Egységár] (pl. "500 g, 1398 Ft/kg"). KIVÉTEL: Ha valamelyik adat hiányzik a képről, NE dobd el a terméket, csak azt írd be, amit biztosan látsz!
     - 'ar_info2': Feltételek (pl. "Csak 2 db esetén"). Ha nincs, legyen null.
 
     ELVÁRT JSON FORMAT:
@@ -156,7 +166,7 @@ def interpret_text_with_ai(full_text, page_num, store_name, title_name):
       "oldal_jelleg": "ÉLELMISZER_VEGYES",
       "ervenyesseg": "2026.02.12-2026.02.18", 
       "termekek": [
-        {{ "nev": "...", "ar": "...", "ar_info": "...", "ar_info2": null, "kategoria_dontes": "marad" }}
+        {{ "nev": "...", "ar": "999 Ft", "ar_info": "500 g, 1398 Ft/kg", "ar_info2": null, "kategoria_dontes": "marad" }}
       ]
     }}
     
@@ -367,5 +377,3 @@ if __name__ == "__main__":
         json.dump(final_products, f, ensure_ascii=False, indent=2)
 
     print(f"\n🏁 KÉSZ! Végső adatbázis: {len(final_products)} termék.")
-
-
