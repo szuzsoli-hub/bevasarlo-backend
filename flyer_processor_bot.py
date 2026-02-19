@@ -125,7 +125,7 @@ def capture_pages_with_selenium(target_url, store_name):
                     action = ActionChains(driver)
                     action.move_by_offset(-x_pos, -y_pos).perform() 
                     
-                    # Ha átváltottunk iframe-be, most visszatérünk a főoldalra a képernyőfotózáshoz (vagy az iframe fotózásához)
+                    # Ha átváltottunk iframe-be, most visszatérünk a főoldalra a képernyőfotózáshoz
                     if iframes:
                         driver.switch_to.default_content()
 
@@ -134,21 +134,8 @@ def capture_pages_with_selenium(target_url, store_name):
                 
                 time.sleep(3)
 
-            # --- MÓDOSÍTÁS: Célzott Fotózás (Iframe) ---
-            try:
-                # Újra megkeressük az iframe-et, mert a DOM változhatott
-                iframes_for_shot = driver.find_elements(By.TAG_NAME, "iframe")
-                if iframes_for_shot:
-                    # Ha van iframe (pl. Spar), csak azt fotózzuk le!
-                    iframe_element = iframes_for_shot[0]
-                    iframe_element.screenshot(fajl_nev)
-                    print(f"   -> Célzott (iframe) fotó kész.")
-                else:
-                    # Ha nincs iframe, jöhet a sima teljes képernyős fotó
-                    driver.save_screenshot(fajl_nev)
-            except Exception as e:
-                 print(f"⚠️ Képlopás hiba (célzott fotó): {e}, próbálkozás teljes képernyővel...")
-                 driver.save_screenshot(fajl_nev) # Végső fallback
+            # --- MÓDOSÍTÁS: Visszatérés a biztonságos, teljes képernyős fotózáshoz (A Lidl 0 width hiba miatt) ---
+            driver.save_screenshot(fajl_nev)
 
             captured_data.append({
                 "image_path": fajl_nev,
@@ -177,8 +164,8 @@ def google_ocr(image_path):
     return response.full_text_annotation.text
 
 def interpret_text_with_ai(full_text, page_num, store_name, title_name):
-    # --- MÓDOSÍTÁS: Dátum instrukció szigorítása a fals pozitív (Spar) ellen ---
-    date_instr = "FELADAT 1: KERESD MEG AZ AKTUÁLIS ÉRVÉNYESSÉGI IDŐT (YYYY.MM.DD-YYYY.MM.DD) a szövegben! VIGYÁZZ: Hagyd figyelmen kívül a korábbi, 'múlt heti' vagy 1-2 napos akciók dátumait, csak a FŐ, aktuális kampányidőszakot add vissza!" if page_num == 1 else ""
+    # Dátum instrukció csak az első oldalon
+    date_instr = "FELADAT 1: KERESD MEG AZ AKTUÁLIS ÉRVÉNYESSÉGI IDŐT (YYYY.MM.DD-YYYY.MM.DD) a szövegben! Keresd ki az összes dátumot, amit látsz!" if page_num == 1 else ""
 
     # --- MÓDOSÍTÁS: Az árak és ár_infó formátumának okos szigorítása (ETALON) ---
     prompt = f"""
@@ -233,7 +220,6 @@ def check_validity_date(date_string):
         dates = re.findall(r'\d{4}[\.\-]\d{2}[\.\-]\d{2}', str(date_string))
         
         if dates:
-            # --- MÓDOSÍTÁS: Rendezzük a dátumokat, hogy mindig a legkésőbbit vegyük alapul (Fals pozitív ellen) ---
             dates.sort()
             
             # Az utolsó (legkésőbbi) dátum a lejárati idő
@@ -268,20 +254,46 @@ def process_images_with_ai(captured_data, flyer_meta):
 
             # --- 1. BOUNCER: FRISS ÚJSÁG DÁTUM ELLENŐRZÉS ---
             if item['page_num'] == 1:
-                # --- MÓDOSÍTÁS: A Bouncer "Vakfoltja" a Sparnál ---
-                # Ha Spar a bolt, azonnal felülírjuk az AI-t a Linkvadász által beküldött biztos dátummal!
+                is_valid = True
+                
+                # --- MÓDOSÍTÁS: A Hibrid Nyomozó (Spar Specifikus) ---
                 if "spar" in flyer_meta['store'].lower():
-                     if flyer_meta.get('validity') and flyer_meta.get('validity') != "Keresés...":
-                         print(f"🛡️ SPAR VÉDELEM AKTÍV: OCR dátum felülírva a Linkvadász dátumával ({flyer_meta['validity']}).")
-                         detected_validity = flyer_meta['validity']
-                     else:
-                          # Ha valamiért mégis a Keresés... jött át, akkor is inkább hagyjuk futni.
-                         detected_validity = "N/A"
-                elif structured.get("ervenyesseg"):
-                     detected_validity = structured.get("ervenyesseg")
+                    url_date_match = re.search(r'(2[4-6])(0[1-9]|1[0-2])(0[1-9]|[12]\d|3[01])', flyer_meta['url'])
+                    ai_detected_dates = re.findall(r'\d{4}[\.\-]\d{2}[\.\-]\d{2}', structured.get("ervenyesseg", ""))
+                    
+                    found_exact_match = False
+                    
+                    if url_date_match and len(ai_detected_dates) >= 2:
+                        # Ha van dátum az URL-ben, kinyerjük (pl. 260219 -> 2026.02.19)
+                        y, m, d = url_date_match.groups()
+                        expected_start = f"20{y}.{m}.{d}"
+                        
+                        # Megnézzük az AI által talált dátumokat párosával (kezdet-vég)
+                        for i in range(0, len(ai_detected_dates)-1, 2):
+                            start_date = ai_detected_dates[i].replace('-', '.')
+                            end_date = ai_detected_dates[i+1].replace('-', '.')
+                            
+                            if start_date == expected_start:
+                                detected_validity = f"{start_date}-{end_date}"
+                                found_exact_match = True
+                                is_valid = check_validity_date(detected_validity)
+                                print(f"🎯 HIBRID NYOMOZÓ SIKER: Megvan a pontos Spar dátum: {detected_validity}")
+                                break
+                    
+                    # A MENTŐÖV: Ha a Hibrid Nyomozó elbukott, BÍZZUNK A LINKVADÁSZBAN!
+                    if not found_exact_match:
+                        print("🛡️ SPAR VÉDŐHÁLÓ: Nincs biztos OCR dátum, de átengedjük a Linkvadász frissessége alapján!")
+                        detected_validity = flyer_meta.get('validity', "N/A")
+                        is_valid = True # Átengedjük!
+                
+                # Ha NEM Spar, marad a régi ellenőrzés
+                else:
+                    if structured.get("ervenyesseg"):
+                        detected_validity = structured.get("ervenyesseg")
+                        is_valid = check_validity_date(detected_validity)
 
-                # Ha a dátum lejárt -> KUKA (Kivéve, ha "N/A", azt átengedjük)
-                if detected_validity != "N/A" and not check_validity_date(detected_validity):
+                # Ha a dátum garantáltan lejárt -> KUKA
+                if not is_valid:
                      print(f"⛔ BOUNCER: Ez az újság lejárt ({detected_validity}), teljes törlés! - {flyer_meta['title']}")
                      return [] # Megszakítja az AI elemzést
 
