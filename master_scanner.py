@@ -395,11 +395,9 @@ def _hunt_cba_prima_pdfs(url, store_name):
     options = Options()
     options.add_argument("--headless")
     options.add_argument("--window-size=1920,1080")
-    options.add_argument("--disable-gpu")
-    options.add_argument("--no-sandbox")
-    options.add_argument("--disable-dev-shm-usage")
-    # Emberi álca, hogy ne dobjon el a szerver a headless mód miatt
-    options.add_argument("user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36")
+    # A --disable-gpu és az egyedi User-Agent TÖRÖLVE, mert megölik a 3D FlipBook motorját!
+    options.add_argument("--no-sandbox") # Ez kell a GitHub Actions miatt
+    options.add_argument("--disable-dev-shm-usage") # Ez is kell a GitHub Actions miatt
     options.set_capability("goog:loggingPrefs", {"performance": "ALL"})
     
     driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=options)
@@ -972,4 +970,5 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
