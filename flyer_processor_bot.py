@@ -105,9 +105,21 @@ def capture_pages_with_selenium(target_url, store_name):
             page_num = i + 1
             fajl_nev = os.path.join(TEMP_DIR, f"{store_name}_oldal_{page_num}.png")
             
+            # --- MÓDOSÍTÁS: Billentyűzet helyett fizikai egérkattintás a képernyő szélére (404 hiba elkerülése) ---
             if i > 0:
-                body = driver.find_element(By.TAG_NAME, 'body')
-                body.send_keys(Keys.ARROW_RIGHT)
+                try:
+                    window_size = driver.get_window_size()
+                    x_pos = int(window_size['width'] * 0.95) # Jobb szél
+                    y_pos = int(window_size['height'] * 0.5) # Középen
+                    
+                    action = ActionChains(driver)
+                    action.move_by_offset(x_pos, y_pos).click().perform()
+                    # Visszaállítjuk az egeret a bal felső sarokba (0,0), hogy a következő iterációnál relatívan tudjunk lépni
+                    action = ActionChains(driver)
+                    action.move_by_offset(-x_pos, -y_pos).perform() 
+                except Exception as e:
+                    print(f"⚠️ Lapozási hiba (egér): {e}")
+                
                 time.sleep(3)
 
             driver.save_screenshot(fajl_nev)
@@ -139,10 +151,10 @@ def google_ocr(image_path):
     return response.full_text_annotation.text
 
 def interpret_text_with_ai(full_text, page_num, store_name, title_name):
-    # Dátum instrukció csak az első oldalon
-    date_instr = "FELADAT 1: KERESD MEG AZ ÉRVÉNYESSÉGI IDŐT (YYYY.MM.DD-YYYY.MM.DD) a szövegben!" if page_num == 1 else ""
+    # --- MÓDOSÍTÁS: Dátum instrukció szigorítása a fals pozitív (Spar) ellen ---
+    date_instr = "FELADAT 1: KERESD MEG AZ AKTUÁLIS ÉRVÉNYESSÉGI IDŐT (YYYY.MM.DD-YYYY.MM.DD) a szövegben! VIGYÁZZ: Hagyd figyelmen kívül a korábbi, 'múlt heti' vagy 1-2 napos akciók dátumait, csak a FŐ, aktuális kampányidőszakot add vissza!" if page_num == 1 else ""
 
-    # --- MÓDOSÍTÁS: Az árak és ár_infó formátumának okos szigorítása ---
+    # --- MÓDOSÍTÁS: Az árak és ár_infó formátumának okos szigorítása (ETALON) ---
     prompt = f"""
     Kaptál egy OCR szöveget a(z) {store_name} bolt "{title_name}" újságjának {page_num}. oldaláról.
     {date_instr}
@@ -157,9 +169,9 @@ def interpret_text_with_ai(full_text, page_num, store_name, title_name):
 
     MEZŐK ÉS FORMÁTUMOK:
     - 'nev': Termék neve.
-    - 'ar': Ár. KÖTELEZŐ FORMÁTUM: A szám után mindig írd oda a valutát is! (pl. "999 Ft" vagy "229 Ft/db").
-    - 'ar_info': Kiszerelés ÉS egységár. TÖREKEDJ ERRE A FORMÁTUMRA: [Mennyiség], [Egységár] (pl. "500 g, 1398 Ft/kg"). KIVÉTEL: Ha valamelyik adat hiányzik a képről, NE dobd el a terméket, csak azt írd be, amit biztosan látsz!
-    - 'ar_info2': Feltételek (pl. "Csak 2 db esetén"). Ha nincs, legyen null.
+    - 'ar': Ár. Ez a fizetendő TELJES ár legyen (pl. a csomag ára)! KÖTELEZŐ FORMÁTUM: A szám után mindig írd oda a valutát is! (pl. "999 Ft", "229 Ft/db", vagy "4699 Ft"). SOHA ne az egységárat tedd ide!
+    - 'ar_info': Kiszerelés ÉS egységár. TÖREKEDJ ERRE AZ ETALON FORMÁTUMRA: [Mennyiség], [Egységár]. Példák: "500 g, 1398 Ft/kg", vagy "40 db, 117,5 Ft/db", vagy "1.5 l, 499 Ft/l". KIVÉTEL: Ha valamelyik adat hiányzik a képről vagy olvashatatlan, NE dobd el a terméket, csak azt írd be, amit biztosan látsz!
+    - 'ar_info2': Feltételek (pl. "Csak 2 db esetén", "Clubcarddal"). Ha nincs, legyen null.
 
     ELVÁRT JSON FORMAT:
     {{
@@ -195,7 +207,10 @@ def check_validity_date(date_string):
         dates = re.findall(r'\d{4}[\.\-]\d{2}[\.\-]\d{2}', str(date_string))
         
         if dates:
-            # Az utolsó dátum a lejárati idő
+            # --- MÓDOSÍTÁS: Rendezzük a dátumokat, hogy mindig a legkésőbbit vegyük alapul (Fals pozitív ellen) ---
+            dates.sort()
+            
+            # Az utolsó (legkésőbbi) dátum a lejárati idő
             end_date_str = dates[-1].replace('-', '.')
             end_date = datetime.datetime.strptime(end_date_str, "%Y.%m.%d").date()
             today = datetime.date.today()
