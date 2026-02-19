@@ -157,16 +157,21 @@ def capture_pages_from_pdf(target_url, store_name):
     captured_data = []
     temp_pdf_path = os.path.join(TEMP_DIR, f"{store_name}_temp.pdf")
 
+    # --- MÓDOSÍTÁS: Safari álca (headers) a 403-as hiba ellen ---
+    headers = {
+        "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 14_4) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.4 Safari/605.1.15"
+    }
+
     try:
-        # 1. Nyers PDF fájl letöltése
-        response = requests.get(target_url, timeout=30)
+        # 1. Nyers PDF fájl letöltése Safari álcával
+        response = requests.get(target_url, headers=headers, timeout=30)
         response.raise_for_status()
         with open(temp_pdf_path, 'wb') as f:
             f.write(response.content)
 
         # 2. PDF megnyitása és darabolása (PyMuPDF)
         doc = fitz.open(temp_pdf_path)
-        max_pages = min(4, len(doc)) # Maximum 4 oldal, hogy passzoljon a Selenium teszthez
+        max_pages = min(4, len(doc)) # Maximum 4 oldal
 
         for i in range(max_pages):
             page_num = i + 1
@@ -176,9 +181,10 @@ def capture_pages_from_pdf(target_url, store_name):
             fajl_nev = os.path.join(TEMP_DIR, f"{store_name}_oldal_{page_num}.png")
             pix.save(fajl_nev)
 
+            # --- Deep Link horgonnyal a pontos oldalhoz ---
             captured_data.append({
                 "image_path": fajl_nev,
-               "page_url": f"{target_url}#page={page_num}",
+                "page_url": f"{target_url}#page={page_num}",
                 "page_num": page_num
             })
             print(f"   -> {page_num}. oldal tökéletes minőségben kivágva a PDF-ből.")
@@ -492,4 +498,5 @@ if __name__ == "__main__":
         json.dump(final_products, f, ensure_ascii=False, indent=2)
 
     print(f"\n🏁 KÉSZ! Végső adatbázis: {len(final_products)} termék.")
+
 
