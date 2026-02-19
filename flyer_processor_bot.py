@@ -178,7 +178,7 @@ def capture_pages_from_pdf(target_url, store_name):
 
             captured_data.append({
                 "image_path": fajl_nev,
-                "page_url": target_url, # A link maga a PDF elérhetősége
+               "page_url": f"{target_url}#page={page_num}",
                 "page_num": page_num
             })
             print(f"   -> {page_num}. oldal tökéletes minőségben kivágva a PDF-ből.")
@@ -492,3 +492,4 @@ if __name__ == "__main__":
         json.dump(final_products, f, ensure_ascii=False, indent=2)
 
     print(f"\n🏁 KÉSZ! Végső adatbázis: {len(final_products)} termék.")
+
