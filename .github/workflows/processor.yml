@@ -19,11 +19,13 @@ jobs:
     steps:
       - name: Kód letöltése
         uses: actions/checkout@v4
+        with:
+          ref: main  # 👈 FRISSÍTVE: Ez kényszeríti ki, hogy a Linkvadász friss mentését is lássa!
 
       - name: Python telepítése
         uses: actions/setup-python@v4
         with:
-          python-version: '3.9'
+          python-version: '3.10'  # 👈 FRISSÍTVE: 3.9-ről 3.10-re emelve
 
       - name: Szükséges programok telepítése
         run: |
@@ -49,7 +51,7 @@ jobs:
         run: |
           git config --global user.name "AkcioVadaszBot"
           git config --global user.email "bot@akciovadasz.hu"
-          # Hozzáadjuk a generált JSON-t
+          # 👈 FRISSÍTVE VISSZA: Újra az 'assets/' mappában keressük a kész fájlt!
           git add assets/universal_output.json
           # Ha van változás, elmentjük. Ha nincs, nem sírunk.
           git commit -m "Új termékek feldolgozva (AI) - $(date)" || echo "Nincs új adat, nem kell menteni."
