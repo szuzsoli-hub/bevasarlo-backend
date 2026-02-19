@@ -20,8 +20,6 @@ from selenium.webdriver.common.action_chains import ActionChains
 # 0. KONFIGURÁCIÓ & ENV
 # ==============================
 
-INPUT_FILE = 'flyers.json'           # A friss linkek (A modulból)
-
 base_dir = os.path.dirname(os.path.abspath(__file__))
 load_dotenv(os.path.join(base_dir, ".env"))
 
@@ -30,8 +28,9 @@ ASSETS_DIR = os.path.join(base_dir, "assets")
 if not os.path.exists(ASSETS_DIR):
     os.makedirs(ASSETS_DIR)
 
-OUTPUT_FILE = os.path.join(ASSETS_DIR, 'universal_output.json') # A kész adatbázis (B modul)
-
+# Mindkét fájlt az assets mappán belül kezeljük!
+INPUT_FILE = os.path.join(ASSETS_DIR, 'flyers.json')           # A friss linkek
+OUTPUT_FILE = os.path.join(ASSETS_DIR, 'universal_output.json') # A kész adatbázis
 # GitHub Actions környezetben a secretből jön, lokálisan a fájlból/env-ből
 if not os.getenv("GOOGLE_APPLICATION_CREDENTIALS"):
     os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "google_key.json"
@@ -368,4 +367,5 @@ if __name__ == "__main__":
         json.dump(final_products, f, ensure_ascii=False, indent=2)
 
     print(f"\n🏁 KÉSZ! Végső adatbázis: {len(final_products)} termék.")
+
 
