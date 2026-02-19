@@ -105,18 +105,30 @@ def capture_pages_with_selenium(target_url, store_name):
             page_num = i + 1
             fajl_nev = os.path.join(TEMP_DIR, f"{store_name}_oldal_{page_num}.png")
             
-            # --- MÓDOSÍTÁS: Billentyűzet helyett fizikai egérkattintás a képernyő szélére (404 hiba elkerülése) ---
+            # --- ÚJ MÓDOSÍTÁS: A SPAR flipbook kezelése és dinamikus egérkattintás ---
             if i > 0:
                 try:
+                    # Megpróbáljuk megkeresni az iframe-et, hátha a flipbook abban van (mint a Sparnál)
+                    iframes = driver.find_elements(By.TAG_NAME, "iframe")
+                    if iframes:
+                         # Ha van iframe, átváltunk abba a kontextusba
+                         driver.switch_to.frame(iframes[0])
+                         
                     window_size = driver.get_window_size()
                     x_pos = int(window_size['width'] * 0.95) # Jobb szél
                     y_pos = int(window_size['height'] * 0.5) # Középen
                     
                     action = ActionChains(driver)
                     action.move_by_offset(x_pos, y_pos).click().perform()
+                    
                     # Visszaállítjuk az egeret a bal felső sarokba (0,0), hogy a következő iterációnál relatívan tudjunk lépni
                     action = ActionChains(driver)
                     action.move_by_offset(-x_pos, -y_pos).perform() 
+                    
+                    # Ha átváltottunk iframe-be, most visszatérünk a főoldalra
+                    if iframes:
+                        driver.switch_to.default_content()
+
                 except Exception as e:
                     print(f"⚠️ Lapozási hiba (egér): {e}")
                 
@@ -137,7 +149,6 @@ def capture_pages_with_selenium(target_url, store_name):
         return []
     finally:
         if 'driver' in locals(): driver.quit()
-
 
 # ===============================================================================
 # 2. MODUL: AZ AGY - DÁTUM ELLENŐRZÉS ÉS AI OSZTÁLYOZÁS (BOUNCER) 🧠
@@ -392,3 +403,4 @@ if __name__ == "__main__":
         json.dump(final_products, f, ensure_ascii=False, indent=2)
 
     print(f"\n🏁 KÉSZ! Végső adatbázis: {len(final_products)} termék.")
+
