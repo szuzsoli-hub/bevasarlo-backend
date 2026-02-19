@@ -4246,5 +4246,53 @@
     "ar_info2": null,
     "forrasLink": "https://prima5.hu/index.php/prima/akciok-katalogusok",
     "alap_link": "https://prima5.hu/index.php/prima/akciok-katalogusok"
+  },
+  {
+    "bolt": "Spar",
+    "ujsag": "260219-2-interspar-szorolap",
+    "oldalszam": 2,
+    "ervenyesseg": "N/A",
+    "nev": "Ariel mosópor",
+    "ar": "3999 Ft",
+    "ar_info": "2,2 kg, 1817.73 Ft/kg",
+    "ar_info2": null,
+    "forrasLink": "https://www.spar.hu/ajanlatok/interspar/260219-2-interspar-szorolap",
+    "alap_link": "https://www.spar.hu/ajanlatok/interspar/260219-2-interspar-szorolap"
+  },
+  {
+    "bolt": "Spar",
+    "ujsag": "260219-2-interspar-szorolap",
+    "oldalszam": 2,
+    "ervenyesseg": "N/A",
+    "nev": "Cirmi UHT tej",
+    "ar": "239 Ft",
+    "ar_info": "2,8%-os zsírtartalom",
+    "ar_info2": null,
+    "forrasLink": "https://www.spar.hu/ajanlatok/interspar/260219-2-interspar-szorolap",
+    "alap_link": "https://www.spar.hu/ajanlatok/interspar/260219-2-interspar-szorolap"
+  },
+  {
+    "bolt": "Spar",
+    "ujsag": "260219-4-spar-market-city-spar",
+    "oldalszam": 2,
+    "ervenyesseg": "N/A",
+    "nev": "Starbucks kávékapszula",
+    "ar": "1599 Ft",
+    "ar_info": "10 db, 159.90 Ft/db",
+    "ar_info2": null,
+    "forrasLink": "https://www.spar.hu/ajanlatok/spar-market/260219-4-spar-market-city-spar",
+    "alap_link": "https://www.spar.hu/ajanlatok/spar-market/260219-4-spar-market-city-spar"
+  },
+  {
+    "bolt": "Spar",
+    "ujsag": "260219-4-spar-market-city-spar",
+    "oldalszam": 2,
+    "ervenyesseg": "N/A",
+    "nev": "Ariel folyékony mosószer",
+    "ar": "3999 Ft",
+    "ar_info": "30 db, 133.30 Ft/db",
+    "ar_info2": null,
+    "forrasLink": "https://www.spar.hu/ajanlatok/spar-market/260219-4-spar-market-city-spar",
+    "alap_link": "https://www.spar.hu/ajanlatok/spar-market/260219-4-spar-market-city-spar"
   }
 ]
