@@ -100,41 +100,31 @@ def capture_pages_with_selenium(target_url, store_name):
         except:
             pass
 
-        # FOTÓZÁS (TESZT: CSAK 2 OLDAL!)
-        for i in range(2): 
+        # --- MÓDOSÍTÁS: 4 oldalra felemelve a teszt kedvéért ---
+        for i in range(4): 
             page_num = i + 1
             fajl_nev = os.path.join(TEMP_DIR, f"{store_name}_oldal_{page_num}.png")
             
-            # --- ÚJ MÓDOSÍTÁS: A SPAR flipbook kezelése és dinamikus egérkattintás ---
+            # --- ÚJ MÓDOSÍTÁS: Lapozás Iframe-en belül a jobbra nyíllal ---
             if i > 0:
                 try:
-                    # Megpróbáljuk megkeresni az iframe-et, hátha a flipbook abban van (mint a Sparnál)
                     iframes = driver.find_elements(By.TAG_NAME, "iframe")
                     if iframes:
-                         # Ha van iframe, átváltunk abba a kontextusba a kattintáshoz
-                         driver.switch_to.frame(iframes[0])
-                         
-                    window_size = driver.get_window_size()
-                    x_pos = int(window_size['width'] * 0.95) # Jobb szél
-                    y_pos = int(window_size['height'] * 0.5) # Középen
-                    
-                    action = ActionChains(driver)
-                    action.move_by_offset(x_pos, y_pos).click().perform()
-                    
-                    # Visszaállítjuk az egeret a bal felső sarokba (0,0), hogy a következő iterációnál relatívan tudjunk lépni
-                    action = ActionChains(driver)
-                    action.move_by_offset(-x_pos, -y_pos).perform() 
-                    
-                    # Ha átváltottunk iframe-be, most visszatérünk a főoldalra a képernyőfotózáshoz
-                    if iframes:
-                        driver.switch_to.default_content()
-
+                        # Ha van iframe (pl. Spar flipbook), belépünk és oda küldjük a nyilat
+                        driver.switch_to.frame(iframes[0])
+                        body = driver.find_element(By.TAG_NAME, 'body')
+                        body.send_keys(Keys.ARROW_RIGHT)
+                        driver.switch_to.default_content() # Visszalépünk a főoldalra a fotózáshoz
+                    else:
+                        # Sima oldal esetén marad a normál lapozás
+                        body = driver.find_element(By.TAG_NAME, 'body')
+                        body.send_keys(Keys.ARROW_RIGHT)
                 except Exception as e:
-                    print(f"⚠️ Lapozási hiba (egér): {e}")
+                    print(f"⚠️ Lapozási hiba: {e}")
                 
                 time.sleep(3)
 
-            # --- MÓDOSÍTÁS: Visszatérés a biztonságos, teljes képernyős fotózáshoz (A Lidl 0 width hiba miatt) ---
+            # Visszatérés a biztonságos, teljes képernyős fotózáshoz
             driver.save_screenshot(fajl_nev)
 
             captured_data.append({
@@ -165,7 +155,7 @@ def google_ocr(image_path):
 
 def interpret_text_with_ai(full_text, page_num, store_name, title_name):
     # Dátum instrukció csak az első oldalon
-    date_instr = "FELADAT 1: KERESD MEG AZ AKTUÁLIS ÉRVÉNYESSÉGI IDŐT (YYYY.MM.DD-YYYY.MM.DD) a szövegben!" if page_num == 1 else ""
+    date_instr = "FELADAT 1: KERESD MEG AZ AKTUÁLIS ÉRVÉNYESSÉGI IDŐT (YYYY.MM.DD-YYYY.MM.DD) a szövegben! Keresd ki az összes dátumot, amit látsz!" if page_num == 1 else ""
 
     # --- MÓDOSÍTÁS: Az árak és ár_infó formátumának okos szigorítása (ETALON) ---
     prompt = f"""
@@ -256,10 +246,10 @@ def process_images_with_ai(captured_data, flyer_meta):
             if item['page_num'] == 1:
                 is_valid = True
                 
-                # --- MÓDOSÍTÁS: A Hibrid Nyomozó (Spar Specifikus) ---
+                # A Hibrid Nyomozó (Spar Specifikus)
                 if "spar" in flyer_meta['store'].lower():
                     url_date_match = re.search(r'(2[4-6])(0[1-9]|1[0-2])(0[1-9]|[12]\d|3[01])', flyer_meta['url'])
-                    # MÓDOSÍTÁS: A nyers OCR szövegből (full_text) keressük a dátumokat, nem az AI-tól!
+                    # A nyers OCR szövegből (full_text) keressük a dátumokat, nem az AI-tól!
                     ocr_detected_dates = re.findall(r'\d{4}[\.\-]\d{2}[\.\-]\d{2}', full_text)
                     
                     found_exact_match = False
@@ -304,9 +294,9 @@ def process_images_with_ai(captured_data, flyer_meta):
                 print(f"   ⏩ SKIP: A(z) {item['page_num']}. oldal '{jelleg}' besorolást kapott.")
                 nonfood_count += 1
                 
-                # Ha az első két oldal mindegyike nonfood (pl. tiszta barkács katalógus), eldobja az egészet
-                if item['page_num'] == 2 and nonfood_count == 2:
-                    print(f"⛔ BOUNCER: Az első 2 oldal NONFOOD. Egész újság kuka! - {flyer_meta['title']}")
+                # --- MÓDOSÍTÁS: 2 oldal helyett az első 3 oldal után dobja csak ki (Spar Extra miatt) ---
+                if item['page_num'] == 3 and nonfood_count == 3:
+                    print(f"⛔ BOUNCER: Az első 3 oldal NONFOOD. Egész újság kuka! - {flyer_meta['title']}")
                     return []
                 continue # Átugorja a termékek listázását ezen az oldalon
 
