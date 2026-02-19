@@ -78,7 +78,9 @@ def capture_pages_with_selenium(target_url, store_name):
         })
         
         driver.get(target_url)
-        time.sleep(8) 
+        
+        # --- MÓDOSÍTÁS: 10 másodperc univerzális betöltési idő (HD képek és éles dátumok miatt) ---
+        time.sleep(10) 
 
         # SÜTI KEZELÉS
         try:
@@ -122,7 +124,8 @@ def capture_pages_with_selenium(target_url, store_name):
                 except Exception as e:
                     print(f"⚠️ Lapozási hiba: {e}")
                 
-                time.sleep(3)
+                # --- MÓDOSÍTÁS: 5 másodperc várakozás lapozás után a HD kép betöltéséhez ---
+                time.sleep(5)
 
             # Visszatérés a biztonságos, teljes képernyős fotózáshoz
             driver.save_screenshot(fajl_nev)
@@ -407,6 +410,11 @@ if __name__ == "__main__":
         if url in processed_urls_in_output:
             print(f"⏩ SKIP (Érvényes és kész): {flyer['store']} - {flyer['title']}")
             continue 
+            
+        # --- MÓDOSÍTÁS: Spar Extra és Spar Market azonnali eldobása (Költségvédelem) ---
+        if "spar-extra" in url.lower() or "spar-market" in url.lower():
+            print(f"⏩ SKIP (Költségvédelem - Csonka/Helyi újság): {flyer['store']} - {flyer['title']}")
+            continue
         
         # HA ÚJ -> FELDOLGOZÁS INDUL
         print(f"\n🆕 ÚJ ÚJSÁG! Vizsgálat indul: {flyer['store']} - {flyer['title']}")
