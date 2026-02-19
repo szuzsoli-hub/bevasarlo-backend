@@ -393,12 +393,13 @@ def _hunt_cba_prima_pdfs(url, store_name):
     print(f"\n🚀 {store_name} Hálózati PDF Vadászat Indul: {url}")
     
     options = Options()
-    options.add_argument("--headless") # Felhő miatt kötelező
+    options.add_argument("--headless")
     options.add_argument("--window-size=1920,1080")
     options.add_argument("--disable-gpu")
     options.add_argument("--no-sandbox")
     options.add_argument("--disable-dev-shm-usage")
-    # Hálózati naplózás engedélyezése
+    # Emberi álca, hogy ne dobjon el a szerver a headless mód miatt
+    options.add_argument("user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36")
     options.set_capability("goog:loggingPrefs", {"performance": "ALL"})
     
     driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=options)
@@ -406,36 +407,42 @@ def _hunt_cba_prima_pdfs(url, store_name):
     
     try:
         driver.get(url)
+        print("⏳ 1. Alap weboldal betöltése (5 mp)...")
         time.sleep(5)
         
-        # Süti eltüntetése
         try:
             gombok = driver.find_elements(By.TAG_NAME, "button")
             for btn in gombok:
                 txt = btn.text.lower()
                 if "összes" in txt or "elfogad" in txt or "mindent" in txt:
                     driver.execute_script("arguments[0].click();", btn)
+                    print("🍪 Süti ablak eltávolítva.")
                     time.sleep(2)
                     break
-        except:
-            pass
+        except Exception as e:
+            print(f"⚠️ Süti hiba (nem gond): {e}")
 
-        # Újságok "felébresztése" kattintással
+        print("📜 2. Újságok keresése és 'felébresztése'...")
         flipbooks = driver.find_elements(By.CSS_SELECTOR, "._3d-flip-book")
+        
         if flipbooks:
-            for fb in flipbooks:
+            print(f"🎯 Talált flipbook modulok száma: {len(flipbooks)} db")
+            for i, fb in enumerate(flipbooks):
                 try:
                     driver.execute_script("arguments[0].scrollIntoView({block: 'center'});", fb)
                     time.sleep(1)
                     driver.execute_script("arguments[0].click();", fb)
+                    print(f"   👆 {i+1}. újság megkattintva. Várakozás a hálózati forgalomra...")
                     time.sleep(4)
-                except:
-                    pass
+                except Exception as e:
+                    print(f"   ⚠️ Nem sikerült a(z) {i+1}. újságot felébreszteni: {e}")
+        else:
+            print("❌ Nem találtam 3D Flipbook elemet az oldalon!")
         
-        # Príma lassúsága és a biztos letöltés miatt itt 10 másodpercet várunk
+        print("⏳ 3. Utolsó várakozás a letöltések befejezésére (10 mp)...")
         time.sleep(10)
 
-        # Hálózati napló feldolgozása
+        print("📡 4. Hálózati napló (Network log) elemzése...")
         logs = driver.get_log("performance")
         for entry in logs:
             log_message = entry.get("message")
@@ -456,8 +463,13 @@ def _hunt_cba_prima_pdfs(url, store_name):
                 except:
                     pass
                     
+        if pdf_links:
+             print(f"🎉 SIKER! {len(pdf_links)} db PDF linket találtunk a hálózaton!")
+        else:
+             print("❌ Üres kézzel tértünk vissza, nincs PDF a naplóban.")
+                    
     except Exception as e:
-        print(f"❌ Hiba a(z) {store_name} PDF vadászatnál: {e}")
+        print(f"❌ Végzetes hiba a(z) {store_name} PDF vadászatnál: {e}")
     finally:
         driver.quit()
         
@@ -469,41 +481,34 @@ def scan_cba_combined():
     found = []
     today = datetime.date.today()
     
-    # A valós végpontok amiket felfedeztünk
     targets = [
         ("CBA", "https://cba.hu/aktualis-ajanlataink/"),
         ("CBA Príma", "https://prima.hu/aktualis-ajanlataink/")
     ]
     
     for store_name, url in targets:
-        # 1. Kinyerjük a nyers PDF linkeket
         pdfs = _hunt_cba_prima_pdfs(url, store_name)
         
-        # 2. Feldolgozzuk a találatokat és kidobjuk a lejártakat
         for pdf_url in sorted(pdfs):
-            # Cím generálása a linkből (pl. 'cba_0219-0225.pdf')
             title = pdf_url.split('/')[-1] 
             is_expired = False
             
-            # Próbáljuk meg kiszedni az érvényesség végét a fájlnévből (pl. -0225.pdf)
             date_match = re.search(r'-(\d{2})(\d{2})\.pdf', pdf_url, re.IGNORECASE)
             if date_match:
                 month = int(date_match.group(1))
                 day = int(date_match.group(2))
-                
-                # Évszám kinyerése a mapparendszerből (pl. /2026/02/)
                 year = today.year
+                
                 year_match = re.search(r'/(\d{4})/\d{2}/', pdf_url)
                 if year_match:
                     year = int(year_match.group(1))
                     
                 try:
                     end_date = datetime.date(year, month, day)
-                    # Ha a lejárati nap régebbi, mint a mai nap, a PDF repül a kukába!
                     if end_date < today:
                         is_expired = True
                 except:
-                    pass # Ha valamiért rossz a dátum formátuma, inkább meghagyjuk az OCR-nek
+                    pass 
             
             if is_expired:
                 print(f"[DROP] Lejárt PDF eldobva: {title}")
@@ -967,3 +972,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+
