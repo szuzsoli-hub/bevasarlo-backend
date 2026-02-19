@@ -29,7 +29,7 @@ jobs:
 
       - name: Szükséges programok telepítése
         run: |
-          pip install requests beautifulsoup4 selenium webdriver-manager openai google-cloud-vision python-dotenv curl_cffi
+          pip install requests beautifulsoup4 selenium webdriver-manager openai google-cloud-vision python-dotenv curl_cffi PyMuPDF
 
       - name: Google Chrome telepítése (A fotózáshoz)
         uses: browser-actions/setup-chrome@latest
