@@ -102,7 +102,7 @@ def capture_pages_with_selenium(target_url, store_name):
                 "page_url": driver.current_url,
                 "page_num": page_num
             })
-            print(f"   -> {page_num}. oldal lefotózva.")
+            print(f"   -> {page_num}. oldal lefotózva. (URL: {driver.current_url})")
 
         return captured_data
 
@@ -114,7 +114,7 @@ def capture_pages_with_selenium(target_url, store_name):
 
 
 # ===============================================================================
-# 2. MODUL: AZ AGY - DÁTUM ELLENŐRZÉS (BOUNCER) 🧠
+# 2. MODUL: AZ AGY - DÁTUM ELLENŐRZÉS ÉS AI OSZTÁLYOZÁS (BOUNCER) 🧠
 # ===============================================================================
 
 def google_ocr(image_path):
@@ -124,16 +124,21 @@ def google_ocr(image_path):
     if response.error.message: return ""
     return response.full_text_annotation.text
 
-def interpret_text_with_ai(full_text, page_num, store_name):
+def interpret_text_with_ai(full_text, page_num, store_name, title_name):
     # Dátum instrukció csak az első oldalon
-    date_instr = "FELADAT 1: KERESD MEG AZ ÉRVÉNYESSÉGI IDŐT (YYYY.MM.DD-YYYY.MM.DD) a címlapon!" if page_num == 1 else ""
+    date_instr = "FELADAT 1: KERESD MEG AZ ÉRVÉNYESSÉGI IDŐT (YYYY.MM.DD-YYYY.MM.DD) a szövegben!" if page_num == 1 else ""
 
     prompt = f"""
-    Ez a(z) {store_name} akciós újság {page_num}. oldala.
+    Kaptál egy OCR szöveget a(z) {store_name} bolt "{title_name}" újságjának {page_num}. oldaláról.
     {date_instr}
 
-    FELADAT 2: Gyűjtsd ki az élelmiszer és vegyi áru termékeket JSON-be.
-    SZŰRÉS: Ne vegyél fel marketing dumát, receptet, vagy non-food (ruha, barkács) terméket, csak ha egyértelműen élelmiszer/vegyi áru.
+    FELADAT 2: KATEGORIZÁLÁS (Azonosítsd az oldal fő profilját!)
+    - Ha túlnyomórészt élelmiszer, ital, napi fogyasztási cikk vagy háztartási vegyi áru van rajta -> "ÉLELMISZER_VEGYES"
+    - Ha tisztán ruha, barkács, bútor, elektronika, vagy imázs/álláshirdetés konkrét termék nélkül -> "NONFOOD_MARKETING"
+
+    FELADAT 3: TERMÉKEK KIGYŰJTÉSE (Csak ha az oldal ÉLELMISZER_VEGYES!)
+    Gyűjtsd ki az élelmiszer és vegyi áru termékeket JSON-be. 
+    (Ha az oldal NONFOOD_MARKETING, a 'termekek' lista maradjon üresen: []).
 
     MEZŐK:
     - 'nev': Termék neve.
@@ -141,8 +146,9 @@ def interpret_text_with_ai(full_text, page_num, store_name):
     - 'ar_info': Kiszerelés ÉS egységár. HA VAN "/kg" vagy "/l" a képen, azt KÖTELEZŐ ideírni!
     - 'ar_info2': Feltételek (pl. "Csak 2 db esetén"). Ha nincs, legyen null.
 
-    JSON FORMAT:
+    ELVÁRT JSON FORMAT:
     {{
+      "oldal_jelleg": "ÉLELMISZER_VEGYES",
       "ervenyesseg": "2026.02.12-2026.02.18", 
       "termekek": [
         {{ "nev": "...", "ar": "...", "ar_info": "...", "ar_info2": null, "kategoria_dontes": "marad" }}
@@ -190,18 +196,19 @@ def check_validity_date(date_string):
     return True
 
 def process_images_with_ai(captured_data, flyer_meta):
-    print(f"🧠 AI Elemzés: {flyer_meta['store']}...")
+    print(f"🧠 AI Elemzés: {flyer_meta['store']} - {flyer_meta['title']}...")
     results = []
     detected_validity = flyer_meta.get('validity', "N/A")
+    nonfood_count = 0
 
-    for item in captured_data:
-        try:
+    try:
+        for item in captured_data:
             full_text = google_ocr(item['image_path'])
             if not full_text: 
-                os.remove(item['image_path'])
                 continue
 
-            structured = interpret_text_with_ai(full_text, item['page_num'], flyer_meta['store'])
+            # Átadjuk a bolt és újság nevet a promptnak, hogy az AI-nak ne kelljen kitalálnia
+            structured = interpret_text_with_ai(full_text, item['page_num'], flyer_meta['store'], flyer_meta['title'])
 
             # --- 1. BOUNCER: FRISS ÚJSÁG DÁTUM ELLENŐRZÉS ---
             if item['page_num'] == 1:
@@ -210,30 +217,50 @@ def process_images_with_ai(captured_data, flyer_meta):
                     # Ha az AI szerint a címlapon lévő dátum lejárt -> KUKA
                     if not check_validity_date(detected_validity):
                         print(f"⛔ BOUNCER: Ez az újság lejárt ({detected_validity}), teljes törlés! - {flyer_meta['title']}")
-                        os.remove(item['image_path'])
-                        return [] # Üres lista = Az egész újság kuka
+                        return [] # Megszakítja az AI elemzést
 
+            # --- 2. BOUNCER: NONFOOD / MARKETING SZŰRŐ ---
+            jelleg = structured.get("oldal_jelleg", "ÉLELMISZER_VEGYES")
+            if jelleg == "NONFOOD_MARKETING":
+                print(f"   ⏩ SKIP: A(z) {item['page_num']}. oldal '{jelleg}' besorolást kapott.")
+                nonfood_count += 1
+                
+                # Ha az első két oldal mindegyike nonfood (pl. tiszta barkács katalógus), eldobja az egészet
+                if item['page_num'] == 2 and nonfood_count == 2:
+                    print(f"⛔ BOUNCER: Az első 2 oldal NONFOOD. Egész újság kuka! - {flyer_meta['title']}")
+                    return []
+                continue # Átugorja a termékek listázását ezen az oldalon
+
+            # --- TERMÉKEK KIMENTÉSE (Precíz Deep Linkkel és kész metaadatokkal) ---
             for product in structured.get("termekek", []):
                 if product.get("kategoria_dontes") == "marad":
                     record = {
                         "bolt": flyer_meta['store'],
                         "ujsag": flyer_meta['title'],
+                        "oldalszam": item['page_num'],
                         "ervenyesseg": detected_validity,
                         "nev": product.get("nev"),
                         "ar": product.get("ar"),
                         "ar_info": product.get("ar_info"),
                         "ar_info2": product.get("ar_info2"),
-                        "forrasLink": flyer_meta['url']
+                        "forrasLink": item['page_url'], # A Jogi védelemhez (Deep Link)
+                        "alap_link": flyer_meta['url']  # A deduplikációhoz és jövőbeli csekkoláshoz
                     }
                     results.append(record)
                     print(f"      + {record['nev']} | {record['ar']}")
 
-            os.remove(item['image_path'])
-
-        except Exception as e:
-            print(f"⚠️ Hiba az AI feldolgozásnál: {e}")
+    except Exception as e:
+        print(f"⚠️ Hiba az AI feldolgozásnál: {e}")
+    finally:
+        # --- BIZTONSÁGI TAKARÍTÁS (SZIVÁRGÁSMENTESÍTÉS) ---
+        # Ez mindenképp lefut, ha sikerült, ha hibára futott, ha a Bouncer kidobta az újságot!
+        for item in captured_data:
             if os.path.exists(item['image_path']):
-                os.remove(item['image_path'])
+                try:
+                    os.remove(item['image_path'])
+                except Exception:
+                    pass
+        print(f"🧹 Takarítás: A(z) {flyer_meta['store']} átmeneti képei maradéktalanul törölve lettek.")
 
     return results
 
@@ -243,7 +270,7 @@ def process_images_with_ai(captured_data, flyer_meta):
 # ===============================================================================
 
 if __name__ == "__main__":
-    print("=== PROFESSZOR BOT: TOTAL CLEANUP VERZIÓ (v6.0) ===")
+    print("=== PROFESSZOR BOT: TOTAL CLEANUP VERZIÓ (v6.1 - DeepLink & NonFood) ===")
     print(f"📅 Mai dátum: {datetime.date.today()}")
 
     # 1. Friss linkek betöltése (Ez a referencia!)
@@ -275,11 +302,12 @@ if __name__ == "__main__":
     
     print("♻️  Régi adatok ellenőrzése...")
     for product in old_products:
-        p_link = product.get('forrasLink')
+        # Itt az 'alap_link'-et nézzük, ha már létezik (új formátum), de támogatjuk a régit is ('forrasLink')
+        p_base_link = product.get('alap_link', product.get('forrasLink'))
         p_date = product.get('ervenyesseg')
         
         # A) Link ellenőrzés: Még kint van a boltnál?
-        if p_link not in current_active_urls:
+        if p_base_link not in current_active_urls:
             dropped_link += 1
             continue # Töröljük, mert a bolt levette a linket
             
@@ -299,7 +327,8 @@ if __name__ == "__main__":
     # Jegyezzük meg, miket tartottunk meg (URL alapján), hogy ne dolgozzuk fel újra
     processed_urls_in_output = set()
     for p in final_products:
-        processed_urls_in_output.add(p['forrasLink'])
+        p_base_link = p.get('alap_link', p.get('forrasLink'))
+        processed_urls_in_output.add(p_base_link)
 
     # 4. ÚJ LINKKEK FELDOLGOZÁSA (BOUNCER MÓD)
     for flyer in current_flyers:
@@ -311,19 +340,19 @@ if __name__ == "__main__":
             continue 
         
         # HA ÚJ -> FELDOLGOZÁS INDUL
-        print(f"\n🆕 ÚJ ÚJSÁG! Vizsgálat indul: {flyer['store']}")
+        print(f"\n🆕 ÚJ ÚJSÁG! Vizsgálat indul: {flyer['store']} - {flyer['title']}")
         pages = capture_pages_with_selenium(url, flyer['store'])
         
         if pages:
             # Itt fut le a BOUNCER (process_images_with_ai).
-            # Ha az AI szerint az 1. oldal dátuma lejárt, üres listát ad vissza.
+            # Ha az AI szerint lejárt, vagy NONFOOD a katalógus, üres listát ad vissza.
             new_items = process_images_with_ai(pages, flyer)
             
             if new_items:
                 final_products.extend(new_items)
                 print(f"✅ SIKER! {len(new_items)} db termék hozzáadva.")
             else:
-                print("🚫 BLOKKOLVA (Lejárt újság).")
+                print("🚫 BLOKKOLVA (Lejárt újság vagy teljesen Non-Food katalógus).")
         else:
             print("⚠️ Nem sikerült a fotózás.")
 
