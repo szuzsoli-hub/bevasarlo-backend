@@ -111,7 +111,7 @@ def capture_pages_with_selenium(target_url, store_name):
                     # Megpróbáljuk megkeresni az iframe-et, hátha a flipbook abban van (mint a Sparnál)
                     iframes = driver.find_elements(By.TAG_NAME, "iframe")
                     if iframes:
-                         # Ha van iframe, átváltunk abba a kontextusba
+                         # Ha van iframe, átváltunk abba a kontextusba a kattintáshoz
                          driver.switch_to.frame(iframes[0])
                          
                     window_size = driver.get_window_size()
@@ -125,7 +125,7 @@ def capture_pages_with_selenium(target_url, store_name):
                     action = ActionChains(driver)
                     action.move_by_offset(-x_pos, -y_pos).perform() 
                     
-                    # Ha átváltottunk iframe-be, most visszatérünk a főoldalra
+                    # Ha átváltottunk iframe-be, most visszatérünk a főoldalra a képernyőfotózáshoz (vagy az iframe fotózásához)
                     if iframes:
                         driver.switch_to.default_content()
 
@@ -134,7 +134,22 @@ def capture_pages_with_selenium(target_url, store_name):
                 
                 time.sleep(3)
 
-            driver.save_screenshot(fajl_nev)
+            # --- MÓDOSÍTÁS: Célzott Fotózás (Iframe) ---
+            try:
+                # Újra megkeressük az iframe-et, mert a DOM változhatott
+                iframes_for_shot = driver.find_elements(By.TAG_NAME, "iframe")
+                if iframes_for_shot:
+                    # Ha van iframe (pl. Spar), csak azt fotózzuk le!
+                    iframe_element = iframes_for_shot[0]
+                    iframe_element.screenshot(fajl_nev)
+                    print(f"   -> Célzott (iframe) fotó kész.")
+                else:
+                    # Ha nincs iframe, jöhet a sima teljes képernyős fotó
+                    driver.save_screenshot(fajl_nev)
+            except Exception as e:
+                 print(f"⚠️ Képlopás hiba (célzott fotó): {e}, próbálkozás teljes képernyővel...")
+                 driver.save_screenshot(fajl_nev) # Végső fallback
+
             captured_data.append({
                 "image_path": fajl_nev,
                 "page_url": driver.current_url,
@@ -253,12 +268,22 @@ def process_images_with_ai(captured_data, flyer_meta):
 
             # --- 1. BOUNCER: FRISS ÚJSÁG DÁTUM ELLENŐRZÉS ---
             if item['page_num'] == 1:
-                if structured.get("ervenyesseg"):
-                    detected_validity = structured.get("ervenyesseg")
-                    # Ha az AI szerint a címlapon lévő dátum lejárt -> KUKA
-                    if not check_validity_date(detected_validity):
-                        print(f"⛔ BOUNCER: Ez az újság lejárt ({detected_validity}), teljes törlés! - {flyer_meta['title']}")
-                        return [] # Megszakítja az AI elemzést
+                # --- MÓDOSÍTÁS: A Bouncer "Vakfoltja" a Sparnál ---
+                # Ha Spar a bolt, azonnal felülírjuk az AI-t a Linkvadász által beküldött biztos dátummal!
+                if "spar" in flyer_meta['store'].lower():
+                     if flyer_meta.get('validity') and flyer_meta.get('validity') != "Keresés...":
+                         print(f"🛡️ SPAR VÉDELEM AKTÍV: OCR dátum felülírva a Linkvadász dátumával ({flyer_meta['validity']}).")
+                         detected_validity = flyer_meta['validity']
+                     else:
+                          # Ha valamiért mégis a Keresés... jött át, akkor is inkább hagyjuk futni.
+                         detected_validity = "N/A"
+                elif structured.get("ervenyesseg"):
+                     detected_validity = structured.get("ervenyesseg")
+
+                # Ha a dátum lejárt -> KUKA (Kivéve, ha "N/A", azt átengedjük)
+                if detected_validity != "N/A" and not check_validity_date(detected_validity):
+                     print(f"⛔ BOUNCER: Ez az újság lejárt ({detected_validity}), teljes törlés! - {flyer_meta['title']}")
+                     return [] # Megszakítja az AI elemzést
 
             # --- 2. BOUNCER: NONFOOD / MARKETING SZŰRŐ ---
             jelleg = structured.get("oldal_jelleg", "ÉLELMISZER_VEGYES")
@@ -403,4 +428,3 @@ if __name__ == "__main__":
         json.dump(final_products, f, ensure_ascii=False, indent=2)
 
     print(f"\n🏁 KÉSZ! Végső adatbázis: {len(final_products)} termék.")
-
