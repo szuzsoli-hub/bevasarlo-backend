@@ -165,7 +165,7 @@ def google_ocr(image_path):
 
 def interpret_text_with_ai(full_text, page_num, store_name, title_name):
     # Dátum instrukció csak az első oldalon
-    date_instr = "FELADAT 1: KERESD MEG AZ AKTUÁLIS ÉRVÉNYESSÉGI IDŐT (YYYY.MM.DD-YYYY.MM.DD) a szövegben! Keresd ki az összes dátumot, amit látsz!" if page_num == 1 else ""
+    date_instr = "FELADAT 1: KERESD MEG AZ AKTUÁLIS ÉRVÉNYESSÉGI IDŐT (YYYY.MM.DD-YYYY.MM.DD) a szövegben!" if page_num == 1 else ""
 
     # --- MÓDOSÍTÁS: Az árak és ár_infó formátumának okos szigorítása (ETALON) ---
     prompt = f"""
@@ -259,19 +259,20 @@ def process_images_with_ai(captured_data, flyer_meta):
                 # --- MÓDOSÍTÁS: A Hibrid Nyomozó (Spar Specifikus) ---
                 if "spar" in flyer_meta['store'].lower():
                     url_date_match = re.search(r'(2[4-6])(0[1-9]|1[0-2])(0[1-9]|[12]\d|3[01])', flyer_meta['url'])
-                    ai_detected_dates = re.findall(r'\d{4}[\.\-]\d{2}[\.\-]\d{2}', structured.get("ervenyesseg", ""))
+                    # MÓDOSÍTÁS: A nyers OCR szövegből (full_text) keressük a dátumokat, nem az AI-tól!
+                    ocr_detected_dates = re.findall(r'\d{4}[\.\-]\d{2}[\.\-]\d{2}', full_text)
                     
                     found_exact_match = False
                     
-                    if url_date_match and len(ai_detected_dates) >= 2:
+                    if url_date_match and len(ocr_detected_dates) >= 2:
                         # Ha van dátum az URL-ben, kinyerjük (pl. 260219 -> 2026.02.19)
                         y, m, d = url_date_match.groups()
                         expected_start = f"20{y}.{m}.{d}"
                         
-                        # Megnézzük az AI által talált dátumokat párosával (kezdet-vég)
-                        for i in range(0, len(ai_detected_dates)-1, 2):
-                            start_date = ai_detected_dates[i].replace('-', '.')
-                            end_date = ai_detected_dates[i+1].replace('-', '.')
+                        # Megnézzük a NYERS OCR által talált dátumokat párosával (kezdet-vég)
+                        for i in range(0, len(ocr_detected_dates)-1, 2):
+                            start_date = ocr_detected_dates[i].replace('-', '.')
+                            end_date = ocr_detected_dates[i+1].replace('-', '.')
                             
                             if start_date == expected_start:
                                 detected_validity = f"{start_date}-{end_date}"
