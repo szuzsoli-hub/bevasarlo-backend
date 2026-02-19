@@ -1,5 +1,5 @@
 {
-    "last_updated": "2026-02-19 18:49:31.960140",
+    "last_updated": "2026-02-19 19:38:53.601538",
     "flyers": [
         {
             "store": "Spar",
@@ -73,6 +73,11 @@
         },
         {
             "store": "Auchan",
+            "title": "2026-02-19-25-heti-hipermarket-ajanlataink",
+            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr08/2026-02-19-25-heti-hipermarket-ajanlataink"
+        },
+        {
+            "store": "Auchan",
             "title": "2026-02-19-04-04-husveti-ajanlataink",
             "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr08/2026-02-19-04-04-husveti-ajanlataink"
         },
@@ -80,11 +85,6 @@
             "store": "Auchan",
             "title": "2026-02-19-25-heti-szupermarket-ajanlataink",
             "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr08/2026-02-19-25-heti-szupermarket-ajanlataink"
-        },
-        {
-            "store": "Auchan",
-            "title": "2026-02-19-25-heti-hipermarket-ajanlataink",
-            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr08/2026-02-19-25-heti-hipermarket-ajanlataink"
         },
         {
             "store": "Aldi",
@@ -110,6 +110,36 @@
             "store": "CBA Príma",
             "title": "prima_0219-0225.pdf",
             "url": "https://www.prima.hu/wp-content/uploads/2026/02/prima_0219-0225.pdf"
+        },
+        {
+            "store": "Tisza-Coop",
+            "title": "coop-tisza-szorolap-2026-februar-4-het-abc-szuper",
+            "url": "https://katalogus.coop.hu/coop-tisza-szorolap-2026-februar-4-het-abc-szuper/"
+        },
+        {
+            "store": "Tisza-Coop",
+            "title": "coop-tisza-szorolap-2026-februar-4-het-abc-szuper",
+            "url": "https://katalogus.coop.hu/coop-tisza-szorolap-2026-februar-4-het-abc-szuper/"
+        },
+        {
+            "store": "Alföld Pro-Coop",
+            "title": "coop-alfold-szorolap-2026-februar-4-het",
+            "url": "https://katalogus.coop.hu/coop-alfold-szorolap-2026-februar-4-het/"
+        },
+        {
+            "store": "Észak-Kelet Pro-Coop",
+            "title": "coop-eszak-kelet-szorolap-2026-februar-4-5-het",
+            "url": "https://katalogus.coop.hu/coop-eszak-kelet-szorolap-2026-februar-4-5-het/"
+        },
+        {
+            "store": "Coop Mecsek Füszért",
+            "title": "coop-mecsek-szorolap-2026-februar-4-5-het",
+            "url": "https://katalogus.coop.hu/coop-mecsek-szorolap-2026-februar-4-5-het/"
+        },
+        {
+            "store": "Coop Hétforrás",
+            "title": "coop-hetforras-szorolap-2026-februar-3-4-5-het",
+            "url": "https://katalogus.coop.hu/coop-hetforras-szorolap-2026-februar-3-4-5-het/"
         }
     ]
 }
