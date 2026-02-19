@@ -2,6 +2,8 @@ import os
 import time
 import json
 import re
+import requests # <-- ÚJ IMPORT
+import fitz # <-- ÚJ IMPORT (PyMuPDF a PDF szeleteléshez)
 from dotenv import load_dotenv
 from openai import OpenAI
 from google.cloud import vision
@@ -49,7 +51,7 @@ if not os.path.exists(TEMP_DIR):
 
 
 # ===============================================================================
-# 1. MODUL: A FOTÓS (Capture) 📸
+# 1/A. MODUL: A FOTÓS (Capture - HTML/Selenium) 📸
 # ===============================================================================
 
 def capture_pages_with_selenium(target_url, store_name):
@@ -144,6 +146,57 @@ def capture_pages_with_selenium(target_url, store_name):
         return []
     finally:
         if 'driver' in locals(): driver.quit()
+
+
+# ===============================================================================
+# 1/B. MODUL: A SZELETELŐ (PDF Letöltés és darabolás) ✂️📄
+# ===============================================================================
+
+def capture_pages_from_pdf(target_url, store_name):
+    print(f"\n📄 PDF LETÖLTÉS ÉS SZELETELÉS INDUL ({store_name}): {target_url}")
+    captured_data = []
+    temp_pdf_path = os.path.join(TEMP_DIR, f"{store_name}_temp.pdf")
+
+    try:
+        # 1. Nyers PDF fájl letöltése
+        response = requests.get(target_url, timeout=30)
+        response.raise_for_status()
+        with open(temp_pdf_path, 'wb') as f:
+            f.write(response.content)
+
+        # 2. PDF megnyitása és darabolása (PyMuPDF)
+        doc = fitz.open(temp_pdf_path)
+        max_pages = min(4, len(doc)) # Maximum 4 oldal, hogy passzoljon a Selenium teszthez
+
+        for i in range(max_pages):
+            page_num = i + 1
+            page = doc.load_page(i)
+            # Kép generálása (dpi=200 a tökéletes, tűéles OCR-hez)
+            pix = page.get_pixmap(dpi=200)
+            fajl_nev = os.path.join(TEMP_DIR, f"{store_name}_oldal_{page_num}.png")
+            pix.save(fajl_nev)
+
+            captured_data.append({
+                "image_path": fajl_nev,
+                "page_url": target_url, # A link maga a PDF elérhetősége
+                "page_num": page_num
+            })
+            print(f"   -> {page_num}. oldal tökéletes minőségben kivágva a PDF-ből.")
+
+        doc.close()
+        return captured_data
+
+    except Exception as e:
+        print(f"❌ Hiba a PDF feldolgozásánál ({store_name}): {e}")
+        return []
+    finally:
+        # Takarítás: A letöltött nyers PDF-et azonnal eldobjuk
+        if os.path.exists(temp_pdf_path):
+            try:
+                os.remove(temp_pdf_path)
+            except:
+                pass
+
 
 # ===============================================================================
 # 2. MODUL: AZ AGY - DÁTUM ELLENŐRZÉS ÉS AI OSZTÁLYOZÁS (BOUNCER) 🧠
@@ -342,7 +395,7 @@ def process_images_with_ai(captured_data, flyer_meta):
 # ===============================================================================
 
 if __name__ == "__main__":
-    print("=== PROFESSZOR BOT: TOTAL CLEANUP VERZIÓ (v6.1 - DeepLink & NonFood) ===")
+    print("=== PROFESSZOR BOT: TOTAL CLEANUP VERZIÓ (v6.2 - PDF Szeletelővel) ===")
     print(f"📅 Mai dátum: {datetime.date.today()}")
 
     # 1. Friss linkek betöltése (Ez a referencia!)
@@ -411,14 +464,14 @@ if __name__ == "__main__":
             print(f"⏩ SKIP (Érvényes és kész): {flyer['store']} - {flyer['title']}")
             continue 
             
-        # --- MÓDOSÍTÁS: Spar Extra és Spar Market azonnali eldobása (Költségvédelem) ---
-        if "spar-extra" in url.lower() or "spar-market" in url.lower():
-            print(f"⏩ SKIP (Költségvédelem - Csonka/Helyi újság): {flyer['store']} - {flyer['title']}")
-            continue
-        
         # HA ÚJ -> FELDOLGOZÁS INDUL
         print(f"\n🆕 ÚJ ÚJSÁG! Vizsgálat indul: {flyer['store']} - {flyer['title']}")
-        pages = capture_pages_with_selenium(url, flyer['store'])
+
+        # --- AZ ÚTVÁLASZTÓ (KAPUŐR) ---
+        if url.lower().endswith('.pdf'):
+            pages = capture_pages_from_pdf(url, flyer['store'])
+        else:
+            pages = capture_pages_with_selenium(url, flyer['store'])
         
         if pages:
             # Itt fut le a BOUNCER (process_images_with_ai).
