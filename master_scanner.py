@@ -101,7 +101,9 @@ def get_slug_title(store, current_title, url):
     elif store == "Aldi":
         slug = url.split('/')[-1]
         if slug:
-            final_title = slug
+            # Regex: megkeresi a '_kw' + számok + '_' + véletlenszerű karakterek részt a string végén, és levágja
+            clean_slug = re.sub(r'_kw\d+_[a-zA-Z0-9]+$', '', slug)
+            final_title = clean_slug
 
     # --- SPAR: Link vége a 'spar/' vagy 'interspar/' stb. után ---
     # A SPAR Hunter már eleve az URL-ből generált címet adhat vissza, 
@@ -127,7 +129,8 @@ def scan_metro():
                 status = analyze_link("Metro", raw_title, link)
                 if status == "KEEP":
                     print(f"[{status}] {raw_title} -> {link}")
-                    found.append({"store": "Metro", "title": raw_title, "url": link, "validity": "Keresés..."})
+                    # VALIDITY TÖRÖLVE
+                    found.append({"store": "Metro", "title": raw_title, "url": link})
     except Exception as e:
         print(f"❌ Metro Hiba: {e}")
     return found
@@ -147,6 +150,9 @@ def scan_spar():
             
             # Frissítjük a címet a slug-ra
             item['title'] = slug
+            # VALIDITY TÖRÖLVE (Biztosíték, ha a külső modul beletette volna)
+            item.pop('validity', None)
+
             found_processed.append(item)
             
         print(f"✅ Master Scanner átvette és átnevezte a SPAR adatokat: {len(found_processed)} db")
@@ -229,7 +235,8 @@ def scan_auchan():
                 better_title = get_slug_title("Auchan", title, full_link)
                 
                 print(f"[{status}] {better_title} -> {full_link}")
-                found.append({"store": "Auchan", "title": better_title, "url": full_link, "validity": "Keresés..."})
+                # VALIDITY TÖRÖLVE
+                found.append({"store": "Auchan", "title": better_title, "url": full_link})
                 seen_links.add(full_link)
 
     except Exception as e:
@@ -255,17 +262,26 @@ def scan_penny():
                 clean_link = raw_link.replace('\\u002F', '/').replace('\\/', '/')
                 if '"' in clean_link: clean_link = clean_link.split('"')[0]
                 
-                # --- PENNY MARAD A RÉGI (JÓVÁHAGYVA) ---
-                title = "Penny Akciós Újság"
-                if "eletmod" in clean_link: title = "Penny Életmód"
-                
                 base_url = clean_link.split('?')[0]
                 if base_url not in processed_ids and ".jpg" not in base_url:
                     processed_ids.add(base_url)
+                    
+                    # --- ÚJ: PENNY URL ALAPÚ CÍMGENERÁLÁS ---
+                    title = "Penny Akciós Újság"
+                    if "eletmod" in clean_link:
+                        title = "Penny Életmód"
+                    else:
+                        # Kinyerjük a 202608 formátumot
+                        match = re.search(r'/(\d{4})(\d{2})/', clean_link)
+                        if match:
+                            year, week = match.groups()
+                            title = f"Penny Akciós Újság {int(week)}. heti ({year}{week})"
+                    
                     status = analyze_link("Penny", title, clean_link)
                     if status == "KEEP":
                         print(f"[{status}] {title} -> {clean_link}")
-                        found.append({"store": "Penny", "title": title, "url": clean_link, "validity": "Keresés..."})
+                        # VALIDITY TÖRÖLVE
+                        found.append({"store": "Penny", "title": title, "url": clean_link})
     except Exception as e:
         print(f"❌ Penny Hiba: {e}")
     return found
@@ -286,14 +302,23 @@ def scan_lidl():
             if not link.startswith('http'): link = f"https://www.lidl.hu{link}"
             
             raw_title = flyer.find(class_='flyer__title')
-            # --- LIDL MARAD A RÉGI (JÓVÁHAGYVA) ---
-            title = raw_title.get_text(strip=True) if raw_title else "Lidl Újság"
+            
+            # --- ÚJ: LIDL URL ALAPÚ CÍMGENERÁLÁS ---
+            match = re.search(r'/ujsag/([^/]+)', link)
+            if match:
+                slug = match.group(1)
+                # Eltávolítjuk a végéről a '-2026' vagy hasonló évszámot ha van
+                slug = re.sub(r'-\d{4}$', '', slug)
+                title = f"Lidl {slug}"
+            else:
+                title = raw_title.get_text(strip=True) if raw_title else "Lidl Újság"
             
             if link not in seen:
                 status = analyze_link("Lidl", title, link)
                 if status == "KEEP":
                     print(f"[{status}] {title} -> {link}")
-                    found.append({"store": "Lidl", "title": title, "url": link, "validity": "Keresés..."})
+                    # VALIDITY TÖRÖLVE
+                    found.append({"store": "Lidl", "title": title, "url": link})
                 seen.add(link)
     except Exception as e:
         print(f"❌ Lidl Hiba: {e}")
@@ -313,14 +338,19 @@ def scan_tesco():
             if 'tesco-ujsag' in href and ('hipermarket' in href or 'szupermarket' in href):
                 full_url = href if href.startswith('http') else f"https://www.tesco.hu{href}"
                 
-                # --- TESCO MARAD A RÉGI (JÓVÁHAGYVA) ---
-                title = "Tesco Hipermarket" if "hipermarket" in href else "Tesco Szupermarket"
+                # --- ÚJ: TESCO URL ALAPÚ CÍMGENERÁLÁS ---
+                match = re.search(r'/katalogusok/([^/]+/[^/]+)', full_url)
+                if match:
+                    title = f"Tesco {match.group(1)}"
+                else:
+                    title = "Tesco Hipermarket" if "hipermarket" in href else "Tesco Szupermarket"
                 
                 if full_url not in seen:
                     status = analyze_link("Tesco", title, full_url)
                     if status == "KEEP":
                         print(f"[{status}] {title} -> {full_url}")
-                        found.append({"store": "Tesco", "title": title, "url": full_url, "validity": "Keresés..."})
+                        # VALIDITY TÖRÖLVE
+                        found.append({"store": "Tesco", "title": title, "url": full_url})
                     seen.add(full_url)
     except Exception as e:
         print(f"❌ Tesco Hiba: {e}")
@@ -346,7 +376,8 @@ def scan_aldi():
                         better_title = get_slug_title("Aldi", title, href)
                         
                         print(f"[{status}] {better_title} -> {href}")
-                        found.append({"store": "Aldi", "title": better_title, "url": href, "validity": "Keresés..."})
+                        # VALIDITY TÖRÖLVE
+                        found.append({"store": "Aldi", "title": better_title, "url": href})
                     seen.add(href)
     except:
         pass
@@ -362,8 +393,8 @@ def scan_cba_combined():
         if response.status_code == 200:
             # --- CBA PRÍMA MARAD A RÉGI (JÓVÁHAGYVA) ---
             print("[KEEP] CBA Príma 5 (Szeged) -> https://prima5.hu/index.php/prima/akciok-katalogusok")
-            found.append({"store": "CBA Príma", "title": "CBA Príma 5 (Szeged)",
-                          "url": "https://prima5.hu/index.php/prima/akciok-katalogusok", "validity": "Keresés..."})
+            # VALIDITY TÖRÖLVE
+            found.append({"store": "CBA Príma", "title": "CBA Príma 5 (Szeged)", "url": "https://prima5.hu/index.php/prima/akciok-katalogusok"})
     except:
         pass
     url_cba = "https://cba.hu/aktualis-ajanlataink/"
@@ -377,11 +408,13 @@ def scan_cba_combined():
                 if len(href) > 20 and ("pdf" in href or "issuu" in href or "flipbook" in href):
                     # --- CBA ORSZÁGOS MARAD A RÉGI (JÓVÁHAGYVA) ---
                     print(f"[KEEP] CBA Országos -> {href}")
-                    found.append({"store": "CBA", "title": "CBA Akciós Újság", "url": href, "validity": "Keresés..."})
+                    # VALIDITY TÖRÖLVE
+                    found.append({"store": "CBA", "title": "CBA Akciós Újság", "url": href})
                     found_main = True
         if not found_main:
             print("[KEEP] CBA Országos Gyűjtőoldal -> https://cba.hu/aktualis-ajanlataink/")
-            found.append({"store": "CBA", "title": "CBA Akciós Újság", "url": url_cba, "validity": "Keresés..."})
+            # VALIDITY TÖRÖLVE
+            found.append({"store": "CBA", "title": "CBA Akciós Újság", "url": url_cba})
     except:
         pass
     return found
@@ -801,8 +834,8 @@ def main():
             all_flyers.append({
                 "store": store_display_name,
                 "title": final_title,
-                "url": url,
-                "validity": "Keresés..."
+                "url": url
+                # VALIDITY TÖRÖLVE
             })
             print(f"[COOP] {store_display_name} ({final_title}) hozzáadva.")
 
@@ -817,8 +850,8 @@ def main():
             all_flyers.append({
                 "store": store_display_name,
                 "title": final_title,
-                "url": url,
-                "validity": "Keresés..."
+                "url": url
+                # VALIDITY TÖRÖLVE
             })
             print(f"[COOP] {store_display_name} ({final_title}) hozzáadva.")
 
