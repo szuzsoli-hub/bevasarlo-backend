@@ -25,7 +25,7 @@ jobs:
         uses: browser-actions/setup-chrome@latest
         with:
           chrome-version: stable
-      
+        
       - name: Függőségek telepítése
         run: |
           pip install -r requirements.txt
@@ -51,4 +51,8 @@ jobs:
           # Feltöltjük a GitHubra
           git add assets/flyers.json
           git commit -m "Friss újság linkek: $(date)" || echo "Nincs változás"
+          
+          # --- BEILLESZTVE: Szinkronizálás a mentés előtt, hogy ne legyen hiba ---
+          git pull --rebase origin main
+          
           git push
