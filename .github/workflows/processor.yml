@@ -55,4 +55,8 @@ jobs:
           git add assets/universal_output.json
           # Ha van változás, elmentjük. Ha nincs, nem sírunk.
           git commit -m "Új termékek feldolgozva (AI) - $(date)" || echo "Nincs új adat, nem kell menteni."
+          
+          # --- BEILLESZTVE: Szinkronizálás a mentés előtt ---
+          git pull --rebase origin main
+          
           git push
