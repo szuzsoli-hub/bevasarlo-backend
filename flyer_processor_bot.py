@@ -373,8 +373,8 @@ def process_images_with_ai(captured_data, flyer_meta):
                     vegleges_link = item['page_url']
                     vegleges_oldalszam = item['page_num']
                     
-                    # Ha a jobb oldalon van, a linket ÉS az oldalszámot is megnöveljük eggyel!
-                    if terfel == "jobb":
+                    # Ha a jobb oldalon van (ÉS AZ EREDETI FORRÁS NEM PDF), a linket ÉS az oldalszámot is megnöveljük eggyel!
+                    if terfel == "jobb" and not flyer_meta['url'].lower().endswith('.pdf'):
                         vegleges_link = re.sub(r'(\d+)(/?)$', lambda m: str(int(m.group(1)) + 1) + m.group(2), item['page_url'])
                         vegleges_oldalszam = item['page_num'] + 1
                     
@@ -511,4 +511,5 @@ if __name__ == "__main__":
         json.dump(final_products, f, ensure_ascii=False, indent=2)
 
     print(f"\n🏁 KÉSZ! Végső adatbázis: {len(final_products)} termék.")
+
 
