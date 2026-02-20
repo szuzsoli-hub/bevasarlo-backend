@@ -371,15 +371,17 @@ def process_images_with_ai(captured_data, flyer_meta):
                     # === ÚJ: OLDAL TÉRFÉL (BAL/JOBB) MATEK ===
                     terfel = product.get("oldal_terfel", "bal").lower()
                     vegleges_link = item['page_url']
+                    vegleges_oldalszam = item['page_num']
                     
-                    # Ha a jobb oldalon van, a link végén található számot (oldalszámot) okosan megnöveljük eggyel
+                    # Ha a jobb oldalon van, a linket ÉS az oldalszámot is megnöveljük eggyel!
                     if terfel == "jobb":
                         vegleges_link = re.sub(r'(\d+)(/?)$', lambda m: str(int(m.group(1)) + 1) + m.group(2), item['page_url'])
+                        vegleges_oldalszam = item['page_num'] + 1
                     
                     record = {
                         "bolt": flyer_meta['store'],
                         "ujsag": flyer_meta['title'],
-                        "oldalszam": item['page_num'],
+                        "oldalszam": vegleges_oldalszam,  # <--- MOST MÁR A KIÍRT SZÁM IS PONTOS LESZ!
                         "ervenyesseg": detected_validity,
                         "nev": product.get("nev"),
                         "ar": product.get("ar"),
@@ -509,3 +511,4 @@ if __name__ == "__main__":
         json.dump(final_products, f, ensure_ascii=False, indent=2)
 
     print(f"\n🏁 KÉSZ! Végső adatbázis: {len(final_products)} termék.")
+
