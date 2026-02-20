@@ -219,9 +219,10 @@ def interpret_text_with_ai(full_text, page_num, store_name, title_name):
     # Dátum instrukció csak az első oldalon
     date_instr = "FELADAT 1: KERESD MEG AZ AKTUÁLIS ÉRVÉNYESSÉGI IDŐT (YYYY.MM.DD-YYYY.MM.DD) a szövegben! Keresd ki az összes dátumot, amit látsz!" if page_num == 1 else ""
 
-    # --- MÓDOSÍTÁS: Az árak és ár_infó formátumának okos szigorítása (ETALON) ---
+    # --- MÓDOSÍTÁS: AI Térfél felismerő beépítése ---
     prompt = f"""
     Kaptál egy OCR szöveget a(z) {store_name} bolt "{title_name}" újságjának {page_num}. oldaláról.
+    FIGYELEM: Ez a kép gyakran egy dupla oldalpárt (pl. 6-7. oldal) ábrázol!
     {date_instr}
 
     FELADAT 2: KATEGORIZÁLÁS (Azonosítsd az oldal fő profilját!)
@@ -237,13 +238,14 @@ def interpret_text_with_ai(full_text, page_num, store_name, title_name):
     - 'ar': Ár. Ez a fizetendő TELJES ár legyen (pl. a csomag ára)! KÖTELEZŐ FORMÁTUM: A szám után mindig írd oda a valutát is! (pl. "999 Ft", "229 Ft/db", vagy "4699 Ft"). SOHA ne az egységárat tedd ide!
     - 'ar_info': Kiszerelés ÉS egységár. TÖREKEDJ ERRE AZ ETALON FORMÁTUMRA: [Mennyiség], [Egységár]. Példák: "500 g, 1398 Ft/kg", vagy "40 db, 117,5 Ft/db", vagy "1.5 l, 499 Ft/l". KIVÉTEL: Ha valamelyik adat hiányzik a képről vagy olvashatatlan, NE dobd el a terméket, csak azt írd be, amit biztosan látsz!
     - 'ar_info2': Feltételek (pl. "Csak 2 db esetén", "Clubcarddal"). Ha nincs, legyen null.
+    - 'oldal_terfel': Határozd meg, hogy a termék a kép BAL vagy JOBB térfelén található-e. Ha a kép csak egyetlen oldalt ábrázol, akkor legyen "bal". Értéke csak "bal" vagy "jobb" lehet.
 
     ELVÁRT JSON FORMAT:
     {{
       "oldal_jelleg": "ÉLELMISZER_VEGYES",
       "ervenyesseg": "2026.02.12-2026.02.18", 
       "termekek": [
-        {{ "nev": "...", "ar": "999 Ft", "ar_info": "500 g, 1398 Ft/kg", "ar_info2": null, "kategoria_dontes": "marad" }}
+        {{ "nev": "...", "ar": "999 Ft", "ar_info": "500 g, 1398 Ft/kg", "ar_info2": null, "oldal_terfel": "jobb", "kategoria_dontes": "marad" }}
       ]
     }}
     
@@ -365,6 +367,15 @@ def process_images_with_ai(captured_data, flyer_meta):
             # --- TERMÉKEK KIMENTÉSE (Precíz Deep Linkkel és kész metaadatokkal) ---
             for product in structured.get("termekek", []):
                 if product.get("kategoria_dontes") == "marad":
+                    
+                    # === ÚJ: OLDAL TÉRFÉL (BAL/JOBB) MATEK ===
+                    terfel = product.get("oldal_terfel", "bal").lower()
+                    vegleges_link = item['page_url']
+                    
+                    # Ha a jobb oldalon van, a link végén található számot (oldalszámot) okosan megnöveljük eggyel
+                    if terfel == "jobb":
+                        vegleges_link = re.sub(r'(\d+)(/?)$', lambda m: str(int(m.group(1)) + 1) + m.group(2), item['page_url'])
+                    
                     record = {
                         "bolt": flyer_meta['store'],
                         "ujsag": flyer_meta['title'],
@@ -374,11 +385,11 @@ def process_images_with_ai(captured_data, flyer_meta):
                         "ar": product.get("ar"),
                         "ar_info": product.get("ar_info"),
                         "ar_info2": product.get("ar_info2"),
-                        "forrasLink": item['page_url'], # A Jogi védelemhez (Deep Link)
+                        "forrasLink": vegleges_link, # A Jogi védelemhez (Most már kicentizve!)
                         "alap_link": flyer_meta['url']  # A deduplikációhoz és jövőbeli csekkoláshoz
                     }
                     results.append(record)
-                    print(f"      + {record['nev']} | {record['ar']}")
+                    print(f"      + {record['nev']} | {record['ar']} | Térfél: {terfel.upper()}")
 
     except Exception as e:
         print(f"⚠️ Hiba az AI feldolgozásnál: {e}")
@@ -498,5 +509,3 @@ if __name__ == "__main__":
         json.dump(final_products, f, ensure_ascii=False, indent=2)
 
     print(f"\n🏁 KÉSZ! Végső adatbázis: {len(final_products)} termék.")
-
-
