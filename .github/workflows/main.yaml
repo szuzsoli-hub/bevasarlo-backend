@@ -2,7 +2,7 @@ name: Akcios Ujsag Linkvadasz (Automata)
 
 on:
   schedule:
-    - cron: '0 5,11,17 * * *' # Futás: 5:00, 11:00, 17:00 UTC
+    - cron: '13 4,10,16 * * *' # Futás: 4:13, 10:13, 16:13 UTC (Magyar idő: 5:13, 11:13, 17:13)
   workflow_dispatch: # Kézi indítás lehetősége gombnyomásra
 
 jobs:
