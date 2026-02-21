@@ -10414,5 +10414,41 @@
     "ar_info2": null,
     "forrasLink": "https://szorolap.aldi.hu/online_akcios_ujsag_2026_02_26_kw09_ty33fl52/page/4-5",
     "alap_link": "https://szorolap.aldi.hu/online_akcios_ujsag_2026_02_26_kw09_ty33fl52"
+  },
+  {
+    "bolt": "Spar",
+    "ujsag": "260226-3-spar-extra-ajanlat",
+    "oldalszam": 3,
+    "ervenyesseg": "N/A",
+    "nev": "Starbucks kávékapszula",
+    "ar": "1.999 Ft",
+    "ar_info": "18 db, 133.28 Ft/db",
+    "ar_info2": "Csak 2 db esetén",
+    "forrasLink": "https://www.spar.hu/ajanlatok/spar-extra/260226-3-spar-extra-ajanlat",
+    "alap_link": "https://www.spar.hu/ajanlatok/spar-extra/260226-3-spar-extra-ajanlat"
+  },
+  {
+    "bolt": "Spar",
+    "ujsag": "260226-3-spar-extra-ajanlat",
+    "oldalszam": 3,
+    "ervenyesseg": "N/A",
+    "nev": "Finesi kutyaeledel konzerv",
+    "ar": "799 Ft",
+    "ar_info": "1240 g, 644.35 Ft/kg",
+    "ar_info2": "2 db esetén",
+    "forrasLink": "https://www.spar.hu/ajanlatok/spar-extra/260226-3-spar-extra-ajanlat",
+    "alap_link": "https://www.spar.hu/ajanlatok/spar-extra/260226-3-spar-extra-ajanlat"
+  },
+  {
+    "bolt": "Spar",
+    "ujsag": "260226-3-spar-extra-ajanlat",
+    "oldalszam": 3,
+    "ervenyesseg": "N/A",
+    "nev": "Petsup macskaeledel konzerv",
+    "ar": "499 Ft",
+    "ar_info": "1.202.41 Ft/kg",
+    "ar_info2": "2 db esetén",
+    "forrasLink": "https://www.spar.hu/ajanlatok/spar-extra/260226-3-spar-extra-ajanlat",
+    "alap_link": "https://www.spar.hu/ajanlatok/spar-extra/260226-3-spar-extra-ajanlat"
   }
 ]
