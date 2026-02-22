@@ -1,5 +1,5 @@
 {
-    "last_updated": "2026-02-22 06:38:15.465093",
+    "last_updated": "2026-02-22 11:05:55.740461",
     "flyers": [
         {
             "store": "Penny",
@@ -83,13 +83,23 @@
         },
         {
             "store": "Auchan",
+            "title": "2026-02-19-04-04-husveti-ajanlataink",
+            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr08/2026-02-19-04-04-husveti-ajanlataink"
+        },
+        {
+            "store": "Auchan",
             "title": "2026-02-19-25-heti-szupermarket-ajanlataink",
             "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr08/2026-02-19-25-heti-szupermarket-ajanlataink"
         },
         {
-            "store": "Auchan",
-            "title": "2026-02-19-04-04-husveti-ajanlataink",
-            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr08/2026-02-19-04-04-husveti-ajanlataink"
+            "store": "Aldi",
+            "title": "online_akcios_ujsag_2026_02_26",
+            "url": "https://szorolap.aldi.hu/online_akcios_ujsag_2026_02_26_kw09_ty33fl52"
+        },
+        {
+            "store": "Aldi",
+            "title": "online_akcios_ujsag_2026_02_19",
+            "url": "https://szorolap.aldi.hu/online_akcios_ujsag_2026_02_19_kw08_psf9y3ck"
         },
         {
             "store": "CBA",
