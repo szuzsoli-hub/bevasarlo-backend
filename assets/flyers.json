@@ -1,51 +1,6 @@
 {
-    "last_updated": "2026-02-21 17:09:28.511626",
+    "last_updated": "2026-02-22 06:38:15.465093",
     "flyers": [
-        {
-            "store": "Spar",
-            "title": "260219-1-spar-szorolap",
-            "url": "https://www.spar.hu/ajanlatok/spar/260219-1-spar-szorolap"
-        },
-        {
-            "store": "Spar",
-            "title": "260219-2-interspar-szorolap",
-            "url": "https://www.spar.hu/ajanlatok/interspar/260219-2-interspar-szorolap"
-        },
-        {
-            "store": "Spar",
-            "title": "260219-3-spar-extra-ajanlat",
-            "url": "https://www.spar.hu/ajanlatok/spar-extra/260219-3-spar-extra-ajanlat"
-        },
-        {
-            "store": "Spar",
-            "title": "260219-4-spar-market-city-spar",
-            "url": "https://www.spar.hu/ajanlatok/spar-market/260219-4-spar-market-city-spar"
-        },
-        {
-            "store": "Spar",
-            "title": "260226-1-spar-szorolap-p",
-            "url": "https://www.spar.hu/ajanlatok/spar/260226-1-spar-szorolap-p"
-        },
-        {
-            "store": "Spar",
-            "title": "260226-5-spar-balatonboglar-uzlet-megujulas",
-            "url": "https://www.spar.hu/ajanlatok/spar/260226-5-spar-balatonboglar-uzlet-megujulas"
-        },
-        {
-            "store": "Spar",
-            "title": "260226-2-interspar-szorolap-p",
-            "url": "https://www.spar.hu/ajanlatok/interspar/260226-2-interspar-szorolap-p"
-        },
-        {
-            "store": "Spar",
-            "title": "260226-3-spar-extra-ajanlat",
-            "url": "https://www.spar.hu/ajanlatok/spar-extra/260226-3-spar-extra-ajanlat"
-        },
-        {
-            "store": "Spar",
-            "title": "260226-4-spar-market-city-spar",
-            "url": "https://www.spar.hu/ajanlatok/spar-market/260226-4-spar-market-city-spar"
-        },
         {
             "store": "Penny",
             "title": "Penny Akciós Újság 8. heti (202608)",
@@ -123,8 +78,8 @@
         },
         {
             "store": "Auchan",
-            "title": "2026-02-19-04-04-husveti-ajanlataink",
-            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr08/2026-02-19-04-04-husveti-ajanlataink"
+            "title": "2026-02-19-25-heti-hipermarket-ajanlataink",
+            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr08/2026-02-19-25-heti-hipermarket-ajanlataink"
         },
         {
             "store": "Auchan",
@@ -133,23 +88,8 @@
         },
         {
             "store": "Auchan",
-            "title": "2026-02-19-25-heti-hipermarket-ajanlataink",
-            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr08/2026-02-19-25-heti-hipermarket-ajanlataink"
-        },
-        {
-            "store": "Aldi",
-            "title": "online_akcios_ujsag_2026_02_26",
-            "url": "https://szorolap.aldi.hu/online_akcios_ujsag_2026_02_26_kw09_ty33fl52"
-        },
-        {
-            "store": "Aldi",
-            "title": "online_akcios_ujsag_2026_02_19",
-            "url": "https://szorolap.aldi.hu/online_akcios_ujsag_2026_02_19_kw08_psf9y3ck"
-        },
-        {
-            "store": "Aldi",
-            "title": "online_ujranyitas_akcios_ujsag_2026_02_19",
-            "url": "https://szorolap.aldi.hu/online_ujranyitas_akcios_ujsag_2026_02_19_kw08_tbh54ctt"
+            "title": "2026-02-19-04-04-husveti-ajanlataink",
+            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr08/2026-02-19-04-04-husveti-ajanlataink"
         },
         {
             "store": "CBA",
