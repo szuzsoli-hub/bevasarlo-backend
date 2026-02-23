@@ -1,5 +1,5 @@
 {
-    "last_updated": "2026-02-22 17:09:41.715119",
+    "last_updated": "2026-02-23 07:49:28.149732",
     "flyers": [
         {
             "store": "Penny",
@@ -30,26 +30,6 @@
             "store": "Lidl",
             "title": "Lidl regionalis-akciok-szolnok-koszeg-budapest-09het",
             "url": "https://www.lidl.hu/l/hu/ujsag/regionalis-akciok-szolnok-koszeg-budapest-09het/ar/0?lf=HHZ"
-        },
-        {
-            "store": "Lidl",
-            "title": "Lidl regionalis-akciok-budapest-szalay-utca-08het",
-            "url": "https://www.lidl.hu/l/hu/ujsag/regionalis-akciok-budapest-szalay-utca-08het/ar/0?lf=HHZ"
-        },
-        {
-            "store": "Lidl",
-            "title": "Lidl regionalis-akciok-koszeg-caki-ut-08het",
-            "url": "https://www.lidl.hu/l/hu/ujsag/regionalis-akciok-koszeg-caki-ut-08het/ar/0?lf=HHZ"
-        },
-        {
-            "store": "Lidl",
-            "title": "Lidl regionalis-akciok-paks-gyor-08het",
-            "url": "https://www.lidl.hu/l/hu/ujsag/regionalis-akciok-paks-gyor-08het/ar/0?lf=HHZ"
-        },
-        {
-            "store": "Lidl",
-            "title": "Lidl regionalis-akciok-szolnok-toszegi-ut-08het",
-            "url": "https://www.lidl.hu/l/hu/ujsag/regionalis-akciok-szolnok-toszegi-ut-08het/ar/0?lf=HHZ"
         },
         {
             "store": "Lidl",
@@ -122,9 +102,19 @@
             "url": "https://katalogus.coop.hu/coop-tisza-szorolap-2026-februar-4-het-abc-szuper/"
         },
         {
+            "store": "Tisza-Coop",
+            "title": "coop-tisza-szorolap-2026-februar-5-het-abc-szuper",
+            "url": "https://katalogus.coop.hu/coop-tisza-szorolap-2026-februar-5-het-abc-szuper/"
+        },
+        {
             "store": "Alföld Pro-Coop",
             "title": "coop-alfold-szorolap-2026-februar-4-het",
             "url": "https://katalogus.coop.hu/coop-alfold-szorolap-2026-februar-4-het/"
+        },
+        {
+            "store": "Alföld Pro-Coop",
+            "title": "coop-alfold-szorolap-2026-februar-5-het",
+            "url": "https://katalogus.coop.hu/coop-alfold-szorolap-2026-februar-5-het/"
         },
         {
             "store": "Észak-Kelet Pro-Coop",
