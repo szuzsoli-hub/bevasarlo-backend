@@ -192,10 +192,21 @@ def interpret_text_with_ai(full_text, page_num, store_name, title_name, link_hin
     {date_instr}
 
     FELADAT 2: KATEGORIZÁLÁS ("ÉLELMISZER_VEGYES" vagy "NONFOOD_MARKETING")
-    FELADAT 3: TERMÉKEK KIGYŰJTÉSE
+    FELADAT 3: TERMÉKEK KIGYŰJTÉSE (Csak ha ÉLELMISZER_VEGYES)
 
-    JSON MEZŐK: 'nev', 'ar', 'ar_info', 'ar_info2', 'ervenyesseg'
-    Fontos: Az 'ervenyesseg' mezőbe írd amit találtál. Ha semmit, használd a súgást: {link_hint}
+    ELVÁRT JSON FORMÁTUM KÖTELEZŐEN:
+    {{
+      "oldal_jelleg": "ÉLELMISZER_VEGYES",
+      "ervenyesseg": "Ide jön a talált dátum, vagy a súgás: {link_hint}",
+      "termekek": [
+        {{
+          "nev": "Termék neve",
+          "ar": "Ár valutával",
+          "ar_info": "Kiszerelés és egységár",
+          "ar_info2": "Feltételek vagy null"
+        }}
+      ]
+    }}
 
     OCR SZÖVEG:
     {full_text}
@@ -261,21 +272,21 @@ def process_images_with_ai(captured_data, flyer_meta):
                 continue
 
             for product in structured.get("termekek", []):
-                if product.get("kategoria_dontes") == "marad":
-                    record = {
-                        "bolt": flyer_meta['store'],
-                        "ujsag": flyer_meta['title'],
-                        "oldalszam": item['page_num'],
-                        "ervenyesseg": detected_validity,
-                        "nev": product.get("nev"),
-                        "ar": product.get("ar"),
-                        "ar_info": product.get("ar_info"),
-                        "ar_info2": product.get("ar_info2"),
-                        "forrasLink": item['page_url'],
-                        "alap_link": flyer_meta['url']
-                    }
-                    results.append(record)
-                    print(f"      + {record['nev']} | {record['ar']}")
+                # Kivettük a kategoria_dontes feltételt, mindent mentünk, amit az AI terméknek talált!
+                record = {
+                    "bolt": flyer_meta['store'],
+                    "ujsag": flyer_meta['title'],
+                    "oldalszam": item['page_num'],
+                    "ervenyesseg": detected_validity,
+                    "nev": product.get("nev"),
+                    "ar": product.get("ar"),
+                    "ar_info": product.get("ar_info"),
+                    "ar_info2": product.get("ar_info2"),
+                    "forrasLink": item['page_url'],
+                    "alap_link": flyer_meta['url']
+                }
+                results.append(record)
+                print(f"      + {record['nev']} | {record['ar']}")
 
     except Exception as e:
         print(f"⚠️ Hiba az AI feldolgozásnál: {e}")
@@ -332,3 +343,4 @@ if __name__ == "__main__":
         json.dump(final_products, f, ensure_ascii=False, indent=2)
 
     print(f"\n🏁 KÉSZ! Adatbázis: {len(final_products)} termék.")
+
