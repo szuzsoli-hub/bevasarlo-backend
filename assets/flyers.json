@@ -1,5 +1,5 @@
 {
-    "last_updated": "2026-02-24 07:44:19.477750",
+    "last_updated": "2026-02-24 12:07:21.936226",
     "flyers": [
         {
             "store": "Penny",
@@ -63,11 +63,6 @@
         },
         {
             "store": "Auchan",
-            "title": "2026-02-19-25-heti-hipermarket-ajanlataink",
-            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr08/2026-02-19-25-heti-hipermarket-ajanlataink"
-        },
-        {
-            "store": "Auchan",
             "title": "2026-02-19-25-heti-szupermarket-ajanlataink",
             "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr08/2026-02-19-25-heti-szupermarket-ajanlataink"
         },
@@ -75,6 +70,11 @@
             "store": "Auchan",
             "title": "2026-02-26-03-04-heti-hipermarket-ajanlataink",
             "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr09/2026-02-26-03-04-heti-hipermarket-ajanlataink"
+        },
+        {
+            "store": "Auchan",
+            "title": "2026-02-19-25-heti-hipermarket-ajanlataink",
+            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr08/2026-02-19-25-heti-hipermarket-ajanlataink"
         },
         {
             "store": "Aldi",
