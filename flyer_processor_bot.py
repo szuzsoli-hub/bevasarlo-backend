@@ -43,7 +43,7 @@ if not os.path.exists(TEMP_DIR):
     os.makedirs(TEMP_DIR)
 
 # ===============================================================================
-# 1. SEGÉDFÜGGVÉNYEK (BLOKK SZELETELŐ ÉS OCR) ✂️
+# 1. JAVÍTOTT SEGÉDFÜGGVÉNYEK ✂️
 # ===============================================================================
 
 def split_text_into_price_blocks(full_text):
@@ -51,7 +51,6 @@ def split_text_into_price_blocks(full_text):
     Ár alapú blokk szeletelő.
     Tiszta határok az árak között, visszanyúlás nélkül a duplikáció elkerülésére.
     """
-    # Kibővített ár regex: 999Ft, 1.299 Ft, 2999FT
     price_pattern = r'\b\d{1,3}(?:[ .]?\d{3})*\s?F[tT]\b(?!/)'
     matches = list(re.finditer(price_pattern, full_text))
     blocks = []
@@ -60,12 +59,8 @@ def split_text_into_price_blocks(full_text):
         return []
 
     for i, match in enumerate(matches):
-        start = match.start()
-        # A blokk kezdete az előző tétel vége, vagy ha az nincs, a szöveg eleje
         prev_end = matches[i-1].end() if i > 0 else 0
         safe_start = prev_end
-
-        # A blokk vége a következő ár kezdete
         if i < len(matches) - 1:
             end = matches[i + 1].start()
         else:
@@ -105,7 +100,7 @@ def interpret_text_with_ai_block(block_text, store_name, title_name, prices, uni
     - TILTOTT százalék minták: {noises}
 
     MEZŐK:
-    1) 'ar': Csak a 'Teljes árak' listából. Nem lehet egységár.
+    1) 'ar': Kötelező. Csak a 'Teljes árak' listából. Nem lehet egységár.
     2) 'ar_info': Formátum: "[Mennyiség], [Egységár]". Százalék (%) és marketing szöveg TILOS.
     3) 'oldal_terfel': bal/jobb.
 
@@ -160,8 +155,8 @@ def process_images_with_ai(captured_data, flyer_meta):
             # --- 1. DÁTUM: SZIGORÚ NULL-KEZELÉS (Csak az 1. oldalról) ---
             if item['page_num'] == 1:
                 date_prompt = f"""
-                Keresd ki a fő érvényességi időt.
-                Formátum: YYYY.MM.DD-YYYY.MM.DD
+                Keresd ki a fő érvényességi időt (YYYY.MM.DD-YYYY.MM.DD).
+                Csak a címlap fő dátuma érdekes.
                 Ha nem található, válasz: {{ "ervenyesseg": null }}
                 Szöveg: {full_text}
                 """
@@ -177,25 +172,24 @@ def process_images_with_ai(captured_data, flyer_meta):
                     print(f"⛔ LEJÁRT ÚJSÁG: {final_detected_validity}")
                     return []
 
-            # --- 2. OLDAL JELLEG ELLENŐRZÉS ---
+            # --- 2. OLDAL JELLEG SZIGORÍTÁS ---
             class_resp = client.chat.completions.create(
                 model="gpt-4o", temperature=0, response_format={"type": "json_object"},
                 messages=[{
                     "role": "user",
-                    "content": f'Válaszolj ebben a formában: {{ "jelleg": "ÉLELMISZER_VEGYES" }} \n\n Szöveg: {full_text[:800]}'
+                    "content": f'Döntsd el az oldal jellegét. Válasz opciók: "ELELMISZER", "NONFOOD_MARKETING", "VEGYES". Válaszolj JSON-ben: {{ "jelleg": "..." }}. Szöveg: {full_text[:800]}'
                 }]
             )
-            if json.loads(class_resp.choices[0].message.content).get("jelleg") == "NONFOOD_MARKETING":
+            page_type = json.loads(class_resp.choices[0].message.content).get("jelleg")
+            if page_type == "NONFOOD_MARKETING":
                 continue
 
             # --- 3. BLOKK SZELETELÉS ÉS FELDOLGOZÁS ---
             blocks = split_text_into_price_blocks(full_text)
             for block in blocks:
-                # Mérnöki regexek a ChatGPT review alapján:
+                # Finomított regexek
                 prices = list(set(re.findall(r'\b\d{1,3}(?:[ .]?\d{3})*\s?F[tT]\b(?!/)', block)))
-                # Kezeli az OCR törést ( Ft / kg )
                 unit_prices = list(set(re.findall(r'\b\d+(?:[.,]\d+)?\s?F[tT]\s?/\s?(?:kg|g|l|ml|db)\b', block, re.I)))
-                # Kizárja a marketing szövegeket (lookahead)
                 units = list(set(re.findall(r'\b\d+(?:[.,]\d+)?\s?(?:kg|g|l|ml|db)\b(?!\s*[a-zA-Záéíóöőúüű])', block, re.I)))
                 noises = list(set(re.findall(r'\b\d+\s?%\b', block)))
 
@@ -207,13 +201,14 @@ def process_images_with_ai(captured_data, flyer_meta):
                 )
 
                 if structured.get("kategoria_dontes") == "marad" and structured.get("ar"):
-                    # --- 4. DEDUPLIKÁCIÓ ÉS VALIDÁCIÓ ---
+                    # --- 4. DEDUPLIKÁCIÓ ÉS ÁR SANITY CHECK ---
                     item_key = (structured.get("nev"), structured.get("ar"))
                     if item_key in seen_items: continue
                     
-                    # Ár-sanity check (150k limit gyanús élelmiszernél)
                     try:
-                        num_p = int(re.sub(r'\D', '', structured.get("ar")))
+                        # Ár tisztítás: pontok törlése, vessző utáni rész levágása
+                        price_str = str(structured.get("ar")).split(',')[0].replace('.', '').replace(' ', '')
+                        num_p = int(re.sub(r'\D', '', price_str))
                         if num_p > 150000: continue 
                     except: pass
 
@@ -250,7 +245,7 @@ def process_images_with_ai(captured_data, flyer_meta):
     return results
 
 # ===============================================================================
-# FŐ MODULOK (FOTÓZÁS ÉS PDF SZELETELÉS - EREDETI) 📸
+# FŐ MODULOK (FOTÓZÁS ÉS PDF SZELETELÉS) 📸
 # ===============================================================================
 
 def capture_pages_with_selenium(target_url, store_name):
@@ -273,7 +268,6 @@ def capture_pages_with_selenium(target_url, store_name):
         driver.get(target_url)
         time.sleep(10) 
 
-        # Süti kezelés és egyéb zavaró elemek
         try:
             buttons = driver.find_elements(By.TAG_NAME, "button")
             for btn in buttons:
@@ -330,7 +324,7 @@ def capture_pages_from_pdf(target_url, store_name):
 # ===============================================================================
 
 if __name__ == "__main__":
-    print("=== PROFESSZOR BOT: INDUSTRIAL BLOCK VERSION (v7.3) ===")
+    print("=== PROFESSZOR BOT: INDUSTRIAL BLOCK VERSION (v7.4) ===")
     if not os.path.exists(INPUT_FILE): exit()
     with open(INPUT_FILE, 'r', encoding='utf-8') as f:
         current_flyers = json.load(f).get("flyers", [])
@@ -343,14 +337,12 @@ if __name__ == "__main__":
     processed_urls = set()
     active_urls = [f['url'] for f in current_flyers]
 
-    # Tisztítás
     for p in old_products:
         link = p.get('alap_link', p.get('forrasLink'))
         if link in active_urls and check_validity_date(p.get('ervenyesseg')):
             final_products.append(p)
             processed_urls.add(link)
 
-    # Feldolgozás
     for flyer in current_flyers:
         if flyer['url'] in processed_urls: continue
         pages = capture_pages_from_pdf(flyer['url'], flyer['store']) if flyer['url'].lower().endswith('.pdf') else capture_pages_with_selenium(flyer['url'], flyer['store'])
