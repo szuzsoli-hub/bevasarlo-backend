@@ -43,19 +43,17 @@ if not os.path.exists(TEMP_DIR):
     os.makedirs(TEMP_DIR)
 
 # ===============================================================================
-# 1. JAVÍTOTT SEGÉDFÜGGVÉNYEK ✂️
+# 1. SEGÉDFÜGGVÉNYEK ✂️
 # ===============================================================================
 
 def split_text_into_price_blocks(full_text):
-    """
-    Ár alapú blokk szeletelő.
-    Tiszta határok az árak között, visszanyúlás nélkül a duplikáció elkerülésére.
-    """
+    # Kibővített ár regex: 999Ft, 1.299 Ft, 2999FT
     price_pattern = r'\b\d{1,3}(?:[ .]?\d{3})*\s?F[tT]\b(?!/)'
     matches = list(re.finditer(price_pattern, full_text))
     blocks = []
 
     if not matches:
+        print("      ❌ DEBUG: Egyetlen árat (Ft) sem találtam a szövegben regex-szel!")
         return []
 
     for i, match in enumerate(matches):
@@ -67,17 +65,25 @@ def split_text_into_price_blocks(full_text):
             end = len(full_text)
 
         block_text = full_text[safe_start:end].strip()
-        if 20 < len(block_text) < 1000:
+        if 15 < len(block_text) < 1200:
             blocks.append(block_text)
 
+    print(f"      🔍 DEBUG: A szöveget {len(blocks)} ár-blokkra vágtam szét.")
     return blocks
 
 def google_ocr(image_path):
+    if not os.path.exists(image_path):
+        print(f"      ❌ DEBUG: A képfájl nem létezik: {image_path}")
+        return ""
     with open(image_path, "rb") as img_file: content = img_file.read()
     image = vision.Image(content=content)
     response = vision_client.document_text_detection(image=image)
-    if response.error.message: return ""
-    return response.full_text_annotation.text
+    if response.error.message: 
+        print(f"      ❌ DEBUG OCR HIBA: {response.error.message}")
+        return ""
+    text = response.full_text_annotation.text
+    print(f"      ✅ DEBUG OCR: Siker. Szöveg hossza: {len(text)} karakter.")
+    return text
 
 # ===============================================================================
 # 2. MODUL: BLOKK SZINTŰ AI ÉRTELMEZÉS 🧠
@@ -88,9 +94,9 @@ def interpret_text_with_ai_block(block_text, store_name, title_name, prices, uni
     Egy termék BLOKK szövegét kaptad a(z) {store_name} "{title_name}" újságjából.
     Ez a blokk pontosan EGY terméket tartalmaz.
 
-    SZABÁLYOK A SZÁMOKHOZ:
+    SZABÁLYOK:
     - KIZÁRÓLAG a fenti listákból választhatsz ár és mennyiség adatot. 
-    - Az OCR szövegből új számot (ami nincs a listában) NEM használhatsz!
+    - Az OCR szövegből új számot NEM használhatsz!
     - Ha a listák üresek, írj null-t.
 
     BIZTOS MINTÁK:
@@ -98,11 +104,6 @@ def interpret_text_with_ai_block(block_text, store_name, title_name, prices, uni
     - Mennyiségek: {units}
     - Egységár jelöltek: {unit_prices}
     - TILTOTT százalék minták: {noises}
-
-    MEZŐK:
-    1) 'ar': Kötelező. Csak a 'Teljes árak' listából. Nem lehet egységár.
-    2) 'ar_info': Formátum: "[Mennyiség], [Egységár]". Százalék (%) és marketing szöveg TILOS.
-    3) 'oldal_terfel': bal/jobb.
 
     ELVÁRT JSON:
     {{
@@ -126,11 +127,11 @@ def interpret_text_with_ai_block(block_text, store_name, title_name, prices, uni
     return json.loads(response.choices[0].message.content)
 
 # ===============================================================================
-# 3. MODUL: FOLYAMATVEZÉRLŐ (MÉRNÖKI FINOMÍTÁSOKKAL) ⚙️
+# 3. MODUL: FOLYAMATVEZÉRLŐ (A NYOMOZÓ) ⚙️
 # ===============================================================================
 
 def check_validity_date(date_string):
-    if not date_string or date_string == "N/A": return True
+    if not date_string or date_string == "N/A" or date_string == "null": return True
     try:
         dates = re.findall(r'\d{4}[\.\-]\d{2}[\.\-]\d{2}', str(date_string))
         if dates:
@@ -142,24 +143,20 @@ def check_validity_date(date_string):
     return True
 
 def process_images_with_ai(captured_data, flyer_meta):
-    print(f"🧠 IPARI BLOKK AI Elemzés: {flyer_meta['store']}...")
+    print(f"\n🕵️ NYOMOZÁS INDUL: {flyer_meta['store']} feldolgozása...")
     results = []
     seen_items = set() 
     final_detected_validity = flyer_meta.get('validity', "N/A")
 
     try:
         for item in captured_data:
+            print(f"   --- {item['page_num']}. oldal vizsgálata ---")
             full_text = google_ocr(item['image_path'])
             if not full_text: continue
 
-            # --- 1. DÁTUM: SZIGORÚ NULL-KEZELÉS (Csak az 1. oldalról) ---
+            # --- 1. DÁTUM ELLENŐRZÉS (Csak 1. oldal) ---
             if item['page_num'] == 1:
-                date_prompt = f"""
-                Keresd ki a fő érvényességi időt (YYYY.MM.DD-YYYY.MM.DD).
-                Csak a címlap fő dátuma érdekes.
-                Ha nem található, válasz: {{ "ervenyesseg": null }}
-                Szöveg: {full_text}
-                """
+                date_prompt = f'Keresd ki a fő érvényességi időt (YYYY.MM.DD-YYYY.MM.DD). Válasz formátum: {{ "ervenyesseg": "..." }}. Szöveg: {full_text}'
                 d_resp = client.chat.completions.create(
                     model="gpt-4o", temperature=0, response_format={"type": "json_object"},
                     messages=[{"role": "user", "content": date_prompt}]
@@ -167,27 +164,29 @@ def process_images_with_ai(captured_data, flyer_meta):
                 date_json = json.loads(d_resp.choices[0].message.content)
                 if date_json.get("ervenyesseg"):
                     final_detected_validity = date_json["ervenyesseg"]
+                    print(f"      📅 DEBUG: Az AI szerint az érvényesség: {final_detected_validity}")
 
                 if not check_validity_date(final_detected_validity):
-                    print(f"⛔ LEJÁRT ÚJSÁG: {final_detected_validity}")
-                    return []
+                    print(f"      ⚠️ FIGYELEM: Lejárt dátum ({final_detected_validity}), de DEBUG módban NEM állok meg!")
 
-            # --- 2. OLDAL JELLEG SZIGORÍTÁS ---
+            # --- 2. OLDAL JELLEG DÖNTÉS ---
             class_resp = client.chat.completions.create(
                 model="gpt-4o", temperature=0, response_format={"type": "json_object"},
                 messages=[{
                     "role": "user",
-                    "content": f'Döntsd el az oldal jellegét. Válasz opciók: "ELELMISZER", "NONFOOD_MARKETING", "VEGYES". Válaszolj JSON-ben: {{ "jelleg": "..." }}. Szöveg: {full_text[:800]}'
+                    "content": f'Döntsd el az oldal jellegét (ELELMISZER / NONFOOD_MARKETING / VEGYES). Válaszolj JSON-ben: {{ "jelleg": "..." }}. Szöveg: {full_text[:800]}'
                 }]
             )
             page_type = json.loads(class_resp.choices[0].message.content).get("jelleg")
+            print(f"      🚩 DEBUG: Az oldal besorolása: {page_type}")
+
             if page_type == "NONFOOD_MARKETING":
+                print("      ⏩ SKIP: Marketing/Non-food oldal, ugrom.")
                 continue
 
-            # --- 3. BLOKK SZELETELÉS ÉS FELDOLGOZÁS ---
+            # --- 3. BLOKK FELDOLGOZÁS ---
             blocks = split_text_into_price_blocks(full_text)
-            for block in blocks:
-                # Finomított regexek
+            for b_idx, block in enumerate(blocks):
                 prices = list(set(re.findall(r'\b\d{1,3}(?:[ .]?\d{3})*\s?F[tT]\b(?!/)', block)))
                 unit_prices = list(set(re.findall(r'\b\d+(?:[.,]\d+)?\s?F[tT]\s?/\s?(?:kg|g|l|ml|db)\b', block, re.I)))
                 units = list(set(re.findall(r'\b\d+(?:[.,]\d+)?\s?(?:kg|g|l|ml|db)\b(?!\s*[a-zA-Záéíóöőúüű])', block, re.I)))
@@ -201,12 +200,10 @@ def process_images_with_ai(captured_data, flyer_meta):
                 )
 
                 if structured.get("kategoria_dontes") == "marad" and structured.get("ar"):
-                    # --- 4. DEDUPLIKÁCIÓ ÉS ÁR SANITY CHECK ---
                     item_key = (structured.get("nev"), structured.get("ar"))
                     if item_key in seen_items: continue
                     
                     try:
-                        # Ár tisztítás: pontok törlése, vessző utáni rész levágása
                         price_str = str(structured.get("ar")).split(',')[0].replace('.', '').replace(' ', '')
                         num_p = int(re.sub(r'\D', '', price_str))
                         if num_p > 150000: continue 
@@ -214,7 +211,6 @@ def process_images_with_ai(captured_data, flyer_meta):
 
                     seen_items.add(item_key)
 
-                    # --- 5. OLDALMATEK (BAL/JOBB) ---
                     terfel = str(structured.get("oldal_terfel", "bal")).lower()
                     v_link = item['page_url']
                     v_oldal = item['page_num']
@@ -235,17 +231,17 @@ def process_images_with_ai(captured_data, flyer_meta):
                         "forrasLink": v_link,
                         "alap_link": flyer_meta['url']
                     })
-                    print(f"      + {structured.get('nev')} | {structured.get('ar')}")
+                    print(f"         ✅ TERMÉK: {structured.get('nev')} ({structured.get('ar')})")
 
     except Exception as e:
-        print(f"⚠️ AI hiba: {e}")
+        print(f"      ❌ AI hiba: {e}")
     finally:
         for item in captured_data:
             if os.path.exists(item['image_path']): os.remove(item['image_path'])
     return results
 
 # ===============================================================================
-# FŐ MODULOK (FOTÓZÁS ÉS PDF SZELETELÉS) 📸
+# FŐ MODULOK (FOTÓZÁS ÉS PDF SZELETELÉS - EREDETI) 📸
 # ===============================================================================
 
 def capture_pages_with_selenium(target_url, store_name):
@@ -267,16 +263,6 @@ def capture_pages_with_selenium(target_url, store_name):
         })
         driver.get(target_url)
         time.sleep(10) 
-
-        try:
-            buttons = driver.find_elements(By.TAG_NAME, "button")
-            for btn in buttons:
-                txt = btn.text.lower()
-                if any(x in txt for x in ["elfogad", "accept", "ok", "rendben"]):
-                    driver.execute_script("arguments[0].click();", btn)
-                    time.sleep(1)
-                    break
-        except: pass
 
         captured_data = []
         for i in range(4): 
@@ -300,7 +286,7 @@ def capture_pages_with_selenium(target_url, store_name):
         if 'driver' in locals(): driver.quit()
 
 def capture_pages_from_pdf(target_url, store_name):
-    print(f"\n📄 PDF SZELETELÉS INDUL ({store_name}): {target_url}")
+    print(f"\n📄 PDF LETÖLTÉS INDUL ({store_name})")
     temp_pdf = os.path.join(TEMP_DIR, f"{store_name}_temp.pdf")
     headers = {"User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 14_4) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.4 Safari/605.1.15"}
     try:
@@ -324,32 +310,31 @@ def capture_pages_from_pdf(target_url, store_name):
 # ===============================================================================
 
 if __name__ == "__main__":
-    print("=== PROFESSZOR BOT: INDUSTRIAL BLOCK VERSION (v7.4) ===")
-    if not os.path.exists(INPUT_FILE): exit()
+    print("=== PROFESSZOR BOT: DEBUG VERZIÓ (v7.4.debug) ===")
+    if not os.path.exists(INPUT_FILE):
+        print("❌ HIBA: flyers.json nem található!")
+        exit()
+
     with open(INPUT_FILE, 'r', encoding='utf-8') as f:
         current_flyers = json.load(f).get("flyers", [])
     
-    old_products = []
-    if os.path.exists(OUTPUT_FILE):
-        with open(OUTPUT_FILE, 'r', encoding='utf-8') as f: old_products = json.load(f)
+    print(f"📋 Összesen {len(current_flyers)} újságot találtam a flyers.json-ben.")
 
     final_products = []
-    processed_urls = set()
-    active_urls = [f['url'] for f in current_flyers]
-
-    for p in old_products:
-        link = p.get('alap_link', p.get('forrasLink'))
-        if link in active_urls and check_validity_date(p.get('ervenyesseg')):
-            final_products.append(p)
-            processed_urls.add(link)
-
     for flyer in current_flyers:
-        if flyer['url'] in processed_urls: continue
+        print(f"\n🆕 ÚJ ÚJSÁG: {flyer['store']} - {flyer['title']}")
         pages = capture_pages_from_pdf(flyer['url'], flyer['store']) if flyer['url'].lower().endswith('.pdf') else capture_pages_with_selenium(flyer['url'], flyer['store'])
+        
         if pages:
             new_items = process_images_with_ai(pages, flyer)
-            if new_items: final_products.extend(new_items)
+            if new_items:
+                final_products.extend(new_items)
+                print(f"✅ SIKER: {len(new_items)} terméket mentettem el.")
+            else:
+                print("❌ HIBA: Nem jött vissza egyetlen termék sem az AI-tól.")
+        else:
+            print("❌ HIBA: Nem sikerült lefotózni/szeletelni az újságot.")
 
     with open(OUTPUT_FILE, "w", encoding="utf-8") as f:
         json.dump(final_products, f, ensure_ascii=False, indent=2)
-    print(f"\n🏁 KÉSZ! Adatbázis: {len(final_products)} termék.")
+    print(f"\n🏁 VÉGEZTEM! universal_output.json hossza: {len(final_products)} termék.")
