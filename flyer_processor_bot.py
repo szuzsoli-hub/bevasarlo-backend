@@ -47,6 +47,10 @@ if not os.path.exists(TEMP_DIR):
 # ===============================================================================
 
 def split_text_into_price_blocks(full_text):
+    """
+    Ár alapú blokk szeletelő.
+    Tiszta határok az árak között, visszanyúlás nélkül a duplikáció elkerülésére.
+    """
     # Kibővített ár regex: 999Ft, 1.299 Ft, 2999FT
     price_pattern = r'\b\d{1,3}(?:[ .]?\d{3})*\s?F[tT]\b(?!/)'
     matches = list(re.finditer(price_pattern, full_text))
@@ -57,6 +61,7 @@ def split_text_into_price_blocks(full_text):
         return []
 
     for i, match in enumerate(matches):
+        start = match.start()
         prev_end = matches[i-1].end() if i > 0 else 0
         safe_start = prev_end
         if i < len(matches) - 1:
@@ -90,8 +95,9 @@ def google_ocr(image_path):
 # ===============================================================================
 
 def interpret_text_with_ai_block(block_text, store_name, title_name, prices, units, unit_prices, noises):
+    # JAVÍTÁS: A promptba bekerült a 'JSON' szó a 400-as hiba ellen
     prompt = f"""
-    Egy termék BLOKK szövegét kaptad a(z) {store_name} "{title_name}" újságjából.
+    Válaszolj JSON formátumban. Egy termék BLOKK szövegét kaptad a(z) {store_name} "{title_name}" újságjából.
     Ez a blokk pontosan EGY terméket tartalmaz.
 
     SZABÁLYOK:
@@ -105,7 +111,7 @@ def interpret_text_with_ai_block(block_text, store_name, title_name, prices, uni
     - Egységár jelöltek: {unit_prices}
     - TILTOTT százalék minták: {noises}
 
-    ELVÁRT JSON:
+    ELVÁRT STRUKTÚRA:
     {{
       "nev": "...",
       "ar": "999 Ft",
@@ -156,7 +162,13 @@ def process_images_with_ai(captured_data, flyer_meta):
 
             # --- 1. DÁTUM ELLENŐRZÉS (Csak 1. oldal) ---
             if item['page_num'] == 1:
-                date_prompt = f'Keresd ki a fő érvényességi időt (YYYY.MM.DD-YYYY.MM.DD). Válasz formátum: {{ "ervenyesseg": "..." }}. Szöveg: {full_text}'
+                # JAVÍTÁS: JSON kulcsszó hozzáadva
+                date_prompt = f"""
+                Keresd ki a fő érvényességi időt (YYYY.MM.DD-YYYY.MM.DD). 
+                Válaszolj JSON formátumban ebben a formában: {{ "ervenyesseg": "..." }}.
+                Ha nem találod, a JSON-ben az érték legyen null.
+                Szöveg: {full_text}
+                """
                 d_resp = client.chat.completions.create(
                     model="gpt-4o", temperature=0, response_format={"type": "json_object"},
                     messages=[{"role": "user", "content": date_prompt}]
@@ -170,11 +182,12 @@ def process_images_with_ai(captured_data, flyer_meta):
                     print(f"      ⚠️ FIGYELEM: Lejárt dátum ({final_detected_validity}), de DEBUG módban NEM állok meg!")
 
             # --- 2. OLDAL JELLEG DÖNTÉS ---
+            # JAVÍTÁS: JSON kulcsszó hozzáadva
             class_resp = client.chat.completions.create(
                 model="gpt-4o", temperature=0, response_format={"type": "json_object"},
                 messages=[{
                     "role": "user",
-                    "content": f'Döntsd el az oldal jellegét (ELELMISZER / NONFOOD_MARKETING / VEGYES). Válaszolj JSON-ben: {{ "jelleg": "..." }}. Szöveg: {full_text[:800]}'
+                    "content": f'Döntsd el az oldal jellegét (ELELMISZER / NONFOOD_MARKETING / VEGYES). Válaszolj JSON formátumban: {{ "jelleg": "..." }}. Szöveg: {full_text[:800]}'
                 }]
             )
             page_type = json.loads(class_resp.choices[0].message.content).get("jelleg")
@@ -241,7 +254,7 @@ def process_images_with_ai(captured_data, flyer_meta):
     return results
 
 # ===============================================================================
-# FŐ MODULOK (FOTÓZÁS ÉS PDF SZELETELÉS - EREDETI) 📸
+# FŐ MODULOK (FOTÓZÁS ÉS PDF SZELETELÉS) 📸
 # ===============================================================================
 
 def capture_pages_with_selenium(target_url, store_name):
@@ -310,7 +323,7 @@ def capture_pages_from_pdf(target_url, store_name):
 # ===============================================================================
 
 if __name__ == "__main__":
-    print("=== PROFESSZOR BOT: DEBUG VERZIÓ (v7.4.debug) ===")
+    print("=== PROFESSZOR BOT: DEBUG VERZIÓ (v7.4.debug-fixed) ===")
     if not os.path.exists(INPUT_FILE):
         print("❌ HIBA: flyers.json nem található!")
         exit()
