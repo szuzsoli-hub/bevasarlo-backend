@@ -43,7 +43,6 @@ TEMP_DIR = os.path.join(base_dir, "temp_kepek")
 if not os.path.exists(TEMP_DIR):
     os.makedirs(TEMP_DIR)
 
-
 # ===============================================================================
 # 1/A. MODUL: A FOTÓS (Capture - HTML/Selenium) 📸
 # ===============================================================================
@@ -106,12 +105,9 @@ def capture_pages_with_selenium(target_url, store_name):
                 except Exception as e:
                     print(f"⚠️ Lapozási hiba: {e}")
                 
-                # Várakozás, hogy az URL is frissüljön a címsorban!
                 time.sleep(6)
 
             driver.save_screenshot(fajl_nev)
-
-            # ELMENTJÜK A PILLANATNYI URL-T (EZ LESZ A FORRÁS)
             current_live_url = driver.current_url
 
             captured_data.append({
@@ -128,7 +124,6 @@ def capture_pages_with_selenium(target_url, store_name):
         return []
     finally:
         if 'driver' in locals(): driver.quit()
-
 
 # ===============================================================================
 # 1/B. MODUL: A SZELETELŐ (PDF Letöltés és darabolás) ✂️📄
@@ -171,7 +166,6 @@ def capture_pages_from_pdf(target_url, store_name):
     finally:
         if os.path.exists(temp_pdf_path): os.remove(temp_pdf_path)
 
-
 # ===============================================================================
 # 2. MODUL: AZ AGY - DÁTUM ELLENŐRZÉS ÉS AI OSZTÁLYOZÁS 🧠
 # ===============================================================================
@@ -183,34 +177,26 @@ def google_ocr(image_path):
     if response.error.message: return ""
     return response.full_text_annotation.text
 
-def interpret_text_with_ai(full_text, page_num, store_name, title_name):
-    date_instr = "FELADAT 1: KERESD MEG AZ AKTUÁLIS ÉRVÉNYESSÉGI IDŐT (YYYY.MM.DD-YYYY.MM.DD)!" if page_num == 1 else ""
+def interpret_text_with_ai(full_text, page_num, store_name, title_name, link_hint):
+    date_instr = ""
+    if page_num == 1:
+        date_instr = f"""
+        FELADAT 1: DÁTUM KERESÉS
+        Súgás a linkből: {link_hint}
+        Keresd az érvényességi időt! Kulcsszavak: Érvényes, Ajánlatunk, Időtartam, csütörtöktől, szerdáig, vasárnapig, heti, hét.
+        Ha találsz konkrét dátumot (pl. 02.19 - 25.), másold ki pontosan! Ha csak heti számot látsz (pl. 8. hét), azt is írd be!
+        """
 
     prompt = f"""
     Kaptál egy OCR szöveget a(z) {store_name} bolt "{title_name}" újságjának {page_num}. oldaláról.
     {date_instr}
 
-    FELADAT 2: KATEGORIZÁLÁS
-    - "ÉLELMISZER_VEGYES" vagy "NONFOOD_MARKETING"
+    FELADAT 2: KATEGORIZÁLÁS ("ÉLELMISZER_VEGYES" vagy "NONFOOD_MARKETING")
+    FELADAT 3: TERMÉKEK KIGYŰJTÉSE
 
-    FELADAT 3: TERMÉKEK KIGYŰJTÉSE (Csak ha ÉLELMISZER_VEGYES)
-    Gyűjtsd ki a termékeket JSON-be.
+    JSON MEZŐK: 'nev', 'ar', 'ar_info', 'ar_info2', 'ervenyesseg'
+    Fontos: Az 'ervenyesseg' mezőbe írd amit találtál. Ha semmit, használd a súgást: {link_hint}
 
-    MEZŐK:
-    - 'nev': Termék neve.
-    - 'ar': Teljes ár pénznemmel (pl. "999 Ft").
-    - 'ar_info': Kiszerelés és egységár.
-    - 'ar_info2': Feltételek (pl. "Clubcarddal").
-
-    ELVÁRT JSON:
-    {{
-      "oldal_jelleg": "ÉLELMISZER_VEGYES",
-      "ervenyesseg": "2026.02.12-2026.02.18", 
-      "termekek": [
-        {{ "nev": "...", "ar": "999 Ft", "ar_info": "...", "ar_info2": null, "kategoria_dontes": "marad" }}
-      ]
-    }}
-    
     OCR SZÖVEG:
     {full_text}
     """
@@ -223,13 +209,14 @@ def interpret_text_with_ai(full_text, page_num, store_name, title_name):
     return json.loads(response.choices[0].message.content)
 
 def check_validity_date(date_string):
-    if not date_string: return True
+    if not date_string or "hét" in str(date_string).lower(): return True
     try:
         dates = re.findall(r'\d{4}[\.\-]\d{2}[\.\-]\d{2}', str(date_string))
         if dates:
             dates.sort()
             end_date_str = dates[-1].replace('-', '.')
             end_date = datetime.datetime.strptime(end_date_str, "%Y.%m.%d").date()
+            # Csak akkor dobjuk ki, ha biztosan elmúlt a végdátum
             if end_date < datetime.date.today(): return False
     except: pass
     return True
@@ -237,7 +224,18 @@ def check_validity_date(date_string):
 def process_images_with_ai(captured_data, flyer_meta):
     print(f"🧠 AI Elemzés: {flyer_meta['store']}...")
     results = []
-    detected_validity = flyer_meta.get('validity', "N/A")
+    
+    # 1. LINK-FIRST LOGIKA: Adatkinyerés az URL-ből súgásként
+    link_hint = flyer_meta.get('validity', "N/A")
+    url_dates = re.findall(r'202\d[.\-_]\d{2}[.\-_]\d{2}', flyer_meta['url'])
+    if url_dates:
+        link_hint = f"{url_dates[0]} (link alapján)"
+    elif "heti" in flyer_meta['url'] or "het" in flyer_meta['url']:
+        week_match = re.search(r'(\d{1,2})[-_]het', flyer_meta['url'])
+        if week_match:
+            link_hint = f"{week_match.group(1)}. hét (link alapján)"
+
+    detected_validity = link_hint
     nonfood_count = 0
 
     try:
@@ -245,52 +243,35 @@ def process_images_with_ai(captured_data, flyer_meta):
             full_text = google_ocr(item['image_path'])
             if not full_text: continue
 
-            structured = interpret_text_with_ai(full_text, item['page_num'], flyer_meta['store'], flyer_meta['title'])
+            structured = interpret_text_with_ai(full_text, item['page_num'], flyer_meta['store'], flyer_meta['title'], link_hint)
 
-            # Dátum bouncer
             if item['page_num'] == 1:
-                is_valid = True
-                if "spar" in flyer_meta['store'].lower():
-                    # Spar hibrid logika marad a funkcióvesztés elkerülése miatt
-                    url_date_match = re.search(r'(2[4-6])(0[1-9]|1[0-2])(0[1-9]|[12]\d|3[01])', flyer_meta['url'])
-                    ocr_detected_dates = re.findall(r'\d{4}[\.\-]\d{2}[\.\-]\d{2}', full_text)
-                    if url_date_match and len(ocr_detected_dates) >= 2:
-                        y, m, d = url_date_match.groups()
-                        expected_start = f"20{y}.{m}.{d}"
-                        for i in range(0, len(ocr_detected_dates)-1, 2):
-                            if ocr_detected_dates[i].replace('-', '.') == expected_start:
-                                detected_validity = f"{ocr_detected_dates[i]}-{ocr_detected_dates[i+1]}"
-                                is_valid = check_validity_date(detected_validity)
-                                break
-                else:
-                    if structured.get("ervenyesseg"):
-                        detected_validity = structured.get("ervenyesseg")
-                        is_valid = check_validity_date(detected_validity)
+                if structured.get("ervenyesseg") and structured.get("ervenyesseg") != "N/A":
+                    detected_validity = structured.get("ervenyesseg")
                 
-                if not is_valid:
+                # Szelíd Bouncer: Ha nem tudjuk biztosan hogy lejárt, megtartjuk!
+                if not check_validity_date(detected_validity):
                     print(f"⛔ LEJÁRT: {detected_validity}")
                     return []
 
-            # Nonfood bouncer
             jelleg = structured.get("oldal_jelleg", "ÉLELMISZER_VEGYES")
             if jelleg == "NONFOOD_MARKETING":
                 nonfood_count += 1
                 if item['page_num'] == 3 and nonfood_count == 3: return []
                 continue
 
-            # TERMÉKEK KIMENTÉSE - EGYSZERŰSÍTETT LINKELÉSSEL
             for product in structured.get("termekek", []):
                 if product.get("kategoria_dontes") == "marad":
                     record = {
                         "bolt": flyer_meta['store'],
                         "ujsag": flyer_meta['title'],
-                        "oldalszam": item['page_num'], # Az AI által látott fizikai kép sorszáma
+                        "oldalszam": item['page_num'],
                         "ervenyesseg": detected_validity,
                         "nev": product.get("nev"),
                         "ar": product.get("ar"),
                         "ar_info": product.get("ar_info"),
                         "ar_info2": product.get("ar_info2"),
-                        "forrasLink": item['page_url'], # A FOTÓZÁSKOR ELMENTETT VALÓS URL!
+                        "forrasLink": item['page_url'],
                         "alap_link": flyer_meta['url']
                     }
                     results.append(record)
@@ -305,11 +286,9 @@ def process_images_with_ai(captured_data, flyer_meta):
 
     return results
 
-# A Fővezérlő rész változatlan marad a tisztítás és mentés miatt...
 if __name__ == "__main__":
-    print("=== PROFESSZOR BOT: EGYSZERŰSÍTETT LINKELÉS VERZIÓ ===")
-    print(f"📅 Mai dátum: {datetime.date.today()}")
-
+    print("=== PROFESSZOR BOT: ROBUST DÁTUMKEZELŐ VERZIÓ ===")
+    
     if not os.path.exists(INPUT_FILE):
         print("❌ Nincs flyers.json!")
         exit()
@@ -329,7 +308,6 @@ if __name__ == "__main__":
     final_products = []
     processed_urls_in_output = set()
     
-    # Tisztítás (link és dátum alapján)
     for product in old_products:
         p_base_link = product.get('alap_link', product.get('forrasLink'))
         if p_base_link in current_active_urls and check_validity_date(product.get('ervenyesseg')):
