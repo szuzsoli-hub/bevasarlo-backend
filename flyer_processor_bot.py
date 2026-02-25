@@ -233,11 +233,11 @@ def process_images_with_ai(captured_data, flyer_meta, all_flyers):
 
     detected_validity = "N/A"
     
-    # --- 3. JAVÍTÁS: CSAK AZ 1. OLDALT, TÖBBIT CSAK HA KELL ---
-    first_page_ok = False
+    # --- 3. JAVÍTÁS: CSAK AZ 1. HASZNOS OLDALT (SPÓROLÁS ÉS ENGEDÉKENY JSON) ---
+    found_products = False
     for item in captured_data:
-        # Ha már az első oldalon találtunk terméket/dátumot, a többi oldalt átugorjuk a spórolás miatt!
-        if first_page_ok and item['page_num'] > 1:
+        # Ha már korábban találtunk termékeket, spórolás miatt kilépünk!
+        if found_products:
             break
 
         full_text = google_ocr(item['image_path'])
@@ -249,17 +249,21 @@ def process_images_with_ai(captured_data, flyer_meta, all_flyers):
             if not check_validity_date(detected_validity, flyer_meta, all_flyers):
                 print(f"⛔ LEJÁRT: {detected_validity}")
                 return []
-            if structured.get("termekek"):
-                first_page_ok = True
 
-        if structured.get("oldal_jelleg") == "ÉLELMISZER_VEGYES":
-            for product in structured.get("termekek", []):
+        # ENGEDÉKENY SZŰRŐ: Nem érdekel minket a kategória neve. 
+        # Ha az AI adott vissza terméket, akkor azt elmentjük!
+        termekek = structured.get("termekek", [])
+        if termekek:
+            for product in termekek:
                 results.append({
                     "bolt": flyer_meta['store'], "ujsag": flyer_meta['title'], "oldalszam": item['page_num'],
                     "ervenyesseg": detected_validity, "nev": product.get("nev"), "ar": product.get("ar"),
                     "ar_info": product.get("ar_info"), "ar_info2": product.get("ar_info2"),
                     "forrasLink": item['page_url'], "alap_link": flyer_meta['url']
                 })
+            # Siker! Megtaláltuk az első hasznos oldalt (akár az 1., akár a 2. volt az).
+            found_products = True 
+            
     return results
 
 if __name__ == "__main__":
@@ -289,16 +293,10 @@ if __name__ == "__main__":
 
     for product in old_products:
         url = product.get('alap_link')
-        if url in active_urls and check_validity_date(product.get('ervenyesseg')):
-            # Megnézzük, van-e azonos bolttól frissebb újság a flyers.json-ben
-            my_start = get_start_date(product.get('ervenyesseg'))
-            is_zombie = False
-            for f in current_flyers:
-                if f['store'] == product['bolt'] and f['url'] != url:
-                    # Ha a flyers.json-ben van újság, aminek a kezdődátuma már ma van vagy elmúlt, 
-                    # és az én újságom annál régebbi -> ZOMBI
-                    # (Egyszerűsítve: ha van nálunk frissebb link ugyanarra a boltra, a régit kidobjuk)
-                    pass 
+        matching_flyer = next((f for f in current_flyers if f['url'] == url), None)
+        
+        # Ha a link még él, és a trónörökös logika szerint is érvényes:
+        if matching_flyer and check_validity_date(product.get('ervenyesseg'), matching_flyer, current_flyers):
             final_products.append(product)
             processed_urls.add(url)
 
@@ -311,5 +309,6 @@ if __name__ == "__main__":
 
     with open(OUTPUT_FILE, "w", encoding="utf-8") as f: json.dump(final_products, f, ensure_ascii=False, indent=2)
     print(f"\n🏁 KÉSZ! Adatbázis: {len(final_products)} termék.")
+
 
 
