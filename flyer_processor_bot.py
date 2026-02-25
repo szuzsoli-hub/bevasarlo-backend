@@ -141,6 +141,75 @@ def capture_pages_from_pdf(target_url, store_name):
             os.remove(temp_pdf_path)
 
 # ===============================================================================
+# 1/B. MODUL: AUCHAN & SPAR DÁTUM ELŐTÖLTÉS (ÚJ)
+# ===============================================================================
+
+def get_auchan_pre_dates(links):
+    results = {}
+    for url in links:
+        match = re.search(r'(\d{4})-(\d{2})-(\d{2})-((?:\d{2}-)?\d{2})', url)
+        if match:
+            y, m1, d1, end_part = match.groups()
+            start_date = f"{y}.{m1}.{d1}."
+            if "-" in end_part:
+                m2, d2 = end_part.split("-")
+                end_date = f"{y}.{m2}.{d2}."
+            else:
+                end_date = f"{y}.{m1}.{end_part}."
+            results[url] = f"{start_date} - {end_date}"
+        else:
+            results[url] = "N/A"
+    return results
+
+def get_spar_pre_dates(links):
+    if not links: return {}
+    chrome_options = Options()
+    chrome_options.add_argument("--headless")
+    chrome_options.add_argument("--window-size=1920,1080")
+    chrome_options.add_argument("--disable-gpu")
+    chrome_options.add_argument("--no-sandbox")
+    chrome_options.add_argument("--disable-dev-shm-usage")
+    
+    service = Service(ChromeDriverManager().install())
+    driver = webdriver.Chrome(service=service, options=chrome_options)
+    screenshot_path = os.path.join(TEMP_DIR, "spar_ajanlatok_teszt.png")
+    
+    try:
+        driver.get("https://www.spar.hu/ajanlatok")
+        time.sleep(5)
+        try: driver.execute_script("document.querySelectorAll('div[class*=\"cookie\"], #onetrust-banner-sdk').forEach(el => el.remove());")
+        except: pass
+        driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
+        time.sleep(3)
+        height = driver.execute_script("return Math.max(document.body.scrollHeight, 4000);")
+        driver.set_window_size(1920, height)
+        driver.save_screenshot(screenshot_path)
+    finally:
+        driver.quit()
+
+    with open(screenshot_path, "rb") as f: content = f.read()
+    image = vision.Image(content=content)
+    response = vision_client.document_text_detection(image=image)
+    ocr_text = response.full_text_annotation.text if not response.error.message else ""
+
+    prompt = f"""
+    FELADAT: Bevásárló apphoz kell érvényességi időket párosítani.
+    A LINKEK TITKA:
+    A linkek vége így néz ki: ÉÉHHNN-[sorszám]-[típus].
+    Például: ".../260219-1-spar-szorolap" -> Ebből a 260219 azt jelenti, hogy a kezdődátum 02.19., az újság típusa pedig SPAR.
+    Minden linknél olvasd ki a kezdődátumot és a típust, majd keresd meg az OCR szövegben azt a szekciót, ahol ez a típus és ez a kezdődátum szerepel egymás mellett (pl. "INTERSPAR 02.26 - 03.04"). 
+    Ha megvan, állítsd össze a teljes tól-ig dátumot! Az évet pótold ki 2026-ra.
+    KÖTELEZŐ VÁLASZ FORMÁTUM: "ÉÉÉÉ.HH.NN. - ÉÉÉÉ.HH.NN."
+    LINKEK:
+    {json.dumps(links, indent=2)}
+    OCR SZÖVEG:
+    {ocr_text}
+    ELVÁRT VÁLASZ (csak JSON, pontosan a megadott linkekkel mint kulcs):
+    """
+    response = client.chat.completions.create(model="gpt-4o", temperature=0, response_format={"type": "json_object"}, messages=[{"role": "user", "content": prompt}])
+    return json.loads(response.choices[0].message.content)
+
+# ===============================================================================
 # 2. MODUL: AZ AGY - DÁTUM ELLENŐRZÉS ÉS AI 🧠
 # ===============================================================================
 
@@ -151,19 +220,28 @@ def google_ocr(image_path):
     return response.full_text_annotation.text if not response.error.message else ""
 
 # --- 1. JAVÍTÁS: SZIGORÚ PROMPT (BORÍTÓ ELSŐBBSÉG) ---
-def interpret_text_with_ai(full_text, page_num, store_name, title_name, link_hint):
+def interpret_text_with_ai(full_text, page_num, store_name, title_name, link_hint, pre_calc_date=None):
     date_instr = ""
     if page_num == 1:
-        date_instr = f"""
-        FELADAT: DÁTUM KERESÉS ÉS SZIGORÚ FORMÁZÁS
-        1. NYOMOZÁS: Keresd meg a képen az érvényességi időt (lehet betűvel, számokkal, kusza elrendezésben is).
-        2. SZIGORÚ FORDÍTÁS (KÖTELEZŐ!): A megtalált dátumot formázd át erre a kőbe vésett formátumra: "ÉÉÉÉ.HH.NN. - ÉÉÉÉ.HH.NN."
-        3. TISZTÍTÁS: Töröld a napok neveit (csütörtök, szerda) és a felesleges szavakat (-ig). A hónapokat (pl. február) alakítsd számmá (02)!
-        4. ÉVSZÁM: Ha hiányzik az év, írd elé: 2026.
-        5. TESCO SZABÁLY: KIZÁRÓLAG a Tesco újságoknál hagyd figyelmen kívül a pontgyűjtők vagy nyereményjátékok távoli dátumait (pl. 04.06)! MÁS boltoknál (pl. Auchan) a távoli dátumok ÉRVÉNYESEK, azokat tartsd meg! Ha csak kezdődátum van: "ÉÉÉÉ.HH.NN.-tól".
-        6. SPAR SZABÁLY: A Spar újságoknál a dátum gyakran hosszú, mondatszerű (pl. "02. 19. csütörtöktől 02. 25. szerdáig"). Keresd ki belőle a két dátumot, és formázd tiszta intervallummá! Ne add fel, és ne adj vissza N/A-t, ha van szöveges dátum!
-        7. VÉGSŐ ESET (FALLBACK): Ha a képen abszolút nincs semmi dátum, add vissza ezt: {link_hint}
-        """
+        if pre_calc_date and pre_calc_date != "N/A":
+            # ÚJ: Ha Spar vagy Auchan, letiltjuk a dátumkeresést!
+            date_instr = f"""
+            FIGYELEM: A dátumot MÁR TUDJUK! NE keress érvényességi időt a képen!
+            KÖTELEZŐEN ezt az értéket írd be az "ervenyesseg" JSON mezőbe pontosan így: {pre_calc_date}
+            A feladatod kizárólag a termékek kigyűjtése.
+            """
+        else:
+            # RÉGI KÓD: Minden más bolt esetén (Tesco, stb.) érintetlenül hagyva
+            date_instr = f"""
+            FELADAT: DÁTUM KERESÉS ÉS SZIGORÚ FORMÁZÁS
+            1. NYOMOZÁS: Keresd meg a képen az érvényességi időt (lehet betűvel, számokkal, kusza elrendezésben is).
+            2. SZIGORÚ FORDÍTÁS (KÖTELEZŐ!): A megtalált dátumot formázd át erre a kőbe vésett formátumra: "ÉÉÉÉ.HH.NN. - ÉÉÉÉ.HH.NN."
+            3. TISZTÍTÁS: Töröld a napok neveit (csütörtök, szerda) és a felesleges szavakat (-ig). A hónapokat (pl. február) alakítsd számmá (02)!
+            4. ÉVSZÁM: Ha hiányzik az év, írd elé: 2026.
+            5. TESCO SZABÁLY: KIZÁRÓLAG a Tesco újságoknál hagyd figyelmen kívül a pontgyűjtők vagy nyereményjátékok távoli dátumait (pl. 04.06)! MÁS boltoknál (pl. Auchan) a távoli dátumok ÉRVÉNYESEK, azokat tartsd meg! Ha csak kezdődátum van: "ÉÉÉÉ.HH.NN.-tól".
+            6. SPAR SZABÁLY: A Spar újságoknál a dátum gyakran hosszú, mondatszerű (pl. "02. 19. csütörtöktől 02. 25. szerdáig"). Keresd ki belőle a két dátumot, és formázd tiszta intervallummá! Ne add fel, és ne adj vissza N/A-t, ha van szöveges dátum!
+            7. VÉGSŐ ESET (FALLBACK): Ha a képen abszolút nincs semmi dátum, add vissza ezt: {link_hint}
+            """
     prompt = f"""
     OCR szöveg: {store_name} - {title_name}, {page_num}. oldal.
     {date_instr}
@@ -224,7 +302,7 @@ def check_validity_date(date_string, current_flyer_meta, all_flyers):
                         
     return True
 
-def process_images_with_ai(captured_data, flyer_meta, all_flyers):
+def process_images_with_ai(captured_data, flyer_meta, all_flyers, pre_calc_date=None):
     print(f"🧠 AI Elemzés: {flyer_meta['store']}...")
     results = []
     
@@ -247,10 +325,14 @@ def process_images_with_ai(captured_data, flyer_meta, all_flyers):
 
         full_text = google_ocr(item['image_path'])
         if not full_text: continue
-        structured = interpret_text_with_ai(full_text, item['page_num'], flyer_meta['store'], flyer_meta['title'], link_hint)
+        structured = interpret_text_with_ai(full_text, item['page_num'], flyer_meta['store'], flyer_meta['title'], link_hint, pre_calc_date)
 
         if item['page_num'] == 1:
-            detected_validity = structured.get("ervenyesseg", "N/A")
+            if pre_calc_date and pre_calc_date != "N/A":
+                detected_validity = pre_calc_date
+            else:
+                detected_validity = structured.get("ervenyesseg", "N/A")
+
             if not check_validity_date(detected_validity, flyer_meta, all_flyers):
                 print(f"⛔ LEJÁRT: {detected_validity}")
                 return []
@@ -287,6 +369,18 @@ if __name__ == "__main__":
     if os.path.exists(OUTPUT_FILE):
         with open(OUTPUT_FILE, 'r', encoding='utf-8') as f: old_products = json.load(f)
 
+    # --- ÚJ: ÉRVÉNYESSÉGI DÁTUMOK ELŐTÖLTÉSE ---
+    auchan_links = [f['url'] for f in current_flyers if f['store'].lower() == 'auchan']
+    spar_links = [f['url'] for f in current_flyers if f['store'].lower() == 'spar']
+    
+    pre_fetched_dates = {}
+    if auchan_links:
+        print("\n🛒 AUCHAN ÉRVÉNYESSÉGEK ELŐTÖLTÉSE...")
+        pre_fetched_dates.update(get_auchan_pre_dates(auchan_links))
+    if spar_links:
+        print("\n🍏 SPAR ÉRVÉNYESSÉGEK ELŐTÖLTÉSE...")
+        pre_fetched_dates.update(get_spar_pre_dates(spar_links))
+
     # --- 4. JAVÍTÁS: FOLYTONOSSÁGI SZŰRŐ (TRÓNÖRÖKÖSÖK) ---
     def get_start_date(validity_str):
         match = re.search(r'(\d{4}[\.\-]\d{2}[\.\-]\d{2})|(\d{2}[\.\-]\d{2})', str(validity_str))
@@ -313,9 +407,13 @@ if __name__ == "__main__":
 
     for flyer in current_flyers:
         if flyer['url'] in processed_urls: continue
+        
+        # Előtöltött dátum kinyerése, ha van (Spar, Auchan)
+        pre_calc_date = pre_fetched_dates.get(flyer['url'])
+
         pages = capture_pages_from_pdf(flyer['url'], flyer['store']) if flyer['url'].lower().endswith('.pdf') else capture_pages_with_selenium(flyer['url'], flyer['store'])
         if pages:
-            new_items = process_images_with_ai(pages, flyer, current_flyers)
+            new_items = process_images_with_ai(pages, flyer, current_flyers, pre_calc_date)
             final_products.extend(new_items)
 
     # --- 5. ÚJ: TRÓNÖRÖKÖS DÁTUMKALKULÁTOR (UTÓFELDOLGOZÁS) ---
