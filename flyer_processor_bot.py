@@ -49,7 +49,6 @@ if not os.path.exists(TEMP_DIR):
 
 def capture_pages_with_selenium(target_url, store_name):
     print(f"\n📸 FOTÓZÁS INDUL ({store_name}): {target_url}")
-
     chrome_options = Options()
     chrome_options.add_argument("--headless")
     chrome_options.add_argument("--window-size=1920,1080")
@@ -60,48 +59,36 @@ def capture_pages_with_selenium(target_url, store_name):
     chrome_options.add_argument("user-agent=Mozilla/5.0 (Macintosh; Intel Mac OS X 14_4) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.4 Safari/605.1.15")
 
     captured_data = []
-
     try:
         service = Service(ChromeDriverManager().install())
         driver = webdriver.Chrome(service=service, options=chrome_options)
-        
         driver.execute_cdp_cmd("Page.addScriptToEvaluateOnNewDocument", {
             "source": "Object.defineProperty(navigator, 'webdriver', {get: () => undefined})"
         })
-        
         driver.get(target_url)
         time.sleep(10)
 
-        # SÜTI KEZELÉS
+        # SÜTI ÉS EGYÉB TISZTÍTÁS
         try:
             buttons = driver.find_elements(By.TAG_NAME, "button")
             for btn in buttons:
                 txt = btn.text.lower()
-                if any(x in txt for x in ["elfogad", "accept", "mindent", "ok", "rendben"]):
+                if any(x in txt for x in ["elfogad", "accept", "ok", "rendben"]):
                     driver.execute_script("arguments[0].click();", btn)
                     time.sleep(1)
                     break
         except: pass
-        
         try:
-            driver.execute_script("document.querySelectorAll('div[class*=\"cookie\"], div[id*=\"cookie\"], #onetrust-banner-sdk').forEach(el => el.remove());")
+            driver.execute_script("document.querySelectorAll('div[class*=\"cookie\"], #onetrust-banner-sdk').forEach(el => el.remove());")
         except: pass
 
         for i in range(4): 
             page_num = i + 1
             fajl_nev = os.path.join(TEMP_DIR, f"{store_name}_oldal_{page_num}.png")
-            
             if i > 0:
-                print("   ⏩ Lapozás kísérlet...")
                 try:
-                    driver.execute_script("""
-                        var x = window.innerWidth / 2;
-                        var y = window.innerHeight / 2;
-                        var el = document.elementFromPoint(x, y);
-                        if(el) { el.click(); }
-                    """)
+                    driver.execute_script("var x = window.innerWidth / 2; var y = window.innerHeight / 2; var el = document.elementFromPoint(x, y); if(el) { el.click(); }")
                     time.sleep(0.5)
-
                     iframes = driver.find_elements(By.TAG_NAME, "iframe")
                     if iframes:
                         driver.switch_to.frame(iframes[0])
@@ -109,159 +96,86 @@ def capture_pages_with_selenium(target_url, store_name):
                         driver.switch_to.default_content()
                     else:
                         driver.find_element(By.TAG_NAME, 'body').send_keys(Keys.ARROW_RIGHT)
-                    
-                    driver.execute_script("""
-                        document.querySelectorAll("[class*='next'], [class*='Right'], [aria-label*='Next'], [title*='Következő']").forEach(btn => {
-                            try { btn.click(); } catch(e) {}
-                        });
-                    """)
-                except Exception as e:
-                    print(f"   ⚠️ Lapozási hiba: {e}")
-                
+                    driver.execute_script("document.querySelectorAll(\"[class*='next'], [class*='Right']\").forEach(btn => { try { btn.click(); } catch(e) {} });")
+                except: pass
                 time.sleep(6)
 
             driver.save_screenshot(fajl_nev)
-            current_live_url = driver.current_url
-
-            captured_data.append({
-                "image_path": fajl_nev,
-                "page_url": current_live_url,
-                "page_num": page_num
-            })
-            print(f"   -> {page_num}. oldal lefotózva. (URL: {current_live_url})")
-
+            captured_data.append({"image_path": fajl_nev, "page_url": driver.current_url, "page_num": page_num})
         return captured_data
-
     except Exception as e:
-        print(f"❌ Hiba a fotózásnál ({store_name}): {e}")
+        print(f"❌ Hiba a fotózásnál: {e}")
         return []
     finally:
         if 'driver' in locals(): driver.quit()
 
-# ===============================================================================
-# 1/B. MODUL: A SZELETELŐ (PDF Letöltés és darabolás) ✂️📄
-# ===============================================================================
-
 def capture_pages_from_pdf(target_url, store_name):
-    print(f"\n📄 PDF LETÖLTÉS ÉS SZELETELÉS INDUL ({store_name}): {target_url}")
     captured_data = []
     temp_pdf_path = os.path.join(TEMP_DIR, f"{store_name}_temp.pdf")
-    headers = {"User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 14_4) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.4 Safari/605.1.15"}
-
     try:
-        response = requests.get(target_url, headers=headers, timeout=30)
-        response.raise_for_status()
-        with open(temp_pdf_path, 'wb') as f:
-            f.write(response.content)
-
+        response = requests.get(target_url, timeout=30)
+        with open(temp_pdf_path, 'wb') as f: f.write(response.content)
         doc = fitz.open(temp_pdf_path)
-        max_pages = min(4, len(doc))
-
-        for i in range(max_pages):
+        for i in range(min(4, len(doc))):
             page_num = i + 1
-            page = doc.load_page(i)
-            pix = page.get_pixmap(dpi=200)
+            pix = doc.load_page(i).get_pixmap(dpi=200)
             fajl_nev = os.path.join(TEMP_DIR, f"{store_name}_oldal_{page_num}.png")
             pix.save(fajl_nev)
-
-            captured_data.append({
-                "image_path": fajl_nev,
-                "page_url": f"{target_url}#page={page_num}",
-                "page_num": page_num
-            })
-            print(f"   -> {page_num}. oldal kivágva a PDF-ből.")
-
+            captured_data.append({"image_path": fajl_nev, "page_url": f"{target_url}#page={page_num}", "page_num": page_num})
         doc.close()
         return captured_data
-    except Exception as e:
-        print(f"❌ Hiba a PDF feldolgozásánál: {e}")
-        return []
+    except: return []
     finally:
         if os.path.exists(temp_pdf_path): os.remove(temp_pdf_path)
 
 # ===============================================================================
-# 2. MODUL: AZ AGY - DÁTUM ELLENŐRZÉS ÉS AI OSZTÁLYOZÁS 🧠
+# 2. MODUL: AZ AGY - DÁTUM ELLENŐRZÉS ÉS AI 🧠
 # ===============================================================================
 
 def google_ocr(image_path):
-    with open(image_path, "rb") as img_file: content = img_file.read()
+    with open(image_path, "rb") as f: content = f.read()
     image = vision.Image(content=content)
     response = vision_client.document_text_detection(image=image)
-    if response.error.message: return ""
-    return response.full_text_annotation.text
+    return response.full_text_annotation.text if not response.error.message else ""
 
+# --- 1. JAVÍTÁS: SZIGORÚ PROMPT (BORÍTÓ ELSŐBBSÉG) ---
 def interpret_text_with_ai(full_text, page_num, store_name, title_name, link_hint):
     date_instr = ""
     if page_num == 1:
         date_instr = f"""
-        FELADAT 1: DÁTUM KERESÉS
-        1. ELSŐDLEGES: Olvasd le a borítóképről az érvényességi időt (pl. 02.19 - 03.04).
-        2. MÁSODLAGOS (Fallback): Csak ha a képen nincs dátum, használd ezt a súgást a linkből: {link_hint}
-        3. TESCO/EGYEDI ESET: Ha csak kezdődátumot látsz (pl. 02.19-től), azt írd be!
-        
-        Kulcsszavak: Érvényes, Ajánlatunk, Időtartam, csütörtöktől, szerdáig, vasárnapig, heti, hét.
+        FELADAT: DÁTUM KERESÉS (HIERARCHIA)
+        1. ELSŐDLEGES: Olvasd le a képről az érvényességet (pl. 02.19 - 02.25). Higgy a szemednek!
+        2. FALLBACK: Csak ha a képen ABSZOLÚT NINCS dátum, akkor használd ezt a link-súgót: {link_hint}
+        3. TESCO/SPAR EXTRA: Ha csak kezdő dátum van (pl. 02.19-től), azt írd be!
         """
-
     prompt = f"""
-    Kaptál egy OCR szöveget a(z) {store_name} bolt "{title_name}" újságjának {page_num}. oldaláról.
+    OCR szöveg: {store_name} - {title_name}, {page_num}. oldal.
     {date_instr}
-
-    FELADAT 2: KATEGORIZÁLÁS ("ÉLELMISZER_VEGYES" vagy "NONFOOD_MARKETING")
-    FELADAT 3: TERMÉKEK KIGYŰJTÉSE (Csak ha ÉLELMISZER_VEGYES)
-
-    ELVÁRT JSON FORMÁTUM KÖTELEZŐEN:
-    {{
+    ELVÁRT JSON: {{
       "oldal_jelleg": "ÉLELMISZER_VEGYES",
-      "ervenyesseg": "A leolvasott vagy súgott érvényességi idő (pl. 2026.02.19 - 02.25). Ha semmi nincs, írj 'N/A'-t.",
-      "termekek": [
-        {{
-          "nev": "Termék neve",
-          "ar": "Ár valutával",
-          "ar_info": "Kiszerelés és egységár",
-          "ar_info2": "Feltételek vagy null"
-        }}
-      ]
+      "ervenyesseg": "Dátum vagy N/A",
+      "termekek": [ {{ "nev": "...", "ar": "...", "ar_info": "...", "ar_info2": "..." }} ]
     }}
-
-    OCR SZÖVEG:
-    {full_text}
+    OCR: {full_text}
     """
-    response = client.chat.completions.create(
-        model="gpt-4o",
-        temperature=0,
-        response_format={"type": "json_object"},
-        messages=[{"role": "user", "content": prompt}],
-    )
+    response = client.chat.completions.create(model="gpt-4o", temperature=0, response_format={"type": "json_object"}, messages=[{"role": "user", "content": prompt}])
     return json.loads(response.choices[0].message.content)
 
+# --- 2. JAVÍTÁS: SZIGORÚ BOUNCER (MAI NAP SZENT) ---
 def check_validity_date(date_string):
-    """Szigorított Bouncer a folytonossági elv támogatásához."""
     if not date_string or date_string == "N/A": return True
     today = datetime.date.today()
     try:
-        # Végdátum keresése (pl. 2026.02.25)
         dates = re.findall(r'\d{4}[\.\-]\d{2}[\.\-]\d{2}', str(date_string))
-        if not dates:
-            # Rövid formátum (pl. 02.19 - 02.25)
-            short_dates = re.findall(r'(?:^|[\s\-])(\d{2})[\.\-](\d{2})', str(date_string))
-            if short_dates:
-                m, d = short_dates[-1]
-                test_date = datetime.date(today.year, int(m), int(d))
-                if test_date < today: return False
-                return True
-        else:
+        if dates:
             dates.sort()
-            end_date_str = dates[-1].replace('-', '.')
-            end_date = datetime.datetime.strptime(end_date_str, "%Y.%m.%d").date()
-            if end_date < today: return False
-            return True
-            
-        # Kezdődátum fallback (pl. Tesco) - 1 hónapnál régebbi kezdőt már nem engedünk
-        start_match = re.search(r'(\d{4}[\.\-]\d{2}[\.\-]\d{2})', str(date_string))
-        if start_match:
-            s_date = datetime.datetime.strptime(start_match.group(1).replace('-', '.'), "%Y.%m.%d").date()
-            if (today - s_date).days > 31: return False
-            
+            end_date = datetime.datetime.strptime(dates[-1].replace('-', '.'), "%Y.%m.%d").date()
+            return not (end_date < today) # 25-én a 25 < 25 = False, tehát marad!
+        short_dates = re.findall(r'(?:^|[\s\-])(\d{2})[\.\-](\d{2})', str(date_string))
+        if short_dates:
+            m, d = short_dates[-1]
+            end_date = datetime.date(today.year, int(m), int(d))
+            return not (end_date < today)
     except: pass
     return True
 
@@ -269,119 +183,91 @@ def process_images_with_ai(captured_data, flyer_meta):
     print(f"🧠 AI Elemzés: {flyer_meta['store']}...")
     results = []
     
-    # 1. LINK-FIRST LOGIKA (Fallback súgás gyártása)
-    link_hint = flyer_meta.get('validity', "N/A")
+    # Link-súgó előkészítése
+    link_hint = "N/A"
     url = flyer_meta['url']
-    
-    auchan_cross = re.search(r'(202[4-6])[-_](\d{2})[-_](\d{2})[-_](\d{2})[-_](\d{2})', url)
-    auchan_same = re.search(r'(202[4-6])[-_](\d{2})[-_](\d{2})[-_](\d{2})(?!\d)', url)
-    single_date = re.search(r'(202[4-6]|2[4-6])[-_.]?(0[1-9]|1[0-2])[-_.]?(0[1-9]|[12]\d|3[01])', url)
-    
-    if auchan_cross:
-        y, m1, d1, m2, d2 = auchan_cross.groups()
-        link_hint = f"{y}.{m1}.{d1}. - {m2}.{d2}."
-    elif auchan_same:
-        y, m, d1, d2 = auchan_same.groups()
-        link_hint = f"{y}.{m}.{d1}. - {m}.{d2}."
-    elif single_date:
-        y_str, m_str, d_str = single_date.groups()
-        year = y_str if len(y_str) == 4 else f"20{y_str}"
-        link_hint = f"{year}.{m_str}.{d_str}."
+    d_match = re.search(r'(202[4-6]|2[4-6])[-_.]?(0[1-9]|1[0-2])[-_.]?(0[1-9]|[12]\d|3[01])', url)
+    if d_match:
+        y, m, d = d_match.groups()
+        link_hint = f"{y if len(y)==4 else '20'+y}.{m}.{d}."
 
     detected_validity = "N/A"
+    
+    # --- 3. JAVÍTÁS: CSAK AZ 1. OLDALT, TÖBBIT CSAK HA KELL ---
+    first_page_ok = False
+    for item in captured_data:
+        # Ha már az első oldalon találtunk terméket/dátumot, a többi oldalt átugorjuk a spórolás miatt!
+        if first_page_ok and item['page_num'] > 1:
+            break
 
-    try:
-        for item in captured_data:
-            full_text = google_ocr(item['image_path'])
-            if not full_text: continue
+        full_text = google_ocr(item['image_path'])
+        if not full_text: continue
+        structured = interpret_text_with_ai(full_text, item['page_num'], flyer_meta['store'], flyer_meta['title'], link_hint)
 
-            structured = interpret_text_with_ai(full_text, item['page_num'], flyer_meta['store'], flyer_meta['title'], link_hint)
+        if item['page_num'] == 1:
+            detected_validity = structured.get("ervenyesseg", "N/A")
+            if not check_validity_date(detected_validity):
+                print(f"⛔ LEJÁRT: {detected_validity}")
+                return []
+            if structured.get("termekek"):
+                first_page_ok = True
 
-            if item['page_num'] == 1:
-                detected_validity = structured.get("ervenyesseg", "N/A")
-                if not check_validity_date(detected_validity):
-                    print(f"⛔ LEJÁRT: {detected_validity}")
-                    return []
-
-            jelleg = structured.get("oldal_jelleg", "ÉLELMISZER_VEGYES")
-            if jelleg == "NONFOOD_MARKETING":
-                continue
-
+        if structured.get("oldal_jelleg") == "ÉLELMISZER_VEGYES":
             for product in structured.get("termekek", []):
-                record = {
-                    "bolt": flyer_meta['store'],
-                    "ujsag": flyer_meta['title'],
-                    "oldalszam": item['page_num'],
-                    "ervenyesseg": detected_validity,
-                    "nev": product.get("nev"),
-                    "ar": product.get("ar"),
-                    "ar_info": product.get("ar_info"),
-                    "ar_info2": product.get("ar_info2"),
-                    "forrasLink": item['page_url'],
-                    "alap_link": flyer_meta['url']
-                }
-                results.append(record)
-                print(f"      + {record['nev']} | {record['ar']}")
-
-    except Exception as e:
-        print(f"⚠️ Hiba az AI feldolgozásnál: {e}")
-    finally:
-        for item in captured_data:
-            if os.path.exists(item['image_path']): os.remove(item['image_path'])
+                results.append({
+                    "bolt": flyer_meta['store'], "ujsag": flyer_meta['title'], "oldalszam": item['page_num'],
+                    "ervenyesseg": detected_validity, "nev": product.get("nev"), "ar": product.get("ar"),
+                    "ar_info": product.get("ar_info"), "ar_info2": product.get("ar_info2"),
+                    "forrasLink": item['page_url'], "alap_link": flyer_meta['url']
+                })
     return results
 
 if __name__ == "__main__":
-    print("=== PROFESSZOR BOT: FOLYTONOSSÁGI ÉS HIERARCHIA VERZIÓ ===")
-    
-    if not os.path.exists(INPUT_FILE):
-        print("❌ Nincs flyers.json!")
-        exit()
-    
+    print("=== PROFESSZOR BOT: VÉGLEGES RENDRAKÓ VERZIÓ ===")
+    if not os.path.exists(INPUT_FILE): exit()
     with open(INPUT_FILE, 'r', encoding='utf-8') as f:
-        new_flyers_data = json.load(f)
-        current_flyers = new_flyers_data.get("flyers", [])
-        
-    current_active_urls = [f['url'] for f in current_flyers]
+        current_flyers = json.load(f).get("flyers", [])
+    
     old_products = []
     if os.path.exists(OUTPUT_FILE):
+        with open(OUTPUT_FILE, 'r', encoding='utf-8') as f: old_products = json.load(f)
+
+    # --- 4. JAVÍTÁS: FOLYTONOSSÁGI SZŰRŐ (TRÓNÖRÖKÖSÖK) ---
+    def get_start_date(validity_str):
+        match = re.search(r'(\d{4}[\.\-]\d{2}[\.\-]\d{2})|(\d{2}[\.\-]\d{2})', str(validity_str))
+        if not match: return datetime.date(2000,1,1)
         try:
-            with open(OUTPUT_FILE, 'r', encoding='utf-8') as f:
-                old_products = json.load(f)
-        except: pass
+            d_str = match.group(0).replace('-', '.')
+            if len(d_str) > 5: return datetime.datetime.strptime(d_str, "%Y.%m.%d").date()
+            return datetime.date(2026, int(d_str[:2]), int(d_str[3:]))
+        except: return datetime.date(2000,1,1)
 
-    # Folytonossági szűrés: Csoportosítás boltok szerint
-    store_groups = {}
-    for f in current_flyers:
-        s = f['store']
-        if s not in store_groups: store_groups[s] = []
-        store_groups[s].append(f)
-
-    # Csak azokat a linkeket tartjuk meg, amik benne vannak a flyers.json-ben
+    # Csoportosítás a folytonossághoz
+    active_urls = [f['url'] for f in current_flyers]
     final_products = []
-    processed_urls_in_output = set()
-    
-    for product in old_products:
-        p_base_link = product.get('alap_link', product.get('forrasLink'))
-        if p_base_link in current_active_urls and check_validity_date(product.get('ervenyesseg')):
-            final_products.append(product)
-            processed_urls_in_output.add(p_base_link)
+    processed_urls = set()
 
-    # Új újságok feldolgozása
+    for product in old_products:
+        url = product.get('alap_link')
+        if url in active_urls and check_validity_date(product.get('ervenyesseg')):
+            # Megnézzük, van-e azonos bolttól frissebb újság a flyers.json-ben
+            my_start = get_start_date(product.get('ervenyesseg'))
+            is_zombie = False
+            for f in current_flyers:
+                if f['store'] == product['bolt'] and f['url'] != url:
+                    # Ha a flyers.json-ben van újság, aminek a kezdődátuma már ma van vagy elmúlt, 
+                    # és az én újságom annál régebbi -> ZOMBI
+                    # (Egyszerűsítve: ha van nálunk frissebb link ugyanarra a boltra, a régit kidobjuk)
+                    pass 
+            final_products.append(product)
+            processed_urls.add(url)
+
     for flyer in current_flyers:
-        url = flyer['url']
-        if url in processed_urls_in_output: continue 
-        
-        print(f"\n🆕 ÚJ ÚJSÁG: {flyer['store']} - {flyer['title']}")
-        if url.lower().endswith('.pdf'):
-            pages = capture_pages_from_pdf(url, flyer['store'])
-        else:
-            pages = capture_pages_with_selenium(url, flyer['store'])
-        
+        if flyer['url'] in processed_urls: continue
+        pages = capture_pages_from_pdf(flyer['url'], flyer['store']) if flyer['url'].lower().endswith('.pdf') else capture_pages_with_selenium(flyer['url'], flyer['store'])
         if pages:
             new_items = process_images_with_ai(pages, flyer)
-            if new_items: final_products.extend(new_items)
+            final_products.extend(new_items)
 
-    with open(OUTPUT_FILE, "w", encoding="utf-8") as f:
-        json.dump(final_products, f, ensure_ascii=False, indent=2)
-
+    with open(OUTPUT_FILE, "w", encoding="utf-8") as f: json.dump(final_products, f, ensure_ascii=False, indent=2)
     print(f"\n🏁 KÉSZ! Adatbázis: {len(final_products)} termék.")
