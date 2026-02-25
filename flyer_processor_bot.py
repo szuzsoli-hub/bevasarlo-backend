@@ -110,11 +110,20 @@ def capture_pages_with_selenium(target_url, store_name):
         if 'driver' in locals(): driver.quit()
 
 def capture_pages_from_pdf(target_url, store_name):
+    print(f"\n📸 PDF LETÖLTÉS ÉS SZELETELÉS ({store_name}): {target_url}")
     captured_data = []
     temp_pdf_path = os.path.join(TEMP_DIR, f"{store_name}_temp.pdf")
     try:
-        response = requests.get(target_url, timeout=30)
-        with open(temp_pdf_path, 'wb') as f: f.write(response.content)
+        # Álca beállítása, hogy a CBA szervere igazi böngészőnek higgye a botot
+        headers = {
+            "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
+        }
+        response = requests.get(target_url, headers=headers, timeout=30)
+        response.raise_for_status() # Ha hiba van (pl. 403, 404), itt egyből kivételt dob
+        
+        with open(temp_pdf_path, 'wb') as f: 
+            f.write(response.content)
+            
         doc = fitz.open(temp_pdf_path)
         for i in range(min(4, len(doc))):
             page_num = i + 1
@@ -124,9 +133,12 @@ def capture_pages_from_pdf(target_url, store_name):
             captured_data.append({"image_path": fajl_nev, "page_url": f"{target_url}#page={page_num}", "page_num": page_num})
         doc.close()
         return captured_data
-    except: return []
+    except Exception as e: 
+        print(f"❌ Hiba a PDF feldolgozásánál ({store_name}): {e}")
+        return []
     finally:
-        if os.path.exists(temp_pdf_path): os.remove(temp_pdf_path)
+        if os.path.exists(temp_pdf_path): 
+            os.remove(temp_pdf_path)
 
 # ===============================================================================
 # 2. MODUL: AZ AGY - DÁTUM ELLENŐRZÉS ÉS AI 🧠
@@ -271,3 +283,4 @@ if __name__ == "__main__":
 
     with open(OUTPUT_FILE, "w", encoding="utf-8") as f: json.dump(final_products, f, ensure_ascii=False, indent=2)
     print(f"\n🏁 KÉSZ! Adatbázis: {len(final_products)} termék.")
+
