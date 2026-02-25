@@ -238,9 +238,15 @@ def process_images_with_ai(captured_data, flyer_meta):
     
     # 1. LINK-FIRST LOGIKA: Adatkinyerés az URL-ből súgásként
     link_hint = flyer_meta.get('validity', "N/A")
-    url_dates = re.findall(r'202\d[.\-_]\d{2}[.\-_]\d{2}', flyer_meta['url'])
-    if url_dates:
-        link_hint = f"{url_dates[0]} (link alapján)"
+    
+    # ÚJ: Keresünk hagyományos (2026-02-19) és SPAR-féle rövid (260219) formátumokat is
+    date_match = re.search(r'(202[4-6]|2[4-6])[-_.]?(0[1-9]|1[0-2])[-_.]?(0[1-9]|[12]\d|3[01])', flyer_meta['url'])
+    
+    if date_match:
+        y_str, m_str, d_str = date_match.groups()
+        # Ha a SPAR csak 2 karakteres évet ad (pl. '26'), kiegészítjük '2026'-ra a GPT-4o kedvéért
+        year = y_str if len(y_str) == 4 else f"20{y_str}"
+        link_hint = f"{year}.{m_str}.{d_str}. (link alapján)"
     elif "heti" in flyer_meta['url'] or "het" in flyer_meta['url']:
         week_match = re.search(r'(\d{1,2})[-_]het', flyer_meta['url'])
         if week_match:
@@ -343,4 +349,5 @@ if __name__ == "__main__":
         json.dump(final_products, f, ensure_ascii=False, indent=2)
 
     print(f"\n🏁 KÉSZ! Adatbázis: {len(final_products)} termék.")
+
 
