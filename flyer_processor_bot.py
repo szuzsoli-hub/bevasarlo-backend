@@ -197,7 +197,7 @@ def interpret_text_with_ai(full_text, page_num, store_name, title_name, link_hin
     ELVÁRT JSON FORMÁTUM KÖTELEZŐEN:
     {{
       "oldal_jelleg": "ÉLELMISZER_VEGYES",
-      "ervenyesseg": "Ide jön a talált dátum, vagy a súgás: {link_hint}",
+      "ervenyesseg": "Ha a súgás nem 'N/A', akkor PONTOSAN ezt a súgást használd: {link_hint}. VISZONT ha a súgás 'N/A', akkor ez a FALLBACK: KÖTELEZŐEN az OCR szövegből olvasd le a pontos érvényességi időt (keresd az 'Érvényes', 'Időtartam' szavakat)!",
       "termekek": [
         {{
           "nev": "Termék neve",
@@ -362,6 +362,7 @@ if __name__ == "__main__":
         json.dump(final_products, f, ensure_ascii=False, indent=2)
 
     print(f"\n🏁 KÉSZ! Adatbázis: {len(final_products)} termék.")
+
 
 
 
