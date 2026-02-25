@@ -887,6 +887,8 @@ def main():
 
     # --- 3. COOP EREDMÉNYEK HOZZÁADÁSA A KÖZÖS LISTÁHOZ ---
     
+    seen_coop_urls = set()  # <--- ÚJ: Ebbe gyűjtjük a már felvett linkeket a duplikáció elkerülésére
+
     for key, links in coop_results.items():
         # URL alapú névmeghatározás a kért térkép szerint
         url_to_check = links.get("aktualis_link") or links.get("jovoheti_link") or ""
@@ -918,37 +920,47 @@ def main():
         # --- ÚJ: CÍM CSERÉJE COOP-NÁL IS (URL SLUG ALAPJÁN) ---
         if links.get("aktualis_link"):
             url = links["aktualis_link"]
-            # Kivágjuk a link utolsó részét (pl. coop-tisza-szorolap-2026-februar-3-het-szuper-plusz)
-            # Figyelem: ha a link '/' jellel végződik, az utolsó elem üres lehet, ezért rstrip kell
-            slug = url.rstrip('/').split('/')[-1]
-            if slug:
-                final_title = slug
-            else:
-                final_title = "Aktuális"
+            
+            # Csak akkor foglalkozunk vele, ha még nem dolgoztuk fel ugyanezt a linket
+            if url not in seen_coop_urls:
+                seen_coop_urls.add(url)
+                
+                # Kivágjuk a link utolsó részét (pl. coop-tisza-szorolap-2026-februar-3-het-szuper-plusz)
+                # Figyelem: ha a link '/' jellel végződik, az utolsó elem üres lehet, ezért rstrip kell
+                slug = url.rstrip('/').split('/')[-1]
+                if slug:
+                    final_title = slug
+                else:
+                    final_title = "Aktuális"
 
-            all_flyers.append({
-                "store": store_display_name,
-                "title": final_title,
-                "url": url
-                # VALIDITY TÖRÖLVE
-            })
-            print(f"[COOP] {store_display_name} ({final_title}) hozzáadva.")
+                all_flyers.append({
+                    "store": store_display_name,
+                    "title": final_title,
+                    "url": url
+                    # VALIDITY TÖRÖLVE
+                })
+                print(f"[COOP] {store_display_name} ({final_title}) hozzáadva.")
 
         if links.get("jovoheti_link"):
             url = links["jovoheti_link"]
-            slug = url.rstrip('/').split('/')[-1]
-            if slug:
-                final_title = slug
-            else:
-                final_title = "Jövő heti"
+            
+            # Ugyanez az ellenőrzés a jövő heti újságokra is
+            if url not in seen_coop_urls:
+                seen_coop_urls.add(url)
+                
+                slug = url.rstrip('/').split('/')[-1]
+                if slug:
+                    final_title = slug
+                else:
+                    final_title = "Jövő heti"
 
-            all_flyers.append({
-                "store": store_display_name,
-                "title": final_title,
-                "url": url
-                # VALIDITY TÖRÖLVE
-            })
-            print(f"[COOP] {store_display_name} ({final_title}) hozzáadva.")
+                all_flyers.append({
+                    "store": store_display_name,
+                    "title": final_title,
+                    "url": url
+                    # VALIDITY TÖRÖLVE
+                })
+                print(f"[COOP] {store_display_name} ({final_title}) hozzáadva.")
 
     # --- 4. MENTÉS ---
     final_json = {
