@@ -198,6 +198,7 @@ def interpret_text_with_ai(full_text, page_num, store_name, title_name, link_hin
     {{
       "oldal_jelleg": "ÉLELMISZER_VEGYES",
       "ervenyesseg": "Ha a súgás nem 'N/A', akkor PONTOSAN ezt a súgást használd: {link_hint}. VISZONT ha a súgás 'N/A', akkor ez a FALLBACK: KÖTELEZŐEN az OCR szövegből olvasd le a pontos érvényességi időt (keresd az 'Érvényes', 'Időtartam' szavakat)!",
+      "lejarat_datuma": "A pontos LEJÁRATI DÁTUM szigorúan YYYY-MM-DD formátumban (pl. 2026-02-25). Ezt neked (az AI-nak) kell logikailag kikövetkeztetned az 'ervenyesseg' mezőből! Ha az érvényesség csak egy hét (pl. 8. hét), akkor számold ki annak a hétnek a vasárnapját pontos dátumként!",
       "termekek": [
         {{
           "nev": "Termék neve",
@@ -297,6 +298,7 @@ def process_images_with_ai(captured_data, flyer_meta):
                     "ujsag": flyer_meta['title'],
                     "oldalszam": item['page_num'],
                     "ervenyesseg": detected_validity,
+                    "lejarat_datuma": structured.get("lejarat_datuma", ""), # ÚJ MEZŐ
                     "nev": product.get("nev"),
                     "ar": product.get("ar"),
                     "ar_info": product.get("ar_info"),
@@ -362,6 +364,7 @@ if __name__ == "__main__":
         json.dump(final_products, f, ensure_ascii=False, indent=2)
 
     print(f"\n🏁 KÉSZ! Adatbázis: {len(final_products)} termék.")
+
 
 
 
