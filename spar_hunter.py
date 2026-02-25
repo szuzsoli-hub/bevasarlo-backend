@@ -61,6 +61,11 @@ def scan_spar_only():
 
             full_url = raw_href
             if raw_href.startswith('/'): full_url = f"https://www.spar.hu{raw_href}"
+            
+            # --- ÚJ: A gyűjtőoldal (főoldal) kiszűrése! ---
+            if full_url.rstrip('/') == "https://www.spar.hu/ajanlatok": 
+                continue
+
             if full_url in seen_urls: continue
 
             # RUGALMAS DÁTUM KERESŐ
@@ -117,4 +122,5 @@ def scan_spar_only():
 
 
 if __name__ == "__main__":
+
     scan_spar_only()
