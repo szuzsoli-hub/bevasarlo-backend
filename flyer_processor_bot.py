@@ -92,18 +92,35 @@ def capture_pages_with_selenium(target_url, store_name):
             fajl_nev = os.path.join(TEMP_DIR, f"{store_name}_oldal_{page_num}.png")
             
             if i > 0:
+                print("   ⏩ Lapozás kísérlet...")
                 try:
+                    # 1. TRÜKK: Fókusz visszaszerzése (Rábökünk a képernyő legközepére)
+                    driver.execute_script("""
+                        var x = window.innerWidth / 2;
+                        var y = window.innerHeight / 2;
+                        var el = document.elementFromPoint(x, y);
+                        if(el) { el.click(); }
+                    """)
+                    time.sleep(0.5)
+
+                    # 2. TRÜKK: Jobbra nyíl (Fókuszáltan)
                     iframes = driver.find_elements(By.TAG_NAME, "iframe")
                     if iframes:
                         driver.switch_to.frame(iframes[0])
-                        body = driver.find_element(By.TAG_NAME, 'body')
-                        body.send_keys(Keys.ARROW_RIGHT)
+                        driver.find_element(By.TAG_NAME, 'body').send_keys(Keys.ARROW_RIGHT)
                         driver.switch_to.default_content()
                     else:
-                        body = driver.find_element(By.TAG_NAME, 'body')
-                        body.send_keys(Keys.ARROW_RIGHT)
+                        driver.find_element(By.TAG_NAME, 'body').send_keys(Keys.ARROW_RIGHT)
+                    
+                    # 3. TRÜKK: Gomb-kattintó (Láthatatlan biztosítóháló SPAR/Auchanhoz)
+                    driver.execute_script("""
+                        document.querySelectorAll("[class*='next'], [class*='Right'], [aria-label*='Next'], [title*='Következő']").forEach(btn => {
+                            try { btn.click(); } catch(e) {}
+                        });
+                    """)
+
                 except Exception as e:
-                    print(f"⚠️ Lapozási hiba: {e}")
+                    print(f"   ⚠️ Lapozási hiba: {e}")
                 
                 time.sleep(6)
 
@@ -364,6 +381,7 @@ if __name__ == "__main__":
         json.dump(final_products, f, ensure_ascii=False, indent=2)
 
     print(f"\n🏁 KÉSZ! Adatbázis: {len(final_products)} termék.")
+
 
 
 
