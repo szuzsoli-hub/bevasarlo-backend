@@ -174,24 +174,52 @@ def interpret_text_with_ai(full_text, page_num, store_name, title_name, link_hin
     return json.loads(response.choices[0].message.content)
 
 # --- 2. JAVÍTÁS: SZIGORÚ BOUNCER (MAI NAP SZENT) ---
-def check_validity_date(date_string):
-    if not date_string or date_string == "N/A": return True
+def check_validity_date(date_string, current_flyer_meta, all_flyers):
+    if not date_string or date_string == "N/A": 
+        return True 
+        
     today = datetime.date.today()
-    try:
-        dates = re.findall(r'\d{4}[\.\-]\d{2}[\.\-]\d{2}', str(date_string))
-        if dates:
-            dates.sort()
-            end_date = datetime.datetime.strptime(dates[-1].replace('-', '.'), "%Y.%m.%d").date()
-            return not (end_date < today) # 25-én a 25 < 25 = False, tehát marad!
-        short_dates = re.findall(r'(?:^|[\s\-])(\d{2})[\.\-](\d{2})', str(date_string))
-        if short_dates:
-            m, d = short_dates[-1]
-            end_date = datetime.date(today.year, int(m), int(d))
-            return not (end_date < today)
-    except: pass
-    return True
+    dates = []
+    
+    matches = re.findall(r'(\d{4}[\.\-]\d{2}[\.\-]\d{2})|(\d{2}[\.\-]\d{2})', str(date_string))
+    for m in matches:
+        d_str = m[0] or m[1]
+        d_str = d_str.replace('-', '.')
+        try:
+            if len(d_str) > 5:
+                d = datetime.datetime.strptime(d_str, "%Y.%m.%d").date()
+            else:
+                d = datetime.date(today.year, int(d_str[:2]), int(d_str[3:]))
+            dates.append(d)
+        except: pass
+        
+    if not dates:
+        return True
 
-def process_images_with_ai(captured_data, flyer_meta):
+    dates.sort()
+    start_date = dates[0]
+
+    if len(dates) >= 2:
+        end_date = dates[-1]
+        return today <= end_date  
+
+    current_store = current_flyer_meta['store']
+    current_url = current_flyer_meta['url']
+
+    for flyer in all_flyers:
+        if flyer['store'] == current_store and flyer['url'] != current_url:
+            d_match = re.search(r'(202[4-6]|2[4-6])[-_.]?(0[1-9]|1[0-2])[-_.]?(0[1-9]|[12]\d|3[01])', flyer['url'])
+            if d_match:
+                y, m, d = d_match.groups()
+                y = int(y) if len(y) == 4 else int(f"20{y}")
+                other_start = datetime.date(y, int(m), int(d))
+                
+                if other_start > start_date:
+                    if today >= other_start:
+                        return False 
+                        
+    return True
+def process_images_with_ai(captured_data, flyer_meta, all_flyers):
     print(f"🧠 AI Elemzés: {flyer_meta['store']}...")
     results = []
     
@@ -218,7 +246,7 @@ def process_images_with_ai(captured_data, flyer_meta):
 
         if item['page_num'] == 1:
             detected_validity = structured.get("ervenyesseg", "N/A")
-            if not check_validity_date(detected_validity):
+            if not check_validity_date(detected_validity, flyer_meta, all_flyers):
                 print(f"⛔ LEJÁRT: {detected_validity}")
                 return []
             if structured.get("termekek"):
@@ -278,9 +306,10 @@ if __name__ == "__main__":
         if flyer['url'] in processed_urls: continue
         pages = capture_pages_from_pdf(flyer['url'], flyer['store']) if flyer['url'].lower().endswith('.pdf') else capture_pages_with_selenium(flyer['url'], flyer['store'])
         if pages:
-            new_items = process_images_with_ai(pages, flyer)
+            new_items = process_images_with_ai(pages, flyer, current_flyers)
             final_products.extend(new_items)
 
     with open(OUTPUT_FILE, "w", encoding="utf-8") as f: json.dump(final_products, f, ensure_ascii=False, indent=2)
     print(f"\n🏁 KÉSZ! Adatbázis: {len(final_products)} termék.")
+
 
