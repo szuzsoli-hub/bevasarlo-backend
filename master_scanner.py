@@ -179,36 +179,31 @@ def scan_auchan():
 
     try:
         driver.get(url)
-        time.sleep(3)
+        time.sleep(4)
 
         try:
             cookie_btn = wait.until(EC.element_to_be_clickable((By.ID, "onetrust-accept-btn-handler")))
             cookie_btn.click()
+            time.sleep(1)
         except: pass
 
         source_aktualis = driver.page_source
 
-        print("🔎 'Jövő heti katalógusok' fül aktiválása...")
+        print("🔎 'Jövő heti katalógusok' fülek felkutatása és aktiválása...")
         try:
             next_btns = driver.find_elements(By.XPATH, "//*[contains(text(), 'Jövő heti katalógusok')]")
-            clicked = False
-            for btn in next_btns:
+            for i, btn in enumerate(next_btns):
                 try:
                     driver.execute_script("arguments[0].scrollIntoView({block: 'center'});", btn)
                     time.sleep(1)
                     driver.execute_script("arguments[0].click();", btn)
-                    clicked = True
-                    print("✅ Jövő heti fül aktív.")
-                    break
+                    print(f"✅ {i+1}. Jövő heti fül aktív.")
+                    time.sleep(3)
                 except: continue
             
-            if clicked:
-                time.sleep(4) 
-                driver.execute_script("window.scrollTo(0, document.body.scrollHeight/2);")
-                time.sleep(2)
-                source_jovoheti = driver.page_source
-            else:
-                source_jovoheti = ""
+            driver.execute_script("window.scrollTo(0, document.body.scrollHeight/2);")
+            time.sleep(2)
+            source_jovoheti = driver.page_source
         except:
             source_jovoheti = ""
 
@@ -970,5 +965,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
-
