@@ -238,19 +238,32 @@ def process_images_with_ai(captured_data, flyer_meta):
     
     # 1. LINK-FIRST LOGIKA: Adatkinyerés az URL-ből súgásként
     link_hint = flyer_meta.get('validity', "N/A")
+    url = flyer_meta['url']
     
-    # ÚJ: Keresünk hagyományos (2026-02-19) és SPAR-féle rövid (260219) formátumokat is
-    date_match = re.search(r'(202[4-6]|2[4-6])[-_.]?(0[1-9]|1[0-2])[-_.]?(0[1-9]|[12]\d|3[01])', flyer_meta['url'])
+    # 1. Próba: Auchan hónapváltós (pl. 2026-02-26-03-04)
+    auchan_cross_month = re.search(r'(202[4-6])[-_](\d{2})[-_](\d{2})[-_](\d{2})[-_](\d{2})', url)
     
-    if date_match:
-        y_str, m_str, d_str = date_match.groups()
-        # Ha a SPAR csak 2 karakteres évet ad (pl. '26'), kiegészítjük '2026'-ra a GPT-4o kedvéért
+    # 2. Próba: Auchan azonos hónap (pl. 2026-02-19-25)
+    # A (?!\d) a végén biztosítja, hogy ne keverje össze a hónapváltóssal!
+    auchan_same_month = re.search(r'(202[4-6])[-_](\d{2})[-_](\d{2})[-_](\d{2})(?!\d)', url)
+    
+    # 3. Próba: Normál vagy SPAR-féle rövid dátum (pl. 2026-02-19 vagy 260219)
+    single_date = re.search(r'(202[4-6]|2[4-6])[-_.]?(0[1-9]|1[0-2])[-_.]?(0[1-9]|[12]\d|3[01])', url)
+    
+    if auchan_cross_month:
+        y, m1, d1, m2, d2 = auchan_cross_month.groups()
+        link_hint = f"{y}.{m1}.{d1}. - {m2}.{d2}."
+    elif auchan_same_month:
+        y, m, d1, d2 = auchan_same_month.groups()
+        link_hint = f"{y}.{m}.{d1}. - {m}.{d2}."
+    elif single_date:
+        y_str, m_str, d_str = single_date.groups()
         year = y_str if len(y_str) == 4 else f"20{y_str}"
-        link_hint = f"{year}.{m_str}.{d_str}. (link alapján)"
-    elif "heti" in flyer_meta['url'] or "het" in flyer_meta['url']:
-        week_match = re.search(r'(\d{1,2})[-_]het', flyer_meta['url'])
+        link_hint = f"{year}.{m_str}.{d_str}."
+    elif "heti" in url or "het" in url:
+        week_match = re.search(r'(\d{1,2})[-_]het', url)
         if week_match:
-            link_hint = f"{week_match.group(1)}. hét (link alapján)"
+            link_hint = f"{week_match.group(1)}. hét"
 
     detected_validity = link_hint
     nonfood_count = 0
@@ -349,5 +362,6 @@ if __name__ == "__main__":
         json.dump(final_products, f, ensure_ascii=False, indent=2)
 
     print(f"\n🏁 KÉSZ! Adatbázis: {len(final_products)} termék.")
+
 
 
