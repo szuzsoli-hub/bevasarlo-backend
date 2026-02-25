@@ -160,8 +160,8 @@ def interpret_text_with_ai(full_text, page_num, store_name, title_name, link_hin
         2. SZIGORÚ FORDÍTÁS (KÖTELEZŐ!): A megtalált dátumot formázd át erre a kőbe vésett formátumra: "ÉÉÉÉ.HH.NN. - ÉÉÉÉ.HH.NN."
         3. TISZTÍTÁS: Töröld a napok neveit (csütörtök, szerda) és a felesleges szavakat (-ig). A hónapokat (pl. február) alakítsd számmá (02)!
         4. ÉVSZÁM: Ha hiányzik az év, írd elé: 2026.
-        5. TESCO SZABÁLY: Kifejezetten hagyd figyelmen kívül a pontgyűjtő akciók, hűségkampányok, vagy nyereményjátékok dátumait (pl. 04.06)! Csak a hivatalos "érvényes: X-től" szöveget nézd. Ha csak kezdődátum van, a formátum: "ÉÉÉÉ.HH.NN.-tól". (Végdátumot ne találj ki!)
-        6. SPAR SZABÁLY: Ha olyat látsz, hogy "hónap.nap. csütörtöktől - hónap.nap. szerdáig", az EGY INTERVALLUM! Szigorúan formázd át "ÉÉÉÉ.HH.NN. - ÉÉÉÉ.HH.NN." formátumra, NE használd a link-súgót!
+        5. TESCO SZABÁLY: KIZÁRÓLAG a Tesco újságoknál hagyd figyelmen kívül a pontgyűjtők vagy nyereményjátékok távoli dátumait (pl. 04.06)! MÁS boltoknál (pl. Auchan) a távoli dátumok ÉRVÉNYESEK, azokat tartsd meg! Ha csak kezdődátum van: "ÉÉÉÉ.HH.NN.-tól".
+        6. SPAR SZABÁLY: A Spar újságoknál a dátum gyakran hosszú, mondatszerű (pl. "02. 19. csütörtöktől 02. 25. szerdáig"). Keresd ki belőle a két dátumot, és formázd tiszta intervallummá! Ne add fel, és ne adj vissza N/A-t, ha van szöveges dátum!
         7. VÉGSŐ ESET (FALLBACK): Ha a képen abszolút nincs semmi dátum, add vissza ezt: {link_hint}
         """
     prompt = f"""
