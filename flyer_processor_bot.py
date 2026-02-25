@@ -155,10 +155,13 @@ def interpret_text_with_ai(full_text, page_num, store_name, title_name, link_hin
     date_instr = ""
     if page_num == 1:
         date_instr = f"""
-        FELADAT: DÁTUM KERESÉS (HIERARCHIA)
-        1. ELSŐDLEGES: Olvasd le a képről az érvényességet (pl. 02.19 - 02.25). Higgy a szemednek!
-        2. FALLBACK: Csak ha a képen ABSZOLÚT NINCS dátum, akkor használd ezt a link-súgót: {link_hint}
-        3. TESCO/SPAR EXTRA: Ha csak kezdő dátum van (pl. 02.19-től), azt írd be!
+        FELADAT: DÁTUM KERESÉS ÉS SZIGORÚ FORMÁZÁS
+        1. NYOMOZÁS: Keresd meg a képen az érvényességi időt (lehet betűvel, számokkal, kusza elrendezésben is).
+        2. SZIGORÚ FORDÍTÁS (KÖTELEZŐ!): A megtalált dátumot formázd át erre a kőbe vésett formátumra: "ÉÉÉÉ.HH.NN. - ÉÉÉÉ.HH.NN."
+        3. TISZTÍTÁS: Töröld a napok neveit (csütörtök, szerda) és a felesleges szavakat (-ig). A hónapokat (pl. február) alakítsd számmá (02)!
+        4. ÉVSZÁM: Ha hiányzik az év, írd elé: 2026.
+        5. TESCO/EGY DÁTUM: Ha csak kezdődátum van, a formátum: "ÉÉÉÉ.HH.NN.-tól". (Végdátumot ne találj ki!)
+        6. VÉGSŐ ESET (FALLBACK): Ha a képen abszolút nincs semmi dátum, add vissza ezt: {link_hint}
         """
     prompt = f"""
     OCR szöveg: {store_name} - {title_name}, {page_num}. oldal.
@@ -219,6 +222,7 @@ def check_validity_date(date_string, current_flyer_meta, all_flyers):
                         return False 
                         
     return True
+
 def process_images_with_ai(captured_data, flyer_meta, all_flyers):
     print(f"🧠 AI Elemzés: {flyer_meta['store']}...")
     results = []
@@ -309,6 +313,3 @@ if __name__ == "__main__":
 
     with open(OUTPUT_FILE, "w", encoding="utf-8") as f: json.dump(final_products, f, ensure_ascii=False, indent=2)
     print(f"\n🏁 KÉSZ! Adatbázis: {len(final_products)} termék.")
-
-
-
