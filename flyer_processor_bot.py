@@ -160,8 +160,9 @@ def interpret_text_with_ai(full_text, page_num, store_name, title_name, link_hin
         2. SZIGORÚ FORDÍTÁS (KÖTELEZŐ!): A megtalált dátumot formázd át erre a kőbe vésett formátumra: "ÉÉÉÉ.HH.NN. - ÉÉÉÉ.HH.NN."
         3. TISZTÍTÁS: Töröld a napok neveit (csütörtök, szerda) és a felesleges szavakat (-ig). A hónapokat (pl. február) alakítsd számmá (02)!
         4. ÉVSZÁM: Ha hiányzik az év, írd elé: 2026.
-        5. TESCO/EGY DÁTUM: Ha csak kezdődátum van, a formátum: "ÉÉÉÉ.HH.NN.-tól". (Végdátumot ne találj ki!)
-        6. VÉGSŐ ESET (FALLBACK): Ha a képen abszolút nincs semmi dátum, add vissza ezt: {link_hint}
+        5. TESCO SZABÁLY: Kifejezetten hagyd figyelmen kívül a pontgyűjtő akciók, hűségkampányok, vagy nyereményjátékok dátumait (pl. 04.06)! Csak a hivatalos "érvényes: X-től" szöveget nézd. Ha csak kezdődátum van, a formátum: "ÉÉÉÉ.HH.NN.-tól". (Végdátumot ne találj ki!)
+        6. SPAR SZABÁLY: Ha olyat látsz, hogy "hónap.nap. csütörtöktől - hónap.nap. szerdáig", az EGY INTERVALLUM! Szigorúan formázd át "ÉÉÉÉ.HH.NN. - ÉÉÉÉ.HH.NN." formátumra, NE használd a link-súgót!
+        7. VÉGSŐ ESET (FALLBACK): Ha a képen abszolút nincs semmi dátum, add vissza ezt: {link_hint}
         """
     prompt = f"""
     OCR szöveg: {store_name} - {title_name}, {page_num}. oldal.
@@ -259,9 +260,15 @@ def process_images_with_ai(captured_data, flyer_meta, all_flyers):
         termekek = structured.get("termekek", [])
         if termekek:
             for product in termekek:
+                # --- FT PÓTLÁSA ---
+                ar_val = str(product.get("ar", "")).strip()
+                # Ha csak számjegyeket, szóközöket, pontot vagy vesszőt tartalmaz (pl. "599", "1.299", "159,90")
+                if ar_val and re.match(r'^[\d\s\.,]+$', ar_val):
+                    ar_val = f"{ar_val} Ft"
+                # ------------------
                 results.append({
                     "bolt": flyer_meta['store'], "ujsag": flyer_meta['title'], "oldalszam": item['page_num'],
-                    "ervenyesseg": detected_validity, "nev": product.get("nev"), "ar": product.get("ar"),
+                    "ervenyesseg": detected_validity, "nev": product.get("nev"), "ar": ar_val,
                     "ar_info": product.get("ar_info"), "ar_info2": product.get("ar_info2"),
                     "forrasLink": item['page_url'], "alap_link": flyer_meta['url']
                 })
@@ -310,6 +317,55 @@ if __name__ == "__main__":
         if pages:
             new_items = process_images_with_ai(pages, flyer, current_flyers)
             final_products.extend(new_items)
+
+    # --- 5. ÚJ: TRÓNÖRÖKÖS DÁTUMKALKULÁTOR (UTÓFELDOLGOZÁS) ---
+    # Kinyerjük az alkategóriákat (pl. tesco_hiper, spar_extra), hogy ne keverje a simát az extrával
+    def get_sub_store(store, url):
+        u_lower = url.lower()
+        if store.lower() == "tesco":
+            if "hipermarket" in u_lower: return "tesco_hiper"
+            if "szupermarket" in u_lower: return "tesco_szuper"
+        if store.lower() == "spar":
+            if "interspar" in u_lower: return "spar_inter"
+            if "spar-extra" in u_lower: return "spar_extra"
+            if "spar-market" in u_lower: return "spar_market"
+            return "spar_sima"
+        return store
+
+    # Kigyűjtjük az összes érvényes újság kezdődátumát alkategóriánként
+    sub_store_dates = {}
+    for f in current_flyers:
+        s_key = get_sub_store(f['store'], f['url'])
+        d_match = re.search(r'(202[4-6]|2[4-6])[-_.]?(0[1-9]|1[0-2])[-_.]?(0[1-9]|[12]\d|3[01])', f['url'])
+        if d_match:
+            y, m, d = d_match.groups()
+            y = int(y) if len(y) == 4 else int(f"20{y}")
+            st_date = datetime.date(y, int(m), int(d))
+            if s_key not in sub_store_dates:
+                sub_store_dates[s_key] = []
+            sub_store_dates[s_key].append(st_date)
+
+    # Végigmegyünk az eredményeken és frissítjük a "-tól" dátumokat
+    for p in final_products:
+        erv = str(p.get("ervenyesseg", ""))
+        if "-tól" in erv or "-tol" in erv:
+            match = re.search(r'(\d{4}[\.\-]\d{2}[\.\-]\d{2})', erv)
+            if match:
+                d_str = match.group(1).replace('-', '.')
+                try:
+                    p_start = datetime.datetime.strptime(d_str, "%Y.%m.%d").date()
+                    s_key = get_sub_store(p.get("bolt", ""), p.get("alap_link", ""))
+                    
+                    # Megkeressük a KÖVETKEZŐ újság kezdődátumát ugyanebből az alkategóriából
+                    next_dates = [d for d in sub_store_dates.get(s_key, []) if d > p_start]
+                    if next_dates:
+                        next_dates.sort()
+                        # A végdátum = következő kezdete mínusz 1 nap!
+                        end_date = next_dates[0] - datetime.timedelta(days=1)
+                        p["ervenyesseg"] = f"{p_start.strftime('%Y.%m.%d.')} - {end_date.strftime('%Y.%m.%d.')}"
+                except:
+                    pass
+    # ----------------------------------------------------------
 
     with open(OUTPUT_FILE, "w", encoding="utf-8") as f: json.dump(final_products, f, ensure_ascii=False, indent=2)
     print(f"\n🏁 KÉSZ! Adatbázis: {len(final_products)} termék.")
