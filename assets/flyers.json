@@ -1,6 +1,31 @@
 {
-    "last_updated": "2026-02-26 12:06:50.260388",
+    "last_updated": "2026-02-26 18:41:41.452145",
     "flyers": [
+        {
+            "store": "Spar",
+            "title": "260226-1-spar-szorolap",
+            "url": "https://www.spar.hu/ajanlatok/spar/260226-1-spar-szorolap"
+        },
+        {
+            "store": "Spar",
+            "title": "260226-5-spar-balatonboglar-uzlet-megujulas",
+            "url": "https://www.spar.hu/ajanlatok/spar/260226-5-spar-balatonboglar-uzlet-megujulas"
+        },
+        {
+            "store": "Spar",
+            "title": "260226-2-interspar-szorolap",
+            "url": "https://www.spar.hu/ajanlatok/interspar/260226-2-interspar-szorolap"
+        },
+        {
+            "store": "Spar",
+            "title": "260226-3-spar-extra-ajanlat",
+            "url": "https://www.spar.hu/ajanlatok/spar-extra/260226-3-spar-extra-ajanlat"
+        },
+        {
+            "store": "Spar",
+            "title": "260226-4-spar-market-city-spar",
+            "url": "https://www.spar.hu/ajanlatok/spar-market/260226-4-spar-market-city-spar"
+        },
         {
             "store": "Penny",
             "title": "Penny Akciós Újság 9. heti (202609)",
@@ -48,13 +73,13 @@
         },
         {
             "store": "Auchan",
-            "title": "2026-02-26-03-04-heti-hipermarket-ajanlataink",
-            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr09/2026-02-26-03-04-heti-hipermarket-ajanlataink"
+            "title": "2026-02-26-03-04-heti-szupermarket-ajanlataink",
+            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr09/2026-02-26-03-04-heti-szupermarket-ajanlataink"
         },
         {
             "store": "Auchan",
-            "title": "2026-02-26-03-04-heti-szupermarket-ajanlataink",
-            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr09/2026-02-26-03-04-heti-szupermarket-ajanlataink"
+            "title": "2026-02-26-03-04-heti-hipermarket-ajanlataink",
+            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr09/2026-02-26-03-04-heti-hipermarket-ajanlataink"
         },
         {
             "store": "Auchan",
@@ -85,6 +110,11 @@
             "store": "Észak-Kelet Pro-Coop",
             "title": "coop-eszak-kelet-szorolap-2026-februar-4-5-het",
             "url": "https://katalogus.coop.hu/coop-eszak-kelet-szorolap-2026-februar-4-5-het/"
+        },
+        {
+            "store": "Coop Mecsek Füszért",
+            "title": "coop-mecsek-szorolap-2026-februar-4-5-het",
+            "url": "https://katalogus.coop.hu/coop-mecsek-szorolap-2026-februar-4-5-het/"
         },
         {
             "store": "Coop Hétforrás",
