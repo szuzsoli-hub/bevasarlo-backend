@@ -3,6 +3,7 @@ from flask import Flask, request, jsonify
 from openai import OpenAI
 import base64
 import json
+from pymongo import MongoClient
 
 app = Flask(__name__)
 
@@ -18,16 +19,27 @@ else:
 
 client = OpenAI(api_key=API_KEY)
 
-# --- ÚJ: MEMÓRIA ALAPÚ TÁROLÓ A SZINKRONHOZ ---
-# Szerver újrainduláskor ürül, de teszteléshez és az induláshoz tökéletes.
-family_lists = {}
+# ==============================================================================
+# 🗄️ MONGODB ADATBÁZIS ÖSSZEKÖTÉS
+# ==============================================================================
+MONGO_URI = os.environ.get("MONGO_URI")
+
+if not MONGO_URI:
+    print("❌ HIBA: Nem találom a MONGO_URI környezeti változót!")
+else:
+    print("✅ MongoDB Link betöltve.")
+    
+# Itt mongo_client-nek hívjuk, hogy ne vesszen össze az OpenAI client-jével!
+mongo_client = MongoClient(MONGO_URI)
+db = mongo_client["bevasarlo_adatbazis"]
+kollekcio = db["listak"]
 
 def encode_image(image_file):
     return base64.b64encode(image_file.read()).decode('utf-8')
 
 @app.route('/', methods=['GET'])
 def index():
-    return "Bevasarlo Backend (OpenAI GPT-4o + Sync) is running!"
+    return "Bevasarlo Backend (OpenAI GPT-4o + MongoDB Sync) is running!"
 
 @app.route('/analyze', methods=['POST'])
 def analyze_image():
@@ -97,7 +109,7 @@ def analyze_image():
         return jsonify({"error": str(e)}), 500
 
 # ==============================================================================
-# ☁️ ÚJ FUNKCIÓK: REAL-TIME SZINKRONIZÁCIÓ
+# ☁️ ÚJ FUNKCIÓK: REAL-TIME SZINKRONIZÁCIÓ (MongoDB-vel)
 # ==============================================================================
 
 @app.route('/sync_list', methods=['POST'])
@@ -112,13 +124,17 @@ def sync_list():
         if not family_id:
             return jsonify({"error": "Hiányzó family_id"}), 400
 
-        # Mentés a memóriába
-        family_lists[family_id] = {
-            "list_data": list_data,
-            "timestamp": timestamp
-        }
+        # Mentés adatbázisba (upsert=True: ha nincs még ilyen kód, létrehozza, ha van, frissíti)
+        kollekcio.update_one(
+            {"family_id": family_id},
+            {"$set": {
+                "list_data": list_data,
+                "timestamp": timestamp
+            }},
+            upsert=True
+        )
         
-        print(f"✅ Lista mentve a csoporthoz: {family_id}")
+        print(f"✅ Lista mentve a MongoDB-be a csoporthoz: {family_id}")
         return jsonify({"status": "success"}), 200
     except Exception as e:
         print(f"❌ Szinkron hiba: {str(e)}")
@@ -129,10 +145,20 @@ def get_list():
     """Innen kéri le az app a családtagok módosításait."""
     family_id = request.args.get('family_id')
     
-    if not family_id or family_id not in family_lists:
-        return jsonify({"error": "Nincs adat ehhez a csoporthoz"}), 404
+    if not family_id:
+        return jsonify({"error": "Hiányzó family_id"}), 400
         
-    return jsonify(family_lists[family_id]), 200
+    # Lekérdezés az adatbázisból
+    csalad = kollekcio.find_one({"family_id": family_id})
+
+    if csalad:
+        # A _id mezőt a MongoDB generálja, de a Flutter nem tudja értelmezni, így azt kihagyjuk a válaszból
+        return jsonify({
+            "list_data": csalad.get("list_data", []),
+            "timestamp": csalad.get("timestamp")
+        }), 200
+    else:
+        return jsonify({"error": "Nincs adat ehhez a csoporthoz"}), 404
 
 # ==============================================================================
 
