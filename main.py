@@ -9,23 +9,25 @@ app = Flask(__name__)
 # ==============================================================================
 # 🔒 BIZTONSÁGOS KULCS BETÖLTÉS (Render Environment-ből)
 # ==============================================================================
-# A "API_KEY" nevű változót keressük, amit a képen láttam nálad
 API_KEY = os.environ.get("API_KEY")
 
 if not API_KEY:
-    # Ha véletlenül mégsem lenne beállítva, hibaüzenetet adunk a logban
     print("❌ HIBA: Nem találom az API_KEY környezeti változót!")
 else:
     print(f"✅ API Kulcs sikeresen betöltve a titkos tárolóból.")
 
 client = OpenAI(api_key=API_KEY)
 
+# --- ÚJ: MEMÓRIA ALAPÚ TÁROLÓ A SZINKRONHOZ ---
+# Szerver újrainduláskor ürül, de teszteléshez és az induláshoz tökéletes.
+family_lists = {}
+
 def encode_image(image_file):
     return base64.b64encode(image_file.read()).decode('utf-8')
 
 @app.route('/', methods=['GET'])
 def index():
-    return "Bevasarlo Backend (OpenAI GPT-4o) is running!"
+    return "Bevasarlo Backend (OpenAI GPT-4o + Sync) is running!"
 
 @app.route('/analyze', methods=['POST'])
 def analyze_image():
@@ -94,6 +96,46 @@ def analyze_image():
         print(f"❌ HIBA TÖRTÉNT: {str(e)}")
         return jsonify({"error": str(e)}), 500
 
+# ==============================================================================
+# ☁️ ÚJ FUNKCIÓK: REAL-TIME SZINKRONIZÁCIÓ
+# ==============================================================================
+
+@app.route('/sync_list', methods=['POST'])
+def sync_list():
+    """Ide küldi az app a frissített listát."""
+    try:
+        data = request.get_json()
+        family_id = data.get('family_id')
+        list_data = data.get('list_data')
+        timestamp = data.get('timestamp')
+
+        if not family_id:
+            return jsonify({"error": "Hiányzó family_id"}), 400
+
+        # Mentés a memóriába
+        family_lists[family_id] = {
+            "list_data": list_data,
+            "timestamp": timestamp
+        }
+        
+        print(f"✅ Lista mentve a csoporthoz: {family_id}")
+        return jsonify({"status": "success"}), 200
+    except Exception as e:
+        print(f"❌ Szinkron hiba: {str(e)}")
+        return jsonify({"error": str(e)}), 500
+
+@app.route('/get_list', methods=['GET'])
+def get_list():
+    """Innen kéri le az app a családtagok módosításait."""
+    family_id = request.args.get('family_id')
+    
+    if not family_id or family_id not in family_lists:
+        return jsonify({"error": "Nincs adat ehhez a csoporthoz"}), 404
+        
+    return jsonify(family_lists[family_id]), 200
+
+# ==============================================================================
+
 if __name__ == '__main__':
-    port = int(os.environ.get('PORT', 5000)) # A Render dinamikus portot ad
+    port = int(os.environ.get('PORT', 5000))
     app.run(host='0.0.0.0', port=port)
