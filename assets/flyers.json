@@ -1,5 +1,5 @@
 {
-    "last_updated": "2026-02-26 18:41:41.452145",
+    "last_updated": "2026-02-27 07:38:12.360383",
     "flyers": [
         {
             "store": "Spar",
@@ -72,9 +72,14 @@
             "url": "https://www.tesco.hu/akciok/katalogusok/szupermarket/tesco-ujsag-2026-02-26/1"
         },
         {
-            "store": "Auchan",
-            "title": "2026-02-26-03-04-heti-szupermarket-ajanlataink",
-            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr09/2026-02-26-03-04-heti-szupermarket-ajanlataink"
+            "store": "Tesco",
+            "title": "Tesco hipermarket/tesco-ujsag-2026-03-05",
+            "url": "https://www.tesco.hu/akciok/katalogusok/hipermarket/tesco-ujsag-2026-03-05/1"
+        },
+        {
+            "store": "Tesco",
+            "title": "Tesco szupermarket/tesco-ujsag-2026-03-05",
+            "url": "https://www.tesco.hu/akciok/katalogusok/szupermarket/tesco-ujsag-2026-03-05/1"
         },
         {
             "store": "Auchan",
@@ -85,6 +90,11 @@
             "store": "Auchan",
             "title": "2026-02-19-04-04-husveti-ajanlataink",
             "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr08/2026-02-19-04-04-husveti-ajanlataink"
+        },
+        {
+            "store": "Auchan",
+            "title": "2026-02-26-03-04-heti-szupermarket-ajanlataink",
+            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr09/2026-02-26-03-04-heti-szupermarket-ajanlataink"
         },
         {
             "store": "Aldi",
