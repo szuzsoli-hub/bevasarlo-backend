@@ -1,5 +1,5 @@
 {
-    "last_updated": "2026-02-28 05:11:18.467106",
+    "last_updated": "2026-02-28 10:47:41.443715",
     "flyers": [
         {
             "store": "Spar",
@@ -118,8 +118,8 @@
         },
         {
             "store": "Auchan",
-            "title": "2026-02-19-04-04-husveti-ajanlataink",
-            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr08/2026-02-19-04-04-husveti-ajanlataink"
+            "title": "2026-02-26-03-04-heti-szupermarket-ajanlataink",
+            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr09/2026-02-26-03-04-heti-szupermarket-ajanlataink"
         },
         {
             "store": "Auchan",
@@ -128,18 +128,23 @@
         },
         {
             "store": "Auchan",
-            "title": "2026-02-26-03-04-heti-szupermarket-ajanlataink",
-            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr09/2026-02-26-03-04-heti-szupermarket-ajanlataink"
+            "title": "2026-02-19-04-04-husveti-ajanlataink",
+            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr08/2026-02-19-04-04-husveti-ajanlataink"
+        },
+        {
+            "store": "Aldi",
+            "title": "online_akcios_ujsag_2026_03_05",
+            "url": "https://szorolap.aldi.hu/online_akcios_ujsag_2026_03_05_kw10_ymzx6lwk"
+        },
+        {
+            "store": "Aldi",
+            "title": "aldi_tartos_arcsokkentes_flyer_2026_03_05",
+            "url": "https://szorolap.aldi.hu/aldi_tartos_arcsokkentes_flyer_2026_03_05_kw10_bme2g1pz"
         },
         {
             "store": "Aldi",
             "title": "online_akcios_ujsag_2026_02_26",
             "url": "https://szorolap.aldi.hu/online_akcios_ujsag_2026_02_26_kw09_ty33fl52"
-        },
-        {
-            "store": "Aldi",
-            "title": "online_akcios_ujsag_2026_02_19",
-            "url": "https://szorolap.aldi.hu/online_akcios_ujsag_2026_02_19_kw08_psf9y3ck"
         },
         {
             "store": "Tisza-Coop",
