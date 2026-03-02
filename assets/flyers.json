@@ -1,5 +1,5 @@
 {
-    "last_updated": "2026-03-01 16:51:59.131477",
+    "last_updated": "2026-03-02 05:27:36.352782",
     "flyers": [
         {
             "store": "Spar",
@@ -73,16 +73,6 @@
         },
         {
             "store": "Lidl",
-            "title": "Lidl regionalis-akciok-miskolc-jozsef-attila-utca-09het",
-            "url": "https://www.lidl.hu/l/hu/ujsag/regionalis-akciok-miskolc-jozsef-attila-utca-09het/ar/0?lf=HHZ"
-        },
-        {
-            "store": "Lidl",
-            "title": "Lidl regionalis-akciok-szolnok-koszeg-budapest-09het",
-            "url": "https://www.lidl.hu/l/hu/ujsag/regionalis-akciok-szolnok-koszeg-budapest-09het/ar/0?lf=HHZ"
-        },
-        {
-            "store": "Lidl",
             "title": "Lidl regionalis-akciok-miskolc-budapest-koszeg-10het",
             "url": "https://www.lidl.hu/l/hu/ujsag/regionalis-akciok-miskolc-budapest-koszeg-10het/ar/0?lf=HHZ"
         },
@@ -118,11 +108,6 @@
         },
         {
             "store": "Auchan",
-            "title": "2026-02-19-04-04-husveti-ajanlataink",
-            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr08/2026-02-19-04-04-husveti-ajanlataink"
-        },
-        {
-            "store": "Auchan",
             "title": "2026-02-26-03-04-heti-hipermarket-ajanlataink",
             "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr09/2026-02-26-03-04-heti-hipermarket-ajanlataink"
         },
@@ -130,6 +115,11 @@
             "store": "Auchan",
             "title": "2026-02-26-03-04-heti-szupermarket-ajanlataink",
             "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr09/2026-02-26-03-04-heti-szupermarket-ajanlataink"
+        },
+        {
+            "store": "Auchan",
+            "title": "2026-02-19-04-04-husveti-ajanlataink",
+            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr08/2026-02-19-04-04-husveti-ajanlataink"
         },
         {
             "store": "Aldi",
@@ -150,6 +140,11 @@
             "store": "Tisza-Coop",
             "title": "coop-tisza-szorolap-2026-februar-5-het-abc-szuper",
             "url": "https://katalogus.coop.hu/coop-tisza-szorolap-2026-februar-5-het-abc-szuper/"
+        },
+        {
+            "store": "Tisza-Coop",
+            "title": "coop-orszagos-szorolap-2026-marcius-1-het-abc-szuper",
+            "url": "https://katalogus.coop.hu/coop-orszagos-szorolap-2026-marcius-1-het-abc-szuper/"
         },
         {
             "store": "Alföld Pro-Coop",
