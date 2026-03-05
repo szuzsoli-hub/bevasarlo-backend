@@ -47,7 +47,7 @@ def index():
 def is_user_subscribed(app_user_id):
     """Lekérdezi a RevenueCat-től, hogy a usernek van-e aktív előfizetése."""
     # IDE MÁSOLD BE A REVENUECAT KULCSOT (pl. goog_...)
-    REVENUECAT_API_KEY = "IDE_MASOLD_BE_A_REVENUECAT_KULCSOT" 
+    REVENUECAT_API_KEY = "test_cdriXIMwXcKMcwbjOLHllHJflcI"
     
     url = f"https://api.revenuecat.com/v1/subscribers/{app_user_id}"
     req = urllib.request.Request(url)
@@ -170,3 +170,4 @@ def update_token():
 if __name__ == '__main__':
     port = int(os.environ.get('PORT', 5000))
     app.run(host='0.0.0.0', port=port)
+
