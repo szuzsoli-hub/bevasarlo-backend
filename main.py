@@ -8,6 +8,23 @@ from pymongo import MongoClient
 app = Flask(__name__)
 
 # ==============================================================================
+# 🛡️ BIZTONSÁGI PAJZS (KAPUŐR) A FLUTTER APP-HOZ
+# ==============================================================================
+EXPECTED_API_KEY = "v9X$kL2#pQ8@mZ5*eR1!tY7^bN4&hW3xM9"
+
+@app.before_request
+def require_api_key():
+    # A főoldalt (/) átengedjük, hogy a böngészőben lásd, hogy fut a szerver
+    if request.path == '/':
+        return
+
+    # Minden más végpontnál kérjük az igazolványt!
+    client_key = request.headers.get('X-API-KEY')
+    if client_key != EXPECTED_API_KEY:
+        print(f"🚨 ILLETÉKTELEN BEHATOLÁSI KÍSÉRLET! Kapott kulcs: {client_key}")
+        return jsonify({"error": "Hozzáférés megtagadva. Érvénytelen API kulcs!"}), 401
+
+# ==============================================================================
 # 🔒 BIZTONSÁGOS KULCS BETÖLTÉS (Render Environment-ből)
 # ==============================================================================
 API_KEY = os.environ.get("API_KEY")
