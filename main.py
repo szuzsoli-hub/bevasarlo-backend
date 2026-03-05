@@ -4,6 +4,8 @@ from openai import OpenAI
 import base64
 import json
 from pymongo import MongoClient
+import urllib.request
+from datetime import datetime, timezone
 
 app = Flask(__name__)
 
@@ -39,10 +41,50 @@ def index():
     return "Bevasarlo Backend (Full Cloud Sync + AI) is running!"
 
 # ==============================================================================
-# 📸 AI KÉPFELISMERÉS
+# 📸 AI KÉPFELISMERÉS + REVENUECAT VALIDÁLÁS
 # ==============================================================================
+
+def is_user_subscribed(app_user_id):
+    """Lekérdezi a RevenueCat-től, hogy a usernek van-e aktív előfizetése."""
+    # IDE MÁSOLD BE A REVENUECAT KULCSOT (pl. goog_...)
+    REVENUECAT_API_KEY = "IDE_MASOLD_BE_A_REVENUECAT_KULCSOT" 
+    
+    url = f"https://api.revenuecat.com/v1/subscribers/{app_user_id}"
+    req = urllib.request.Request(url)
+    req.add_header('Authorization', f'Bearer {REVENUECAT_API_KEY}')
+    req.add_header('Content-Type', 'application/json')
+    
+    try:
+        with urllib.request.urlopen(req) as response:
+            if response.status == 200:
+                data = json.loads(response.read().decode())
+                entitlements = data.get("subscriber", {}).get("entitlements", {})
+                
+                for ent_name, ent_data in entitlements.items():
+                    expires_date_str = ent_data.get("expires_date")
+                    if not expires_date_str:
+                        return True
+                    
+                    expires_date = datetime.strptime(expires_date_str, "%Y-%m-%dT%H:%M:%SZ").replace(tzinfo=timezone.utc)
+                    if expires_date > datetime.now(timezone.utc):
+                        return True
+        return False
+    except Exception as e:
+        print(f"🚨 RevenueCat hiba: {e}")
+        return False
+
 @app.route('/analyze', methods=['POST'])
 def analyze_image():
+    # 1. Bekérjük a felhasználó azonosítóját a kérésből
+    app_user_id = request.form.get('app_user_id')
+
+    # 2. Ellenőrizzük az előfizetést (Felhasználóbarát hibaüzenettel!)
+    if not app_user_id or not is_user_subscribed(app_user_id):
+        return jsonify({
+            "error": "Prémium funkció 💎\n\nAz AI képfelismerés használatához Pro előfizetés szükséges. Kérlek, válts Prémiumra a beállításokban!"
+        }), 403
+
+    # 3. Kép ellenőrzése és feldolgozása
     if 'image' not in request.files: return jsonify({"error": "Nincs kép"}), 400
     image = request.files['image']
     base64_image = encode_image(image)
