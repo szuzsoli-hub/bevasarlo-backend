@@ -1,11 +1,12 @@
 import os
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, Response # Response hozzáadva
 from openai import OpenAI
 import base64
 import json
 from pymongo import MongoClient
 import urllib.request
 from datetime import datetime, timezone, timedelta
+import uuid # UUID hozzáadva a képek azonosításához
 
 app = Flask(__name__)
 
@@ -17,6 +18,8 @@ EXPECTED_API_KEY = "v9X$kL2#pQ8@mZ5*eR1!tY7^bN4&hW3xM9"
 @app.before_request
 def require_api_key():
     if request.path == '/': return
+    # A /get_image/... útvonal kivételt képez, hogy az app simán betölthesse a linkeket
+    if request.path.startswith('/get_image/'): return 
     client_key = request.headers.get('X-API-KEY')
     if client_key != EXPECTED_API_KEY:
         return jsonify({"error": "Hozzáférés megtagadva. Érvénytelen API kulcs!"}), 401
@@ -31,17 +34,18 @@ MONGO_URI = os.environ.get("MONGO_URI")
 mongo_client = MongoClient(MONGO_URI)
 db = mongo_client["bevasarlo_adatbazis"]
 kollekcio = db["listak"]
-tagok_kollekcio = db["csoport_tagok"] # Új tábla a tagoknak
+tagok_kollekcio = db["csoport_tagok"]
 
-# === ÚJ TÁBLA A NAPLÓZÁSHOZ ÉS A LIMITEKHEZ ===
 ai_naplo = db["ai_naplo"]
+# === ÚJ TÁBLA A KÉPEK TÁROLÁSÁHOZ (Hogy ne vesszenek el) ===
+kepek_kollekcio = db["termek_kepek"]
 
 def encode_image(image_file):
     return base64.b64encode(image_file.read()).decode('utf-8')
 
 @app.route('/', methods=['GET'])
 def index():
-    return "Bevasarlo Backend (Full Cloud Sync + AI) is running!"
+    return "Bevasarlo Backend (Full Cloud Sync + AI + Images) is running!"
 
 # ==============================================================================
 # 📸 AI KÉPFELISMERÉS + OKOS KVÓTA RENDSZER
@@ -184,15 +188,101 @@ def analyze_image():
         return jsonify({"error": str(e)}), 500
 
 # ==============================================================================
-# ☁️ LISTA SZINKRONIZÁCIÓ
+# ☁️ KÉP TÁROLÁS ÉS KISZOLGÁLÁS (A "Saját Google Fotók")
+# ==============================================================================
+
+@app.route('/upload_image', methods=['POST'])
+def upload_image():
+    """Fogadja a telefonról a képet, és elmenti a MongoDB-be."""
+    if 'image' not in request.files:
+        return jsonify({"error": "Nincs kép a kérésben"}), 400
+        
+    image_file = request.files['image']
+    image_data = image_file.read()
+    
+    # Biztonság: csak pici képeket engedünk (Max 500 KB)
+    if len(image_data) > 500 * 1024:
+        return jsonify({"error": "A kép túl nagy! Maximum 500KB engedélyezett."}), 400
+
+    image_id = str(uuid.uuid4())
+    
+    kepek_kollekcio.insert_one({
+        "image_id": image_id,
+        "image_data": image_data, # Binárisan tároljuk a kisebb méret miatt
+        "content_type": image_file.mimetype,
+        "created_at": datetime.now(timezone.utc)
+    })
+    
+    # Összerakjuk a publikus URL-t
+    host_url = request.host_url.rstrip('/')
+    image_url = f"{host_url}/get_image/{image_id}"
+    
+    return jsonify({"status": "success", "image_url": image_url}), 200
+
+@app.route('/get_image/<image_id>', methods=['GET'])
+def get_image(image_id):
+    """Visszaadja a képet, ha egy telefon meghívja a linket."""
+    kep_dok = kepek_kollekcio.find_one({"image_id": image_id})
+    
+    if not kep_dok:
+        return "Kép nem található", 404
+        
+    response = Response(kep_dok["image_data"], mimetype=kep_dok["content_type"])
+    
+    # BÖNGÉSZŐ GYORSÍTÓTÁRAZÁS BEKAPCSOLÁSA (1 HÓNAP)
+    # Ezzel elkerüljük, hogy a telefonok folyamatosan töltsék ugyanazt a képet, 
+    # ha valaki állandóan megnyitja a listát. Óvja a szervert!
+    response.headers['Cache-Control'] = 'public, max-age=2592000'
+    return response
+
+# ==============================================================================
+# ☁️ LISTA SZINKRONIZÁCIÓ (+ KUKÁSAUTÓ)
 # ==============================================================================
 @app.route('/sync_list', methods=['POST'])
 def sync_list():
     data = request.get_json()
     family_id = data.get('family_id')
     if not family_id: return jsonify({"error": "Nincs id"}), 400
+    
+    list_data = data.get('list_data')
+    
+    # SZEMÉTSZÁLLÍTÁS (Kukásautó) LOGIKA
+    try:
+        # 1. Megnézzük mi volt a régi lista a szerveren
+        regi_csalad = kollekcio.find_one({"family_id": family_id})
+        if regi_csalad and "list_data" in regi_csalad:
+            regi_linkek = set()
+            uj_linkek = set()
+            
+            # Kigyűjtjük a régi linkeket
+            if "items" in regi_csalad["list_data"]:
+                for item in regi_csalad["list_data"]["items"]:
+                    unit = item.get("unit", "")
+                    if ":::" in unit:
+                        link = unit.split(":::")[1]
+                        if "/get_image/" in link:
+                            regi_linkek.add(link.split("/")[-1]) # Csak az ID-t
+            
+            # Kigyűjtjük az új linkeket
+            if list_data and "items" in list_data:
+                for item in list_data["items"]:
+                    unit = item.get("unit", "")
+                    if ":::" in unit:
+                        link = unit.split(":::")[1]
+                        if "/get_image/" in link:
+                            uj_linkek.add(link.split("/")[-1])
+                            
+            # Ami a régiben benne volt, de az újban nincs, azt törölték a telefonon!
+            torlendo_kepek = regi_linkek - uj_linkek
+            for kep_id in torlendo_kepek:
+                kepek_kollekcio.delete_one({"image_id": kep_id})
+                print(f"🗑️ Kép törölve a szerverről (szemétszállítás): {kep_id}")
+    except Exception as e:
+        print(f"Szemétszállítási hiba (nem blokkolja a mentést): {e}")
+
+    # Mentjük a listát
     kollekcio.update_one({"family_id": family_id}, 
-                         {"$set": {"list_data": data.get('list_data'), "timestamp": data.get('timestamp')}}, 
+                         {"$set": {"list_data": list_data, "timestamp": data.get('timestamp')}}, 
                          upsert=True)
     return jsonify({"status": "success"}), 200
 
