@@ -1,5 +1,5 @@
 {
-    "last_updated": "2026-03-08 16:52:51.398035",
+    "last_updated": "2026-03-09 05:42:55.488418",
     "flyers": [
         {
             "store": "Spar",
@@ -98,11 +98,6 @@
         },
         {
             "store": "Lidl",
-            "title": "Lidl regionalis-akciok-miskolc-budapest-koszeg-10het",
-            "url": "https://www.lidl.hu/l/hu/ujsag/regionalis-akciok-miskolc-budapest-koszeg-10het/ar/0?lf=HHZ"
-        },
-        {
-            "store": "Lidl",
             "title": "Lidl favorina-katalogus-08-het",
             "url": "https://www.lidl.hu/l/hu/ujsag/favorina-katalogus-08-het-2026/ar/0?lf=HHZ"
         },
@@ -133,18 +128,13 @@
         },
         {
             "store": "Auchan",
-            "title": "2026-03-05-03-11-heti-szupermarket-ajanlataink",
-            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr10/2026-03-05-03-11-heti-szupermarket-ajanlataink"
-        },
-        {
-            "store": "Auchan",
             "title": "2026-03-05-03-11-heti-hipermarket-ajanlataink",
             "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr10/2026-03-05-03-11-heti-hipermarket-ajanlataink"
         },
         {
             "store": "Auchan",
-            "title": "2026-03-05-03-18-tavaszi-nagytakaritas",
-            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr10/2026-03-05-03-18-tavaszi-nagytakaritas"
+            "title": "2026-03-05-04-04-ki-a-szabadba",
+            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr10/2026-03-05-04-04-ki-a-szabadba"
         },
         {
             "store": "Auchan",
@@ -153,8 +143,13 @@
         },
         {
             "store": "Auchan",
-            "title": "2026-03-05-04-04-ki-a-szabadba",
-            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr10/2026-03-05-04-04-ki-a-szabadba"
+            "title": "2026-03-05-03-11-heti-szupermarket-ajanlataink",
+            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr10/2026-03-05-03-11-heti-szupermarket-ajanlataink"
+        },
+        {
+            "store": "Auchan",
+            "title": "2026-03-05-03-18-tavaszi-nagytakaritas",
+            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr10/2026-03-05-03-18-tavaszi-nagytakaritas"
         },
         {
             "store": "Aldi",
@@ -182,9 +177,19 @@
             "url": "https://katalogus.coop.hu/coop-orszagos-szorolap-2026-marcius-1-het-abc-szuper/"
         },
         {
+            "store": "Coop hid_abc",
+            "title": "coop-orszagos-szorolap-2026-marcius-2-het-abc-szuper",
+            "url": "https://katalogus.coop.hu/coop-orszagos-szorolap-2026-marcius-2-het-abc-szuper/"
+        },
+        {
             "store": "Alföld Pro-Coop",
             "title": "coop-alfold-szorolap-2026-marcius-1-het-szuper-plusz",
             "url": "https://katalogus.coop.hu/coop-alfold-szorolap-2026-marcius-1-het-szuper-plusz/"
+        },
+        {
+            "store": "Alföld Pro-Coop",
+            "title": "coop-alfold-szorolap-2026-marcius-2-het-szuper-plusz",
+            "url": "https://katalogus.coop.hu/coop-alfold-szorolap-2026-marcius-2-het-szuper-plusz/"
         }
     ]
 }
