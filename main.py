@@ -7,6 +7,7 @@ from pymongo import MongoClient
 import urllib.request
 from datetime import datetime, timezone, timedelta
 import uuid # UUID hozzáadva a képek azonosításához
+import certifi
 
 app = Flask(__name__)
 
@@ -31,7 +32,8 @@ API_KEY = os.environ.get("API_KEY")
 client = OpenAI(api_key=API_KEY)
 
 MONGO_URI = os.environ.get("MONGO_URI")
-mongo_client = MongoClient(MONGO_URI)
+# Az SSL hiba kikerülése érdekében megadjuk neki a tls paramétereket:
+mongo_client = MongoClient(MONGO_URI, tls=True, tlsAllowInvalidCertificates=True)
 db = mongo_client["bevasarlo_adatbazis"]
 kollekcio = db["listak"]
 tagok_kollekcio = db["csoport_tagok"]
@@ -343,3 +345,4 @@ def update_token():
 if __name__ == '__main__':
     port = int(os.environ.get('PORT', 5000))
     app.run(host='0.0.0.0', port=port)
+
