@@ -1,51 +1,6 @@
 {
-    "last_updated": "2026-03-12 05:28:10.065932",
+    "last_updated": "2026-03-12 11:06:45.633952",
     "flyers": [
-        {
-            "store": "Spar",
-            "title": "260312-1-spar-szorolap",
-            "url": "https://www.spar.hu/ajanlatok/spar/260312-1-spar-szorolap"
-        },
-        {
-            "store": "Spar",
-            "title": "260312-2-spar-zalaegerszeg-uzlet-megujulas",
-            "url": "https://www.spar.hu/ajanlatok/spar/260312-2-spar-zalaegerszeg-uzlet-megujulas"
-        },
-        {
-            "store": "Spar",
-            "title": "260312-2-interspar-szorolap",
-            "url": "https://www.spar.hu/ajanlatok/interspar/260312-2-interspar-szorolap"
-        },
-        {
-            "store": "Spar",
-            "title": "260312-4-interspar-kert-katalogus",
-            "url": "https://www.spar.hu/ajanlatok/interspar/260312-4-interspar-kert-katalogus"
-        },
-        {
-            "store": "Spar",
-            "title": "260304-8-tavasz-katalogus",
-            "url": "https://www.spar.hu/ajanlatok/interspar/260304-8-tavasz-katalogus"
-        },
-        {
-            "store": "Spar",
-            "title": "260312-5-spar-extra-ajanlat",
-            "url": "https://www.spar.hu/ajanlatok/spar-extra/260312-5-spar-extra-ajanlat"
-        },
-        {
-            "store": "Spar",
-            "title": "260312-6-spar-market-city-spar",
-            "url": "https://www.spar.hu/ajanlatok/spar-market/260312-6-spar-market-city-spar"
-        },
-        {
-            "store": "Spar",
-            "title": "260312-7-spar-market-bp-thokoly-ut-uzlet-megujulas",
-            "url": "https://www.spar.hu/ajanlatok/spar-market/260312-7-spar-market-bp-thokoly-ut-uzlet-megujulas"
-        },
-        {
-            "store": "Spar",
-            "title": "260312-1-spar-szorolap?p=4",
-            "url": "https://www.spar.hu/ajanlatok/spar/260312-1-spar-szorolap?p=4"
-        },
         {
             "store": "Penny",
             "title": "Penny Akciós Újság 11. heti (202611)",
@@ -93,8 +48,13 @@
         },
         {
             "store": "Auchan",
-            "title": "2026-03-05-03-18-tavaszi-nagytakaritas",
-            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr10/2026-03-05-03-18-tavaszi-nagytakaritas"
+            "title": "2026-03-12-03-18-heti-szupermarket-ajanlataink",
+            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr11/2026-03-12-03-18-heti-szupermarket-ajanlataink"
+        },
+        {
+            "store": "Auchan",
+            "title": "2026-03-05-04-04-ki-a-szabadba",
+            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr10/2026-03-05-04-04-ki-a-szabadba"
         },
         {
             "store": "Auchan",
@@ -103,18 +63,13 @@
         },
         {
             "store": "Auchan",
+            "title": "2026-03-05-03-18-tavaszi-nagytakaritas",
+            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr10/2026-03-05-03-18-tavaszi-nagytakaritas"
+        },
+        {
+            "store": "Auchan",
             "title": "2026-03-12-03-18-heti-hipermarket-ajanlataink",
             "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr11/2026-03-12-03-18-heti-hipermarket-ajanlataink"
-        },
-        {
-            "store": "Auchan",
-            "title": "2026-03-12-03-18-heti-szupermarket-ajanlataink",
-            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr11/2026-03-12-03-18-heti-szupermarket-ajanlataink"
-        },
-        {
-            "store": "Auchan",
-            "title": "2026-03-05-04-04-ki-a-szabadba",
-            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr10/2026-03-05-04-04-ki-a-szabadba"
         },
         {
             "store": "Aldi",
