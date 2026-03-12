@@ -32,7 +32,7 @@ API_KEY = os.environ.get("API_KEY")
 client = OpenAI(api_key=API_KEY)
 
 MONGO_URI = os.environ.get("MONGO_URI")
-# Az SSL hiba kikerülése érdekében megadjuk neki a tls paramétereket:
+# Az SSL hiba kikerülése érdekében megadjuk neki a certifi paramétert:
 mongo_client = MongoClient(MONGO_URI, tlsCAFile=certifi.where())
 db = mongo_client["bevasarlo_adatbazis"]
 kollekcio = db["listak"]
@@ -151,10 +151,47 @@ def analyze_image():
     try:
         response = client.chat.completions.create(
             model="gpt-4o",
-            messages=[{"role": "system", "content": "Te egy profi magyar áruházi adatfeldolgozó AI vagy..."},
-                      {"role": "user", "content": [{"type": "text", "text": "Elemezd a képet!"},
-                                                   {"type": "image_url", "image_url": {"url": f"data:image/jpeg;base64,{base64_image}"}}]}],
-            response_format={"type": "json_object"}
+            messages=[
+                {
+                    "role": "system",
+                    "content": """
+                    Te egy profi magyar áruházi adatfeldolgozó AI vagy.
+                    A feladatod: Kinyerni az adatokat egy termék fotójáról.
+                    
+                    A következő adatokat keresd meg és add vissza SZIGORÚAN JSON formátumban:
+                    1. "product_name": A termék pontos neve (Márka + Típus).
+                    2. "packaging": Kiszerelés (pl. "500 g", "1,5 l", "10 db"). Ha nincs, legyen "".
+                    3. "price_single": Az 1 darabos ár. CSAK SZÁM! (pl. 1299).
+                    4. "price_multi": A több darabos ár (pl. "2 db esetén"). CSAK SZÁM! Ha nincs, legyen "".
+                    5. "multi_condition": A feltétel (pl. "2 db esetén"). Ha nincs, legyen "".
+                    6. "unit_price": Egységár (pl. "2499 Ft/kg"). Ezt szövegesen hagyd meg.
+
+                    Válasz formátum (JSON):
+                    {
+                        "product_name": "...",
+                        "packaging": "...",
+                        "price_single": "...",
+                        "price_multi": "...",
+                        "multi_condition": "...",
+                        "unit_price": "..."
+                    }
+                    """
+                },
+                {
+                    "role": "user",
+                    "content": [
+                        {"type": "text", "text": "Elemezd a képet és add vissza a JSON-t!"},
+                        {
+                            "type": "image_url",
+                            "image_url": {
+                                "url": f"data:image/jpeg;base64,{base64_image}"
+                            }
+                        },
+                    ],
+                }
+            ],
+            response_format={"type": "json_object"},
+            max_tokens=300
         )
         
         # Szedjük szét az OpenAI JSON válaszát
@@ -345,5 +382,3 @@ def update_token():
 if __name__ == '__main__':
     port = int(os.environ.get('PORT', 5000))
     app.run(host='0.0.0.0', port=port)
-
-
