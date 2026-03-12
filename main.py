@@ -55,7 +55,7 @@ def index():
 
 def get_user_status(app_user_id):
     """Lekérdezi az aktív előfizetést ÉS a megvásárolt extra csomagokat."""
-    REVENUECAT_API_KEY = "test_cdriXIMwXcKMcwbjOLHllHJflcI"
+    REVENUECAT_API_KEY = "sk_eWifEVYaUmYuxmsMtQfjTVEoOKGID"
     
     url = f"https://api.revenuecat.com/v1/subscribers/{app_user_id}"
     req = urllib.request.Request(url)
@@ -382,3 +382,4 @@ def update_token():
 if __name__ == '__main__':
     port = int(os.environ.get('PORT', 5000))
     app.run(host='0.0.0.0', port=port)
+
