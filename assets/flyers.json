@@ -1,5 +1,5 @@
 {
-    "last_updated": "2026-03-13 05:25:20.006824",
+    "last_updated": "2026-03-13 11:04:01.539479",
     "flyers": [
         {
             "store": "Spar",
@@ -73,6 +73,11 @@
         },
         {
             "store": "Spar",
+            "title": "260319-7-spar-market-racalmas-koranyi-ter",
+            "url": "https://www.spar.hu/ajanlatok/spar-market/260319-7-spar-market-racalmas-koranyi-ter"
+        },
+        {
+            "store": "Spar",
             "title": "260312-1-spar-szorolap?p=4",
             "url": "https://www.spar.hu/ajanlatok/spar/260312-1-spar-szorolap?p=4"
         },
@@ -122,19 +127,19 @@
             "url": "https://www.tesco.hu/akciok/katalogusok/szupermarket/tesco-ujsag-2026-03-12/1"
         },
         {
-            "store": "Auchan",
-            "title": "2026-03-12-03-18-heti-hipermarket-ajanlataink",
-            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr11/2026-03-12-03-18-heti-hipermarket-ajanlataink"
+            "store": "Tesco",
+            "title": "Tesco hipermarket/tesco-ujsag-2026-03-19",
+            "url": "https://www.tesco.hu/akciok/katalogusok/hipermarket/tesco-ujsag-2026-03-19/1"
+        },
+        {
+            "store": "Tesco",
+            "title": "Tesco szupermarket/tesco-ujsag-2026-03-19",
+            "url": "https://www.tesco.hu/akciok/katalogusok/szupermarket/tesco-ujsag-2026-03-19/1"
         },
         {
             "store": "Auchan",
-            "title": "2026-03-12-03-18-heti-szupermarket-ajanlataink",
-            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr11/2026-03-12-03-18-heti-szupermarket-ajanlataink"
-        },
-        {
-            "store": "Auchan",
-            "title": "2026-03-05-03-18-tavaszi-nagytakaritas",
-            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr10/2026-03-05-03-18-tavaszi-nagytakaritas"
+            "title": "2026-03-05-04-04-ki-a-szabadba",
+            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr10/2026-03-05-04-04-ki-a-szabadba"
         },
         {
             "store": "Auchan",
@@ -143,8 +148,18 @@
         },
         {
             "store": "Auchan",
-            "title": "2026-03-05-04-04-ki-a-szabadba",
-            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr10/2026-03-05-04-04-ki-a-szabadba"
+            "title": "2026-03-12-03-18-heti-hipermarket-ajanlataink",
+            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr11/2026-03-12-03-18-heti-hipermarket-ajanlataink"
+        },
+        {
+            "store": "Auchan",
+            "title": "2026-03-05-03-18-tavaszi-nagytakaritas",
+            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr10/2026-03-05-03-18-tavaszi-nagytakaritas"
+        },
+        {
+            "store": "Auchan",
+            "title": "2026-03-12-03-18-heti-szupermarket-ajanlataink",
+            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr11/2026-03-12-03-18-heti-szupermarket-ajanlataink"
         },
         {
             "store": "Aldi",
