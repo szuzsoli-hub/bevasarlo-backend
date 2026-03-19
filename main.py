@@ -275,12 +275,13 @@ def get_image(image_id):
     return response
 
 # ==============================================================================
-# ☁️ LISTA SZINKRONIZÁCIÓ (+ KUKÁSAUTÓ)
+# ☁️ LISTA SZINKRONIZÁCIÓ (+ KUKÁSAUTÓ ÉS ALAPÍTÓ RÖGZÍTÉSE)
 # ==============================================================================
 @app.route('/sync_list', methods=['POST'])
 def sync_list():
     data = request.get_json()
     family_id = data.get('family_id')
+    user_id = data.get('user_id') # <-- ÚJ: Megkapjuk a feltöltő ID-ját a telefontól
     if not family_id: return jsonify({"error": "Nincs id"}), 400
     
     list_data = data.get('list_data')
@@ -319,10 +320,22 @@ def sync_list():
     except Exception as e:
         print(f"Szemétszállítási hiba (nem blokkolja a mentést): {e}")
 
-    # Mentjük a listát
+    # Mentjük a listát (És rögzítjük az Alapítót)
     kollekcio.update_one({"family_id": family_id}, 
-                         {"$set": {"list_data": list_data, "timestamp": data.get('timestamp')}}, 
+                         {
+                             "$set": {"list_data": list_data, "timestamp": data.get('timestamp')},
+                             "$setOnInsert": {"owner_id": user_id} # <-- ÚJ: Az első feltöltő lesz az Alapító
+                         }, 
                          upsert=True)
+                         
+    # ÚJ: Az alapítót is hozzáadjuk a tagokhoz, ha még nincs ott (Hogy az "utolsó lekapcsolja a villanyt" logika hibátlan legyen)
+    if user_id:
+        tagok_kollekcio.update_one(
+            {"family_id": family_id, "user_id": user_id},
+            {"$setOnInsert": {"user_name": "Alapító", "joined_at": data.get('timestamp')}},
+            upsert=True
+        )
+
     return jsonify({"status": "success"}), 200
 
 @app.route('/get_list', methods=['GET'])
@@ -334,7 +347,7 @@ def get_list():
     return jsonify({"error": "Nincs adat"}), 404
 
 # ==============================================================================
-# 🤝 ÚJ: CSALÁD KEZELŐ FUNKCIÓK (Ami eddig hiányzott)
+# 🤝 ÚJ: CSALÁD KEZELŐ FUNKCIÓK (Alapító jogosultság és okos takarítás)
 # ==============================================================================
 
 @app.route('/join_group', methods=['POST'])
@@ -360,8 +373,45 @@ def leave_group():
     data = request.get_json()
     family_id = data.get('family_id')
     user_id = data.get('user_id')
+    
+    # 1. Kiléptetjük a felhasználót
     tagok_kollekcio.delete_one({"family_id": family_id, "user_id": user_id})
+    print(f"👋 Felhasználó kilépett innen: {family_id}")
+    
+    # 2. Megszámoljuk, maradt-e még valaki a csoportban
+    maradek_tagok = tagok_kollekcio.count_documents({"family_id": family_id})
+    
+    # 3. Ha 0 tag maradt, az utolsó is lekapcsolta a villanyt -> Lista végleges törlése a felhőből!
+    if maradek_tagok == 0:
+        kollekcio.delete_one({"family_id": family_id})
+        print(f"🧹 A {family_id} lista kiürült, ezért végleg töröltük a felhőből.")
+        
     return jsonify({"status": "left"}), 200
+
+@app.route('/delete_group', methods=['POST'])
+def delete_group():
+    """Amikor az Alapító priváttá teszi a listát (Mindenkit kihajít és törli a felhőből)."""
+    data = request.get_json()
+    family_id = data.get('family_id')
+    user_id = data.get('user_id')
+    
+    lista = kollekcio.find_one({"family_id": family_id})
+    
+    # Biztonsági ellenőrzés: Tényleg az Alapító nyomta meg a gombot?
+    if lista and lista.get("owner_id") == user_id:
+        # 1. Töröljük magát a listát
+        kollekcio.delete_one({"family_id": family_id})
+        # 2. Kihajítunk minden tagot a csoportból
+        tagok_kollekcio.delete_many({"family_id": family_id})
+        print(f"💣 Alapítói parancs: {family_id} megsemmisítve a felhőben!")
+        return jsonify({"status": "deleted"}), 200
+    else:
+        # Ha valamiért nem ő az alapító, akkor csak sima kilépésként kezeljük, hogy ne legyen hiba
+        tagok_kollekcio.delete_one({"family_id": family_id, "user_id": user_id})
+        maradek_tagok = tagok_kollekcio.count_documents({"family_id": family_id})
+        if maradek_tagok == 0:
+            kollekcio.delete_one({"family_id": family_id})
+        return jsonify({"status": "left_only", "warning": "Nem te vagy az alapító, így csak kiléptél."}), 200
 
 @app.route('/update_token', methods=['POST'])
 def update_token():
@@ -382,4 +432,3 @@ def update_token():
 if __name__ == '__main__':
     port = int(os.environ.get('PORT', 5000))
     app.run(host='0.0.0.0', port=port)
-
