@@ -12,4 +12,4 @@ webdriver-manager
 PyMuPDF
 pymongo
 dnspython
-
+Flask-SocketIO==5.3.6
