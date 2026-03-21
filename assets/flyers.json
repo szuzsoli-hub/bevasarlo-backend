@@ -1,5 +1,5 @@
 {
-    "last_updated": "2026-03-21 05:19:29.628357",
+    "last_updated": "2026-03-21 10:53:00.550233",
     "flyers": [
         {
             "store": "Spar",
@@ -153,18 +153,13 @@
         },
         {
             "store": "Auchan",
-            "title": "2026-03-19-03-25-heti-szupermarket-ajanlataink",
-            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr12/2026-03-19-03-25-heti-szupermarket-ajanlataink"
-        },
-        {
-            "store": "Auchan",
-            "title": "2026-03-05-04-04-ki-a-szabadba",
-            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr10/2026-03-05-04-04-ki-a-szabadba"
-        },
-        {
-            "store": "Auchan",
             "title": "2026-02-19-04-04-husveti-ajanlataink",
             "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr08/2026-02-19-04-04-husveti-ajanlataink"
+        },
+        {
+            "store": "Auchan",
+            "title": "2026-03-19-03-25-heti-szupermarket-ajanlataink",
+            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr12/2026-03-19-03-25-heti-szupermarket-ajanlataink"
         },
         {
             "store": "Auchan",
@@ -172,14 +167,19 @@
             "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr12/2026-03-19-03-25-heti-hipermarket-ajanlataink"
         },
         {
-            "store": "Aldi",
-            "title": "aldi_online_akcios_ujsag_2026_03_19",
-            "url": "https://szorolap.aldi.hu/aldi_online_akcios_ujsag_2026_03_19_kw12_3t8lz4v1"
+            "store": "Auchan",
+            "title": "2026-03-05-04-04-ki-a-szabadba",
+            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr10/2026-03-05-04-04-ki-a-szabadba"
         },
         {
             "store": "Aldi",
-            "title": "online_akcios_ujsag_2026_03_12",
-            "url": "https://szorolap.aldi.hu/online_akcios_ujsag_2026_03_12_kw11_8r2gz8c1"
+            "title": "aldi_online_akcios_ujsag_2026_03_26",
+            "url": "https://szorolap.aldi.hu/aldi_online_akcios_ujsag_2026_03_26_kw13_l7p5c1o6"
+        },
+        {
+            "store": "Aldi",
+            "title": "aldi_online_akcios_ujsag_2026_03_19",
+            "url": "https://szorolap.aldi.hu/aldi_online_akcios_ujsag_2026_03_19_kw12_3t8lz4v1"
         },
         {
             "store": "Aldi",
