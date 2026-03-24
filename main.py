@@ -1,6 +1,3 @@
-import eventlet
-eventlet.monkey_patch()
-
 import os
 from flask import Flask, request, jsonify, Response
 from openai import OpenAI
@@ -16,12 +13,10 @@ from flask_socketio import SocketIO, join_room, leave_room, emit # <-- ÚJ: A R�
 app = Flask(__name__)
 
 # === ÚJ: RÁDIÓTORONY BEKAPCSOLÁSA ===
-# Ez engedi, hogy a telefonok folyamatos, élő kapcsolatban maradjanak a szerverrel
 socketio = SocketIO(
     app, 
-    manage_session=False, 
     cors_allowed_origins="*", 
-    async_mode="eventlet", 
+    async_mode="threading",
     ping_timeout=60, 
     ping_interval=25
 )
