@@ -16,5 +16,5 @@ Flask-SocketIO==5.3.6
 python-socketio>=5.11.0
 python-engineio>=4.8.0
 simple-websocket
-gevent
-gevent-websocket
+gevent==24.2.1
+gevent-websocket==0.10.1
