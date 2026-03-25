@@ -12,11 +12,12 @@ from flask_socketio import SocketIO, join_room, leave_room, emit # <-- ÚJ: A R�
 
 app = Flask(__name__)
 
-# === ÚJ: RÁDIÓTORONY BEKAPCSOLÁSA ===
+# === ÚJ: RÁDIÓTORONY BEKAPCSOLÁSA (JAVÍTOTT VERZIÓ) ===
 socketio = SocketIO(
     app, 
     cors_allowed_origins="*", 
     async_mode="threading",
+    manage_session=False,    # <--- EZ AZ ÉLETMENTŐ SOR!
     ping_timeout=60, 
     ping_interval=25
 )
