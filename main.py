@@ -328,8 +328,8 @@ def sync_list():
             upsert=True
         )
 
-    # Szólunk a többieknek
-    socketio.emit('list_updated', {"family_id": family_id, "timestamp": incoming_timestamp}, room=family_id)
+    # Szólunk a többieknek, DE a küldőnek nem (ez akadályozza meg a végtelen hurkot!)
+    socketio.emit('list_updated', {"family_id": family_id, "timestamp": incoming_timestamp}, room=family_id, include_self=False)
 
     return jsonify({"status": "success"}), 200
 
@@ -339,7 +339,9 @@ def get_list():
     csalad = kollekcio.find_one({"family_id": family_id})
     if csalad:
         return jsonify({"list_data": csalad.get("list_data"), "timestamp": csalad.get("timestamp")}), 200
-    return jsonify({"error": "Nincs adat"}), 404
+    
+    # 404 HIBA HELYETT: Ha még nincs lista, adunk egy üreset, így nem omlik össze az app a csatlakozó félnél!
+    return jsonify({"list_data": {"items": []}, "timestamp": 0}), 200
 
 # ==============================================================================
 # 🤝 CSALÁD KEZELŐ FUNKCIÓK
