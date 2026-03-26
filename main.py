@@ -272,10 +272,21 @@ def sync_list():
     if not family_id: return jsonify({"error": "Nincs id"}), 400
     
     list_data = data.get('list_data')
-    timestamp = data.get('timestamp')
+    # === 1. JAVÍTÁS: Kinyerjük a beérkező adat időbélyegét ===
+    incoming_timestamp = data.get('timestamp', 0)
     
     try:
         regi_csalad = kollekcio.find_one({"family_id": family_id})
+        
+        # === 2. JAVÍTÁS: A KRITIKUS IDŐBÉLYEG ELLENŐRZÉS (RACE CONDITION FIX) ===
+        if regi_csalad:
+            db_timestamp = regi_csalad.get("timestamp", 0)
+            
+            # Ha a DB-ben lévő adat frissebb, mint amit a telefon küld, ELDOBJUK!
+            if incoming_timestamp < db_timestamp:
+                print(f"⚠️ Elavult adat eldobva! (Bejövő: {incoming_timestamp} < DB: {db_timestamp})")
+                return jsonify({"status": "ignored", "message": "Elavult adat, szinkronizacio eldobva"}), 200
+
         if regi_csalad and "list_data" in regi_csalad:
             regi_linkek = set()
             uj_linkek = set()
@@ -302,9 +313,10 @@ def sync_list():
     except Exception as e:
         pass
 
+    # Csak akkor jutunk ide, ha az adat FRISS és érvényes!
     kollekcio.update_one({"family_id": family_id}, 
                          {
-                             "$set": {"list_data": list_data, "timestamp": timestamp},
+                             "$set": {"list_data": list_data, "timestamp": incoming_timestamp},
                              "$setOnInsert": {"owner_id": user_id}
                          }, 
                          upsert=True)
@@ -312,13 +324,12 @@ def sync_list():
     if user_id:
         tagok_kollekcio.update_one(
             {"family_id": family_id, "user_id": user_id},
-            {"$setOnInsert": {"user_name": "Alapító", "joined_at": timestamp}},
+            {"$setOnInsert": {"user_name": "Alapító", "joined_at": incoming_timestamp}},
             upsert=True
         )
 
-    # === ÚJ: AZONNALI ÉRTESÍTÉS KÜLDÉSE A WALKIE-TALKIE-N ===
-    # Amint a szerver elmentette az adatot, beleszól a rádióba, hogy frissült a lista!
-    socketio.emit('list_updated', {"family_id": family_id, "timestamp": timestamp}, room=family_id)
+    # Szólunk a többieknek
+    socketio.emit('list_updated', {"family_id": family_id, "timestamp": incoming_timestamp}, room=family_id)
 
     return jsonify({"status": "success"}), 200
 
