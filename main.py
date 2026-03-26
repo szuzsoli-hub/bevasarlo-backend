@@ -329,7 +329,7 @@ def sync_list():
         )
 
     # Szólunk a többieknek, DE a küldőnek nem (ez akadályozza meg a végtelen hurkot!)
-    socketio.emit('list_updated', {"family_id": family_id, "timestamp": incoming_timestamp}, room=family_id, include_self=False)
+    socketio.emit('list_updated', {"family_id": family_id, "timestamp": incoming_timestamp}, room=family_id)
 
     return jsonify({"status": "success"}), 200
 
