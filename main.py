@@ -272,21 +272,18 @@ def sync_list():
     if not family_id: return jsonify({"error": "Nincs id"}), 400
     
     list_data = data.get('list_data')
-    # === 1. JAVÍTÁS: Kinyerjük a beérkező adat időbélyegét ===
     incoming_timestamp = data.get('timestamp', 0)
     
     try:
         regi_csalad = kollekcio.find_one({"family_id": family_id})
         
-        # === 2. JAVÍTÁS: A KRITIKUS IDŐBÉLYEG ELLENŐRZÉS (RACE CONDITION FIX) ===
         if regi_csalad:
             db_timestamp = regi_csalad.get("timestamp", 0)
             
-            # Ha a DB-ben lévő adat frissebb, mint amit a telefon küld, ELDOBJUK!
-if incoming_timestamp < db_timestamp:
-    print(f"⚠️ Elavult adat eldobva! (Bejövő: {incoming_timestamp} < DB: {db_timestamp})")
-    socketio.emit('list_updated', {"family_id": family_id, "timestamp": db_timestamp}, room=family_id)
-    return jsonify({"status": "ignored", "message": "Elavult adat, szinkronizacio eldobva"}), 200
+            if incoming_timestamp < db_timestamp:
+                print(f"⚠️ Elavult adat eldobva! (Bejövő: {incoming_timestamp} < DB: {db_timestamp})")
+                socketio.emit('list_updated', {"family_id": family_id, "timestamp": db_timestamp}, room=family_id)
+                return jsonify({"status": "ignored", "message": "Elavult adat, szinkronizacio eldobva"}), 200
 
         if regi_csalad and "list_data" in regi_csalad:
             regi_linkek = set()
@@ -314,7 +311,6 @@ if incoming_timestamp < db_timestamp:
     except Exception as e:
         pass
 
-    # Csak akkor jutunk ide, ha az adat FRISS és érvényes!
     kollekcio.update_one({"family_id": family_id}, 
                          {
                              "$set": {"list_data": list_data, "timestamp": incoming_timestamp},
@@ -329,9 +325,7 @@ if incoming_timestamp < db_timestamp:
             upsert=True
         )
 
-    # Szólunk a többieknek, DE a küldőnek nem (ez akadályozza meg a végtelen hurkot!)
     socketio.emit('list_updated', {"family_id": family_id, "timestamp": incoming_timestamp}, room=family_id)
-
     return jsonify({"status": "success"}), 200
 
 @app.route('/get_list', methods=['GET'])
