@@ -283,11 +283,10 @@ def sync_list():
             db_timestamp = regi_csalad.get("timestamp", 0)
             
             # Ha a DB-ben lévő adat frissebb, mint amit a telefon küld, ELDOBJUK!
-            if incoming_timestamp < db_timestamp:
-    print(f"⚠️ Elavult adat eldobva!")
-    # Szólunk a küldőnek is, hogy töltse le a frissebb verziót!
+if incoming_timestamp < db_timestamp:
+    print(f"⚠️ Elavult adat eldobva! (Bejövő: {incoming_timestamp} < DB: {db_timestamp})")
     socketio.emit('list_updated', {"family_id": family_id, "timestamp": db_timestamp}, room=family_id)
-    return jsonify({"status": "ignored", ...}), 200
+    return jsonify({"status": "ignored", "message": "Elavult adat, szinkronizacio eldobva"}), 200
 
         if regi_csalad and "list_data" in regi_csalad:
             regi_linkek = set()
