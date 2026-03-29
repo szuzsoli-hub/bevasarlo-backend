@@ -372,28 +372,6 @@ def leave_group():
         
     return jsonify({"status": "left"}), 200
 
-@app.route('/delete_group', methods=['POST'])
-def delete_group():
-    data = request.get_json()
-    family_id = data.get('family_id')
-    user_id = data.get('user_id')
-    
-    lista = kollekcio.find_one({"family_id": family_id})
-    
-    if lista and lista.get("owner_id") == user_id:
-        kollekcio.delete_one({"family_id": family_id})
-        tagok_kollekcio.delete_many({"family_id": family_id})
-        # ÚJ: Rádión azonnal kihajítunk mindenkit a szobából!
-        socketio.emit('group_deleted', {"family_id": family_id}, room=family_id)
-        return jsonify({"status": "deleted"}), 200
-    else:
-        tagok_kollekcio.delete_one({"family_id": family_id, "user_id": user_id})
-        maradek_tagok = tagok_kollekcio.count_documents({"family_id": family_id})
-        if maradek_tagok == 0:
-            kollekcio.delete_one({"family_id": family_id})
-            socketio.emit('group_deleted', {"family_id": family_id}, room=family_id)
-        return jsonify({"status": "left_only", "warning": "Nem te vagy az alapító, így csak kiléptél."}), 200
-
 @app.route('/update_token', methods=['POST'])
 def update_token():
     data = request.get_json()
