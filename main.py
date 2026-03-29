@@ -367,8 +367,8 @@ def leave_group():
     
     if maradek_tagok == 0:
         kollekcio.delete_one({"family_id": family_id})
-        # Szólunk rádión, hogy megszűnt a csoport
         socketio.emit('group_deleted', {"family_id": family_id}, room=family_id)
+        return jsonify({"status": "last_member_left"}), 200
         
     return jsonify({"status": "left"}), 200
 
