@@ -1,5 +1,5 @@
 {
-    "last_updated": "2026-04-01 06:11:01.675705",
+    "last_updated": "2026-04-01 11:20:37.888757",
     "flyers": [
         {
             "store": "Spar",
@@ -88,6 +88,11 @@
         },
         {
             "store": "Auchan",
+            "title": "2026-03-05-04-04-ki-a-szabadba",
+            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr10/2026-03-05-04-04-ki-a-szabadba"
+        },
+        {
+            "store": "Auchan",
             "title": "2026-02-19-04-04-husveti-ajanlataink",
             "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr08/2026-02-19-04-04-husveti-ajanlataink"
         },
@@ -100,11 +105,6 @@
             "store": "Auchan",
             "title": "2026-03-26-04-08-heti-hipermarket-ajanlataink",
             "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr13/2026-03-26-04-08-heti-hipermarket-ajanlataink"
-        },
-        {
-            "store": "Auchan",
-            "title": "2026-03-05-04-04-ki-a-szabadba",
-            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr10/2026-03-05-04-04-ki-a-szabadba"
         },
         {
             "store": "Aldi",
