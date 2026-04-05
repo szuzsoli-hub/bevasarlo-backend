@@ -1,5 +1,5 @@
 {
-    "last_updated": "2026-04-04 16:59:52.000398",
+    "last_updated": "2026-04-05 06:00:16.698137",
     "flyers": [
         {
             "store": "Spar",
@@ -13,16 +13,6 @@
         },
         {
             "store": "Spar",
-            "title": "260326-5-spar-gyor-uzlet-megujulas",
-            "url": "https://www.spar.hu/ajanlatok/spar/260326-5-spar-gyor-uzlet-megujulas"
-        },
-        {
-            "store": "Spar",
-            "title": "260326-6-spar-gyongyos-uzlet-megujulas",
-            "url": "https://www.spar.hu/ajanlatok/spar/260326-6-spar-gyongyos-uzlet-megujulas"
-        },
-        {
-            "store": "Spar",
             "title": "260331-2-interspar-szorolap",
             "url": "https://www.spar.hu/ajanlatok/interspar/260331-2-interspar-szorolap"
         },
@@ -30,11 +20,6 @@
             "store": "Spar",
             "title": "260326-2-interspar-szorolap",
             "url": "https://www.spar.hu/ajanlatok/interspar/260326-2-interspar-szorolap"
-        },
-        {
-            "store": "Spar",
-            "title": "260326-7-interspar-veszprem-uzlet-megujulas",
-            "url": "https://www.spar.hu/ajanlatok/interspar/260326-7-interspar-veszprem-uzlet-megujulas"
         },
         {
             "store": "Spar",
@@ -88,11 +73,6 @@
         },
         {
             "store": "Lidl",
-            "title": "Lidl regionalis-akciok-budapest-szalay-utca-14het",
-            "url": "https://www.lidl.hu/l/hu/ujsag/regionalis-akciok-budapest-szalay-utca-14het/ar/0?lf=HHZ"
-        },
-        {
-            "store": "Lidl",
             "title": "Lidl borkatalogus-2026-02het",
             "url": "https://www.lidl.hu/l/hu/ujsag/borkatalogus-2026-02het/ar/0?lf=HHZ"
         },
@@ -118,23 +98,13 @@
         },
         {
             "store": "Auchan",
-            "title": "2026-03-05-04-04-ki-a-szabadba",
-            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr10/2026-03-05-04-04-ki-a-szabadba"
+            "title": "2026-03-26-04-08-heti-szupermarket-ajanlataink",
+            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr13/2026-03-26-04-08-heti-szupermarket-ajanlataink"
         },
         {
             "store": "Auchan",
             "title": "2026-03-26-04-08-heti-hipermarket-ajanlataink",
             "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr13/2026-03-26-04-08-heti-hipermarket-ajanlataink"
-        },
-        {
-            "store": "Auchan",
-            "title": "2026-02-19-04-04-husveti-ajanlataink",
-            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr08/2026-02-19-04-04-husveti-ajanlataink"
-        },
-        {
-            "store": "Auchan",
-            "title": "2026-03-26-04-08-heti-szupermarket-ajanlataink",
-            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr13/2026-03-26-04-08-heti-szupermarket-ajanlataink"
         },
         {
             "store": "Aldi",
@@ -163,8 +133,8 @@
         },
         {
             "store": "Alföld Pro-Coop",
-            "title": "coop-alfold-szorolap-2026-marcius-4-het",
-            "url": "https://katalogus.coop.hu/coop-alfold-szorolap-2026-marcius-4-het/"
+            "title": "coop-alfold-szorolap-2026-aprilis-1-het-szuper-plusz",
+            "url": "https://katalogus.coop.hu/coop-alfold-szorolap-2026-aprilis-1-het-szuper-plusz/"
         }
     ]
 }
