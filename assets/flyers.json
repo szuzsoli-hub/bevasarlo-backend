@@ -1,6 +1,56 @@
 {
-    "last_updated": "2026-04-06 17:14:10.167491",
+    "last_updated": "2026-04-07 06:03:11.858234",
     "flyers": [
+        {
+            "store": "Spar",
+            "title": "260331-1-spar-szorolap",
+            "url": "https://www.spar.hu/ajanlatok/spar/260331-1-spar-szorolap"
+        },
+        {
+            "store": "Spar",
+            "title": "260326-1-spar-szorolap",
+            "url": "https://www.spar.hu/ajanlatok/spar/260326-1-spar-szorolap"
+        },
+        {
+            "store": "Spar",
+            "title": "260331-2-interspar-szorolap",
+            "url": "https://www.spar.hu/ajanlatok/interspar/260331-2-interspar-szorolap"
+        },
+        {
+            "store": "Spar",
+            "title": "260326-2-interspar-szorolap",
+            "url": "https://www.spar.hu/ajanlatok/interspar/260326-2-interspar-szorolap"
+        },
+        {
+            "store": "Spar",
+            "title": "260326-3-spar-extra-ajanlat",
+            "url": "https://www.spar.hu/ajanlatok/spar-extra/260326-3-spar-extra-ajanlat"
+        },
+        {
+            "store": "Spar",
+            "title": "260326-7-spar-market-city-spar",
+            "url": "https://www.spar.hu/ajanlatok/spar-market/260326-7-spar-market-city-spar"
+        },
+        {
+            "store": "Spar",
+            "title": "260409-1-spar-szorolap-p",
+            "url": "https://www.spar.hu/ajanlatok/spar/260409-1-spar-szorolap-p"
+        },
+        {
+            "store": "Spar",
+            "title": "260409-2-interspar-szorolap-p",
+            "url": "https://www.spar.hu/ajanlatok/interspar/260409-2-interspar-szorolap-p"
+        },
+        {
+            "store": "Spar",
+            "title": "260409-5-interspar-szepseg-katalogus",
+            "url": "https://www.spar.hu/ajanlatok/interspar/260409-5-interspar-szepseg-katalogus"
+        },
+        {
+            "store": "Spar",
+            "title": "260409-4-spar-market-city-spar",
+            "url": "https://www.spar.hu/ajanlatok/spar-market/260409-4-spar-market-city-spar"
+        },
         {
             "store": "Penny",
             "title": "Penny Akciós Újság 14. heti (202614)",
@@ -28,16 +78,6 @@
         },
         {
             "store": "Tesco",
-            "title": "Tesco hipermarket/tesco-ujsag-2026-03-31",
-            "url": "https://www.tesco.hu/akciok/katalogusok/hipermarket/tesco-ujsag-2026-03-31/1"
-        },
-        {
-            "store": "Tesco",
-            "title": "Tesco szupermarket/tesco-ujsag-2026-03-31",
-            "url": "https://www.tesco.hu/akciok/katalogusok/szupermarket/tesco-ujsag-2026-03-31/1"
-        },
-        {
-            "store": "Tesco",
             "title": "Tesco hipermarket/tesco-ujsag-2026-04-07",
             "url": "https://www.tesco.hu/akciok/katalogusok/hipermarket/tesco-ujsag-2026-04-07/1"
         },
@@ -48,13 +88,13 @@
         },
         {
             "store": "Auchan",
-            "title": "2026-03-26-04-08-heti-hipermarket-ajanlataink",
-            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr13/2026-03-26-04-08-heti-hipermarket-ajanlataink"
+            "title": "2026-03-26-04-08-heti-szupermarket-ajanlataink",
+            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr13/2026-03-26-04-08-heti-szupermarket-ajanlataink"
         },
         {
             "store": "Auchan",
-            "title": "2026-03-26-04-08-heti-szupermarket-ajanlataink",
-            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr13/2026-03-26-04-08-heti-szupermarket-ajanlataink"
+            "title": "2026-03-26-04-08-heti-hipermarket-ajanlataink",
+            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr13/2026-03-26-04-08-heti-hipermarket-ajanlataink"
         },
         {
             "store": "Aldi",
