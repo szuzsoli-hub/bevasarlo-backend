@@ -1,5 +1,5 @@
 {
-    "last_updated": "2026-04-08 06:04:43.439820",
+    "last_updated": "2026-04-08 11:22:22.014362",
     "flyers": [
         {
             "store": "Spar",
@@ -83,8 +83,18 @@
         },
         {
             "store": "Auchan",
+            "title": "2026-04-09-04-15-heti-hipermarket-ajanlataink",
+            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr14-15/2026-04-09-04-15-heti-hipermarket-ajanlataink"
+        },
+        {
+            "store": "Auchan",
             "title": "2026-03-26-04-08-heti-szupermarket-ajanlataink",
             "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr13/2026-03-26-04-08-heti-szupermarket-ajanlataink"
+        },
+        {
+            "store": "Auchan",
+            "title": "2026-04-09-04-19-kuponnapok",
+            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr14-15/2026-04-09-04-19-kuponnapok"
         },
         {
             "store": "Auchan",
@@ -98,18 +108,8 @@
         },
         {
             "store": "Auchan",
-            "title": "2026-04-09-04-15-heti-hipermarket-ajanlataink",
-            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr14-15/2026-04-09-04-15-heti-hipermarket-ajanlataink"
-        },
-        {
-            "store": "Auchan",
             "title": "2026-04-09-04-15-heti-szupermarket-ajanlataink",
             "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr14-15/2026-04-09-04-15-heti-szupermarket-ajanlataink"
-        },
-        {
-            "store": "Auchan",
-            "title": "2026-04-09-04-19-kuponnapok",
-            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr14-15/2026-04-09-04-19-kuponnapok"
         },
         {
             "store": "Aldi",
