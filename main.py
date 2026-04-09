@@ -333,10 +333,10 @@ def get_list():
     family_id = request.args.get('family_id')
     csalad = kollekcio.find_one({"family_id": family_id})
     if csalad:
-        return jsonify({"list_data": csalad.get("list_data"), "timestamp": csalad.get("timestamp")}), 200
+        member_count = tagok_kollekcio.count_documents({"family_id": family_id})
+        return jsonify({"list_data": csalad.get("list_data"), "timestamp": csalad.get("timestamp"), "member_count": member_count}), 200
     
-    # 404 HIBA HELYETT: Ha még nincs lista, adunk egy üreset, így nem omlik össze az app a csatlakozó félnél!
-    return jsonify({"list_data": {"items": []}, "timestamp": 0}), 200
+    return jsonify({"list_data": {"items": []}, "timestamp": 0, "member_count": 0}), 200
 
 # ==============================================================================
 # 🤝 CSALÁD KEZELŐ FUNKCIÓK
