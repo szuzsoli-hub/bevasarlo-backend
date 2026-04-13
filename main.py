@@ -371,7 +371,7 @@ def leave_group():
         return jsonify({"status": "last_member_left"}), 200
         
     socketio.emit('list_updated', {"family_id": family_id}, room=family_id)
-return jsonify({"status": "left"}), 200
+    return jsonify({"status": "left"}), 200
 
 @app.route('/update_token', methods=['POST'])
 def update_token():
