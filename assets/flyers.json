@@ -1,5 +1,5 @@
 {
-    "last_updated": "2026-04-13 17:26:01.981091",
+    "last_updated": "2026-04-14 06:17:30.622325",
     "flyers": [
         {
             "store": "Penny",
@@ -48,18 +48,8 @@
         },
         {
             "store": "Auchan",
-            "title": "2026-04-09-04-15-heti-szupermarket-ajanlataink",
-            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr14-15/2026-04-09-04-15-heti-szupermarket-ajanlataink"
-        },
-        {
-            "store": "Auchan",
-            "title": "2026-04-09-04-19-kuponnapok",
-            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr14-15/2026-04-09-04-19-kuponnapok"
-        },
-        {
-            "store": "Auchan",
-            "title": "2026-04-16-04-22-heti-hipermarket-ajanlataink",
-            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr16/2026-04-16-04-22-heti-hipermarket-ajanlataink"
+            "title": "2026-04-16-04-22-heti-szupermarket-ajanlataink",
+            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr16/2026-04-16-04-22-heti-szupermarket-ajanlataink"
         },
         {
             "store": "Auchan",
@@ -73,8 +63,18 @@
         },
         {
             "store": "Auchan",
-            "title": "2026-04-16-04-22-heti-szupermarket-ajanlataink",
-            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr16/2026-04-16-04-22-heti-szupermarket-ajanlataink"
+            "title": "2026-04-16-04-22-heti-hipermarket-ajanlataink",
+            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr16/2026-04-16-04-22-heti-hipermarket-ajanlataink"
+        },
+        {
+            "store": "Auchan",
+            "title": "2026-04-09-04-15-heti-szupermarket-ajanlataink",
+            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr14-15/2026-04-09-04-15-heti-szupermarket-ajanlataink"
+        },
+        {
+            "store": "Auchan",
+            "title": "2026-04-09-04-19-kuponnapok",
+            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr14-15/2026-04-09-04-19-kuponnapok"
         },
         {
             "store": "Aldi",
