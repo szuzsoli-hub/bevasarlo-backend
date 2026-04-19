@@ -1,5 +1,5 @@
 {
-    "last_updated": "2026-04-18 17:05:08.113171",
+    "last_updated": "2026-04-19 06:14:52.771361",
     "flyers": [
         {
             "store": "Spar",
@@ -108,6 +108,11 @@
         },
         {
             "store": "Auchan",
+            "title": "2026-04-09-04-19-kuponnapok",
+            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr14-15/2026-04-09-04-19-kuponnapok"
+        },
+        {
+            "store": "Auchan",
             "title": "2026-04-16-04-22-heti-hipermarket-ajanlataink",
             "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr16/2026-04-16-04-22-heti-hipermarket-ajanlataink"
         },
@@ -115,11 +120,6 @@
             "store": "Auchan",
             "title": "2026-04-09-04-22-kedvenc-markaink",
             "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr14-15/2026-04-09-04-22-kedvenc-markaink"
-        },
-        {
-            "store": "Auchan",
-            "title": "2026-04-09-04-19-kuponnapok",
-            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr14-15/2026-04-09-04-19-kuponnapok"
         },
         {
             "store": "Auchan",
