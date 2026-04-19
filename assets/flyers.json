@@ -1,5 +1,5 @@
 {
-    "last_updated": "2026-04-19 11:06:57.887485",
+    "last_updated": "2026-04-19 17:05:14.746449",
     "flyers": [
         {
             "store": "Penny",
@@ -53,23 +53,23 @@
         },
         {
             "store": "Auchan",
-            "title": "2026-04-16-04-22-heti-hipermarket-ajanlataink",
-            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr16/2026-04-16-04-22-heti-hipermarket-ajanlataink"
-        },
-        {
-            "store": "Auchan",
-            "title": "2026-04-09-04-22-kedvenc-markaink",
-            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr14-15/2026-04-09-04-22-kedvenc-markaink"
-        },
-        {
-            "store": "Auchan",
             "title": "2026-04-16-04-22-heti-szupermarket-ajanlataink",
             "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr16/2026-04-16-04-22-heti-szupermarket-ajanlataink"
         },
         {
             "store": "Auchan",
+            "title": "2026-04-16-04-22-heti-hipermarket-ajanlataink",
+            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr16/2026-04-16-04-22-heti-hipermarket-ajanlataink"
+        },
+        {
+            "store": "Auchan",
             "title": "2026-04-09-04-19-kuponnapok",
             "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr14-15/2026-04-09-04-19-kuponnapok"
+        },
+        {
+            "store": "Auchan",
+            "title": "2026-04-09-04-22-kedvenc-markaink",
+            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr14-15/2026-04-09-04-22-kedvenc-markaink"
         },
         {
             "store": "Aldi",
@@ -110,11 +110,6 @@
             "store": "Tisza-Coop",
             "title": "coop-tisza-szorolap-2026-aprilis-3-het-abc-szuper",
             "url": "https://katalogus.coop.hu/coop-tisza-szorolap-2026-aprilis-3-het-abc-szuper/"
-        },
-        {
-            "store": "Alföld Pro-Coop",
-            "title": "coop-alfold-szorolap-2026-aprilis-3-het",
-            "url": "https://katalogus.coop.hu/coop-alfold-szorolap-2026-aprilis-3-het/"
         },
         {
             "store": "Észak-Kelet Pro-Coop",
