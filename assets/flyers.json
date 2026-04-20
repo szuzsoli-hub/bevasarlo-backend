@@ -1,5 +1,5 @@
 {
-    "last_updated": "2026-04-19 17:05:14.746449",
+    "last_updated": "2026-04-20 06:34:07.157750",
     "flyers": [
         {
             "store": "Penny",
@@ -20,11 +20,6 @@
             "store": "Lidl",
             "title": "Lidl akcios-ujsag-17-het",
             "url": "https://www.lidl.hu/l/hu/ujsag/akcios-ujsag-17-het-2026/ar/0?lf=HHZ"
-        },
-        {
-            "store": "Lidl",
-            "title": "Lidl regionalis-akciok-martfu-foldvari-ut-16het",
-            "url": "https://www.lidl.hu/l/hu/ujsag/regionalis-akciok-martfu-foldvari-ut-16het/ar/0?lf=HHZ"
         },
         {
             "store": "Lidl",
@@ -58,18 +53,13 @@
         },
         {
             "store": "Auchan",
-            "title": "2026-04-16-04-22-heti-hipermarket-ajanlataink",
-            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr16/2026-04-16-04-22-heti-hipermarket-ajanlataink"
-        },
-        {
-            "store": "Auchan",
-            "title": "2026-04-09-04-19-kuponnapok",
-            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr14-15/2026-04-09-04-19-kuponnapok"
-        },
-        {
-            "store": "Auchan",
             "title": "2026-04-09-04-22-kedvenc-markaink",
             "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr14-15/2026-04-09-04-22-kedvenc-markaink"
+        },
+        {
+            "store": "Auchan",
+            "title": "2026-04-16-04-22-heti-hipermarket-ajanlataink",
+            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr16/2026-04-16-04-22-heti-hipermarket-ajanlataink"
         },
         {
             "store": "Aldi",
@@ -83,11 +73,6 @@
         },
         {
             "store": "Aldi",
-            "title": "aldi_online_nyitasi_akcios_ujsag_2026_04_16",
-            "url": "https://szorolap.aldi.hu/aldi_online_nyitasi_akcios_ujsag_2026_04_16_kw16_thh58nds"
-        },
-        {
-            "store": "Aldi",
             "title": "aldi_tartos_arcsokkentes_flyer_2026_03_05",
             "url": "https://szorolap.aldi.hu/aldi_tartos_arcsokkentes_flyer_2026_03_05_kw10_bme2g1pz"
         },
@@ -97,9 +82,19 @@
             "url": "https://www.cba.hu/wp-content/uploads/2026/04/cba_0416-0422.pdf"
         },
         {
+            "store": "CBA",
+            "title": "cba_0423-0429.pdf",
+            "url": "https://www.cba.hu/wp-content/uploads/2026/04/cba_0423-0429.pdf"
+        },
+        {
             "store": "CBA Príma",
             "title": "prima_0416-0422.pdf",
             "url": "https://www.prima.hu/wp-content/uploads/2026/04/prima_0416-0422.pdf"
+        },
+        {
+            "store": "CBA Príma",
+            "title": "prima_0423-0429.pdf",
+            "url": "https://www.prima.hu/wp-content/uploads/2026/04/prima_0423-0429.pdf"
         },
         {
             "store": "Tisza-Coop",
@@ -112,14 +107,39 @@
             "url": "https://katalogus.coop.hu/coop-tisza-szorolap-2026-aprilis-3-het-abc-szuper/"
         },
         {
+            "store": "Tisza-Coop",
+            "title": "coop-tisza-szorolap-2026-aprilis-4-het-abc-szuper",
+            "url": "https://katalogus.coop.hu/coop-tisza-szorolap-2026-aprilis-4-het-abc-szuper/"
+        },
+        {
+            "store": "Alföld Pro-Coop",
+            "title": "coop-alfold-szorolap-2026-aprilis-3-het",
+            "url": "https://katalogus.coop.hu/coop-alfold-szorolap-2026-aprilis-3-het/"
+        },
+        {
+            "store": "Alföld Pro-Coop",
+            "title": "coop-alfold-szorolap-2026-aprilis-4-het",
+            "url": "https://katalogus.coop.hu/coop-alfold-szorolap-2026-aprilis-4-het/"
+        },
+        {
             "store": "Észak-Kelet Pro-Coop",
             "title": "coop-eszak-kelet-szorolap-2026-aprilis-3-het",
             "url": "https://katalogus.coop.hu/coop-eszak-kelet-szorolap-2026-aprilis-3-het/"
         },
         {
+            "store": "Észak-Kelet Pro-Coop",
+            "title": "coop-eszak-kelet-szorolap-2026-aprilis-4-het",
+            "url": "https://katalogus.coop.hu/coop-eszak-kelet-szorolap-2026-aprilis-4-het/"
+        },
+        {
             "store": "Coop Mecsek Füszért",
             "title": "coop-mecsek-szorolap-2026-aprilis-3-het",
             "url": "https://katalogus.coop.hu/coop-mecsek-szorolap-2026-aprilis-3-het/"
+        },
+        {
+            "store": "Coop Mecsek Füszért",
+            "title": "coop-mecsek-szorolap-2026-aprilis-4-het",
+            "url": "https://katalogus.coop.hu/coop-mecsek-szorolap-2026-aprilis-4-het/"
         },
         {
             "store": "Coop Hétforrás",
