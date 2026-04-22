@@ -1,5 +1,5 @@
 {
-    "last_updated": "2026-04-22 11:29:01.529414",
+    "last_updated": "2026-04-22 17:22:11.764103",
     "flyers": [
         {
             "store": "Penny",
@@ -48,26 +48,6 @@
         },
         {
             "store": "Auchan",
-            "title": "2026-04-09-04-22-kedvenc-markaink",
-            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr14-15/2026-04-09-04-22-kedvenc-markaink"
-        },
-        {
-            "store": "Auchan",
-            "title": "2026-04-23-05-20-jegkrem-ajanlataink",
-            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr17/2026-04-23-05-20-jegkrem-ajanlataink"
-        },
-        {
-            "store": "Auchan",
-            "title": "2026-04-23-05-06-green-week-ajanlataink",
-            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr17/2026-04-23-05-06-green-week-ajanlataink"
-        },
-        {
-            "store": "Auchan",
-            "title": "2026-04-16-04-22-heti-hipermarket-ajanlataink",
-            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr16/2026-04-16-04-22-heti-hipermarket-ajanlataink"
-        },
-        {
-            "store": "Auchan",
             "title": "2026-04-16-04-22-heti-szupermarket-ajanlataink",
             "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr16/2026-04-16-04-22-heti-szupermarket-ajanlataink"
         },
@@ -80,6 +60,26 @@
             "store": "Auchan",
             "title": "2026-04-23-04-29-heti-szupermarket-ajanlataink",
             "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr17/2026-04-23-04-29-heti-szupermarket-ajanlataink"
+        },
+        {
+            "store": "Auchan",
+            "title": "2026-04-23-05-06-green-week-ajanlataink",
+            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr17/2026-04-23-05-06-green-week-ajanlataink"
+        },
+        {
+            "store": "Auchan",
+            "title": "2026-04-09-04-22-kedvenc-markaink",
+            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr14-15/2026-04-09-04-22-kedvenc-markaink"
+        },
+        {
+            "store": "Auchan",
+            "title": "2026-04-23-05-20-jegkrem-ajanlataink",
+            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr17/2026-04-23-05-20-jegkrem-ajanlataink"
+        },
+        {
+            "store": "Auchan",
+            "title": "2026-04-16-04-22-heti-hipermarket-ajanlataink",
+            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr16/2026-04-16-04-22-heti-hipermarket-ajanlataink"
         },
         {
             "store": "Aldi",
