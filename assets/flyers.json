@@ -1,5 +1,5 @@
 {
-    "last_updated": "2026-04-24 06:27:35.690597",
+    "last_updated": "2026-04-24 11:39:54.860198",
     "flyers": [
         {
             "store": "Penny",
@@ -32,9 +32,14 @@
             "url": "https://www.tesco.hu/akciok/katalogusok/szupermarket/tesco-ujsag-2026-04-23/1"
         },
         {
-            "store": "Auchan",
-            "title": "2026-04-23-05-20-jegkrem-ajanlataink",
-            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr17/2026-04-23-05-20-jegkrem-ajanlataink"
+            "store": "Tesco",
+            "title": "Tesco hipermarket/tesco-ujsag-2026-04-29",
+            "url": "https://www.tesco.hu/akciok/katalogusok/hipermarket/tesco-ujsag-2026-04-29/1"
+        },
+        {
+            "store": "Tesco",
+            "title": "Tesco szupermarket/tesco-ujsag-2026-04-29",
+            "url": "https://www.tesco.hu/akciok/katalogusok/szupermarket/tesco-ujsag-2026-04-29/1"
         },
         {
             "store": "Auchan",
@@ -43,13 +48,18 @@
         },
         {
             "store": "Auchan",
-            "title": "2026-04-23-04-29-heti-szupermarket-ajanlataink",
-            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr17/2026-04-23-04-29-heti-szupermarket-ajanlataink"
+            "title": "2026-04-23-04-29-heti-hipermarket-ajanlataink",
+            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr17/2026-04-23-04-29-heti-hipermarket-ajanlataink"
         },
         {
             "store": "Auchan",
-            "title": "2026-04-23-04-29-heti-hipermarket-ajanlataink",
-            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr17/2026-04-23-04-29-heti-hipermarket-ajanlataink"
+            "title": "2026-04-23-05-20-jegkrem-ajanlataink",
+            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr17/2026-04-23-05-20-jegkrem-ajanlataink"
+        },
+        {
+            "store": "Auchan",
+            "title": "2026-04-23-04-29-heti-szupermarket-ajanlataink",
+            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr17/2026-04-23-04-29-heti-szupermarket-ajanlataink"
         },
         {
             "store": "Aldi",
