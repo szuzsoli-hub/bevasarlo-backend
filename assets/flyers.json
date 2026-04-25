@@ -1,5 +1,5 @@
 {
-    "last_updated": "2026-04-25 06:05:52.190903",
+    "last_updated": "2026-04-25 11:12:18.137275",
     "flyers": [
         {
             "store": "Penny",
@@ -23,13 +23,13 @@
         },
         {
             "store": "Lidl",
-            "title": "Lidl regionalis-akciok-martfu-foldvari-ut-17het",
-            "url": "https://www.lidl.hu/l/hu/ujsag/regionalis-akciok-martfu-foldvari-ut-17het/ar/0?lf=HHZ"
+            "title": "Lidl regionalis-akciok-martfu-foldvari-ut-18het",
+            "url": "https://www.lidl.hu/l/hu/ujsag/regionalis-akciok-martfu-foldvari-ut-18het/ar/0?lf=HHZ"
         },
         {
             "store": "Lidl",
-            "title": "Lidl regionalis-akciok-martfu-foldvari-ut-18het",
-            "url": "https://www.lidl.hu/l/hu/ujsag/regionalis-akciok-martfu-foldvari-ut-18het/ar/0?lf=HHZ"
+            "title": "Lidl regionalis-akciok-martfu-foldvari-ut-17het",
+            "url": "https://www.lidl.hu/l/hu/ujsag/regionalis-akciok-martfu-foldvari-ut-17het/ar/0?lf=HHZ"
         },
         {
             "store": "Tesco",
@@ -58,6 +58,11 @@
         },
         {
             "store": "Auchan",
+            "title": "2026-04-23-05-20-jegkrem-ajanlataink",
+            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr17/2026-04-23-05-20-jegkrem-ajanlataink"
+        },
+        {
+            "store": "Auchan",
             "title": "2026-04-23-04-29-heti-hipermarket-ajanlataink",
             "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr17/2026-04-23-04-29-heti-hipermarket-ajanlataink"
         },
@@ -67,19 +72,14 @@
             "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr17/2026-04-23-04-29-heti-szupermarket-ajanlataink"
         },
         {
-            "store": "Auchan",
-            "title": "2026-04-23-05-20-jegkrem-ajanlataink",
-            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr17/2026-04-23-05-20-jegkrem-ajanlataink"
+            "store": "Aldi",
+            "title": "aldi_online_akcios_ujsag_2026_04_30",
+            "url": "https://szorolap.aldi.hu/aldi_online_akcios_ujsag_2026_04_30_kw18_yfoc6q33"
         },
         {
             "store": "Aldi",
             "title": "aldi_online_akcios_ujsag_2026_04_23",
             "url": "https://szorolap.aldi.hu/aldi_online_akcios_ujsag_2026_04_23_kw17_g73hn4ow"
-        },
-        {
-            "store": "Aldi",
-            "title": "aldi_online_akcios_ujsag_2026_04_16",
-            "url": "https://szorolap.aldi.hu/aldi_online_akcios_ujsag_2026_04_16_kw16_b7jw2vfd"
         },
         {
             "store": "Aldi",
@@ -90,11 +90,6 @@
             "store": "CBA",
             "title": "cba_0423-0429.pdf",
             "url": "https://www.cba.hu/wp-content/uploads/2026/04/cba_0423-0429.pdf"
-        },
-        {
-            "store": "CBA Príma",
-            "title": "prima_0423-0429.pdf",
-            "url": "https://www.prima.hu/wp-content/uploads/2026/04/prima_0423-0429.pdf"
         },
         {
             "store": "Tisza-Coop",
