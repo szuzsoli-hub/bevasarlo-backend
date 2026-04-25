@@ -1,5 +1,5 @@
 {
-    "last_updated": "2026-04-25 11:12:18.137275",
+    "last_updated": "2026-04-25 17:08:10.457154",
     "flyers": [
         {
             "store": "Penny",
@@ -53,23 +53,23 @@
         },
         {
             "store": "Auchan",
-            "title": "2026-04-23-05-06-green-week-ajanlataink",
-            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr17/2026-04-23-05-06-green-week-ajanlataink"
-        },
-        {
-            "store": "Auchan",
-            "title": "2026-04-23-05-20-jegkrem-ajanlataink",
-            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr17/2026-04-23-05-20-jegkrem-ajanlataink"
-        },
-        {
-            "store": "Auchan",
             "title": "2026-04-23-04-29-heti-hipermarket-ajanlataink",
             "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr17/2026-04-23-04-29-heti-hipermarket-ajanlataink"
         },
         {
             "store": "Auchan",
+            "title": "2026-04-23-05-06-green-week-ajanlataink",
+            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr17/2026-04-23-05-06-green-week-ajanlataink"
+        },
+        {
+            "store": "Auchan",
             "title": "2026-04-23-04-29-heti-szupermarket-ajanlataink",
             "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr17/2026-04-23-04-29-heti-szupermarket-ajanlataink"
+        },
+        {
+            "store": "Auchan",
+            "title": "2026-04-23-05-20-jegkrem-ajanlataink",
+            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr17/2026-04-23-05-20-jegkrem-ajanlataink"
         },
         {
             "store": "Aldi",
@@ -90,6 +90,11 @@
             "store": "CBA",
             "title": "cba_0423-0429.pdf",
             "url": "https://www.cba.hu/wp-content/uploads/2026/04/cba_0423-0429.pdf"
+        },
+        {
+            "store": "CBA Príma",
+            "title": "prima_0423-0429.pdf",
+            "url": "https://www.prima.hu/wp-content/uploads/2026/04/prima_0423-0429.pdf"
         },
         {
             "store": "Tisza-Coop",
