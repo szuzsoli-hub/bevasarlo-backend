@@ -1,5 +1,5 @@
 {
-    "last_updated": "2026-05-02 06:27:01.475922",
+    "last_updated": "2026-05-02 11:13:38.741140",
     "flyers": [
         {
             "store": "Spar",
@@ -108,6 +108,11 @@
         },
         {
             "store": "Auchan",
+            "title": "2026-04-03-05-06-heti-szupermarket-ajanlataink",
+            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr18/2026-04-03-05-06-heti-szupermarket-ajanlataink"
+        },
+        {
+            "store": "Auchan",
             "title": "2026-04-03-05-06-heti-hipermarket-ajanlataink",
             "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr18/2026-04-03-05-06-heti-hipermarket-ajanlataink"
         },
@@ -117,19 +122,14 @@
             "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr17/2026-04-23-05-20-jegkrem-ajanlataink"
         },
         {
-            "store": "Auchan",
-            "title": "2026-04-03-05-06-heti-szupermarket-ajanlataink",
-            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr18/2026-04-03-05-06-heti-szupermarket-ajanlataink"
+            "store": "Aldi",
+            "title": "aldi_online_akcios_ujsag_2026_05_07",
+            "url": "https://szorolap.aldi.hu/aldi_online_akcios_ujsag_2026_05_07_kw19_e49rn3wk"
         },
         {
             "store": "Aldi",
             "title": "aldi_online_akcios_ujsag_2026_04_30",
             "url": "https://szorolap.aldi.hu/aldi_online_akcios_ujsag_2026_04_30_kw18_yfoc6q33"
-        },
-        {
-            "store": "Aldi",
-            "title": "aldi_online_akcios_ujsag_2026_04_23",
-            "url": "https://szorolap.aldi.hu/aldi_online_akcios_ujsag_2026_04_23_kw17_g73hn4ow"
         },
         {
             "store": "Aldi",
