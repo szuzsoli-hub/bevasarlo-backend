@@ -1,6 +1,56 @@
 {
-    "last_updated": "2026-05-03 11:13:22.277223",
+    "last_updated": "2026-05-03 17:14:10.157630",
     "flyers": [
+        {
+            "store": "Spar",
+            "title": "260430-1-spar-szorolap",
+            "url": "https://www.spar.hu/ajanlatok/spar/260430-1-spar-szorolap"
+        },
+        {
+            "store": "Spar",
+            "title": "260430-5-spar-salgotarjan-budapesti-ut-uzlet-megujulas",
+            "url": "https://www.spar.hu/ajanlatok/spar/260430-5-spar-salgotarjan-budapesti-ut-uzlet-megujulas"
+        },
+        {
+            "store": "Spar",
+            "title": "260430-2-interspar-szorolap",
+            "url": "https://www.spar.hu/ajanlatok/interspar/260430-2-interspar-szorolap"
+        },
+        {
+            "store": "Spar",
+            "title": "260430-4-spar-market-city-spar",
+            "url": "https://www.spar.hu/ajanlatok/spar-market/260430-4-spar-market-city-spar"
+        },
+        {
+            "store": "Spar",
+            "title": "260507-1-spar-szorolap-p",
+            "url": "https://www.spar.hu/ajanlatok/spar/260507-1-spar-szorolap-p"
+        },
+        {
+            "store": "Spar",
+            "title": "260507-5-spar-easy-balatonfured-uzletnyitas",
+            "url": "https://www.spar.hu/ajanlatok/spar/260507-5-spar-easy-balatonfured-uzletnyitas"
+        },
+        {
+            "store": "Spar",
+            "title": "260507-6-spar-szekesfehervar-uzlet-megujulas",
+            "url": "https://www.spar.hu/ajanlatok/spar/260507-6-spar-szekesfehervar-uzlet-megujulas"
+        },
+        {
+            "store": "Spar",
+            "title": "260507-4-interspar-szorolap-p",
+            "url": "https://www.spar.hu/ajanlatok/interspar/260507-4-interspar-szorolap-p"
+        },
+        {
+            "store": "Spar",
+            "title": "260507-4-spar-market-city-spar",
+            "url": "https://www.spar.hu/ajanlatok/spar-market/260507-4-spar-market-city-spar"
+        },
+        {
+            "store": "Spar",
+            "title": "260430-2-interspar-szorolap?p=29",
+            "url": "https://www.spar.hu/ajanlatok/interspar/260430-2-interspar-szorolap?p=29"
+        },
         {
             "store": "Penny",
             "title": "Penny Akciós Újság 18. heti (202618)",
@@ -53,8 +103,13 @@
         },
         {
             "store": "Auchan",
-            "title": "2026-04-03-05-06-heti-szupermarket-ajanlataink",
-            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr18/2026-04-03-05-06-heti-szupermarket-ajanlataink"
+            "title": "2026-04-23-05-20-jegkrem-ajanlataink",
+            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr17/2026-04-23-05-20-jegkrem-ajanlataink"
+        },
+        {
+            "store": "Auchan",
+            "title": "2026-04-03-05-06-heti-hipermarket-ajanlataink",
+            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr18/2026-04-03-05-06-heti-hipermarket-ajanlataink"
         },
         {
             "store": "Auchan",
@@ -63,13 +118,8 @@
         },
         {
             "store": "Auchan",
-            "title": "2026-04-23-05-20-jegkrem-ajanlataink",
-            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr17/2026-04-23-05-20-jegkrem-ajanlataink"
-        },
-        {
-            "store": "Auchan",
-            "title": "2026-04-03-05-06-heti-hipermarket-ajanlataink",
-            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr18/2026-04-03-05-06-heti-hipermarket-ajanlataink"
+            "title": "2026-04-03-05-06-heti-szupermarket-ajanlataink",
+            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr18/2026-04-03-05-06-heti-szupermarket-ajanlataink"
         },
         {
             "store": "Aldi",
