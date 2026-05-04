@@ -31,7 +31,6 @@ EXPECTED_API_KEY = "v9X$kL2#pQ8@mZ5*eR1!tY7^bN4&hW3xM9"
 def require_api_key():
     if request.path == '/': return
     if request.path.startswith('/get_image/'): return 
-    # A Socket.IO a /socket.io/ útvonalon kommunikál, ezt is át kell engednie a pajzsnak!
     if request.path.startswith('/socket.io/'): return 
     
     client_key = request.headers.get('X-API-KEY')
@@ -97,7 +96,7 @@ def get_user_status(app_user_id):
                         if p_date_str:
                             p_date = datetime.strptime(p_date_str, "%Y-%m-%dT%H:%M:%SZ").replace(tzinfo=timezone.utc)
                             if p_date > datetime.now(timezone.utc) - timedelta(days=30):
-                                extra_quota += 100
+                                extra_quota += 20  # ← MÓDOSÍTVA: 100 → 20
 
     except Exception as e:
         print(f"🚨 RevenueCat hiba: {e}")
@@ -137,7 +136,7 @@ def analyze_image():
         "status": "success"
     })
 
-    total_quota = (100 if is_pro else 0) + extra_quota
+    total_quota = (60 if is_pro else 0) + extra_quota  # ← MÓDOSÍTVA: 100 → 60
 
     if monthly_usage >= total_quota:
         return jsonify({
@@ -206,7 +205,7 @@ def analyze_image():
         monthly_usage += 1
 
         maradek = total_quota - monthly_usage
-        if monthly_usage in [25, 50, 75]:
+        if monthly_usage in [20, 40, 55]:  # ← MÓDOSÍTVA: [25, 50, 75] → [20, 40, 55]
             parsed_result["warning"] = f"Még {maradek} fotód maradt a havi AI keretedből!"
 
         return jsonify(parsed_result), 200
@@ -409,5 +408,4 @@ def handle_leave_room(data):
 
 if __name__ == '__main__':
     port = int(os.environ.get('PORT', 5000))
-    # app.run helyett a socketio indítja el a szervert, hogy a rádió működjön!
     socketio.run(app, host='0.0.0.0', port=port, allow_unsafe_werkzeug=True)
