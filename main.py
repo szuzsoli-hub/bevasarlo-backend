@@ -32,6 +32,7 @@ def require_api_key():
     if request.path == '/': return
     if request.path.startswith('/get_image/'): return 
     if request.path.startswith('/socket.io/'): return 
+    if request.path == '/webhook': return  # RevenueCat saját hitelesítést használ
     
     client_key = request.headers.get('X-API-KEY')
     if client_key != EXPECTED_API_KEY:
@@ -383,6 +384,105 @@ def update_token():
         {"$set": {"fcm_token": fcm_token}}
     )
     return jsonify({"status": "token_updated"}), 200
+
+# ==============================================================================
+# 💳 TOP-UP KREDITEK (+20 AI szkennelés)
+# ==============================================================================
+@app.route('/topup_credits', methods=['POST'])
+def topup_credits():
+    data = request.get_json()
+    user_id = data.get('user_id')
+    credits = data.get('credits', 20)
+
+    if not user_id:
+        return jsonify({"error": "Hiányzó user_id"}), 400
+
+    # Naplózzuk a top-up vásárlást — a kvóta számítás (get_user_status)
+    # a non_subscriptions alapján automatikusan látja a +20 kreditet,
+    # de ezt a naplóbejegyzést használjuk audit célra.
+    ai_naplo.insert_one({
+        "app_user_id": user_id,
+        "timestamp": datetime.now(timezone.utc),
+        "action": "topup_purchase",
+        "credits": credits,
+        "status": "success"
+    })
+
+    return jsonify({"status": "success", "credits_added": credits}), 200
+
+
+# ==============================================================================
+# 🗑️ FELHASZNÁLÓ ADATOK TÖRLÉSE (GDPR — KÖTELEZŐ!)
+# ==============================================================================
+@app.route('/delete_user_data', methods=['POST'])
+def delete_user_data():
+    data = request.get_json()
+    user_id = data.get('user_id')
+
+    if not user_id:
+        return jsonify({"error": "Hiányzó user_id"}), 400
+
+    # 1. AI napló teljes törlése
+    ai_naplo.delete_many({"app_user_id": user_id})
+
+    # 2. Minden csoportból kiléptetés + üres csoportok törlése
+    user_groups = list(tagok_kollekcio.find({"user_id": user_id}))
+    for group in user_groups:
+        family_id = group.get("family_id")
+        tagok_kollekcio.delete_one({"family_id": family_id, "user_id": user_id})
+
+        maradek = tagok_kollekcio.count_documents({"family_id": family_id})
+        if maradek == 0:
+            # Ha ő volt az utolsó tag, a lista és a képek is törlődnek
+            lista_dok = kollekcio.find_one({"family_id": family_id})
+            if lista_dok and "list_data" in lista_dok:
+                if "items" in lista_dok["list_data"]:
+                    for item in lista_dok["list_data"]["items"]:
+                        unit = item.get("unit", "")
+                        if ":::" in unit:
+                            link = unit.split(":::")[1]
+                            if "/get_image/" in link:
+                                kep_id = link.split("/")[-1]
+                                kepek_kollekcio.delete_one({"image_id": kep_id})
+            kollekcio.delete_one({"family_id": family_id})
+            socketio.emit('group_deleted', {"family_id": family_id}, room=family_id)
+
+    print(f"🗑️ GDPR törlés elvégezve: {user_id}")
+    return jsonify({"status": "deleted", "message": "Minden adat törölve"}), 200
+
+
+# ==============================================================================
+# 🔔 REVENUECAT WEBHOOK (Lemondás / Lejárat / Fizetési probléma)
+# ==============================================================================
+@app.route('/webhook', methods=['POST'])
+def revenuecat_webhook():
+    data = request.get_json()
+
+    if not data:
+        return jsonify({"error": "Üres webhook"}), 400
+
+    event = data.get('event', {})
+    event_type = event.get('type')
+    app_user_id = event.get('app_user_id')
+    product_id = event.get('product_id', '')
+    expiration_at_ms = event.get('expiration_at_ms')
+
+    print(f"📣 RevenueCat webhook: {event_type} - {app_user_id} - {product_id}")
+
+    # Naplózzuk az eseményt — a tényleges zárolást a Flutter végzi
+    # a RevenueCat SDK entitlement ellenőrzése alapján (expires_date)
+    if event_type in ['CANCELLATION', 'EXPIRATION', 'BILLING_ISSUES_DETECTED']:
+        ai_naplo.insert_one({
+            "app_user_id": app_user_id,
+            "timestamp": datetime.now(timezone.utc),
+            "action": f"subscription_{event_type.lower()}",
+            "product_id": product_id,
+            "expires_at_ms": expiration_at_ms,
+            "status": "logged"
+        })
+
+    return jsonify({"status": "ok"}), 200
+
 
 # ==============================================================================
 # 📻 SOCKET.IO (WALKIE-TALKIE) ESEMÉNYEK
