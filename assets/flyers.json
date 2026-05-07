@@ -1,31 +1,6 @@
 {
-    "last_updated": "2026-05-07 12:12:43.116046",
+    "last_updated": "2026-05-07 18:04:42.050779",
     "flyers": [
-        {
-            "store": "Spar",
-            "title": "260507-1-spar-szorolap",
-            "url": "https://www.spar.hu/ajanlatok/spar/260507-1-spar-szorolap"
-        },
-        {
-            "store": "Spar",
-            "title": "260507-5-spar-easy-balatonfured-uzletnyitas",
-            "url": "https://www.spar.hu/ajanlatok/spar/260507-5-spar-easy-balatonfured-uzletnyitas"
-        },
-        {
-            "store": "Spar",
-            "title": "260507-6-spar-szekesfehervar-uzlet-megujulas",
-            "url": "https://www.spar.hu/ajanlatok/spar/260507-6-spar-szekesfehervar-uzlet-megujulas"
-        },
-        {
-            "store": "Spar",
-            "title": "260507-4-interspar-szorolap",
-            "url": "https://www.spar.hu/ajanlatok/interspar/260507-4-interspar-szorolap"
-        },
-        {
-            "store": "Spar",
-            "title": "260507-4-spar-market-city-spar",
-            "url": "https://www.spar.hu/ajanlatok/spar-market/260507-4-spar-market-city-spar"
-        },
         {
             "store": "Penny",
             "title": "Penny Akciós Újság 19. heti (202619)",
@@ -58,13 +33,13 @@
         },
         {
             "store": "Auchan",
-            "title": "2026-05-04-05-20-drogeria-ajanlataink",
-            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr18/2026-05-04-05-20-drogeria-ajanlataink"
+            "title": "2026-05-07-05-13-heti-hipermarket-ajanlataink",
+            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr19/2026-05-07-05-13-heti-hipermarket-ajanlataink"
         },
         {
             "store": "Auchan",
-            "title": "2026-05-07-05-13-heti-szupermarket-ajanlataink",
-            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr19/2026-05-07-05-13-heti-szupermarket-ajanlataink"
+            "title": "2026-05-04-05-20-drogeria-ajanlataink",
+            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr18/2026-05-04-05-20-drogeria-ajanlataink"
         },
         {
             "store": "Auchan",
@@ -73,13 +48,13 @@
         },
         {
             "store": "Auchan",
-            "title": "2026-05-07-05-13-heti-hipermarket-ajanlataink",
-            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr19/2026-05-07-05-13-heti-hipermarket-ajanlataink"
+            "title": "2026-05-07-05-20-nemzetkozi-konyha-ajanlataink",
+            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr19/2026-05-07-05-20-nemzetkozi-konyha-ajanlataink"
         },
         {
             "store": "Auchan",
-            "title": "2026-05-07-05-20-nemzetkozi-konyha-ajanlataink",
-            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr19/2026-05-07-05-20-nemzetkozi-konyha-ajanlataink"
+            "title": "2026-05-07-05-13-heti-szupermarket-ajanlataink",
+            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr19/2026-05-07-05-13-heti-szupermarket-ajanlataink"
         },
         {
             "store": "Aldi",
