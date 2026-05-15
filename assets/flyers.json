@@ -1,5 +1,5 @@
 {
-    "last_updated": "2026-05-14 18:14:12.965877",
+    "last_updated": "2026-05-15 07:40:20.201128",
     "flyers": [
         {
             "store": "Spar",
@@ -52,14 +52,24 @@
             "url": "https://www.tesco.hu/akciok/katalogusok/szupermarket/tesco-ujsag-2026-05-14/1"
         },
         {
-            "store": "Auchan",
-            "title": "2026-05-07-05-20-nemzetkozi-konyha-ajanlataink",
-            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr19/2026-05-07-05-20-nemzetkozi-konyha-ajanlataink"
+            "store": "Tesco",
+            "title": "Tesco hipermarket/tesco-ujsag-2026-05-21",
+            "url": "https://www.tesco.hu/akciok/katalogusok/hipermarket/tesco-ujsag-2026-05-21/1"
+        },
+        {
+            "store": "Tesco",
+            "title": "Tesco szupermarket/tesco-ujsag-2026-05-21",
+            "url": "https://www.tesco.hu/akciok/katalogusok/szupermarket/tesco-ujsag-2026-05-21/1"
         },
         {
             "store": "Auchan",
-            "title": "2026-05-14-05-27-induljon-a-strand",
-            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr20/2026-05-14-05-27-induljon-a-strand"
+            "title": "2026-05-14-05-20-heti-szupermarket-ajanlataink",
+            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr20/2026-05-14-05-20-heti-szupermarket-ajanlataink"
+        },
+        {
+            "store": "Auchan",
+            "title": "2026-05-14-05-27-gyereknapi-ajanlataink",
+            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr20/2026-05-14-05-27-gyereknapi-ajanlataink"
         },
         {
             "store": "Auchan",
@@ -73,8 +83,8 @@
         },
         {
             "store": "Auchan",
-            "title": "2026-05-14-05-20-heti-szupermarket-ajanlataink",
-            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr20/2026-05-14-05-20-heti-szupermarket-ajanlataink"
+            "title": "2026-05-07-05-20-nemzetkozi-konyha-ajanlataink",
+            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr19/2026-05-07-05-20-nemzetkozi-konyha-ajanlataink"
         },
         {
             "store": "Auchan",
@@ -83,8 +93,8 @@
         },
         {
             "store": "Auchan",
-            "title": "2026-05-14-05-27-gyereknapi-ajanlataink",
-            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr20/2026-05-14-05-27-gyereknapi-ajanlataink"
+            "title": "2026-05-14-05-27-induljon-a-strand",
+            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr20/2026-05-14-05-27-induljon-a-strand"
         },
         {
             "store": "Aldi",
