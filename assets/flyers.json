@@ -1,5 +1,5 @@
 {
-    "last_updated": "2026-05-16 06:41:53.107668",
+    "last_updated": "2026-05-16 11:25:16.849751",
     "flyers": [
         {
             "store": "Spar",
@@ -88,23 +88,18 @@
         },
         {
             "store": "Auchan",
-            "title": "2026-05-07-05-20-nemzetkozi-konyha-ajanlataink",
-            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr19/2026-05-07-05-20-nemzetkozi-konyha-ajanlataink"
-        },
-        {
-            "store": "Auchan",
             "title": "2026-04-23-05-20-jegkrem-ajanlataink",
             "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr17/2026-04-23-05-20-jegkrem-ajanlataink"
         },
         {
             "store": "Auchan",
-            "title": "2026-05-14-05-27-induljon-a-strand",
-            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr20/2026-05-14-05-27-induljon-a-strand"
+            "title": "2026-05-14-05-27-gyereknapi-ajanlataink",
+            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr20/2026-05-14-05-27-gyereknapi-ajanlataink"
         },
         {
             "store": "Auchan",
-            "title": "2026-05-14-05-27-gyereknapi-ajanlataink",
-            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr20/2026-05-14-05-27-gyereknapi-ajanlataink"
+            "title": "2026-05-14-05-27-induljon-a-strand",
+            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr20/2026-05-14-05-27-induljon-a-strand"
         },
         {
             "store": "Auchan",
@@ -118,18 +113,23 @@
         },
         {
             "store": "Auchan",
+            "title": "2026-05-07-05-20-nemzetkozi-konyha-ajanlataink",
+            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr19/2026-05-07-05-20-nemzetkozi-konyha-ajanlataink"
+        },
+        {
+            "store": "Auchan",
             "title": "2026-05-14-05-20-heti-hipermarket-ajanlataink",
             "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr20/2026-05-14-05-20-heti-hipermarket-ajanlataink"
         },
         {
             "store": "Aldi",
-            "title": "aldi_online_akcios_ujsag_2026_05_14",
-            "url": "https://szorolap.aldi.hu/aldi_online_akcios_ujsag_2026_05_14_kw20_7t7b3qkr"
+            "title": "aldi_online_akcios_ujsag_2026_05_21",
+            "url": "https://szorolap.aldi.hu/aldi_online_akcios_ujsag_2026_05_21_kw21_uq4e11lc"
         },
         {
             "store": "Aldi",
-            "title": "aldi_online_akcios_ujsag_2026_05_07",
-            "url": "https://szorolap.aldi.hu/aldi_online_akcios_ujsag_2026_05_07_kw19_e49rn3wk"
+            "title": "aldi_online_akcios_ujsag_2026_05_14",
+            "url": "https://szorolap.aldi.hu/aldi_online_akcios_ujsag_2026_05_14_kw20_7t7b3qkr"
         },
         {
             "store": "Aldi",
