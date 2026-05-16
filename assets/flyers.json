@@ -1,5 +1,5 @@
 {
-    "last_updated": "2026-05-15 17:59:44.686451",
+    "last_updated": "2026-05-16 06:41:53.107668",
     "flyers": [
         {
             "store": "Spar",
@@ -52,14 +52,19 @@
             "url": "https://files.rewe.co.at/PennyIntLeaflet/HU/202620/?utm_source=penny&utm_medium=web&utm_content=desktop&utm_campaign=kw20"
         },
         {
-            "store": "Lidl",
-            "title": "Lidl akcios-ujsag-20-het",
-            "url": "https://www.lidl.hu/l/hu/ujsag/akcios-ujsag-20-het-2026/ar/0?lf=HHZ"
+            "store": "Penny",
+            "title": "Penny Akciós Újság 21. heti (202621)",
+            "url": "https://files.rewe.co.at/PennyIntLeaflet/HU/202621/?utm_source=penny&utm_medium=web&utm_content=desktop&utm_campaign=kw20"
         },
         {
             "store": "Lidl",
-            "title": "Lidl akcios-ujsag-19-het",
-            "url": "https://www.lidl.hu/l/hu/ujsag/akcios-ujsag-19-het-2026/ar/0?lf=HHZ"
+            "title": "Lidl akcios-ujsag-21-het",
+            "url": "https://www.lidl.hu/l/hu/ujsag/akcios-ujsag-21-het-2026/ar/0?lf=HHZ"
+        },
+        {
+            "store": "Lidl",
+            "title": "Lidl akcios-ujsag-20-het",
+            "url": "https://www.lidl.hu/l/hu/ujsag/akcios-ujsag-20-het-2026/ar/0?lf=HHZ"
         },
         {
             "store": "Tesco",
@@ -83,28 +88,18 @@
         },
         {
             "store": "Auchan",
-            "title": "2026-04-23-05-20-jegkrem-ajanlataink",
-            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr17/2026-04-23-05-20-jegkrem-ajanlataink"
-        },
-        {
-            "store": "Auchan",
-            "title": "2026-05-14-05-20-heti-hipermarket-ajanlataink",
-            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr20/2026-05-14-05-20-heti-hipermarket-ajanlataink"
-        },
-        {
-            "store": "Auchan",
-            "title": "2026-05-14-05-27-induljon-a-strand",
-            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr20/2026-05-14-05-27-induljon-a-strand"
-        },
-        {
-            "store": "Auchan",
             "title": "2026-05-07-05-20-nemzetkozi-konyha-ajanlataink",
             "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr19/2026-05-07-05-20-nemzetkozi-konyha-ajanlataink"
         },
         {
             "store": "Auchan",
-            "title": "2026-05-14-05-20-heti-szupermarket-ajanlataink",
-            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr20/2026-05-14-05-20-heti-szupermarket-ajanlataink"
+            "title": "2026-04-23-05-20-jegkrem-ajanlataink",
+            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr17/2026-04-23-05-20-jegkrem-ajanlataink"
+        },
+        {
+            "store": "Auchan",
+            "title": "2026-05-14-05-27-induljon-a-strand",
+            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr20/2026-05-14-05-27-induljon-a-strand"
         },
         {
             "store": "Auchan",
@@ -115,6 +110,16 @@
             "store": "Auchan",
             "title": "2026-05-04-05-20-drogeria-ajanlataink",
             "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr18/2026-05-04-05-20-drogeria-ajanlataink"
+        },
+        {
+            "store": "Auchan",
+            "title": "2026-05-14-05-20-heti-szupermarket-ajanlataink",
+            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr20/2026-05-14-05-20-heti-szupermarket-ajanlataink"
+        },
+        {
+            "store": "Auchan",
+            "title": "2026-05-14-05-20-heti-hipermarket-ajanlataink",
+            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr20/2026-05-14-05-20-heti-hipermarket-ajanlataink"
         },
         {
             "store": "Aldi",
