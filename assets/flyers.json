@@ -1,5 +1,5 @@
 {
-    "last_updated": "2026-05-18 08:18:31.313407",
+    "last_updated": "2026-05-18 14:08:35.513315",
     "flyers": [
         {
             "store": "Spar",
@@ -88,23 +88,13 @@
         },
         {
             "store": "Auchan",
-            "title": "2026-05-04-05-20-drogeria-ajanlataink",
-            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr18/2026-05-04-05-20-drogeria-ajanlataink"
+            "title": "2026-05-21-05-27-heti-szupermarket-ajanlataink",
+            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr21/2026-05-21-05-27-heti-szupermarket-ajanlataink"
         },
         {
             "store": "Auchan",
-            "title": "2026-05-14-05-20-heti-szupermarket-ajanlataink",
-            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr20/2026-05-14-05-20-heti-szupermarket-ajanlataink"
-        },
-        {
-            "store": "Auchan",
-            "title": "2026-05-14-05-20-heti-hipermarket-ajanlataink",
-            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr20/2026-05-14-05-20-heti-hipermarket-ajanlataink"
-        },
-        {
-            "store": "Auchan",
-            "title": "2026-05-07-05-20-nemzetkozi-konyha-ajanlataink",
-            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr19/2026-05-07-05-20-nemzetkozi-konyha-ajanlataink"
+            "title": "2026-05-21-05-27-heti-hipermarket-ajanlataink",
+            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr21/2026-05-21-05-27-heti-hipermarket-ajanlataink"
         },
         {
             "store": "Auchan",
@@ -113,13 +103,38 @@
         },
         {
             "store": "Auchan",
+            "title": "2026-05-07-05-20-nemzetkozi-konyha-ajanlataink",
+            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr19/2026-05-07-05-20-nemzetkozi-konyha-ajanlataink"
+        },
+        {
+            "store": "Auchan",
             "title": "2026-05-14-05-27-induljon-a-strand",
             "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr20/2026-05-14-05-27-induljon-a-strand"
         },
         {
             "store": "Auchan",
+            "title": "2026-05-21-06-03-grill-ajanlataink",
+            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr21/2026-05-21-06-03-grill-ajanlataink"
+        },
+        {
+            "store": "Auchan",
+            "title": "2026-05-14-05-20-heti-szupermarket-ajanlataink",
+            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr20/2026-05-14-05-20-heti-szupermarket-ajanlataink"
+        },
+        {
+            "store": "Auchan",
             "title": "2026-05-14-05-27-gyereknapi-ajanlataink",
             "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr20/2026-05-14-05-27-gyereknapi-ajanlataink"
+        },
+        {
+            "store": "Auchan",
+            "title": "2026-05-14-05-20-heti-hipermarket-ajanlataink",
+            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr20/2026-05-14-05-20-heti-hipermarket-ajanlataink"
+        },
+        {
+            "store": "Auchan",
+            "title": "2026-05-04-05-20-drogeria-ajanlataink",
+            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr18/2026-05-04-05-20-drogeria-ajanlataink"
         },
         {
             "store": "Aldi",
@@ -160,6 +175,56 @@
             "store": "CBA Príma",
             "title": "prima_0521-0527.pdf",
             "url": "https://www.prima.hu/wp-content/uploads/2026/05/prima_0521-0527.pdf"
+        },
+        {
+            "store": "Tisza-Coop",
+            "title": "coop-tisza-szorolap-2026-majus-3-het-szuper-plusz",
+            "url": "https://katalogus.coop.hu/coop-tisza-szorolap-2026-majus-3-het-szuper-plusz/"
+        },
+        {
+            "store": "Tisza-Coop",
+            "title": "coop-tisza-szorolap-2026-majus-3-het-abc-szuper",
+            "url": "https://katalogus.coop.hu/coop-tisza-szorolap-2026-majus-3-het-abc-szuper/"
+        },
+        {
+            "store": "Tisza-Coop",
+            "title": "coop-tisza-szorolap-2026-majus-4-het-abc-szuper",
+            "url": "https://katalogus.coop.hu/coop-tisza-szorolap-2026-majus-4-het-abc-szuper/"
+        },
+        {
+            "store": "Alföld Pro-Coop",
+            "title": "coop-alfold-szorolap-2026-majus-3-het",
+            "url": "https://katalogus.coop.hu/coop-alfold-szorolap-2026-majus-3-het/"
+        },
+        {
+            "store": "Alföld Pro-Coop",
+            "title": "coop-alfold-szorolap-2026-majus-4-het",
+            "url": "https://katalogus.coop.hu/coop-alfold-szorolap-2026-majus-4-het/"
+        },
+        {
+            "store": "Észak-Kelet Pro-Coop",
+            "title": "coop-eszak-kelet-szorolap-2026-majus-3-het",
+            "url": "https://katalogus.coop.hu/coop-eszak-kelet-szorolap-2026-majus-3-het/"
+        },
+        {
+            "store": "Észak-Kelet Pro-Coop",
+            "title": "coop-eszak-kelet-szorolap-2026-majus-4-het",
+            "url": "https://katalogus.coop.hu/coop-eszak-kelet-szorolap-2026-majus-4-het/"
+        },
+        {
+            "store": "Coop Mecsek Füszért",
+            "title": "coop-mecsek-szorolap-2026-majus-3-het",
+            "url": "https://katalogus.coop.hu/coop-mecsek-szorolap-2026-majus-3-het/"
+        },
+        {
+            "store": "Coop Mecsek Füszért",
+            "title": "coop-mecsek-szorolap-2026-majus-4-5-het",
+            "url": "https://katalogus.coop.hu/coop-mecsek-szorolap-2026-majus-4-5-het/"
+        },
+        {
+            "store": "Coop Hétforrás",
+            "title": "coop-hetforras-szorolap-2026-majus-3-4-5-het",
+            "url": "https://katalogus.coop.hu/coop-hetforras-szorolap-2026-majus-3-4-5-het/"
         }
     ]
 }
