@@ -1,5 +1,5 @@
 {
-    "last_updated": "2026-05-20 08:03:05.403303",
+    "last_updated": "2026-05-20 12:46:14.156379",
     "flyers": [
         {
             "store": "Spar",
@@ -33,8 +33,8 @@
         },
         {
             "store": "Spar",
-            "title": "260521-2-interspar-szorolap",
-            "url": "https://www.spar.hu/ajanlatok/interspar/260521-2-interspar-szorolap"
+            "title": "260521-2-interspar-szorolap-p",
+            "url": "https://www.spar.hu/ajanlatok/interspar/260521-2-interspar-szorolap-p"
         },
         {
             "store": "Spar",
@@ -88,18 +88,18 @@
         },
         {
             "store": "Auchan",
-            "title": "2026-05-14-05-20-heti-hipermarket-ajanlataink",
-            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr20/2026-05-14-05-20-heti-hipermarket-ajanlataink"
-        },
-        {
-            "store": "Auchan",
             "title": "2026-05-21-06-03-grill-ajanlataink",
             "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr21/2026-05-21-06-03-grill-ajanlataink"
         },
         {
             "store": "Auchan",
-            "title": "2026-04-23-05-20-jegkrem-ajanlataink",
-            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr17/2026-04-23-05-20-jegkrem-ajanlataink"
+            "title": "2026-05-21-05-27-heti-szupermarket-ajanlataink",
+            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr21/2026-05-21-05-27-heti-szupermarket-ajanlataink"
+        },
+        {
+            "store": "Auchan",
+            "title": "2026-05-14-05-27-gyereknapi-ajanlataink",
+            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr20/2026-05-14-05-27-gyereknapi-ajanlataink"
         },
         {
             "store": "Auchan",
@@ -113,13 +113,8 @@
         },
         {
             "store": "Auchan",
-            "title": "2026-05-07-05-20-nemzetkozi-konyha-ajanlataink",
-            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr19/2026-05-07-05-20-nemzetkozi-konyha-ajanlataink"
-        },
-        {
-            "store": "Auchan",
-            "title": "2026-05-14-05-27-gyereknapi-ajanlataink",
-            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr20/2026-05-14-05-27-gyereknapi-ajanlataink"
+            "title": "2026-05-14-05-20-heti-hipermarket-ajanlataink",
+            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr20/2026-05-14-05-20-heti-hipermarket-ajanlataink"
         },
         {
             "store": "Auchan",
@@ -133,8 +128,13 @@
         },
         {
             "store": "Auchan",
-            "title": "2026-05-21-05-27-heti-szupermarket-ajanlataink",
-            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr21/2026-05-21-05-27-heti-szupermarket-ajanlataink"
+            "title": "2026-05-07-05-20-nemzetkozi-konyha-ajanlataink",
+            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr19/2026-05-07-05-20-nemzetkozi-konyha-ajanlataink"
+        },
+        {
+            "store": "Auchan",
+            "title": "2026-04-23-05-20-jegkrem-ajanlataink",
+            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr17/2026-04-23-05-20-jegkrem-ajanlataink"
         },
         {
             "store": "Aldi",
@@ -208,8 +208,8 @@
         },
         {
             "store": "Észak-Kelet Pro-Coop",
-            "title": "coop-eszak-kelet-szorolap-2026-majus-4-het",
-            "url": "https://katalogus.coop.hu/coop-eszak-kelet-szorolap-2026-majus-4-het/"
+            "title": "coop-eszak-kelet-szorolap-2026-majus-5-het",
+            "url": "https://katalogus.coop.hu/coop-eszak-kelet-szorolap-2026-majus-5-het/"
         },
         {
             "store": "Coop Mecsek Füszért",
