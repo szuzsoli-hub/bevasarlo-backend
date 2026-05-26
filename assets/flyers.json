@@ -1,5 +1,5 @@
 {
-    "last_updated": "2026-05-26 08:07:45.229219",
+    "last_updated": "2026-05-26 12:56:56.807010",
     "flyers": [
         {
             "store": "Spar",
@@ -58,13 +58,13 @@
         },
         {
             "store": "Lidl",
-            "title": "Lidl akcios-ujsag-21-het",
-            "url": "https://www.lidl.hu/l/hu/ujsag/akcios-ujsag-21-het-2026/ar/0?lf=HHZ"
+            "title": "Lidl akcios-ujsag-22-het",
+            "url": "https://www.lidl.hu/l/hu/ujsag/akcios-ujsag-22-het-2026/ar/0?lf=HHZ"
         },
         {
             "store": "Lidl",
-            "title": "Lidl akcios-ujsag-22-het",
-            "url": "https://www.lidl.hu/l/hu/ujsag/akcios-ujsag-22-het-2026/ar/0?lf=HHZ"
+            "title": "Lidl akcios-ujsag-21-het",
+            "url": "https://www.lidl.hu/l/hu/ujsag/akcios-ujsag-21-het-2026/ar/0?lf=HHZ"
         },
         {
             "store": "Lidl",
@@ -93,18 +93,23 @@
         },
         {
             "store": "Auchan",
+            "title": "2026-05-21-05-27-heti-hipermarket-ajanlataink",
+            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr21/2026-05-21-05-27-heti-hipermarket-ajanlataink"
+        },
+        {
+            "store": "Auchan",
             "title": "2026-05-14-05-27-gyereknapi-ajanlataink",
             "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr20/2026-05-14-05-27-gyereknapi-ajanlataink"
         },
         {
             "store": "Auchan",
-            "title": "2026-05-14-05-27-induljon-a-strand",
-            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr20/2026-05-14-05-27-induljon-a-strand"
+            "title": "2026-05-21-06-03-grill-ajanlataink",
+            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr21/2026-05-21-06-03-grill-ajanlataink"
         },
         {
             "store": "Auchan",
-            "title": "2026-05-21-05-27-heti-hipermarket-ajanlataink",
-            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr21/2026-05-21-05-27-heti-hipermarket-ajanlataink"
+            "title": "2026-05-28-06-10-strand-katalogus",
+            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr22/2026-05-28-06-10-strand-katalogus"
         },
         {
             "store": "Auchan",
@@ -113,8 +118,18 @@
         },
         {
             "store": "Auchan",
-            "title": "2026-05-21-06-03-grill-ajanlataink",
-            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr21/2026-05-21-06-03-grill-ajanlataink"
+            "title": "2026-05-28-06-03-heti-hipermarket-ajanlataink",
+            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr22/2026-05-28-06-03-heti-hipermarket-ajanlataink"
+        },
+        {
+            "store": "Auchan",
+            "title": "2026-05-28-06-03-heti-szupermarket-ajanlataink",
+            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr22/2026-05-28-06-03-heti-szupermarket-ajanlataink"
+        },
+        {
+            "store": "Auchan",
+            "title": "2026-05-14-05-27-induljon-a-strand",
+            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr20/2026-05-14-05-27-induljon-a-strand"
         },
         {
             "store": "Aldi",
