@@ -25,7 +25,7 @@ socketio = SocketIO(
 # ==============================================================================
 # 🛡️ BIZTONSÁGI PAJZS (KAPUŐR)
 # ==============================================================================
-EXPECTED_API_KEY = "v9X$kL2#pQ8@mZ5*eR1!tY7^bN4&hW3xM9"
+EXPECTED_API_KEY = "aK9mX3rL7vN2pQ8tB4wF6hD1sJ5cR0eUgY2jM8"
 
 @app.before_request
 def require_api_key():
