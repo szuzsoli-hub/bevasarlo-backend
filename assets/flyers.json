@@ -1,6 +1,46 @@
 {
-    "last_updated": "2026-05-29 13:39:54.848826",
+    "last_updated": "2026-05-29 18:49:51.315826",
     "flyers": [
+        {
+            "store": "Spar",
+            "title": "260528-1-spar-szorolap",
+            "url": "https://www.spar.hu/ajanlatok/spar/260528-1-spar-szorolap"
+        },
+        {
+            "store": "Spar",
+            "title": "260528-2-interspar-szorolap",
+            "url": "https://www.spar.hu/ajanlatok/interspar/260528-2-interspar-szorolap"
+        },
+        {
+            "store": "Spar",
+            "title": "260528-5-interspar-nyar",
+            "url": "https://www.spar.hu/ajanlatok/interspar/260528-5-interspar-nyar"
+        },
+        {
+            "store": "Spar",
+            "title": "260514-4-interspar-nyar",
+            "url": "https://www.spar.hu/ajanlatok/interspar/260514-4-interspar-nyar"
+        },
+        {
+            "store": "Spar",
+            "title": "260528-4-spar-market-city-spar",
+            "url": "https://www.spar.hu/ajanlatok/spar-market/260528-4-spar-market-city-spar"
+        },
+        {
+            "store": "Spar",
+            "title": "260604-1-spar-szorolap-p",
+            "url": "https://www.spar.hu/ajanlatok/spar/260604-1-spar-szorolap-p"
+        },
+        {
+            "store": "Spar",
+            "title": "260604-2-interspar-szorolap-p",
+            "url": "https://www.spar.hu/ajanlatok/interspar/260604-2-interspar-szorolap-p"
+        },
+        {
+            "store": "Spar",
+            "title": "260604-3-spar-market-city-spar",
+            "url": "https://www.spar.hu/ajanlatok/spar-market/260604-3-spar-market-city-spar"
+        },
         {
             "store": "Penny",
             "title": "Penny Akciós Újság 22. heti (202622)",
