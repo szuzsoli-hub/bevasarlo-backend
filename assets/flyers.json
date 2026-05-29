@@ -1,5 +1,5 @@
 {
-    "last_updated": "2026-05-28 18:50:15.122491",
+    "last_updated": "2026-05-29 08:16:12.752961",
     "flyers": [
         {
             "store": "Spar",
@@ -57,9 +57,19 @@
             "url": "https://www.tesco.hu/akciok/katalogusok/szupermarket/tesco-ujsag-2026-05-28/1"
         },
         {
+            "store": "Tesco",
+            "title": "Tesco hipermarket/tesco-ujsag-2026-06-04",
+            "url": "https://www.tesco.hu/akciok/katalogusok/hipermarket/tesco-ujsag-2026-06-04/1"
+        },
+        {
+            "store": "Tesco",
+            "title": "Tesco szupermarket/tesco-ujsag-2026-06-04",
+            "url": "https://www.tesco.hu/akciok/katalogusok/szupermarket/tesco-ujsag-2026-06-04/1"
+        },
+        {
             "store": "Auchan",
-            "title": "2026-05-21-06-03-grill-ajanlataink",
-            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr21/2026-05-21-06-03-grill-ajanlataink"
+            "title": "2026-05-28-06-03-heti-hipermarket-ajanlataink",
+            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr22/2026-05-28-06-03-heti-hipermarket-ajanlataink"
         },
         {
             "store": "Auchan",
@@ -68,8 +78,8 @@
         },
         {
             "store": "Auchan",
-            "title": "2026-05-28-06-03-heti-hipermarket-ajanlataink",
-            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr22/2026-05-28-06-03-heti-hipermarket-ajanlataink"
+            "title": "2026-05-21-06-03-grill-ajanlataink",
+            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr21/2026-05-21-06-03-grill-ajanlataink"
         },
         {
             "store": "Auchan",
