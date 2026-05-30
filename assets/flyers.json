@@ -1,5 +1,5 @@
 {
-    "last_updated": "2026-05-30 07:25:39.284536",
+    "last_updated": "2026-05-30 11:51:23.949170",
     "flyers": [
         {
             "store": "Spar",
@@ -93,18 +93,8 @@
         },
         {
             "store": "Auchan",
-            "title": "2026-05-28-06-10-strand-katalogus",
-            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr22/2026-05-28-06-10-strand-katalogus"
-        },
-        {
-            "store": "Auchan",
             "title": "2026-05-21-06-03-grill-ajanlataink",
             "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr21/2026-05-21-06-03-grill-ajanlataink"
-        },
-        {
-            "store": "Auchan",
-            "title": "2026-05-28-06-03-heti-hipermarket-ajanlataink",
-            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr22/2026-05-28-06-03-heti-hipermarket-ajanlataink"
         },
         {
             "store": "Auchan",
@@ -112,14 +102,24 @@
             "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr22/2026-05-28-06-03-heti-szupermarket-ajanlataink"
         },
         {
-            "store": "Aldi",
-            "title": "aldi_online_akcios_ujsag_2026_05_28",
-            "url": "https://szorolap.aldi.hu/aldi_online_akcios_ujsag_2026_05_28_kw22_268zwc20"
+            "store": "Auchan",
+            "title": "2026-05-28-06-10-strand-katalogus",
+            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr22/2026-05-28-06-10-strand-katalogus"
+        },
+        {
+            "store": "Auchan",
+            "title": "2026-05-28-06-03-heti-hipermarket-ajanlataink",
+            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr22/2026-05-28-06-03-heti-hipermarket-ajanlataink"
         },
         {
             "store": "Aldi",
-            "title": "aldi_online_akcios_ujsag_2026_05_21",
-            "url": "https://szorolap.aldi.hu/aldi_online_akcios_ujsag_2026_05_21_kw21_uq4e11lc"
+            "title": "aldi_online_akcios_ujsag_2026_06_04",
+            "url": "https://szorolap.aldi.hu/aldi_online_akcios_ujsag_2026_06_04_kw23_799407t3"
+        },
+        {
+            "store": "Aldi",
+            "title": "aldi_online_akcios_ujsag_2026_05_28",
+            "url": "https://szorolap.aldi.hu/aldi_online_akcios_ujsag_2026_05_28_kw22_268zwc20"
         },
         {
             "store": "Aldi",
@@ -130,31 +130,6 @@
             "store": "CBA Príma",
             "title": "cba_borkatalogus_web.pdf",
             "url": "https://www.prima.hu/wp-content/uploads/2026/05/cba_borkatalogus_web.pdf"
-        },
-        {
-            "store": "Tisza-Coop",
-            "title": "coop-tisza-szorolap-2026-majus-5-het",
-            "url": "https://katalogus.coop.hu/coop-tisza-szorolap-2026-majus-5-het/"
-        },
-        {
-            "store": "Alföld Pro-Coop",
-            "title": "coop-alfold-szorolap-2026-majus-5-het",
-            "url": "https://katalogus.coop.hu/coop-alfold-szorolap-2026-majus-5-het/"
-        },
-        {
-            "store": "Észak-Kelet Pro-Coop",
-            "title": "coop-eszak-kelet-szorolap-2026-majus-5-het",
-            "url": "https://katalogus.coop.hu/coop-eszak-kelet-szorolap-2026-majus-5-het/"
-        },
-        {
-            "store": "Coop Mecsek Füszért",
-            "title": "coop-mecsek-szorolap-2026-majus-4-5-het",
-            "url": "https://katalogus.coop.hu/coop-mecsek-szorolap-2026-majus-4-5-het/"
-        },
-        {
-            "store": "Coop Hétforrás",
-            "title": "coop-hetforras-szorolap-2026-majus-3-4-5-het",
-            "url": "https://katalogus.coop.hu/coop-hetforras-szorolap-2026-majus-3-4-5-het/"
         }
     ]
 }
