@@ -1,5 +1,5 @@
 {
-    "last_updated": "2026-05-31 11:57:55.371982",
+    "last_updated": "2026-05-31 17:28:12.556995",
     "flyers": [
         {
             "store": "Spar",
@@ -93,8 +93,8 @@
         },
         {
             "store": "Auchan",
-            "title": "2026-05-21-06-03-grill-ajanlataink",
-            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr21/2026-05-21-06-03-grill-ajanlataink"
+            "title": "2026-05-28-06-10-strand-katalogus",
+            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr22/2026-05-28-06-10-strand-katalogus"
         },
         {
             "store": "Auchan",
@@ -103,13 +103,13 @@
         },
         {
             "store": "Auchan",
-            "title": "2026-05-28-06-03-heti-szupermarket-ajanlataink",
-            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr22/2026-05-28-06-03-heti-szupermarket-ajanlataink"
+            "title": "2026-05-21-06-03-grill-ajanlataink",
+            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr21/2026-05-21-06-03-grill-ajanlataink"
         },
         {
             "store": "Auchan",
-            "title": "2026-05-28-06-10-strand-katalogus",
-            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr22/2026-05-28-06-10-strand-katalogus"
+            "title": "2026-05-28-06-03-heti-szupermarket-ajanlataink",
+            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr22/2026-05-28-06-03-heti-szupermarket-ajanlataink"
         },
         {
             "store": "Aldi",
@@ -150,6 +150,11 @@
             "store": "Coop Mecsek Füszért",
             "title": "coop-mecsek-szorolap-2026-majus-4-5-het",
             "url": "https://katalogus.coop.hu/coop-mecsek-szorolap-2026-majus-4-5-het/"
+        },
+        {
+            "store": "Coop Hétforrás",
+            "title": "coop-hetforras-szorolap-2026-majus-3-4-5-het",
+            "url": "https://katalogus.coop.hu/coop-hetforras-szorolap-2026-majus-3-4-5-het/"
         }
     ]
 }
