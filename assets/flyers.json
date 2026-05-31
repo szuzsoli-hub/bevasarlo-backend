@@ -1,6 +1,46 @@
 {
-    "last_updated": "2026-05-31 07:59:30.365895",
+    "last_updated": "2026-05-31 11:57:55.371982",
     "flyers": [
+        {
+            "store": "Spar",
+            "title": "260528-1-spar-szorolap",
+            "url": "https://www.spar.hu/ajanlatok/spar/260528-1-spar-szorolap"
+        },
+        {
+            "store": "Spar",
+            "title": "260528-2-interspar-szorolap",
+            "url": "https://www.spar.hu/ajanlatok/interspar/260528-2-interspar-szorolap"
+        },
+        {
+            "store": "Spar",
+            "title": "260528-5-interspar-nyar",
+            "url": "https://www.spar.hu/ajanlatok/interspar/260528-5-interspar-nyar"
+        },
+        {
+            "store": "Spar",
+            "title": "260514-4-interspar-nyar",
+            "url": "https://www.spar.hu/ajanlatok/interspar/260514-4-interspar-nyar"
+        },
+        {
+            "store": "Spar",
+            "title": "260528-4-spar-market-city-spar",
+            "url": "https://www.spar.hu/ajanlatok/spar-market/260528-4-spar-market-city-spar"
+        },
+        {
+            "store": "Spar",
+            "title": "260604-1-spar-szorolap-p",
+            "url": "https://www.spar.hu/ajanlatok/spar/260604-1-spar-szorolap-p"
+        },
+        {
+            "store": "Spar",
+            "title": "260604-2-interspar-szorolap-p",
+            "url": "https://www.spar.hu/ajanlatok/interspar/260604-2-interspar-szorolap-p"
+        },
+        {
+            "store": "Spar",
+            "title": "260604-3-spar-market-city-spar",
+            "url": "https://www.spar.hu/ajanlatok/spar-market/260604-3-spar-market-city-spar"
+        },
         {
             "store": "Penny",
             "title": "Penny Akciós Újság 22. heti (202622)",
@@ -53,13 +93,13 @@
         },
         {
             "store": "Auchan",
-            "title": "2026-05-28-06-10-strand-katalogus",
-            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr22/2026-05-28-06-10-strand-katalogus"
+            "title": "2026-05-21-06-03-grill-ajanlataink",
+            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr21/2026-05-21-06-03-grill-ajanlataink"
         },
         {
             "store": "Auchan",
-            "title": "2026-05-21-06-03-grill-ajanlataink",
-            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr21/2026-05-21-06-03-grill-ajanlataink"
+            "title": "2026-05-28-06-03-heti-hipermarket-ajanlataink",
+            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr22/2026-05-28-06-03-heti-hipermarket-ajanlataink"
         },
         {
             "store": "Auchan",
@@ -68,8 +108,8 @@
         },
         {
             "store": "Auchan",
-            "title": "2026-05-28-06-03-heti-hipermarket-ajanlataink",
-            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr22/2026-05-28-06-03-heti-hipermarket-ajanlataink"
+            "title": "2026-05-28-06-10-strand-katalogus",
+            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr22/2026-05-28-06-10-strand-katalogus"
         },
         {
             "store": "Aldi",
@@ -110,11 +150,6 @@
             "store": "Coop Mecsek Füszért",
             "title": "coop-mecsek-szorolap-2026-majus-4-5-het",
             "url": "https://katalogus.coop.hu/coop-mecsek-szorolap-2026-majus-4-5-het/"
-        },
-        {
-            "store": "Coop Hétforrás",
-            "title": "coop-hetforras-szorolap-2026-majus-3-4-5-het",
-            "url": "https://katalogus.coop.hu/coop-hetforras-szorolap-2026-majus-3-4-5-het/"
         }
     ]
 }
