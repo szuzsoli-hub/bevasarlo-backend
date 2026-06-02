@@ -131,6 +131,7 @@ def scan_metro():
                         status = analyze_link("Metro", raw_title, link)
                         if status == "KEEP":
                             print(f"[KEEP] {raw_title} -> {link}")
+                            # VALIDITY TÖRÖLVE
                             found.append({"store": "Metro", "title": raw_title, "url": link})
                 return found
             print(f"⚠️ Metro API üres válasz ({response.status_code}), újrapróbálás {attempt+1}/3...")
