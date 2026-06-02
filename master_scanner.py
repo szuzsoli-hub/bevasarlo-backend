@@ -81,6 +81,8 @@ def analyze_link(store_name, title, url):
             return "KEEP"
         return "DROP"
 
+    return "KEEP"
+
 
 # --- ÚJ: CÍM GENERÁLÓ FÜGGVÉNY (SLUG ALAPJÁN) ---
 def get_slug_title(store, current_title, url):
