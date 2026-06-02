@@ -42,10 +42,10 @@ def analyze_link(store_name, title, url):
 
     # --- 2. AUCHAN (Most már a non-food szűrővel!) ---
     elif store_name == "Auchan":
-        if any(x in u for x in ["bizalom", "qilive", "textil", "jatek", "kert", "auto", "adatvedelem", "tajekoztato", "nonfood", "műszaki", "elektronika"]):
-            return "DROP"
-        if any(x in t for x in ["nonfood", "műszaki", "elektronika"]):
-            return "DROP"
+    if any(x in u for x in ["bizalom", "qilive", "textil", "jatek", "kert", "auto", "adatvedelem", "tajekoztato", "nonfood", "muszaki", "elektronika", "strand"]):
+        return "DROP"
+    if any(x in t for x in ["nonfood", "muszaki", "elektronika"]):
+        return "DROP"
 
     # --- 3. LIDL ---
     elif store_name == "Lidl":
