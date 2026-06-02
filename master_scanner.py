@@ -42,10 +42,10 @@ def analyze_link(store_name, title, url):
 
     # --- 2. AUCHAN (Most már a non-food szűrővel!) ---
     elif store_name == "Auchan":
-    if any(x in u for x in ["bizalom", "qilive", "textil", "jatek", "kert", "auto", "adatvedelem", "tajekoztato", "nonfood", "muszaki", "elektronika", "strand"]):
-        return "DROP"
-    if any(x in t for x in ["nonfood", "muszaki", "elektronika"]):
-        return "DROP"
+        if any(x in u for x in ["bizalom", "qilive", "textil", "jatek", "kert", "auto", "adatvedelem", "tajekoztato", "nonfood", "muszaki", "elektronika", "strand"]):
+            return "DROP"
+        if any(x in t for x in ["nonfood", "muszaki", "elektronika"]):
+            return "DROP"
 
     # --- 3. LIDL ---
     elif store_name == "Lidl":
@@ -69,18 +69,17 @@ def analyze_link(store_name, title, url):
         if "lifestyle" in t:
             return "DROP"
 
-    # --- 7. METRO (Szigorított Nagyker Szűrő) ---
+    # --- 7. METRO (Pozitív lista — csak ismert fogyasztói katalógusok!) ---
     elif store_name == "Metro":
-    # ⚠️ POZITÍV LISTA — csak ismert fogyasztói katalógusok!
-    # Ha új releváns katalógus jelenik meg, add hozzá a listához.
-    whitelist = [
-        "elelmiszer",   # Élelmiszer és Szezonális Ajánlataink
-        "marka",        # Márkák katalógus, Nagy márkák, Saját márka
-        "nyari",        # Nyári katalógus
-    ]
-    if any(w in t or w in u for w in whitelist):
-        return "KEEP"
-    return "DROP"
+        # ⚠️ Ha új releváns Metro katalógus jelenik meg, add hozzá a listához!
+        whitelist = [
+            "elelmiszer",   # Élelmiszer és Szezonális Ajánlataink
+            "marka",        # Márkák katalógus, Nagy márkák, Saját márka
+            "nyari",        # Nyári katalógus
+        ]
+        if any(w in t or w in u for w in whitelist):
+            return "KEEP"
+        return "DROP"
 
 
 # --- ÚJ: CÍM GENERÁLÓ FÜGGVÉNY (SLUG ALAPJÁN) ---
