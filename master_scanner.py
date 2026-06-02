@@ -71,17 +71,16 @@ def analyze_link(store_name, title, url):
 
     # --- 7. METRO (Szigorított Nagyker Szűrő) ---
     elif store_name == "Metro":
-        blacklist_words = [
-            "kiskeresked", "kávé", "ázsiai", "olasz", "sztár",
-            "nagyobb mennyiség", "kantin", "professzionális",
-            "street food", "gasztro", "iroda", "vendéglátó",
-            "horeca", "gép", "bútor", "konyha", "sirha"
-        ]
-        if any(b in t for b in blacklist_words):
-            return "DROP"
+    # ⚠️ POZITÍV LISTA — csak ismert fogyasztói katalógusok!
+    # Ha új releváns katalógus jelenik meg, add hozzá a listához.
+    whitelist = [
+        "elelmiszer",   # Élelmiszer és Szezonális Ajánlataink
+        "marka",        # Márkák katalógus, Nagy márkák, Saját márka
+        "nyari",        # Nyári katalógus
+    ]
+    if any(w in t or w in u for w in whitelist):
         return "KEEP"
-
-    return "KEEP"
+    return "DROP"
 
 
 # --- ÚJ: CÍM GENERÁLÓ FÜGGVÉNY (SLUG ALAPJÁN) ---
