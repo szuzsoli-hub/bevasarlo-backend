@@ -514,7 +514,38 @@ def scan_cba_combined():
                 })
                 
     return found
+    
+def scan_prima5():
+    print("\n--- PRÍMA5 Szkennelés (Issuu) ---")
+    url = "https://prima5.hu/index.php/prima/akciok-katalogusok"
+    found = []
+    try:
+        response = requests.get(url, headers={'User-Agent': 'Mozilla/5.0'}, timeout=10)
+        response.raise_for_status()
 
+        # Issuu embed URL megkeresése
+        issuu_match = re.search(r'e\.issuu\.com/embed\.html\?([^"\'<>\s]+)', response.text)
+        if issuu_match:
+            params_str = issuu_match.group(1).replace('&amp;', '&')
+            d_match = re.search(r'd=([^&]+)', params_str)
+            u_match = re.search(r'u=([^&]+)', params_str)
+            if d_match and u_match:
+                doc_name = d_match.group(1)
+                username = u_match.group(1)
+                issuu_url = f"https://issuu.com/{username}/docs/{doc_name}"
+                print(f"[KEEP] Príma5 ({doc_name}) -> {issuu_url}")
+                found.append({
+                    "store": "CBA Príma5",
+                    "title": doc_name,
+                    "url": issuu_url
+                })
+            else:
+                print("❌ Príma5: d= vagy u= paraméter nem található.")
+        else:
+            print("❌ Príma5: Nem találtam Issuu embed linket.")
+    except Exception as e:
+        print(f"❌ Príma5 hiba: {e}")
+    return found
 # =============================================================================
 # 2. RÉSZ: COOP MISSZIÓ (Selenium)
 # =============================================================================
@@ -849,7 +880,8 @@ def main():
     all_flyers.extend(scan_auchan())
     all_flyers.extend(scan_aldi())
     all_flyers.extend(scan_cba_combined())
-
+    all_flyers.extend(scan_prima5())
+    
     # --- 2. COOP MISSZIÓ (Selenium) ---
     print("\n🚀 COOP MISSZIÓ INDUL (HÁTTÉRBEN/HEADLESS)...")
 
