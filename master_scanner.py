@@ -117,21 +117,27 @@ def scan_metro():
     print("\n--- METRO Szkennelés (Szigorított) ---")
     url = "https://cdn.metro-online.com/api/catalog-filter?resolution=600&feeds=metro-nagykereskedelem&collection_id=6365&metatags%5B%5D=channel=website"
     found = []
-    try:
-        response = requests.get(url, timeout=10)
-        data = response.json()
-        if 'items' in data:
-            for item in data['items']:
-                raw_title = item.get('name', 'Metro Katalógus')
-                link = item.get('url', '')
-                if not link: continue
-                status = analyze_link("Metro", raw_title, link)
-                if status == "KEEP":
-                    print(f"[{status}] {raw_title} -> {link}")
-                    # VALIDITY TÖRÖLVE
-                    found.append({"store": "Metro", "title": raw_title, "url": link})
-    except Exception as e:
-        print(f"❌ Metro Hiba: {e}")
+    for attempt in range(3):
+        try:
+            response = requests.get(url, timeout=15)
+            if response.status_code == 200 and response.text.strip():
+                data = response.json()
+                if 'items' in data:
+                    for item in data['items']:
+                        raw_title = item.get('name', 'Metro Katalógus')
+                        link = item.get('url', '')
+                        if not link: continue
+                        status = analyze_link("Metro", raw_title, link)
+                        if status == "KEEP":
+                            print(f"[KEEP] {raw_title} -> {link}")
+                            found.append({"store": "Metro", "title": raw_title, "url": link})
+                return found
+            print(f"⚠️ Metro API üres válasz ({response.status_code}), újrapróbálás {attempt+1}/3...")
+            time.sleep(3)
+        except Exception as e:
+            print(f"❌ Metro Hiba ({attempt+1}/3): {e}")
+            time.sleep(3)
+    print("❌ Metro: 3 próba után sem sikerült.")
     return found
 
 
