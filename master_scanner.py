@@ -114,11 +114,22 @@ def get_slug_title(store, current_title, url):
     return final_title
 
 
+def dedup_metro(found):
+    seen = {}
+    for item in found:
+        slug = item["url"].split("/")[-2]
+        base = re.sub(r'-\d{4}-\d{2}$', '', slug)
+        date = re.search(r'(\d{4}-\d{2})$', slug)
+        date_str = date.group(1) if date else "0000-00"
+        if base not in seen or date_str > seen[base]["date"]:
+            seen[base] = {"item": item, "date": date_str}
+    return [v["item"] for v in seen.values()]
+
+
 def scan_metro():
     print("\n--- METRO Szkennelés ---")
     api_url = "https://cdn.metro-online.com/api/catalog-filter?resolution=600&feeds=metro-nagykereskedelem&collection_id=6365&metatags%5B%5D=channel=website"
     found = []
-
     # 1. PRÓBÁLKOZÁS: CDN API (3x)
     for attempt in range(3):
         try:
@@ -140,7 +151,6 @@ def scan_metro():
         except Exception as e:
             print(f"❌ Metro API hiba ({attempt+1}/3): {e}")
             time.sleep(3)
-
     # 2. FALLBACK: mindig lefut, hozzáadja ami még nincs benne
     existing_urls = {f["url"] for f in found}
     now = datetime.date.today()
@@ -163,8 +173,7 @@ def scan_metro():
                     print(f"[DROP] {title}: {r.status_code}")
             except Exception as e:
                 print(f"❌ Metro fallback hiba ({slug}): {e}")
-
-    return found
+    return dedup_metro(found)
 
 def scan_spar():
     print("\n--- SPAR Szkennelés (Külső modul: spar_hunter.py) ---")
