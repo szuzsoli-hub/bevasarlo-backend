@@ -134,36 +134,35 @@ def scan_metro():
                         if status == "KEEP":
                             print(f"[KEEP] {raw_title} -> {link}")
                             found.append({"store": "Metro", "title": raw_title, "url": link})
-                return found
+                break
             print(f"⚠️ Metro API üres válasz ({response.status_code}), újrapróbálás {attempt+1}/3...")
             time.sleep(3)
         except Exception as e:
             print(f"❌ Metro API hiba ({attempt+1}/3): {e}")
             time.sleep(3)
 
-    # 2. FALLBACK: URL-alapú közvetlen ellenőrzés
-    print("⚠️ Metro API nem elérhető, fallback URL-alapú szkennelés...")
+    # 2. FALLBACK: mindig lefut, hozzáadja ami még nincs benne
+    existing_urls = {f["url"] for f in found}
     now = datetime.date.today()
     ym = now.strftime("%Y-%m")
     ym_display = now.strftime("%Y/%m")
-
     catalogs = [
         (f"elelmiszer-es-szezonalis-ajanlataink-kiskereskedoknek-{ym}", f"Élelmiszer és Szezonális {ym_display}"),
         (f"markak-katalogus-{ym}", f"Márkák katalógus {ym_display}"),
         (f"nyari-katalogus-{ym}", f"Nyári katalógus {ym_display}"),
     ]
-
     for slug, title in catalogs:
         url = f"https://katalogus.metro.hu/{slug}/page/1"
-        try:
-            r = requests.get(url, timeout=10, headers={'User-Agent': 'Mozilla/5.0'})
-            if r.status_code == 200:
-                print(f"[KEEP] {title} -> {url}")
-                found.append({"store": "Metro", "title": title, "url": url})
-            else:
-                print(f"[DROP] {title}: {r.status_code}")
-        except Exception as e:
-            print(f"❌ Metro fallback hiba ({slug}): {e}")
+        if url not in existing_urls:
+            try:
+                r = requests.get(url, timeout=10, headers={'User-Agent': 'Mozilla/5.0'})
+                if r.status_code == 200:
+                    print(f"[KEEP] {title} -> {url}")
+                    found.append({"store": "Metro", "title": title, "url": url})
+                else:
+                    print(f"[DROP] {title}: {r.status_code}")
+            except Exception as e:
+                print(f"❌ Metro fallback hiba ({slug}): {e}")
 
     return found
 
