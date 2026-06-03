@@ -1,5 +1,5 @@
 {
-    "last_updated": "2026-06-03 08:03:52.923352",
+    "last_updated": "2026-06-03 09:10:57.961205",
     "flyers": [
         {
             "store": "Spar",
@@ -72,21 +72,6 @@
             "url": "https://katalogus.metro.hu/elelmiszer-es-szezonalis-ajanlataink-kiskereskedoknek-2026-02/page/1"
         },
         {
-            "store": "Metro",
-            "title": "Élelmiszer és Szezonális 2026/06",
-            "url": "https://katalogus.metro.hu/elelmiszer-es-szezonalis-ajanlataink-kiskereskedoknek-2026-06/page/1"
-        },
-        {
-            "store": "Metro",
-            "title": "Márkák katalógus 2026/06",
-            "url": "https://katalogus.metro.hu/markak-katalogus-2026-06/page/1"
-        },
-        {
-            "store": "Metro",
-            "title": "Nyári katalógus 2026/06",
-            "url": "https://katalogus.metro.hu/nyari-katalogus-2026-06/page/1"
-        },
-        {
             "store": "Tesco",
             "title": "Tesco hipermarket/tesco-ujsag-2026-05-28",
             "url": "https://www.tesco.hu/akciok/katalogusok/hipermarket/tesco-ujsag-2026-05-28/1"
@@ -108,16 +93,6 @@
         },
         {
             "store": "Auchan",
-            "title": "2026-06-04-06-17-feher-hetek-ajanlatai",
-            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr23/2026-06-04-06-17-feher-hetek-ajanlatai"
-        },
-        {
-            "store": "Auchan",
-            "title": "2026-06-01-06-10-heti-hipermarket-ajanlataink",
-            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr23/2026-06-01-06-10-heti-hipermarket-ajanlataink"
-        },
-        {
-            "store": "Auchan",
             "title": "2026-06-04-06-10-heti-szupermarket-ajanlataink",
             "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr23/2026-06-04-06-10-heti-szupermarket-ajanlataink"
         },
@@ -130,6 +105,16 @@
             "store": "Auchan",
             "title": "2026-05-28-06-03-heti-szupermarket-ajanlataink",
             "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr22/2026-05-28-06-03-heti-szupermarket-ajanlataink"
+        },
+        {
+            "store": "Auchan",
+            "title": "2026-06-01-06-10-heti-hipermarket-ajanlataink",
+            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr23/2026-06-01-06-10-heti-hipermarket-ajanlataink"
+        },
+        {
+            "store": "Auchan",
+            "title": "2026-06-04-06-17-feher-hetek-ajanlatai",
+            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr23/2026-06-04-06-17-feher-hetek-ajanlatai"
         },
         {
             "store": "Auchan",
