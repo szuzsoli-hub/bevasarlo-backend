@@ -1,0 +1,10 @@
+name: Export Key
+on: workflow_dispatch
+jobs:
+  export:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Print key
+        env:
+          GOOGLE_KEY_CONTENT: ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}
+        run: echo "$GOOGLE_KEY_CONTENT"
