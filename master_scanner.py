@@ -115,12 +115,14 @@ def get_slug_title(store, current_title, url):
 
 
 def scan_metro():
-    print("\n--- METRO Szkennelés (Szigorított) ---")
-    url = "https://cdn.metro-online.com/api/catalog-filter?resolution=600&feeds=metro-nagykereskedelem&collection_id=6365&metatags%5B%5D=channel=website"
+    print("\n--- METRO Szkennelés ---")
+    api_url = "https://cdn.metro-online.com/api/catalog-filter?resolution=600&feeds=metro-nagykereskedelem&collection_id=6365&metatags%5B%5D=channel=website"
     found = []
+
+    # 1. PRÓBÁLKOZÁS: CDN API (3x)
     for attempt in range(3):
         try:
-            response = requests.get(url, timeout=15)
+            response = requests.get(api_url, timeout=15)
             if response.status_code == 200 and response.text.strip():
                 data = response.json()
                 if 'items' in data:
@@ -131,17 +133,39 @@ def scan_metro():
                         status = analyze_link("Metro", raw_title, link)
                         if status == "KEEP":
                             print(f"[KEEP] {raw_title} -> {link}")
-                            # VALIDITY TÖRÖLVE
                             found.append({"store": "Metro", "title": raw_title, "url": link})
                 return found
             print(f"⚠️ Metro API üres válasz ({response.status_code}), újrapróbálás {attempt+1}/3...")
             time.sleep(3)
         except Exception as e:
-            print(f"❌ Metro Hiba ({attempt+1}/3): {e}")
+            print(f"❌ Metro API hiba ({attempt+1}/3): {e}")
             time.sleep(3)
-    print("❌ Metro: 3 próba után sem sikerült.")
-    return found
 
+    # 2. FALLBACK: URL-alapú közvetlen ellenőrzés
+    print("⚠️ Metro API nem elérhető, fallback URL-alapú szkennelés...")
+    now = datetime.date.today()
+    ym = now.strftime("%Y-%m")
+    ym_display = now.strftime("%Y/%m")
+
+    catalogs = [
+        (f"elelmiszer-es-szezonalis-ajanlataink-kiskereskedoknek-{ym}", f"Élelmiszer és Szezonális {ym_display}"),
+        (f"markak-katalogus-{ym}", f"Márkák katalógus {ym_display}"),
+        (f"nyari-katalogus-{ym}", f"Nyári katalógus {ym_display}"),
+    ]
+
+    for slug, title in catalogs:
+        url = f"https://katalogus.metro.hu/{slug}/page/1"
+        try:
+            r = requests.get(url, timeout=10, headers={'User-Agent': 'Mozilla/5.0'})
+            if r.status_code == 200:
+                print(f"[KEEP] {title} -> {url}")
+                found.append({"store": "Metro", "title": title, "url": url})
+            else:
+                print(f"[DROP] {title}: {r.status_code}")
+        except Exception as e:
+            print(f"❌ Metro fallback hiba ({slug}): {e}")
+
+    return found
 
 def scan_spar():
     print("\n--- SPAR Szkennelés (Külső modul: spar_hunter.py) ---")
