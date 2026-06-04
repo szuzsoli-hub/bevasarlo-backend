@@ -1,62 +1,39 @@
 name: Akcio Vadasz Feldolgozo (GPT Vision)
-
 on:
-  workflow_dispatch:  # Kézi indítás lehetősége (Teszteléshez)
-  workflow_run:       # Automata indítás, HA a Linkvadász végzett
+  workflow_dispatch:
+  workflow_run:
     workflows: ["Akcios Ujsag Linkvadasz (Automata)"]
     types:
       - completed
-
 permissions:
   contents: write
-
 jobs:
   process_flyers:
     runs-on: ubuntu-latest
-    # Csak akkor fusson, ha az előző robot SIKERES volt (vagy ha kézzel indítottad)
     if: ${{ github.event.workflow_run.conclusion == 'success' || github.event_name == 'workflow_dispatch' }}
-
     steps:
       - name: Kód letöltése
         uses: actions/checkout@v4
         with:
-          ref: main  # 👈 FRISSÍTVE: Ez kényszeríti ki, hogy a Linkvadász friss mentését is lássa!
-
+          ref: main
       - name: Python telepítése
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v5
         with:
-          python-version: '3.10'  # 👈 FRISSÍTVE: 3.9-ről 3.10-re emelve
-
+          python-version: '3.10'
       - name: Szükséges programok telepítése
         run: |
-          pip install requests beautifulsoup4 selenium webdriver-manager openai google-cloud-vision python-dotenv curl_cffi PyMuPDF
-
+          pip install requests beautifulsoup4 selenium webdriver-manager openai python-dotenv curl_cffi PyMuPDF
       - name: Google Chrome telepítése (A fotózáshoz)
         uses: browser-actions/setup-chrome@latest
-
-      - name: Titkos Google Kulcs létrehozása
-        env:
-          GOOGLE_KEY_CONTENT: ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}
-        run: |
-          # A titkos szövegből fájlt csinálunk, mert a Python ezt keresi
-          echo "$GOOGLE_KEY_CONTENT" > google_key.json
-
       - name: 🤖 Akcióvadász Robot Indítása (2 oldal/újság teszt)
         env:
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
-          GOOGLE_APPLICATION_CREDENTIALS: google_key.json
         run: python flyer_processor_bot.py
-
       - name: Eredmény mentése (Git Commit)
         run: |
           git config --global user.name "AkcioVadaszBot"
           git config --global user.email "bot@akciovadasz.hu"
-          # 👈 FRISSÍTVE VISSZA: Újra az 'assets/' mappában keressük a kész fájlt!
           git add assets/universal_output.json
-          # Ha van változás, elmentjük. Ha nincs, nem sírunk.
           git commit -m "Új termékek feldolgozva (AI) - $(date)" || echo "Nincs új adat, nem kell menteni."
-          
-          # --- BEILLESZTVE: Szinkronizálás a mentés előtt ---
           git pull --rebase origin main
-          
           git push
