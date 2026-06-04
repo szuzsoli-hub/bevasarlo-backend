@@ -6,6 +6,9 @@ from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
 from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.chrome.options import Options
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
 from bs4 import BeautifulSoup
 
 # --- KONFIGURÁCIÓ ---
@@ -34,9 +37,18 @@ def scan_spar_only():
         print(f"📡 Kapcsolódás (Selenium): {url} ...")
         driver.get(url)
 
-        # Várunk pár másodpercet, hogy a JavaScript biztosan betöltse az újságokat
-        print("⏳ Várakozás a kártyák betöltésére...")
-        time.sleep(5)
+        print("⏳ Várakozás az újságkártyák betöltésére (WebDriverWait, max 20 mp)...")
+        try:
+            # Megvárjuk amíg legalább egy újságlink megjelenik a DOM-ban
+            WebDriverWait(driver, 20).until(
+                EC.presence_of_element_located((By.CSS_SELECTOR, "a[href*='szorolap'], a[href*='ajanlatok/spar'], a[href*='ajanlatok/interspar']"))
+            )
+            print("✅ Újságkártyák betöltve!")
+            # Kis extra várakozás hogy az összes kártya berendelődjön
+            time.sleep(3)
+        except Exception as e:
+            print(f"⚠️ WebDriverWait timeout, folytatás az aktuális állapottal: {e}")
+            time.sleep(5)
 
         # Kinyerjük a JS által már legenerált, teljes HTML-t
         page_source = driver.page_source
@@ -62,7 +74,7 @@ def scan_spar_only():
             full_url = raw_href
             if raw_href.startswith('/'): full_url = f"https://www.spar.hu{raw_href}"
             
-            # --- ÚJ: A gyűjtőoldal (főoldal) kiszűrése! ---
+            # A gyűjtőoldal (főoldal) kiszűrése!
             if full_url.rstrip('/') == "https://www.spar.hu/ajanlatok": 
                 continue
 
@@ -122,5 +134,4 @@ def scan_spar_only():
 
 
 if __name__ == "__main__":
-
     scan_spar_only()
