@@ -12,8 +12,8 @@ jobs:
       contents: write # Engedély a JSON mentéséhez
     
     steps:
-      - name: Kód letöltése
-        uses: actions/checkout@v4
+     - name: Kód letöltése
+  uses: actions/checkout@v4.2.2
 
       - name: Python beállítása
         uses: actions/setup-python@v5
