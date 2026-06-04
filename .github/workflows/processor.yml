@@ -13,7 +13,7 @@ jobs:
     if: ${{ github.event.workflow_run.conclusion == 'success' || github.event_name == 'workflow_dispatch' }}
     steps:
       - name: Kód letöltése
-        uses: actions/checkout@v4
+        uses: actions/checkout@v4.2.2
         with:
           ref: main
       - name: Python telepítése
