@@ -1,4 +1,4 @@
-name: Akcio Vadasz Feldolgozo (AI + OCR)
+name: Akcio Vadasz Feldolgozo (GPT Vision)
 
 on:
   workflow_dispatch:  # Kézi indítás lehetősége (Teszteléshez)
