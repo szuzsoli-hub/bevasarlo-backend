@@ -2,11 +2,11 @@ import os
 import time
 import json
 import re
+import base64
 import requests
 import fitz
 from dotenv import load_dotenv
 from openai import OpenAI
-from google.cloud import vision
 import datetime
 
 # Selenium importok
@@ -32,12 +32,8 @@ if not os.path.exists(ASSETS_DIR):
 INPUT_FILE = os.path.join(ASSETS_DIR, 'flyers.json')
 OUTPUT_FILE = os.path.join(ASSETS_DIR, 'universal_output.json')
 
-if not os.getenv("GOOGLE_APPLICATION_CREDENTIALS"):
-    os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "google_key.json"
-
 openai_key = os.getenv("OPENAI_API_KEY")
 client = OpenAI(api_key=openai_key)
-vision_client = vision.ImageAnnotatorClient()
 
 TEMP_DIR = os.path.join(base_dir, "temp_kepek")
 if not os.path.exists(TEMP_DIR):
@@ -114,12 +110,11 @@ def capture_pages_from_pdf(target_url, store_name):
     captured_data = []
     temp_pdf_path = os.path.join(TEMP_DIR, f"{store_name}_temp.pdf")
     try:
-        # Álca beállítása, hogy a CBA szervere igazi böngészőnek higgye a botot
         headers = {
             "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
         }
         response = requests.get(target_url, headers=headers, timeout=30)
-        response.raise_for_status() # Ha hiba van (pl. 403, 404), itt egyből kivételt dob
+        response.raise_for_status()
         
         with open(temp_pdf_path, 'wb') as f: 
             f.write(response.content)
@@ -187,51 +182,61 @@ def get_spar_pre_dates(links):
     finally:
         driver.quit()
 
-    with open(screenshot_path, "rb") as f: content = f.read()
-    image = vision.Image(content=content)
-    response = vision_client.document_text_detection(image=image)
-    ocr_text = response.full_text_annotation.text if not response.error.message else ""
+    # --- GPT-4o Vision: képet kap base64-ként, OCR lépés elhagyva ---
+    with open(screenshot_path, "rb") as f:
+        image_data = base64.b64encode(f.read()).decode("utf-8")
 
     prompt = f"""
     FELADAT: Bevásárló apphoz kell érvényességi időket párosítani.
     A LINKEK TITKA:
     A linkek vége így néz ki: ÉÉHHNN-[sorszám]-[típus].
     Például: ".../260219-1-spar-szorolap" -> Ebből a 260219 azt jelenti, hogy a kezdődátum 02.19., az újság típusa pedig SPAR.
-    Minden linknél olvasd ki a kezdődátumot és a típust, majd keresd meg az OCR szövegben azt a szekciót, ahol ez a típus és ez a kezdődátum szerepel egymás mellett (pl. "INTERSPAR 02.26 - 03.04"). 
+    Minden linknél olvasd ki a kezdődátumot és a típust, majd keresd meg a képen azt a szekciót, ahol ez a típus és ez a kezdődátum szerepel egymás mellett (pl. "INTERSPAR 02.26 - 03.04"). 
     Ha megvan, állítsd össze a teljes tól-ig dátumot! Az évet pótold ki 2026-ra.
     KÖTELEZŐ VÁLASZ FORMÁTUM: "ÉÉÉÉ.HH.NN. - ÉÉÉÉ.HH.NN."
     LINKEK:
     {json.dumps(links, indent=2)}
-    OCR SZÖVEG:
-    {ocr_text}
     ELVÁRT VÁLASZ (csak JSON, pontosan a megadott linkekkel mint kulcs):
     """
-    response = client.chat.completions.create(model="gpt-4o", temperature=0, response_format={"type": "json_object"}, messages=[{"role": "user", "content": prompt}])
+
+    response = client.chat.completions.create(
+        model="gpt-4o",
+        temperature=0,
+        response_format={"type": "json_object"},
+        messages=[{
+            "role": "user",
+            "content": [
+                {
+                    "type": "image_url",
+                    "image_url": {"url": f"data:image/png;base64,{image_data}"}
+                },
+                {
+                    "type": "text",
+                    "text": prompt
+                }
+            ]
+        }]
+    )
     return json.loads(response.choices[0].message.content)
 
 # ===============================================================================
 # 2. MODUL: AZ AGY - DÁTUM ELLENŐRZÉS ÉS AI 🧠
 # ===============================================================================
 
-def google_ocr(image_path):
-    with open(image_path, "rb") as f: content = f.read()
-    image = vision.Image(content=content)
-    response = vision_client.document_text_detection(image=image)
-    return response.full_text_annotation.text if not response.error.message else ""
+# --- JAVÍTÁS: SZIGORÚ PROMPT (BORÍTÓ ELSŐBBSÉG) ---
+def interpret_image_with_ai(image_path, page_num, store_name, title_name, link_hint, pre_calc_date=None):
+    with open(image_path, "rb") as f:
+        image_data = base64.b64encode(f.read()).decode("utf-8")
 
-# --- 1. JAVÍTÁS: SZIGORÚ PROMPT (BORÍTÓ ELSŐBBSÉG) ---
-def interpret_text_with_ai(full_text, page_num, store_name, title_name, link_hint, pre_calc_date=None):
     date_instr = ""
     if page_num == 1:
         if pre_calc_date and pre_calc_date != "N/A":
-            # ÚJ: Ha Spar vagy Auchan, letiltjuk a dátumkeresést!
             date_instr = f"""
             FIGYELEM: A dátumot MÁR TUDJUK! NE keress érvényességi időt a képen!
             KÖTELEZŐEN ezt az értéket írd be az "ervenyesseg" JSON mezőbe pontosan így: {pre_calc_date}
             A feladatod kizárólag a termékek kigyűjtése.
             """
         else:
-            # RÉGI KÓD: Minden más bolt esetén (Tesco, stb.) érintetlenül hagyva
             date_instr = f"""
             FELADAT: DÁTUM KERESÉS ÉS SZIGORÚ FORMÁZÁS
             1. NYOMOZÁS: Keresd meg a képen az érvényességi időt (lehet betűvel, számokkal, kusza elrendezésben is).
@@ -242,20 +247,55 @@ def interpret_text_with_ai(full_text, page_num, store_name, title_name, link_hin
             6. SPAR SZABÁLY: A Spar újságoknál a dátum gyakran hosszú, mondatszerű (pl. "02. 19. csütörtöktől 02. 25. szerdáig"). Keresd ki belőle a két dátumot, és formázd tiszta intervallummá! Ne add fel, és ne adj vissza N/A-t, ha van szöveges dátum!
             7. VÉGSŐ ESET (FALLBACK): Ha a képen abszolút nincs semmi dátum, add vissza ezt: {link_hint}
             """
+
     prompt = f"""
-    OCR szöveg: {store_name} - {title_name}, {page_num}. oldal.
+    Ez egy magyar akciós újság oldala. Bolt: {store_name} - {title_name}, {page_num}. oldal.
     {date_instr}
-    ELVÁRT JSON: {{
+    SZABÁLYOK:
+    - Csak azokat a termékeket add vissza ahol BIZTOSAN látod az árat
+    - NE találj ki semmit, csak amit pontosan látsz
+    - Az "ar" mezőbe csak számot írj (Ft jel és szöveg nélkül)
+    - Ha feltételes az ár (pl. "24 db esetén"), azt az ar_info mezőbe írd
+    - Ha van normál ár és kedvezményes ár is, a kedvezményes kerül az "ar"-ba
+    - Ha nincs feltétel → ar_info legyen null
+    - Ha nincs egységár → ar_info2 legyen null
+
+    ELVÁRT JSON:
+    {{
       "oldal_jelleg": "ÉLELMISZER_VEGYES",
       "ervenyesseg": "Dátum vagy N/A",
-      "termekek": [ {{ "nev": "...", "ar": "...", "ar_info": "...", "ar_info2": "..." }} ]
+      "termekek": [
+        {{
+          "nev": "pontos terméknév",
+          "ar": "akciós ár csak számként",
+          "ar_info": "feltétel vagy mennyiség vagy null",
+          "ar_info2": "normál ár vagy egységár vagy null"
+        }}
+      ]
     }}
-    OCR: {full_text}
     """
-    response = client.chat.completions.create(model="gpt-4o", temperature=0, response_format={"type": "json_object"}, messages=[{"role": "user", "content": prompt}])
+
+    response = client.chat.completions.create(
+        model="gpt-4o",
+        temperature=0,
+        response_format={"type": "json_object"},
+        messages=[{
+            "role": "user",
+            "content": [
+                {
+                    "type": "image_url",
+                    "image_url": {"url": f"data:image/png;base64,{image_data}"}
+                },
+                {
+                    "type": "text",
+                    "text": prompt
+                }
+            ]
+        }]
+    )
     return json.loads(response.choices[0].message.content)
 
-# --- 2. JAVÍTÁS: SZIGORÚ BOUNCER (MAI NAP SZENT) ---
+# --- JAVÍTÁS: SZIGORÚ BOUNCER (MAI NAP SZENT) ---
 def check_validity_date(date_string, current_flyer_meta, all_flyers):
     if not date_string or date_string == "N/A": 
         return True 
@@ -316,16 +356,15 @@ def process_images_with_ai(captured_data, flyer_meta, all_flyers, pre_calc_date=
 
     detected_validity = "N/A"
     
-    # --- 3. JAVÍTÁS: CSAK AZ 1. HASZNOS OLDALT (SPÓROLÁS ÉS ENGEDÉKENY JSON) ---
+    # --- CSAK AZ 1. HASZNOS OLDALT (SPÓROLÁS ÉS ENGEDÉKENY JSON) ---
     found_products = False
     for item in captured_data:
         # Ha már korábban találtunk termékeket, spórolás miatt kilépünk!
         if found_products:
             break
 
-        full_text = google_ocr(item['image_path'])
-        if not full_text: continue
-        structured = interpret_text_with_ai(full_text, item['page_num'], flyer_meta['store'], flyer_meta['title'], link_hint, pre_calc_date)
+        # --- OCR LÉPÉS ELHAGYVA: kép megy közvetlenül az AI-nak ---
+        structured = interpret_image_with_ai(item['image_path'], item['page_num'], flyer_meta['store'], flyer_meta['title'], link_hint, pre_calc_date)
 
         if item['page_num'] == 1:
             if pre_calc_date and pre_calc_date != "N/A":
@@ -337,14 +376,12 @@ def process_images_with_ai(captured_data, flyer_meta, all_flyers, pre_calc_date=
                 print(f"⛔ LEJÁRT: {detected_validity}")
                 return []
 
-        # ENGEDÉKENY SZŰRŐ: Nem érdekel minket a kategória neve. 
-        # Ha az AI adott vissza terméket, akkor azt elmentjük!
+        # ENGEDÉKENY SZŰRŐ: Ha az AI adott vissza terméket, akkor azt elmentjük!
         termekek = structured.get("termekek", [])
         if termekek:
             for product in termekek:
                 # --- FT PÓTLÁSA ---
                 ar_val = str(product.get("ar", "")).strip()
-                # Ha csak számjegyeket, szóközöket, pontot vagy vesszőt tartalmaz (pl. "599", "1.299", "159,90")
                 if ar_val and re.match(r'^[\d\s\.,]+$', ar_val):
                     ar_val = f"{ar_val} Ft"
                 # ------------------
@@ -354,7 +391,6 @@ def process_images_with_ai(captured_data, flyer_meta, all_flyers, pre_calc_date=
                     "ar_info": product.get("ar_info"), "ar_info2": product.get("ar_info2"),
                     "forrasLink": item['page_url'], "alap_link": flyer_meta['url']
                 })
-            # Siker! Megtaláltuk az első hasznos oldalt (akár az 1., akár a 2. volt az).
             found_products = True 
             
     return results
@@ -369,7 +405,7 @@ if __name__ == "__main__":
     if os.path.exists(OUTPUT_FILE):
         with open(OUTPUT_FILE, 'r', encoding='utf-8') as f: old_products = json.load(f)
 
-    # --- ÚJ: ÉRVÉNYESSÉGI DÁTUMOK ELŐTÖLTÉSE ---
+    # --- ÉRVÉNYESSÉGI DÁTUMOK ELŐTÖLTÉSE ---
     auchan_links = [f['url'] for f in current_flyers if f['store'].lower() == 'auchan']
     spar_links = [f['url'] for f in current_flyers if f['store'].lower() == 'spar']
     
@@ -381,7 +417,7 @@ if __name__ == "__main__":
         print("\n🍏 SPAR ÉRVÉNYESSÉGEK ELŐTÖLTÉSE...")
         pre_fetched_dates.update(get_spar_pre_dates(spar_links))
 
-    # --- 4. JAVÍTÁS: FOLYTONOSSÁGI SZŰRŐ (TRÓNÖRÖKÖSÖK) ---
+    # --- FOLYTONOSSÁGI SZŰRŐ (TRÓNÖRÖKÖSÖK) ---
     def get_start_date(validity_str):
         match = re.search(r'(\d{4}[\.\-]\d{2}[\.\-]\d{2})|(\d{2}[\.\-]\d{2})', str(validity_str))
         if not match: return datetime.date(2000,1,1)
@@ -391,7 +427,6 @@ if __name__ == "__main__":
             return datetime.date(2026, int(d_str[:2]), int(d_str[3:]))
         except: return datetime.date(2000,1,1)
 
-    # Csoportosítás a folytonossághoz
     active_urls = [f['url'] for f in current_flyers]
     final_products = []
     processed_urls = set()
@@ -400,7 +435,6 @@ if __name__ == "__main__":
         url = product.get('alap_link')
         matching_flyer = next((f for f in current_flyers if f['url'] == url), None)
         
-        # Ha a link még él, és a trónörökös logika szerint is érvényes:
         if matching_flyer and check_validity_date(product.get('ervenyesseg'), matching_flyer, current_flyers):
             final_products.append(product)
             processed_urls.add(url)
@@ -408,7 +442,6 @@ if __name__ == "__main__":
     for flyer in current_flyers:
         if flyer['url'] in processed_urls: continue
         
-        # Előtöltött dátum kinyerése, ha van (Spar, Auchan)
         pre_calc_date = pre_fetched_dates.get(flyer['url'])
 
         pages = capture_pages_from_pdf(flyer['url'], flyer['store']) if flyer['url'].lower().endswith('.pdf') else capture_pages_with_selenium(flyer['url'], flyer['store'])
@@ -416,8 +449,7 @@ if __name__ == "__main__":
             new_items = process_images_with_ai(pages, flyer, current_flyers, pre_calc_date)
             final_products.extend(new_items)
 
-    # --- 5. ÚJ: TRÓNÖRÖKÖS DÁTUMKALKULÁTOR (UTÓFELDOLGOZÁS) ---
-    # Kinyerjük az alkategóriákat (pl. tesco_hiper, spar_extra), hogy ne keverje a simát az extrával
+    # --- TRÓNÖRÖKÖS DÁTUMKALKULÁTOR (UTÓFELDOLGOZÁS) ---
     def get_sub_store(store, url):
         u_lower = url.lower()
         if store.lower() == "tesco":
@@ -430,7 +462,6 @@ if __name__ == "__main__":
             return "spar_sima"
         return store
 
-    # Kigyűjtjük az összes érvényes újság kezdődátumát alkategóriánként
     sub_store_dates = {}
     for f in current_flyers:
         s_key = get_sub_store(f['store'], f['url'])
@@ -443,7 +474,6 @@ if __name__ == "__main__":
                 sub_store_dates[s_key] = []
             sub_store_dates[s_key].append(st_date)
 
-    # Végigmegyünk az eredményeken és frissítjük a "-tól" dátumokat
     for p in final_products:
         erv = str(p.get("ervenyesseg", ""))
         if "-tól" in erv or "-tol" in erv:
@@ -454,16 +484,13 @@ if __name__ == "__main__":
                     p_start = datetime.datetime.strptime(d_str, "%Y.%m.%d").date()
                     s_key = get_sub_store(p.get("bolt", ""), p.get("alap_link", ""))
                     
-                    # Megkeressük a KÖVETKEZŐ újság kezdődátumát ugyanebből az alkategóriából
                     next_dates = [d for d in sub_store_dates.get(s_key, []) if d > p_start]
                     if next_dates:
                         next_dates.sort()
-                        # A végdátum = következő kezdete mínusz 1 nap!
                         end_date = next_dates[0] - datetime.timedelta(days=1)
                         p["ervenyesseg"] = f"{p_start.strftime('%Y.%m.%d.')} - {end_date.strftime('%Y.%m.%d.')}"
                 except:
                     pass
-    # ----------------------------------------------------------
 
     with open(OUTPUT_FILE, "w", encoding="utf-8") as f: json.dump(final_products, f, ensure_ascii=False, indent=2)
     print(f"\n🏁 KÉSZ! Adatbázis: {len(final_products)} termék.")
