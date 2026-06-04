@@ -117,7 +117,9 @@ def get_slug_title(store, current_title, url):
 def dedup_metro(found):
     seen = {}
     for item in found:
-        slug = item["url"].split("/")[-2]
+        # /page/1 végződést levágjuk mielőtt split-elünk
+        clean_url = item["url"].rstrip('/').replace('/page/1', '')
+        slug = clean_url.split("/")[-1]
         base = re.sub(r'-\d{4}-\d{2}$', '', slug)
         date = re.search(r'(\d{4}-\d{2})$', slug)
         date_str = date.group(1) if date else "0000-00"
