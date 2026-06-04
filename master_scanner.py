@@ -286,36 +286,48 @@ def scan_penny():
     headers = {'User-Agent': 'Mozilla/5.0'}
     found = []
     processed_ids = set()
+    
     try:
         response = requests.get(url, headers=headers, timeout=10)
         soup = BeautifulSoup(response.text, 'html.parser')
-        script = soup.find('script', id='__NUXT_DATA__')
-        if script:
-            matches = re.findall(r'https:[^"\'\s]*rewe\.co\.at[^"\'\s]*', script.string)
-            for raw_link in matches:
-                clean_link = raw_link.replace('\\u002F', '/').replace('\\/', '/')
-                if '"' in clean_link: clean_link = clean_link.split('"')[0]
-                
-                base_url = clean_link.split('?')[0]
-                if base_url not in processed_ids and ".jpg" not in base_url:
+        
+        # --- 1. PRÓBÁLKOZÁS: HTML <a href> tagokból (új struktúra) ---
+        for a in soup.find_all('a', href=True):
+            href = a['href']
+            if 'rewe.co.at' in href and '.jpg' not in href:
+                base_url = href.split('?')[0]
+                if base_url not in processed_ids:
                     processed_ids.add(base_url)
-                    
-                    # --- ÚJ: PENNY URL ALAPÚ CÍMGENERÁLÁS ---
-                    title = "Penny Akciós Újság"
-                    if "eletmod" in clean_link:
+                    match = re.search(r'/(\d{4})(\d{2})/', href)
+                    title = f"Penny Akciós Újság {int(match.group(2))}. heti ({match.group(1)}{match.group(2)})" if match else "Penny Akciós Újság"
+                    if "eletmod" in href:
                         title = "Penny Életmód"
-                    else:
-                        # Kinyerjük a 202608 formátumot
-                        match = re.search(r'/(\d{4})(\d{2})/', clean_link)
-                        if match:
-                            year, week = match.groups()
-                            title = f"Penny Akciós Újság {int(week)}. heti ({year}{week})"
-                    
-                    status = analyze_link("Penny", title, clean_link)
+                    status = analyze_link("Penny", title, href)
                     if status == "KEEP":
-                        print(f"[{status}] {title} -> {clean_link}")
-                        # VALIDITY TÖRÖLVE
-                        found.append({"store": "Penny", "title": title, "url": clean_link})
+                        print(f"[KEEP] {title} -> {href} (HTML mód)")
+                        found.append({"store": "Penny", "title": title, "url": href})
+
+        # --- 2. FALLBACK: __NUXT_DATA__ regex (régi struktúra) ---
+        if not found:
+            print("⚠️ HTML módban nem találtam linket, fallback: __NUXT_DATA__ keresés...")
+            script = soup.find('script', id='__NUXT_DATA__')
+            if script:
+                matches = re.findall(r'https:[^"\'\s]*rewe\.co\.at[^"\'\s]*', script.string)
+                for raw_link in matches:
+                    clean_link = raw_link.replace('\\u002F', '/').replace('\\/', '/')
+                    if '"' in clean_link: clean_link = clean_link.split('"')[0]
+                    base_url = clean_link.split('?')[0]
+                    if base_url not in processed_ids and ".jpg" not in base_url:
+                        processed_ids.add(base_url)
+                        match = re.search(r'/(\d{4})(\d{2})/', clean_link)
+                        title = f"Penny Akciós Újság {int(match.group(2))}. heti ({match.group(1)}{match.group(2)})" if match else "Penny Akciós Újság"
+                        if "eletmod" in clean_link:
+                            title = "Penny Életmód"
+                        status = analyze_link("Penny", title, clean_link)
+                        if status == "KEEP":
+                            print(f"[KEEP] {title} -> {clean_link} (NUXT mód)")
+                            found.append({"store": "Penny", "title": title, "url": clean_link})
+
     except Exception as e:
         print(f"❌ Penny Hiba: {e}")
     return found
