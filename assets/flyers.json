@@ -1,6 +1,61 @@
 {
-    "last_updated": "2026-06-05 11:29:14.948821",
+    "last_updated": "2026-06-05 13:28:19.060948",
     "flyers": [
+        {
+            "store": "Spar",
+            "title": "260430-7-grill-katalogus",
+            "url": "https://www.spar.hu/ajanlatok/egyeb/260430-7-grill-katalogus"
+        },
+        {
+            "store": "Spar",
+            "title": "250514-7-jegkrem-katalogus",
+            "url": "https://www.spar.hu/ajanlatok/egyeb/250514-7-jegkrem-katalogus"
+        },
+        {
+            "store": "Spar",
+            "title": "260603-4-nyar-katalogus",
+            "url": "https://www.spar.hu/ajanlatok/egyeb/260603-4-nyar-katalogus"
+        },
+        {
+            "store": "Spar",
+            "title": "260611-5-veszprem-togo-nyitas",
+            "url": "https://www.spar.hu/ajanlatok/egyeb/260611-5-veszprem-togo-nyitas"
+        },
+        {
+            "store": "Spar",
+            "title": "260604-2-interspar-szorolap",
+            "url": "https://www.spar.hu/ajanlatok/interspar/260604-2-interspar-szorolap"
+        },
+        {
+            "store": "Spar",
+            "title": "260611-2-interspar-szorolap-p",
+            "url": "https://www.spar.hu/ajanlatok/interspar/260611-2-interspar-szorolap-p"
+        },
+        {
+            "store": "Spar",
+            "title": "260604-1-spar-szorolap",
+            "url": "https://www.spar.hu/ajanlatok/spar/260604-1-spar-szorolap"
+        },
+        {
+            "store": "Spar",
+            "title": "260611-1-spar-szorolap-p",
+            "url": "https://www.spar.hu/ajanlatok/spar/260611-1-spar-szorolap-p"
+        },
+        {
+            "store": "Spar",
+            "title": "260611-4-spar-bp-istvan-ut-uzlet-megujulas",
+            "url": "https://www.spar.hu/ajanlatok/spar/260611-4-spar-bp-istvan-ut-uzlet-megujulas"
+        },
+        {
+            "store": "Spar",
+            "title": "260604-3-spar-market-city-spar",
+            "url": "https://www.spar.hu/ajanlatok/spar-market/260604-3-spar-market-city-spar"
+        },
+        {
+            "store": "Spar",
+            "title": "260611-4-spar-market-city-spar",
+            "url": "https://www.spar.hu/ajanlatok/spar-market/260611-4-spar-market-city-spar"
+        },
         {
             "store": "Penny",
             "title": "Penny Akciós Újság 23. heti (202623)",
@@ -90,21 +145,6 @@
             "store": "CBA Príma5",
             "title": "prima_47_het_205x293mm_scpaper",
             "url": "https://issuu.com/dataedgekft/docs/prima_47_het_205x293mm_scpaper"
-        },
-        {
-            "store": "Tisza-Coop",
-            "title": "coop-tisza-szorolap-2026-junius-1-het-szuper-plusz",
-            "url": "https://katalogus.coop.hu/coop-tisza-szorolap-2026-junius-1-het-szuper-plusz/"
-        },
-        {
-            "store": "Coop hid_abc",
-            "title": "coop-orszagos-szorolap-2026-junius-1-het-abc-szuper",
-            "url": "https://katalogus.coop.hu/coop-orszagos-szorolap-2026-junius-1-het-abc-szuper/"
-        },
-        {
-            "store": "Alföld Pro-Coop",
-            "title": "coop-alfold-szorolap-2026-junius-1-het-szuper-plusz",
-            "url": "https://katalogus.coop.hu/coop-alfold-szorolap-2026-junius-1-het-szuper-plusz/"
         }
     ]
 }
