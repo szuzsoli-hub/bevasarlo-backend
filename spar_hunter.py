@@ -1,127 +1,115 @@
 import json
 import re
 import datetime
-import time
-from selenium import webdriver
-from selenium.webdriver.chrome.service import Service
-from webdriver_manager.chrome import ChromeDriverManager
-from selenium.webdriver.chrome.options import Options
-from selenium.webdriver.common.by import By
-from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
+import requests
 from bs4 import BeautifulSoup
 
-# --- KONFIGURÁCIÓ ---
 OUTPUT_FILE = 'spar_flyers.json'
 
-
 def scan_spar_only():
-    print("=== 🎯 SPAR LINKVADÁSZ (Selenium Keresés) ===")
+    print("=== 🎯 SPAR LINKVADÁSZ (JSON-LD Keresés) ===")
     url = "https://www.spar.hu/ajanlatok"
-
+    headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'}
+    
     found_flyers = []
-
-    # Selenium beállítások (Headless mód, mint az Auchannál)
-    opts = Options()
-    opts.add_argument("--headless")
-    opts.add_argument("--window-size=1920,1080")
-    opts.add_argument("--disable-gpu")
-    opts.add_argument("--no-sandbox")
-    opts.add_argument("--disable-dev-shm-usage")
-    opts.add_argument(
-        "user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36")
-
-    driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=opts)
+    today = datetime.date.today()
 
     try:
-        print(f"📡 Kapcsolódás (Selenium): {url} ...")
-        driver.get(url)
+        print(f"📡 Kapcsolódás (requests): {url} ...")
+        response = requests.get(url, headers=headers, timeout=15)
+        soup = BeautifulSoup(response.text, 'html.parser')
 
-        print("⏳ Várakozás az újságkártyák betöltésére (WebDriverWait, max 20 mp)...")
-        try:
-            # Megvárjuk amíg legalább egy újságlink megjelenik a DOM-ban
-            WebDriverWait(driver, 20).until(
-                EC.presence_of_element_located((By.CSS_SELECTOR, "a[href*='szorolap'], a[href*='ajanlatok/spar'], a[href*='ajanlatok/interspar']"))
-            )
-            print("✅ Újságkártyák betöltve!")
-            # Kis extra várakozás hogy az összes kártya berendelődjön
-            time.sleep(3)
-        except Exception as e:
-            print(f"⚠️ WebDriverWait timeout, folytatás az aktuális állapottal: {e}")
-            time.sleep(5)
-
-        # Kinyerjük a JS által már legenerált, teljes HTML-t
-        page_source = driver.page_source
-        soup = BeautifulSoup(page_source, 'html.parser')
-
-        links = soup.find_all('a', href=True)
-        print(f"🔎 Talált linkek száma az oldalon: {len(links)} db")
-
-        seen_urls = set()
-        today = datetime.date.today()
-        cutoff_date = today - datetime.timedelta(days=30)
-
-        for a in links:
-            raw_href = a['href']
-
-            is_interesting = False
-            if 'spar' in raw_href.lower() and ('ajanlatok' in raw_href.lower() or 'szorolap' in raw_href.lower()):
-                is_interesting = True
-            if not is_interesting: continue
-
-            if "getPdf" in raw_href or ".pdf" in raw_href or "ViewPdf" in raw_href: continue
-
-            full_url = raw_href
-            if raw_href.startswith('/'): full_url = f"https://www.spar.hu{raw_href}"
-            
-            # A gyűjtőoldal (főoldal) kiszűrése!
-            if full_url.rstrip('/') == "https://www.spar.hu/ajanlatok": 
+        # JSON-LD script tag megkeresése
+        script_tags = soup.find_all('script', type='application/ld+json')
+        catalog_data = None
+        
+        for script in script_tags:
+            try:
+                data = json.loads(script.string)
+                if data.get('@type') == 'OfferCatalog':
+                    catalog_data = data
+                    break
+            except:
                 continue
 
-            if full_url in seen_urls: continue
+        if not catalog_data:
+            print("❌ Nem találtam OfferCatalog JSON-LD adatot!")
+            return found_flyers
 
-            # RUGALMAS DÁTUM KERESŐ
-            date_match = re.search(r'(202[4-6]|2[4-6])[-_]?(0[1-9]|1[0-2])[-_]?(0[1-9]|[12]\d|3[01])', full_url)
-            validity_str = "Ismeretlen"
+        items = catalog_data.get('itemListElement', [])
+        print(f"🔎 Talált újságok száma a JSON-LD-ben: {len(items)} db")
 
-            if date_match:
-                y_str, m_str, d_str = date_match.groups()
+        seen_urls = set()
+
+        for item in items:
+            url_item = item.get('url', '')
+            name = item.get('name', '')
+            start_date_str = item.get('startDate', '')
+            end_date_str = item.get('endDate', '')
+
+            if not url_item:
+                continue
+
+            # Teljes URL összerakása
+            if url_item.startswith('/'):
+                url_item = f"https://www.spar.hu{url_item}"
+
+            if url_item in seen_urls:
+                continue
+
+            # PDF linkek kiszűrése
+            if '.pdf' in url_item.lower():
+                continue
+
+            # Lejárt újságok kiszűrése endDate alapján
+            if end_date_str:
                 try:
-                    year = int(y_str) if len(y_str) == 4 else 2000 + int(y_str)
-                    month = int(m_str)
-                    day = int(d_str)
-                    flyer_date = datetime.date(year, month, day)
-
-                    if flyer_date < cutoff_date:
-                        continue  # Csak a nagyon régieket dobjuk el
-
-                    end_date = flyer_date + datetime.timedelta(days=6)
-                    validity_str = f"{flyer_date.strftime('%Y.%m.%d')}-{end_date.strftime('%Y.%m.%d')}"
-                except ValueError:
+                    end_date = datetime.date.fromisoformat(end_date_str)
+                    if end_date < today:
+                        print(f"⛔ LEJÁRT ({end_date_str}): {name}")
+                        continue
+                except:
                     pass
 
-            title = "SPAR Újság"
-            if "interspar" in full_url.lower():
-                title = "INTERSPAR"
-            elif "spar-market" in full_url.lower():
-                title = "SPAR market"
-            elif "spar-extra" in full_url.lower():
-                title = "SPAR Partner (Extra)"
+            # --- SPAR kategória alapú szűrés ---
+            # 1. INTERSPAR Nyár → non-food → DROP
+            if '/ajanlatok/interspar/' in url_item and 'szorolap' not in url_item.lower():
+                print(f"🚫 NON-FOOD (INTERSPAR nem szórólap): {name}")
+                continue
 
-            print(f"✅ TALÁLAT: {title} | {validity_str} | {full_url}")
+            # 2. Szellem újságok — 1208-sp-web típusú linkek kiszűrése
+            if '1208-sp-web' in url_item or (not start_date_str and not end_date_str):
+                print(f"👻 SZELLEM ÚJSÁG: {name}")
+                continue
+
+            # Érvényesség string
+            validity_str = "Ismeretlen"
+            if start_date_str and end_date_str:
+                try:
+                    sd = datetime.date.fromisoformat(start_date_str)
+                    ed = datetime.date.fromisoformat(end_date_str)
+                    validity_str = f"{sd.strftime('%Y.%m.%d')}-{ed.strftime('%Y.%m.%d')}"
+                except:
+                    pass
+            elif start_date_str:
+                try:
+                    sd = datetime.date.fromisoformat(start_date_str)
+                    validity_str = f"{sd.strftime('%Y.%m.%d')}-tól visszavonásig"
+                except:
+                    pass
+
+            print(f"✅ TALÁLAT: {name} | {validity_str} | {url_item}")
 
             found_flyers.append({
                 "store": "Spar",
-                "title": title,
-                "url": full_url,
+                "title": url_item.rstrip('/').split('/')[-1],
+                "url": url_item,
                 "validity": validity_str
             })
-            seen_urls.add(full_url)
+            seen_urls.add(url_item)
 
     except Exception as e:
-        print(f"❌ KRITIKUS HIBA (Selenium): {e}")
-    finally:
-        driver.quit()
+        print(f"❌ KRITIKUS HIBA: {e}")
 
     if found_flyers:
         with open(OUTPUT_FILE, 'w', encoding='utf-8') as f:
