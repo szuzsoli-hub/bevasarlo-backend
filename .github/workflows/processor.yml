@@ -12,28 +12,28 @@ jobs:
     runs-on: ubuntu-latest
     if: ${{ github.event.workflow_run.conclusion == 'success' || github.event_name == 'workflow_dispatch' }}
     steps:
-      - name: Kód letöltése
-        uses: actions/checkout@v4.2.2
+      - name: Kod letoltese
+        uses: actions/checkout@v4.3.0
         with:
           ref: main
-      - name: Python telepítése
+      - name: Python telepitese
         uses: actions/setup-python@v5
         with:
           python-version: '3.10'
-      - name: Szükséges programok telepítése
+      - name: Programok telepitese
         run: |
           pip install requests beautifulsoup4 selenium webdriver-manager openai python-dotenv curl_cffi PyMuPDF
-      - name: Google Chrome telepítése (A fotózáshoz)
+      - name: Google Chrome telepitese
         uses: browser-actions/setup-chrome@latest
-      - name: 🤖 Akcióvadász Robot Indítása (2 oldal/újság teszt)
+      - name: Akciovadasz Robot Inditasa
         env:
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
         run: python flyer_processor_bot.py
-      - name: Eredmény mentése (Git Commit)
+      - name: Eredmeny mentese
         run: |
           git config --global user.name "AkcioVadaszBot"
           git config --global user.email "bot@akciovadasz.hu"
           git add assets/universal_output.json
-          git commit -m "Új termékek feldolgozva (AI) - $(date)" || echo "Nincs új adat, nem kell menteni."
+          git commit -m "Uj termekek feldolgozva (AI) - $(date)" || echo "Nincs uj adat."
           git pull --rebase origin main
           git push
