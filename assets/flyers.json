@@ -1,16 +1,6 @@
 {
-    "last_updated": "2026-06-06 10:45:27.228322",
+    "last_updated": "2026-06-06 11:48:03.486171",
     "flyers": [
-        {
-            "store": "Penny",
-            "title": "Penny Akciós Újság 23. heti (202623)",
-            "url": "https://files.rewe.co.at/PennyIntLeaflet/HU/202623/?utm_source=penny&utm_medium=web&utm_content=desktop&utm_campaign=kw23"
-        },
-        {
-            "store": "Penny",
-            "title": "Penny Akciós Újság 24. heti (202624)",
-            "url": "https://files.rewe.co.at/PennyIntLeaflet/HU/202624/?utm_source=penny&utm_medium=web&utm_content=desktop&utm_campaign=kw23"
-        },
         {
             "store": "Lidl",
             "title": "Lidl akcios-ujsag-24-het",
@@ -68,11 +58,6 @@
         },
         {
             "store": "Auchan",
-            "title": "2026-06-01-06-10-heti-hipermarket-ajanlataink",
-            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr23/2026-06-01-06-10-heti-hipermarket-ajanlataink"
-        },
-        {
-            "store": "Auchan",
             "title": "2026-06-04-06-17-feher-hetek-ajanlatai",
             "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr23/2026-06-04-06-17-feher-hetek-ajanlatai"
         },
@@ -80,6 +65,11 @@
             "store": "Auchan",
             "title": "2026-06-04-06-10-heti-szupermarket-ajanlataink",
             "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr23/2026-06-04-06-10-heti-szupermarket-ajanlataink"
+        },
+        {
+            "store": "Auchan",
+            "title": "2026-06-01-06-10-heti-hipermarket-ajanlataink",
+            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr23/2026-06-01-06-10-heti-hipermarket-ajanlataink"
         },
         {
             "store": "Aldi",
