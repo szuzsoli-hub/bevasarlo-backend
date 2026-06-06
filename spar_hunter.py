@@ -2,6 +2,9 @@ import json
 import re
 import datetime
 import time
+import base64
+import os
+import requests as req_lib
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
 from webdriver_manager.chrome import ChromeDriverManager
@@ -11,10 +14,90 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from bs4 import BeautifulSoup
 
+# --- KONFIGURÁCIÓ ---
 OUTPUT_FILE = 'spar_flyers.json'
+OPENAI_API_KEY = os.environ.get("OPENAI_API_KEY", "")
+
+
+def ask_gpt_vision(driver, url):
+    """
+    Lefotózza az újság első oldalát és GPT-4o Vision-nal elemzi.
+    Visszatér: dict pl. {"food": True, "valid": True}
+    """
+    try:
+        print(f"   📸 GPT Vision ellenőrzés: {url[:60]}...")
+        driver.get(url)
+        time.sleep(4)
+        screenshot = driver.get_screenshot_as_png()
+        img_b64 = base64.b64encode(screenshot).decode('utf-8')
+
+        today_str = datetime.date.today().strftime('%Y.%m.%d')
+
+        prompt = f"""Ez egy magyar szupermarket újság borítója. Mai dátum: {today_str}.
+
+Kérlek válaszolj CSAK JSON formátumban, semmi más szöveg:
+{{
+  "food": true/false,
+  "valid": true/false
+}}
+
+Szabályok:
+- food: true ha élelmiszer/food jellegű újság (grill, jégkrém, nyári étel, hús, zöldség stb.)
+- food: false ha non-food (ruha, elektronika, kert, bútor, sport, barkács stb.)
+- valid: true ha "visszavonásig" vagy "visszavonásáig" szerepel
+- valid: true ha konkrét záró dátum van és még nem múlt el ({today_str} előtt)
+- valid: false ha konkrét záró dátum van és már elmúlt"""
+
+        response = req_lib.post(
+            "https://api.openai.com/v1/chat/completions",
+            headers={
+                "Authorization": f"Bearer {OPENAI_API_KEY}",
+                "Content-Type": "application/json"
+            },
+            json={
+                "model": "gpt-4o",
+                "max_tokens": 100,
+                "messages": [
+                    {
+                        "role": "user",
+                        "content": [
+                            {
+                                "type": "image_url",
+                                "image_url": {
+                                    "url": f"data:image/png;base64,{img_b64}"
+                                }
+                            },
+                            {
+                                "type": "text",
+                                "text": prompt
+                            }
+                        ]
+                    }
+                ]
+            },
+            timeout=30
+        )
+
+        if response.status_code == 200:
+            data = response.json()
+            text = data['choices'][0]['message']['content'].strip()
+            text = re.sub(r'```json|```', '', text).strip()
+            result = json.loads(text)
+            food = result.get('food', True)
+            valid = result.get('valid', True)
+            print(f"   🧠 GPT Vision: food={food}, valid={valid}")
+            return {"food": food, "valid": valid}
+        else:
+            print(f"   ⚠️ GPT Vision API hiba: {response.status_code}")
+            return {"food": True, "valid": True}
+
+    except Exception as e:
+        print(f"   ⚠️ GPT Vision hiba: {e}")
+        return {"food": True, "valid": True}
+
 
 def scan_spar_only():
-    print("=== 🎯 SPAR LINKVADÁSZ (Selenium Keresés) ===")
+    print("=== 🎯 SPAR LINKVADÁSZ (Selenium + GPT Vision) ===")
     url = "https://www.spar.hu/ajanlatok"
     found_flyers = []
 
@@ -35,104 +118,152 @@ def scan_spar_only():
         print("⏳ Várakozás az újságkártyák betöltésére (WebDriverWait, max 20 mp)...")
         try:
             WebDriverWait(driver, 20).until(
-                EC.presence_of_element_located((By.CSS_SELECTOR, 
+                EC.presence_of_element_located((By.CSS_SELECTOR,
                     "a[href*='szorolap'], a[href*='ajanlatok/spar'], a[href*='ajanlatok/interspar'], a[href*='ajanlatok/egyeb']"))
             )
             print("✅ Újságkártyák betöltve!")
-            # Scroll az oldal aljára hogy az egyeb kártyák is betöltődjenek
             driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
             time.sleep(3)
             driver.execute_script("window.scrollTo(0, 0);")
             time.sleep(1)
         except Exception as e:
-            print(f"⚠️ WebDriverWait timeout: {e}")
+            print(f"⚠️ WebDriverWait timeout, folytatás: {e}")
             time.sleep(5)
 
         page_source = driver.page_source
         soup = BeautifulSoup(page_source, 'html.parser')
+        links = soup.find_all('a', href=True)
+        print(f"🔎 Talált linkek száma az oldalon: {len(links)} db")
 
-        # JSON-LD feldolgozás itt is!
-        script_tags = soup.find_all('script', type='application/ld+json')
-        catalog_data = None
-        for script in script_tags:
-            try:
-                data = json.loads(script.string)
-                if data.get('@type') == 'OfferCatalog':
-                    catalog_data = data
-                    break
-            except:
+        seen_urls = set()
+        today = datetime.date.today()
+        cutoff_date = today - datetime.timedelta(days=30)
+
+        for a in links:
+            raw_href = a['href']
+
+            is_interesting = False
+            if 'spar' in raw_href.lower() and ('ajanlatok' in raw_href.lower() or 'szorolap' in raw_href.lower()):
+                is_interesting = True
+            if not is_interesting:
                 continue
 
-        today = datetime.date.today()
-        seen_urls = set()
+            if "getPdf" in raw_href or ".pdf" in raw_href or "ViewPdf" in raw_href:
+                continue
 
-        if catalog_data:
-            print("✅ JSON-LD OfferCatalog találva, abból olvasunk!")
-            items = catalog_data.get('itemListElement', [])
-            print(f"🔎 Talált újságok száma: {len(items)} db")
+            full_url = raw_href
+            if raw_href.startswith('/'):
+                full_url = f"https://www.spar.hu{raw_href}"
 
-            for item in items:
-                url_item = item.get('url', '')
-                name = item.get('name', '')
-                end_date_str = item.get('endDate', '')
-                start_date_str = item.get('startDate', '')
+            if full_url.rstrip('/') == "https://www.spar.hu/ajanlatok":
+                continue
 
-                if not url_item:
-                    continue
-                if url_item.startswith('/'):
-                    url_item = f"https://www.spar.hu{url_item}"
-                if url_item in seen_urls:
-                    continue
-                if '.pdf' in url_item.lower():
-                    continue
+            if full_url in seen_urls:
+                continue
 
-                # Lejárt szűrés
-                if end_date_str:
-                    try:
-                        end_date = datetime.date.fromisoformat(end_date_str)
-                        if end_date < today:
-                            print(f"⛔ LEJÁRT ({end_date_str}): {name}")
-                            continue
-                    except:
-                        pass
+            seen_urls.add(full_url)
 
-                # INTERSPAR non-food szűrés
-                if '/ajanlatok/interspar/' in url_item and 'szorolap' not in url_item.lower():
-                    print(f"🚫 NON-FOOD: {name}")
-                    continue
+            # --- URL dátum kinyerése ---
+            date_match = re.search(r'(202[4-9]|2[4-9])[-_]?(0[1-9]|1[0-2])[-_]?(0[1-9]|[12]\d|3[01])', full_url)
+            is_old = False
+            if date_match:
+                y_str, m_str, d_str = date_match.groups()
+                year = int(y_str) if len(y_str) == 4 else 2000 + int(y_str)
+                try:
+                    flyer_date = datetime.date(year, int(m_str), int(d_str))
+                    if flyer_date < cutoff_date:
+                        is_old = True
+                except:
+                    pass
 
-                # Szellem újság szűrés
-                if not start_date_str and not end_date_str:
-                    print(f"👻 SZELLEM: {name}")
-                    continue
+            # --- 1. SPAR alap szórólapok ---
+            if ('/ajanlatok/spar/' in full_url or
+                '/ajanlatok/spar-market/' in full_url or
+                '/ajanlatok/spar-extra/' in full_url):
 
-                validity_str = "Ismeretlen"
-                if start_date_str and end_date_str:
-                    try:
-                        sd = datetime.date.fromisoformat(start_date_str)
-                        ed = datetime.date.fromisoformat(end_date_str)
-                        validity_str = f"{sd.strftime('%Y.%m.%d')}-{ed.strftime('%Y.%m.%d')}"
-                    except:
-                        pass
-                elif start_date_str:
-                    try:
-                        sd = datetime.date.fromisoformat(start_date_str)
-                        validity_str = f"{sd.strftime('%Y.%m.%d')}-tól visszavonásig"
-                    except:
-                        pass
+                if is_old:
+                    print(f"🔍 Régi dátum → Vision valid check: {full_url[-50:]}")
+                    result = ask_gpt_vision(driver, full_url)
+                    driver.get(url)
+                    time.sleep(3)
+                    if not result["valid"]:
+                        print(f"⛔ LEJÁRT (Vision): {full_url[-50:]}")
+                        continue
 
-                print(f"✅ TALÁLAT: {name} | {validity_str} | {url_item}")
+                title = "SPAR Újság"
+                if "spar-market" in full_url.lower():
+                    title = "SPAR market"
+                elif "spar-extra" in full_url.lower():
+                    title = "SPAR Partner (Extra)"
+
+                print(f"✅ TALÁLAT: {title} | {full_url}")
                 found_flyers.append({
                     "store": "Spar",
-                    "title": url_item.rstrip('/').split('/')[-1],
-                    "url": url_item,
-                    "validity": validity_str
+                    "title": full_url.rstrip('/').split('/')[-1],
+                    "url": full_url
                 })
-                seen_urls.add(url_item)
+                continue
 
-        else:
-            print("⚠️ JSON-LD nem található, fallback: <a> tagok...")
-            # ... (eredeti <a> tag alapú logika marad fallbacknek)
+            # --- 2. INTERSPAR ---
+            if '/ajanlatok/interspar/' in full_url:
+                if 'szorolap' in full_url.lower():
+                    # Alap INTERSPAR szórólap
+                    if is_old:
+                        print(f"🔍 Régi INTERSPAR szórólap → Vision valid check: {full_url[-50:]}")
+                        result = ask_gpt_vision(driver, full_url)
+                        driver.get(url)
+                        time.sleep(3)
+                        if not result["valid"]:
+                            print(f"⛔ LEJÁRT (Vision): {full_url[-50:]}")
+                            continue
+                    print(f"✅ TALÁLAT: INTERSPAR | {full_url}")
+                    found_flyers.append({
+                        "store": "Spar",
+                        "title": full_url.rstrip('/').split('/')[-1],
+                        "url": full_url
+                    })
+                else:
+                    # INTERSPAR nem szórólap → Vision: food + valid
+                    print(f"🔍 INTERSPAR nem szórólap → Vision food+valid: {full_url[-50:]}")
+                    result = ask_gpt_vision(driver, full_url)
+                    driver.get(url)
+                    time.sleep(3)
+                    if not result["food"]:
+                        print(f"🚫 NON-FOOD (Vision): {full_url[-50:]}")
+                        continue
+                    if not result["valid"]:
+                        print(f"⛔ LEJÁRT (Vision): {full_url[-50:]}")
+                        continue
+                    print(f"✅ TALÁLAT: INTERSPAR (Vision OK) | {full_url}")
+                    found_flyers.append({
+                        "store": "Spar",
+                        "title": full_url.rstrip('/').split('/')[-1],
+                        "url": full_url
+                    })
+                continue
+
+            # --- 3. EGYEB kategória → Vision: food + valid ---
+            if '/ajanlatok/egyeb/' in full_url:
+                print(f"🔍 EGYEB → Vision food+valid: {full_url[-50:]}")
+                result = ask_gpt_vision(driver, full_url)
+                driver.get(url)
+                time.sleep(3)
+                if not result["food"]:
+                    print(f"🚫 NON-FOOD (Vision): {full_url[-50:]}")
+                    continue
+                if not result["valid"]:
+                    print(f"⛔ LEJÁRT (Vision): {full_url[-50:]}")
+                    continue
+                print(f"✅ TALÁLAT: SPAR Egyéb (Vision OK) | {full_url}")
+                found_flyers.append({
+                    "store": "Spar",
+                    "title": full_url.rstrip('/').split('/')[-1],
+                    "url": full_url
+                })
+                continue
+
+            # --- 4. Egyéb ismeretlen → kihagyva ---
+            print(f"⏭️ Ismeretlen kategória, kihagyva: {full_url[-50:]}")
 
     except Exception as e:
         print(f"❌ KRITIKUS HIBA (Selenium): {e}")
