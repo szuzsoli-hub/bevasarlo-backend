@@ -1,5 +1,5 @@
 {
-    "last_updated": "2026-06-07 12:10:10.496735",
+    "last_updated": "2026-06-07 17:48:46.079071",
     "flyers": [
         {
             "store": "Spar",
@@ -10,6 +10,11 @@
             "store": "Spar",
             "title": "260604-2-interspar-szorolap",
             "url": "https://www.spar.hu/ajanlatok/interspar/260604-2-interspar-szorolap"
+        },
+        {
+            "store": "Spar",
+            "title": "260528-5-interspar-nyar",
+            "url": "https://www.spar.hu/ajanlatok/interspar/260528-5-interspar-nyar"
         },
         {
             "store": "Spar",
@@ -103,8 +108,8 @@
         },
         {
             "store": "Auchan",
-            "title": "2026-06-04-06-10-heti-szupermarket-ajanlataink",
-            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr23/2026-06-04-06-10-heti-szupermarket-ajanlataink"
+            "title": "2026-06-01-06-10-heti-hipermarket-ajanlataink",
+            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr23/2026-06-01-06-10-heti-hipermarket-ajanlataink"
         },
         {
             "store": "Auchan",
@@ -113,8 +118,8 @@
         },
         {
             "store": "Auchan",
-            "title": "2026-06-01-06-10-heti-hipermarket-ajanlataink",
-            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr23/2026-06-01-06-10-heti-hipermarket-ajanlataink"
+            "title": "2026-06-04-06-10-heti-szupermarket-ajanlataink",
+            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr23/2026-06-04-06-10-heti-szupermarket-ajanlataink"
         },
         {
             "store": "Aldi",
