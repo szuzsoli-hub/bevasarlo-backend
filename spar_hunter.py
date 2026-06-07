@@ -5,10 +5,7 @@ import time
 import base64
 import os
 import requests as req_lib
-from selenium import webdriver
-from selenium.webdriver.chrome.service import Service
-from webdriver_manager.chrome import ChromeDriverManager
-from selenium.webdriver.chrome.options import Options
+import undetected_chromedriver as uc
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
@@ -97,22 +94,20 @@ Szabályok:
 
 
 def scan_spar_only():
-    print("=== 🎯 SPAR LINKVADÁSZ (Selenium + GPT Vision) ===")
+    print("=== 🎯 SPAR LINKVADÁSZ (Undetected Chrome + GPT Vision) ===")
     url = "https://www.spar.hu/ajanlatok"
     found_flyers = []
 
-    opts = Options()
+    opts = uc.ChromeOptions()
     opts.add_argument("--headless")
     opts.add_argument("--window-size=1920,1080")
-    opts.add_argument("--disable-gpu")
     opts.add_argument("--no-sandbox")
     opts.add_argument("--disable-dev-shm-usage")
-    opts.add_argument("user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36")
 
-    driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=opts)
+    driver = uc.Chrome(options=opts)
 
     try:
-        print(f"📡 Kapcsolódás (Selenium): {url} ...")
+        print(f"📡 Kapcsolódás (Undetected Chrome): {url} ...")
         driver.get(url)
 
         print("⏳ Várakozás az újságkártyák betöltésére (WebDriverWait, max 20 mp)...")
@@ -207,7 +202,6 @@ def scan_spar_only():
             # --- 2. INTERSPAR ---
             if '/ajanlatok/interspar/' in full_url:
                 if 'szorolap' in full_url.lower():
-                    # Alap INTERSPAR szórólap
                     if is_old:
                         print(f"🔍 Régi INTERSPAR szórólap → Vision valid check: {full_url[-50:]}")
                         result = ask_gpt_vision(driver, full_url)
@@ -223,7 +217,6 @@ def scan_spar_only():
                         "url": full_url
                     })
                 else:
-                    # INTERSPAR nem szórólap → Vision: food + valid
                     print(f"🔍 INTERSPAR nem szórólap → Vision food+valid: {full_url[-50:]}")
                     result = ask_gpt_vision(driver, full_url)
                     driver.get(url)
@@ -262,11 +255,10 @@ def scan_spar_only():
                 })
                 continue
 
-            # --- 4. Egyéb ismeretlen → kihagyva ---
             print(f"⏭️ Ismeretlen kategória, kihagyva: {full_url[-50:]}")
 
     except Exception as e:
-        print(f"❌ KRITIKUS HIBA (Selenium): {e}")
+        print(f"❌ KRITIKUS HIBA: {e}")
     finally:
         driver.quit()
 
