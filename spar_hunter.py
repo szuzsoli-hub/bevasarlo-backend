@@ -5,7 +5,10 @@ import time
 import base64
 import os
 import requests as req_lib
-import undetected_chromedriver as uc
+from selenium import webdriver
+from selenium.webdriver.chrome.service import Service
+from webdriver_manager.chrome import ChromeDriverManager
+from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
@@ -19,31 +22,27 @@ OPENAI_API_KEY = os.environ.get("OPENAI_API_KEY", "")
 def ask_gpt_vision(driver, url):
     """
     Lefotózza az újság első oldalát és GPT-4o Vision-nal elemzi.
-    Visszatér: dict pl. {"food": True, "valid": True}
+    Visszatér: dict {"food": True/False, "valid": True/False}
     """
     try:
-        print(f"   📸 GPT Vision ellenőrzés: {url[:60]}...")
+        print(f"   📸 GPT Vision: {url[:60]}...")
         driver.get(url)
         time.sleep(4)
         screenshot = driver.get_screenshot_as_png()
         img_b64 = base64.b64encode(screenshot).decode('utf-8')
-
         today_str = datetime.date.today().strftime('%Y.%m.%d')
 
         prompt = f"""Ez egy magyar szupermarket újság borítója. Mai dátum: {today_str}.
 
 Kérlek válaszolj CSAK JSON formátumban, semmi más szöveg:
-{{
-  "food": true/false,
-  "valid": true/false
-}}
+{{"food": true/false, "valid": true/false}}
 
 Szabályok:
-- food: true ha élelmiszer/food jellegű újság (grill, jégkrém, nyári étel, hús, zöldség stb.)
+- food: true ha élelmiszer/food jellegű (grill, jégkrém, nyári étel, hús, zöldség stb.)
 - food: false ha non-food (ruha, elektronika, kert, bútor, sport, barkács stb.)
-- valid: true ha "visszavonásig" vagy "visszavonásáig" szerepel
-- valid: true ha konkrét záró dátum van és még nem múlt el ({today_str} előtt)
-- valid: false ha konkrét záró dátum van és már elmúlt"""
+- valid: true ha "visszavonásig" szerepel
+- valid: true ha záró dátum még nem múlt el ({today_str} előtt)
+- valid: false ha záró dátum már elmúlt"""
 
         response = req_lib.post(
             "https://api.openai.com/v1/chat/completions",
@@ -54,75 +53,65 @@ Szabályok:
             json={
                 "model": "gpt-4o",
                 "max_tokens": 100,
-                "messages": [
-                    {
-                        "role": "user",
-                        "content": [
-                            {
-                                "type": "image_url",
-                                "image_url": {
-                                    "url": f"data:image/png;base64,{img_b64}"
-                                }
-                            },
-                            {
-                                "type": "text",
-                                "text": prompt
-                            }
-                        ]
-                    }
-                ]
+                "messages": [{
+                    "role": "user",
+                    "content": [
+                        {"type": "image_url", "image_url": {"url": f"data:image/png;base64,{img_b64}"}},
+                        {"type": "text", "text": prompt}
+                    ]
+                }]
             },
             timeout=30
         )
 
         if response.status_code == 200:
-            data = response.json()
-            text = data['choices'][0]['message']['content'].strip()
+            text = response.json()['choices'][0]['message']['content'].strip()
             text = re.sub(r'```json|```', '', text).strip()
             result = json.loads(text)
             food = result.get('food', True)
             valid = result.get('valid', True)
-            print(f"   🧠 GPT Vision: food={food}, valid={valid}")
+            print(f"   🧠 Vision eredmény: food={food}, valid={valid}")
             return {"food": food, "valid": valid}
         else:
-            print(f"   ⚠️ GPT Vision API hiba: {response.status_code}")
+            print(f"   ⚠️ Vision API hiba: {response.status_code} - megtartjuk")
             return {"food": True, "valid": True}
 
     except Exception as e:
-        print(f"   ⚠️ GPT Vision hiba: {e}")
+        print(f"   ⚠️ Vision hiba: {e} - megtartjuk")
         return {"food": True, "valid": True}
 
 
 def scan_spar_only():
-    print("=== 🎯 SPAR LINKVADÁSZ (Undetected Chrome + GPT Vision) ===")
+    print("=== 🎯 SPAR LINKVADÁSZ (Selenium Keresés) ===")
     url = "https://www.spar.hu/ajanlatok"
+
     found_flyers = []
 
-    opts = uc.ChromeOptions()
+    # --- EREDETI Selenium beállítások ---
+    opts = Options()
     opts.add_argument("--headless")
     opts.add_argument("--window-size=1920,1080")
+    opts.add_argument("--disable-gpu")
     opts.add_argument("--no-sandbox")
     opts.add_argument("--disable-dev-shm-usage")
+    opts.add_argument(
+        "user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36")
 
-    driver = uc.Chrome(options=opts)
+    driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=opts)
 
     try:
-        print(f"📡 Kapcsolódás (Undetected Chrome): {url} ...")
+        print(f"📡 Kapcsolódás (Selenium): {url} ...")
         driver.get(url)
 
         print("⏳ Várakozás az újságkártyák betöltésére (WebDriverWait, max 20 mp)...")
         try:
             WebDriverWait(driver, 20).until(
-                EC.presence_of_element_located((By.CSS_SELECTOR,
-                    "a[href*='szorolap'], a[href*='ajanlatok/spar'], a[href*='ajanlatok/interspar'], a[href*='ajanlatok/egyeb']"))
+                EC.presence_of_element_located((By.CSS_SELECTOR, "a[href*='szorolap'], a[href*='ajanlatok/spar'], a[href*='ajanlatok/interspar']"))
             )
             print("✅ Újságkártyák betöltve!")
-            driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
             time.sleep(3)
-            driver.execute_script("window.scrollTo(0, 0);")
-            time.sleep(1)
         except Exception as e:
-            print(f"⚠️ WebDriverWait timeout, folytatás: {e}")
+            print(f"⚠️ WebDriverWait timeout, folytatás az aktuális állapottal: {e}")
             time.sleep(5)
 
         page_source = driver.page_source
@@ -155,7 +144,6 @@ def scan_spar_only():
 
             if full_url in seen_urls:
                 continue
-
             seen_urls.add(full_url)
 
             # --- URL dátum kinyerése ---
@@ -171,7 +159,9 @@ def scan_spar_only():
                 except:
                     pass
 
-            # --- 1. SPAR alap szórólapok ---
+            # --- KATEGÓRIA ALAPÚ DÖNTÉS ---
+
+            # 1. SPAR alap szórólapok → KEEP (réginél Vision valid check)
             if ('/ajanlatok/spar/' in full_url or
                 '/ajanlatok/spar-market/' in full_url or
                 '/ajanlatok/spar-extra/' in full_url):
@@ -195,49 +185,54 @@ def scan_spar_only():
                 found_flyers.append({
                     "store": "Spar",
                     "title": full_url.rstrip('/').split('/')[-1],
-                    "url": full_url
+                    "url": full_url,
+                    "validity": "Ismeretlen"
                 })
                 continue
 
-            # --- 2. INTERSPAR ---
-            if '/ajanlatok/interspar/' in full_url:
-                if 'szorolap' in full_url.lower():
-                    if is_old:
-                        print(f"🔍 Régi INTERSPAR szórólap → Vision valid check: {full_url[-50:]}")
-                        result = ask_gpt_vision(driver, full_url)
-                        driver.get(url)
-                        time.sleep(3)
-                        if not result["valid"]:
-                            print(f"⛔ LEJÁRT (Vision): {full_url[-50:]}")
-                            continue
-                    print(f"✅ TALÁLAT: INTERSPAR | {full_url}")
-                    found_flyers.append({
-                        "store": "Spar",
-                        "title": full_url.rstrip('/').split('/')[-1],
-                        "url": full_url
-                    })
-                else:
-                    print(f"🔍 INTERSPAR nem szórólap → Vision food+valid: {full_url[-50:]}")
+            # 2. INTERSPAR szórólap → KEEP (réginél Vision valid check)
+            if '/ajanlatok/interspar/' in full_url and 'szorolap' in full_url.lower():
+                if is_old:
+                    print(f"🔍 Régi INTERSPAR szórólap → Vision valid check: {full_url[-50:]}")
                     result = ask_gpt_vision(driver, full_url)
                     driver.get(url)
                     time.sleep(3)
-                    if not result["food"]:
-                        print(f"🚫 NON-FOOD (Vision): {full_url[-50:]}")
-                        continue
                     if not result["valid"]:
                         print(f"⛔ LEJÁRT (Vision): {full_url[-50:]}")
                         continue
-                    print(f"✅ TALÁLAT: INTERSPAR (Vision OK) | {full_url}")
-                    found_flyers.append({
-                        "store": "Spar",
-                        "title": full_url.rstrip('/').split('/')[-1],
-                        "url": full_url
-                    })
+                print(f"✅ TALÁLAT: INTERSPAR | {full_url}")
+                found_flyers.append({
+                    "store": "Spar",
+                    "title": full_url.rstrip('/').split('/')[-1],
+                    "url": full_url,
+                    "validity": "Ismeretlen"
+                })
                 continue
 
-            # --- 3. EGYEB kategória → Vision: food + valid ---
+            # 3. INTERSPAR nem szórólap → Vision food+valid
+            if '/ajanlatok/interspar/' in full_url:
+                print(f"🔍 INTERSPAR nem szórólap → Vision: {full_url[-50:]}")
+                result = ask_gpt_vision(driver, full_url)
+                driver.get(url)
+                time.sleep(3)
+                if not result["food"]:
+                    print(f"🚫 NON-FOOD (Vision): {full_url[-50:]}")
+                    continue
+                if not result["valid"]:
+                    print(f"⛔ LEJÁRT (Vision): {full_url[-50:]}")
+                    continue
+                print(f"✅ TALÁLAT: INTERSPAR (Vision OK) | {full_url}")
+                found_flyers.append({
+                    "store": "Spar",
+                    "title": full_url.rstrip('/').split('/')[-1],
+                    "url": full_url,
+                    "validity": "Ismeretlen"
+                })
+                continue
+
+            # 4. EGYEB kategória → Vision food+valid
             if '/ajanlatok/egyeb/' in full_url:
-                print(f"🔍 EGYEB → Vision food+valid: {full_url[-50:]}")
+                print(f"🔍 EGYEB → Vision: {full_url[-50:]}")
                 result = ask_gpt_vision(driver, full_url)
                 driver.get(url)
                 time.sleep(3)
@@ -251,14 +246,16 @@ def scan_spar_only():
                 found_flyers.append({
                     "store": "Spar",
                     "title": full_url.rstrip('/').split('/')[-1],
-                    "url": full_url
+                    "url": full_url,
+                    "validity": "Ismeretlen"
                 })
                 continue
 
-            print(f"⏭️ Ismeretlen kategória, kihagyva: {full_url[-50:]}")
+            # 5. Minden más → kihagyva
+            print(f"⏭️ Kihagyva: {full_url[-50:]}")
 
     except Exception as e:
-        print(f"❌ KRITIKUS HIBA: {e}")
+        print(f"❌ KRITIKUS HIBA (Selenium): {e}")
     finally:
         driver.quit()
 
