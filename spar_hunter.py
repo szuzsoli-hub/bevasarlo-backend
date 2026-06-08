@@ -104,7 +104,7 @@ def scan_spar_only():
         print("⏳ Várakozás az újságkártyák betöltésére (WebDriverWait, max 20 mp)...")
         try:
             WebDriverWait(driver, 20).until(
-                EC.presence_of_element_located((By.CSS_SELECTOR, "a[href*='szorolap'], a[href*='ajanlatok/spar'], a[href*='ajanlatok/interspar']"))
+                EC.presence_of_element_located((By.CSS_SELECTOR, "a[href*='szorolap'], a[href*='ajanlatok/spar'], a[href*='ajanlatok/interspar'], a[href*='ajanlatok/egyeb']"))
             )
             print("✅ Újságkártyák betöltve!")
             time.sleep(3)
