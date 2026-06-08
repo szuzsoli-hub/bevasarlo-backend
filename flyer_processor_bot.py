@@ -182,7 +182,6 @@ def get_spar_pre_dates(links):
     finally:
         driver.quit()
 
-    # --- GPT-4o Vision: képet kap base64-ként, OCR lépés elhagyva ---
     with open(screenshot_path, "rb") as f:
         image_data = base64.b64encode(f.read()).decode("utf-8")
 
@@ -217,13 +216,13 @@ def get_spar_pre_dates(links):
             ]
         }]
     )
+    time.sleep(1)  # Rate limit védelem
     return json.loads(response.choices[0].message.content)
 
 # ===============================================================================
 # 2. MODUL: AZ AGY - DÁTUM ELLENŐRZÉS ÉS AI 🧠
 # ===============================================================================
 
-# --- JAVÍTÁS: SZIGORÚ PROMPT (BORÍTÓ ELSŐBBSÉG) ---
 def interpret_image_with_ai(image_path, page_num, store_name, title_name, link_hint, pre_calc_date=None):
     with open(image_path, "rb") as f:
         image_data = base64.b64encode(f.read()).decode("utf-8")
@@ -293,9 +292,9 @@ def interpret_image_with_ai(image_path, page_num, store_name, title_name, link_h
             ]
         }]
     )
+    time.sleep(1)  # Rate limit védelem
     return json.loads(response.choices[0].message.content)
 
-# --- JAVÍTÁS: SZIGORÚ BOUNCER (MAI NAP SZENT) ---
 def check_validity_date(date_string, current_flyer_meta, all_flyers):
     if not date_string or date_string == "N/A": 
         return True 
@@ -346,7 +345,6 @@ def process_images_with_ai(captured_data, flyer_meta, all_flyers, pre_calc_date=
     print(f"🧠 AI Elemzés: {flyer_meta['store']}...")
     results = []
     
-    # Link-súgó előkészítése
     link_hint = "N/A"
     url = flyer_meta['url']
     d_match = re.search(r'(202[4-6]|2[4-6])[-_.]?(0[1-9]|1[0-2])[-_.]?(0[1-9]|[12]\d|3[01])', url)
@@ -356,14 +354,7 @@ def process_images_with_ai(captured_data, flyer_meta, all_flyers, pre_calc_date=
 
     detected_validity = "N/A"
     
-    # --- CSAK AZ 1. HASZNOS OLDALT (SPÓROLÁS ÉS ENGEDÉKENY JSON) ---
-    found_products = False
     for item in captured_data:
-        # Ha már korábban találtunk termékeket, spórolás miatt kilépünk!
-        if found_products:
-            break
-
-        # --- OCR LÉPÉS ELHAGYVA: kép megy közvetlenül az AI-nak ---
         structured = interpret_image_with_ai(item['image_path'], item['page_num'], flyer_meta['store'], flyer_meta['title'], link_hint, pre_calc_date)
 
         if item['page_num'] == 1:
@@ -376,22 +367,18 @@ def process_images_with_ai(captured_data, flyer_meta, all_flyers, pre_calc_date=
                 print(f"⛔ LEJÁRT: {detected_validity}")
                 return []
 
-        # ENGEDÉKENY SZŰRŐ: Ha az AI adott vissza terméket, akkor azt elmentjük!
         termekek = structured.get("termekek", [])
         if termekek:
             for product in termekek:
-                # --- FT PÓTLÁSA ---
                 ar_val = str(product.get("ar", "")).strip()
                 if ar_val and re.match(r'^[\d\s\.,]+$', ar_val):
                     ar_val = f"{ar_val} Ft"
-                # ------------------
                 results.append({
                     "bolt": flyer_meta['store'], "ujsag": flyer_meta['title'], "oldalszam": item['page_num'],
                     "ervenyesseg": detected_validity, "nev": product.get("nev"), "ar": ar_val,
                     "ar_info": product.get("ar_info"), "ar_info2": product.get("ar_info2"),
                     "forrasLink": item['page_url'], "alap_link": flyer_meta['url']
                 })
-            found_products = True 
             
     return results
 
@@ -405,7 +392,6 @@ if __name__ == "__main__":
     if os.path.exists(OUTPUT_FILE):
         with open(OUTPUT_FILE, 'r', encoding='utf-8') as f: old_products = json.load(f)
 
-    # --- ÉRVÉNYESSÉGI DÁTUMOK ELŐTÖLTÉSE ---
     auchan_links = [f['url'] for f in current_flyers if f['store'].lower() == 'auchan']
     spar_links = [f['url'] for f in current_flyers if f['store'].lower() == 'spar']
     
@@ -417,7 +403,6 @@ if __name__ == "__main__":
         print("\n🍏 SPAR ÉRVÉNYESSÉGEK ELŐTÖLTÉSE...")
         pre_fetched_dates.update(get_spar_pre_dates(spar_links))
 
-    # --- FOLYTONOSSÁGI SZŰRŐ (TRÓNÖRÖKÖSÖK) ---
     def get_start_date(validity_str):
         match = re.search(r'(\d{4}[\.\-]\d{2}[\.\-]\d{2})|(\d{2}[\.\-]\d{2})', str(validity_str))
         if not match: return datetime.date(2000,1,1)
@@ -449,7 +434,6 @@ if __name__ == "__main__":
             new_items = process_images_with_ai(pages, flyer, current_flyers, pre_calc_date)
             final_products.extend(new_items)
 
-    # --- TRÓNÖRÖKÖS DÁTUMKALKULÁTOR (UTÓFELDOLGOZÁS) ---
     def get_sub_store(store, url):
         u_lower = url.lower()
         if store.lower() == "tesco":
