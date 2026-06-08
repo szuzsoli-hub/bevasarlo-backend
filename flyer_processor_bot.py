@@ -217,7 +217,11 @@ def get_spar_pre_dates(links):
         }]
     )
     time.sleep(1)  # Rate limit védelem
-    return json.loads(response.choices[0].message.content)
+    content = response.choices[0].message.content
+if not content:
+    print("⚠️ Spar pre-dates: üres GPT válasz, kihagyva")
+    return {}
+return json.loads(content)
 
 # ===============================================================================
 # 2. MODUL: AZ AGY - DÁTUM ELLENŐRZÉS ÉS AI 🧠
