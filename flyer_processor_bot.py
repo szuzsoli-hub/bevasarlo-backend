@@ -221,7 +221,7 @@ def get_spar_pre_dates(links):
     if not content:
         print("⚠️ Spar pre-dates: üres GPT válasz, kihagyva")
         return {}
-     return json.loads(content)
+    return json.loads(content)
 
 # ===============================================================================
 # 2. MODUL: AZ AGY - DÁTUM ELLENŐRZÉS ÉS AI 🧠
