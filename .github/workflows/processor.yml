@@ -10,7 +10,9 @@ permissions:
 jobs:
   process_flyers:
     runs-on: ubuntu-latest
-    timeout-minutes: 90
+    timeout-minutes: 360
+    env:
+      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
     if: ${{ github.event.workflow_run.conclusion == 'success' || github.event_name == 'workflow_dispatch' }}
     steps:
       - name: Kod letoltese
