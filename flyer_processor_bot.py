@@ -371,13 +371,10 @@ def process_images_with_ai(captured_data, flyer_meta, all_flyers, pre_calc_date=
     for item in captured_data:
         # Oldalszám meghatározása
         if use_vision_pagenum:
-            # Vision fogja leolvasni
             url_pagenum = None
         else:
-            # URL-ből kinyerjük
             url_pagenum = extract_page_num_from_url(item['page_url'], store_name)
         
-        # Ha URL-ből megvan az oldalszám, azt adjuk át a promptnak
         effective_pagenum = url_pagenum if url_pagenum is not None else item['page_num']
         
         structured = interpret_image_with_ai(
@@ -454,13 +451,50 @@ if __name__ == "__main__":
         if matching_flyer and check_validity_date(product.get('ervenyesseg'), matching_flyer, current_flyers):
             final_products.append(product)
             processed_urls.add(url)
+
+    # ============================================================
+    # IDŐFIGYELÉS + BOLTONKÉNTI MENTÉS
+    # ============================================================
+    START_TIME = datetime.datetime.now()
+    TIME_LIMIT_MINUTES = 330  # 5.5 óra → biztonságos leállás 6 óra előtt
+
+    def ido_van_meg():
+        eltelt = (datetime.datetime.now() - START_TIME).total_seconds() / 60
+        return eltelt < TIME_LIMIT_MINUTES
+
+    def mentes(products):
+        with open(OUTPUT_FILE, "w", encoding="utf-8") as f:
+            json.dump(products, f, ensure_ascii=False, indent=2)
+
+    # Boltok csoportosítása (csak a még nem feldolgozottak)
+    store_groups = {}
     for flyer in current_flyers:
-        if flyer['url'] in processed_urls: continue
-        pre_calc_date = pre_fetched_dates.get(flyer['url'])
-        pages = capture_pages_from_pdf(flyer['url'], flyer['store']) if flyer['url'].lower().endswith('.pdf') else capture_pages_with_selenium(flyer['url'], flyer['store'])
-        if pages:
-            new_items = process_images_with_ai(pages, flyer, current_flyers, pre_calc_date)
-            final_products.extend(new_items)
+        if flyer['url'] in processed_urls:
+            continue
+        store = flyer['store']
+        if store not in store_groups:
+            store_groups[store] = []
+        store_groups[store].append(flyer)
+
+    for store_name, flyers in store_groups.items():
+        if not ido_van_meg():
+            print(f"⏰ Időlimit elérve! {store_name} és a többi bolt marad a következő futásra.")
+            break
+        print(f"\n🏪 BOLT FELDOLGOZÁSA: {store_name} ({len(flyers)} újság)")
+        for flyer in flyers:
+            if not ido_van_meg():
+                print(f"⏰ Időlimit elérve! {flyer['title']} marad a következő futásra.")
+                break
+            pre_calc_date = pre_fetched_dates.get(flyer['url'])
+            pages = capture_pages_from_pdf(flyer['url'], flyer['store']) if flyer['url'].lower().endswith('.pdf') else capture_pages_with_selenium(flyer['url'], flyer['store'])
+            if pages:
+                new_items = process_images_with_ai(pages, flyer, current_flyers, pre_calc_date)
+                final_products.extend(new_items)
+        # Bolt összes újságja kész → mentés
+        print(f"💾 Mentés {store_name} után...")
+        mentes(final_products)
+    # ============================================================
+
     def get_sub_store(store, url):
         u_lower = url.lower()
         if store.lower() == "tesco":
@@ -498,5 +532,5 @@ if __name__ == "__main__":
                         end_date = next_dates[0] - datetime.timedelta(days=1)
                         p["ervenyesseg"] = f"{p_start.strftime('%Y.%m.%d.')} - {end_date.strftime('%Y.%m.%d.')}"
                 except: pass
-    with open(OUTPUT_FILE, "w", encoding="utf-8") as f: json.dump(final_products, f, ensure_ascii=False, indent=2)
+    mentes(final_products)
     print(f"\n🏁 KÉSZ! Adatbázis: {len(final_products)} termék.")
