@@ -77,6 +77,66 @@ def extract_page_num_from_url(page_url, store_name):
 # ===============================================================================
 # 1/A. MODUL: A FOTÓS
 # ===============================================================================
+def get_page_counter_from_dom(driver):
+    """DOM-ból kinyeri a lapszámlálót (pl. '2-3 / 57' vagy '4 / 48')"""
+    try:
+        # Különböző viewereknél különböző selectorok
+        selectors = [
+            # Auchan, Tesco, Coop stílusú
+            "[class*='page-counter']", "[class*='pageCounter']", "[class*='page_counter']",
+            "[class*='pagination']", "[class*='pager']",
+            # Lidl
+            "[class*='flyer-page']", "[class*='page-number']",
+            # Penny
+            "[class*='page-indicator']", "[class*='pages']",
+            # Általános
+            "header [class*='page']", "nav [class*='page']",
+        ]
+        for sel in selectors:
+            els = driver.find_elements(By.CSS_SELECTOR, sel)
+            for el in els:
+                txt = el.text.strip()
+                if re.search(r'\d+\s*[-/]\s*\d+', txt):
+                    print(f"   📄 DOM lapszámláló: '{txt}' (selector: {sel})")
+                    return txt
+        # JavaScript fallback - keresés az egész DOM-ban
+        result = driver.execute_script("""
+            var all = document.querySelectorAll('*');
+            for (var i = 0; i < all.length; i++) {
+                var t = all[i].innerText || '';
+                if (/^\\d+\\s*[-\\/]\\s*\\d+/.test(t.trim()) && t.trim().length < 20) {
+                    return t.trim();
+                }
+            }
+            return null;
+        """)
+        if result:
+            print(f"   📄 DOM lapszámláló (JS): '{result}'")
+            return result
+    except Exception as e:
+        print(f"   ⚠️ DOM lapszámláló hiba: {e}")
+    return None
+
+def parse_page_counter(counter_text):
+    """
+    Kinyeri a bal és jobb oldal számát a lapszámlálóból.
+    '2-3 / 57' → (2, 3)
+    '4 / 48' → (4, 4)  ← csak 1 oldal
+    'pages 2-3 of 43' → (2, 3)
+    """
+    if not counter_text:
+        return None, None
+    # Keressük a X-Y mintát (két szám kötőjellel)
+    m = re.search(r'(\d+)\s*[-–]\s*(\d+)', counter_text)
+    if m:
+        return int(m.group(1)), int(m.group(2))
+    # Csak egy szám: X / Y
+    m = re.search(r'(\d+)\s*[/]\s*\d+', counter_text)
+    if m:
+        n = int(m.group(1))
+        return n, n
+    return None, None
+
 def capture_pages_with_selenium(target_url, store_name):
     print(f"\n📸 FOTÓZÁS INDUL ({store_name}): {target_url}")
     chrome_options = Options()
@@ -108,6 +168,9 @@ def capture_pages_with_selenium(target_url, store_name):
         try:
             driver.execute_script("document.querySelectorAll('div[class*=\"cookie\"], #onetrust-banner-sdk').forEach(el => el.remove());")
         except: pass
+
+        prev_screenshot_hash = None
+
         for i in range(4):
             page_num = i + 1
             fajl_nev = os.path.join(TEMP_DIR, f"{store_name}_oldal_{page_num}.png")
@@ -125,11 +188,47 @@ def capture_pages_with_selenium(target_url, store_name):
                     driver.execute_script("document.querySelectorAll(\"[class*='next'], [class*='Right']\").forEach(btn => { try { btn.click(); } catch(e) {} });")
                 except: pass
                 time.sleep(6)
-            driver.save_screenshot(fajl_nev)
+
+                # === HASH ELLENŐRZÉS: lapozott-e ténylegesen? ===
+                screenshot_bytes = driver.get_screenshot_as_png()
+                current_hash = hash(screenshot_bytes)
+                if prev_screenshot_hash is not None and current_hash == prev_screenshot_hash:
+                    print(f"   ⚠️ FIGYELEM: {store_name} {page_num}. oldal = UGYANAZ mint az előző! Nem lapozott! Újra próbál...")
+                    # Újra próbál lapozni
+                    try:
+                        driver.execute_script("document.querySelectorAll(\"[class*='next'], [class*='Right'], [class*='arrow']\").forEach(btn => { try { btn.click(); } catch(e) {} });")
+                    except: pass
+                    time.sleep(4)
+                    screenshot_bytes = driver.get_screenshot_as_png()
+                    current_hash = hash(screenshot_bytes)
+                    if current_hash == prev_screenshot_hash:
+                        print(f"   ❌ {store_name} {page_num}. oldal: Lapozás sikertelen, ugyanaz az oldal!")
+                    else:
+                        print(f"   ✅ {store_name} {page_num}. oldal: Másodpróbára sikerült a lapozás!")
+                else:
+                    print(f"   ✅ {store_name} {page_num}. oldal: Lapozás sikeres (hash változott)")
+                prev_screenshot_hash = current_hash
+                # Mentés a már elkészített screenshot-ból
+                with open(fajl_nev, 'wb') as f:
+                    f.write(screenshot_bytes)
+            else:
+                driver.save_screenshot(fajl_nev)
+                with open(fajl_nev, 'rb') as f:
+                    prev_screenshot_hash = hash(f.read())
+
+            # === DOM LAPSZÁMLÁLÓ KIOLVASÁSA ===
+            counter_text = get_page_counter_from_dom(driver)
+            left_page, right_page = parse_page_counter(counter_text)
+            current_url = driver.current_url
+            print(f"   📍 URL: {current_url[-60:]}")
+            print(f"   📄 Lapszámláló: '{counter_text}' → bal={left_page}, jobb={right_page}")
+
             captured_data.append({
                 "image_path": fajl_nev,
-                "page_url": driver.current_url,
-                "page_num": page_num
+                "page_url": current_url,
+                "page_num": page_num,
+                "left_page": left_page,
+                "right_page": right_page,
             })
         return captured_data
     except Exception as e:
@@ -240,7 +339,7 @@ def get_spar_pre_dates(links):
 # ===============================================================================
 # 2. MODUL: AI ELEMZÉS
 # ===============================================================================
-def interpret_image_with_ai(image_path, page_num, store_name, title_name, link_hint, pre_calc_date=None, need_vision_pagenum=False):
+def interpret_image_with_ai(image_path, page_num, store_name, title_name, link_hint, pre_calc_date=None, need_vision_pagenum=False, double_page_info=None):
     with open(image_path, "rb") as f:
         image_data = base64.b64encode(f.read()).decode("utf-8")
     
@@ -263,7 +362,7 @@ def interpret_image_with_ai(image_path, page_num, store_name, title_name, link_h
             7. FALLBACK: {link_hint}
             """
 
-    # Oldalszám instrukció: csak Spar/Issuu-nál kell Vision
+    # Oldalszám instrukció
     if need_vision_pagenum:
         pagenum_instr = f"""
     OLDALSZÁM KIOLVASÁS (KÖTELEZŐ!):
@@ -272,9 +371,18 @@ def interpret_image_with_ai(image_path, page_num, store_name, title_name, link_h
     - CSAK a perjel előtti számot írd, semmi mást!
     - Ha nem látható lapszámláló → írd: {page_num}
     """
+    elif double_page_info:
+        # Dupla oldalas viewer: megmondjuk az AI-nak a bal/jobb oldal számát
+        pagenum_instr = f"""
+    OLDALSZÁM - FONTOS! A képen KÉT újságoldal látható egyszerre:
+    - BAL OLDAL = {double_page_info.split(',')[0].split('=')[1].strip()}. oldal
+    - JOBB OLDAL = {double_page_info.split(',')[1].split('=')[1].strip()}. oldal
+    - Minden terméknél döntsd el hogy BAL vagy JOBB oldalon van-e, és az "oldalszam" mezőbe a megfelelő számot írd!
+    - Ha a termék a bal felén van → bal oldal száma, ha jobb felén → jobb oldal száma
+    """
     else:
         pagenum_instr = f"""
-    OLDALSZÁM: Az oldalszámot már tudjuk URL-ből, az "oldalszam" mezőbe írd: {page_num}
+    OLDALSZÁM: Az oldalszámot már tudjuk, az "oldalszam" mezőbe írd: {page_num}
     """
 
     prompt = f"""
@@ -350,12 +458,51 @@ def check_validity_date(date_string, current_flyer_meta, all_flyers):
                     return False
     return True
 
+def build_forras_link(alap_link, page_num, store_name):
+    """
+    Boltonként felépíti a pontos forrasLink URL-t az oldalszám alapján.
+    Dupla oldalas viewereknél (Auchan, Lidl, Penny, Tesco) ez adja a helyes linket.
+    """
+    store_lower = store_name.lower()
+    try:
+        if 'auchan' in store_lower:
+            # Auchan: alap_link + ?page=N
+            base = alap_link.split('?')[0].rstrip('/')
+            return f"{base}?page={page_num}"
+        elif 'lidl' in store_lower:
+            # Lidl: .../ar/0?lf=HHZ → .../view/flyer/page/N?lf=HHZ
+            m = re.search(r'(https://www\.lidl\.hu/l/hu/ujsag/[^/]+)', alap_link)
+            if m:
+                base = m.group(1)
+                lf_match = re.search(r'(\?lf=[^&]+)', alap_link)
+                lf = lf_match.group(1) if lf_match else ''
+                return f"{base}/view/flyer/page/{page_num}{lf}"
+            return alap_link
+        elif 'penny' in store_lower:
+            # Penny: .../202624/ + N/
+            base = re.sub(r'/\d+/?$', '/', alap_link.rstrip('/') + '/')
+            return f"{base}{page_num}/"
+        elif 'tesco' in store_lower:
+            # Tesco: alap_link/N (az alap_link már tartalmazza az /1-et, azt cseréljük)
+            base = re.sub(r'/\d+$', '', alap_link.rstrip('/'))
+            return f"{base}/{page_num}"
+        elif 'coop' in store_lower.lower():
+            # Coop: alap_link/page/N
+            base = alap_link.rstrip('/')
+            return f"{base}/page/{page_num}"
+    except Exception as e:
+        print(f"   ⚠️ forrasLink építési hiba ({store_name}, oldal {page_num}): {e}")
+    return alap_link
+
 def process_images_with_ai(captured_data, flyer_meta, all_flyers, pre_calc_date=None):
-    print(f"🧠 AI Elemzés: {flyer_meta['store']}...")
+    print(f"🧠 AI Elemzés: {flyer_meta['store']} - {flyer_meta['title']}...")
     results = []
     store_name = flyer_meta['store']
     store_lower = store_name.lower()
-    
+
+    # Dupla oldalas viewerek ahol DOM lapszámlálóból kell az oldalszámot kezelni
+    is_double_page_viewer = any(x in store_lower for x in ['auchan', 'lidl', 'penny', 'tesco', 'coop'])
+
     # Spar és Issuu esetén Vision olvassa az oldalszámot
     use_vision_pagenum = 'spar' in store_lower or 'issuu' in flyer_meta['url'].lower()
     
@@ -369,14 +516,32 @@ def process_images_with_ai(captured_data, flyer_meta, all_flyers, pre_calc_date=
     detected_validity = "N/A"
     
     for item in captured_data:
+        left_page = item.get('left_page')
+        right_page = item.get('right_page')
+
         # Oldalszám meghatározása
         if use_vision_pagenum:
             url_pagenum = None
         else:
             url_pagenum = extract_page_num_from_url(item['page_url'], store_name)
-        
-        effective_pagenum = url_pagenum if url_pagenum is not None else item['page_num']
-        
+
+        # Ha DOM lapszámláló elérhető, azt használjuk
+        if left_page is not None:
+            effective_pagenum = left_page
+            print(f"   📄 DOM lapszámláló alapú oldalszám: bal={left_page}, jobb={right_page}")
+        elif url_pagenum is not None:
+            effective_pagenum = url_pagenum
+            print(f"   📄 URL alapú oldalszám: {url_pagenum}")
+        else:
+            effective_pagenum = item['page_num']
+            print(f"   📄 Sorszám alapú oldalszám: {effective_pagenum}")
+
+        # Ha dupla oldalas viewer, megmondjuk az AI-nak a bal/jobb oldal számát
+        if is_double_page_viewer and left_page is not None and right_page is not None and left_page != right_page:
+            double_page_info = f"left_page={left_page}, right_page={right_page}"
+        else:
+            double_page_info = None
+
         structured = interpret_image_with_ai(
             item['image_path'],
             effective_pagenum,
@@ -384,7 +549,8 @@ def process_images_with_ai(captured_data, flyer_meta, all_flyers, pre_calc_date=
             flyer_meta['title'],
             link_hint,
             pre_calc_date,
-            need_vision_pagenum=use_vision_pagenum
+            need_vision_pagenum=use_vision_pagenum,
+            double_page_info=double_page_info
         )
         
         if item['page_num'] == 1:
@@ -396,7 +562,7 @@ def process_images_with_ai(captured_data, flyer_meta, all_flyers, pre_calc_date=
                 print(f"⛔ LEJÁRT: {detected_validity}")
                 return []
         
-        # Végső oldalszám: URL-ből vagy Vision-tól
+        # Végső oldalszám: URL-ből, DOM-ból vagy Vision-tól
         if use_vision_pagenum:
             final_pagenum = structured.get("oldalszam", item['page_num'])
             try:
@@ -405,23 +571,41 @@ def process_images_with_ai(captured_data, flyer_meta, all_flyers, pre_calc_date=
                 final_pagenum = item['page_num']
         else:
             final_pagenum = effective_pagenum
-        
+
         termekek = structured.get("termekek", [])
+        print(f"   🛒 Talált termékek: {len(termekek)} db (oldal: {final_pagenum})")
+
         if termekek:
             for product in termekek:
                 ar_val = str(product.get("ar", "")).strip()
                 if ar_val and re.match(r'^[\d\s\.,]+$', ar_val):
                     ar_val = f"{ar_val} Ft"
+
+                # Termék oldalszáma: ha dupla oldal, az AI megmondja melyik oldalon van
+                product_page = product.get("oldalszam", final_pagenum)
+                try:
+                    product_page = int(product_page)
+                except:
+                    product_page = final_pagenum
+
+                # forrasLink: oldalszám alapján építjük
+                if is_double_page_viewer:
+                    forras = build_forras_link(flyer_meta['url'], product_page, store_name)
+                else:
+                    forras = item['page_url']
+
+                print(f"      → {product.get('nev', '?')[:30]} | {ar_val} | oldal={product_page} | link={forras[-40:]}")
+
                 results.append({
                     "bolt": store_name,
                     "ujsag": flyer_meta['title'],
-                    "oldalszam": final_pagenum,
+                    "oldalszam": product_page,
                     "ervenyesseg": detected_validity,
                     "nev": product.get("nev"),
                     "ar": ar_val,
                     "ar_info": product.get("ar_info"),
                     "ar_info2": product.get("ar_info2"),
-                    "forrasLink": item['page_url'],
+                    "forrasLink": forras,
                     "alap_link": flyer_meta['url']
                 })
     return results
