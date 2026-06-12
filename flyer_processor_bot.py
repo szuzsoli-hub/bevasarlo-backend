@@ -337,6 +337,128 @@ def get_spar_pre_dates(links):
     return json.loads(content)
 
 # ===============================================================================
+# ÚJ: HTML/URL ALAPÚ DÁTUM KINYERÉS (Aldi, Penny, Metro, Coop, CBA, Príma)
+# ===============================================================================
+def get_validity_from_html(url, store):
+    """
+    HTML forrásból vagy URL-ből kinyeri az érvényességi dátumot.
+    Érintett boltok: Aldi, Penny, Metro, Coop, CBA, CBA Príma
+    Visszatérési érték: "ÉÉÉÉ.HH.NN. - ÉÉÉÉ.HH.NN." formátum, vagy None ha nem sikerül.
+    """
+    store_lower = store.lower()
+
+    # --- CBA / Príma: URL fájlnév regex, nem kell HTML fetch ---
+    # pl. .../2026/06/cba_0611-0617.pdf vagy prima_0611-0617.pdf
+    if 'cba' in store_lower or 'príma' in store_lower or 'prima' in store_lower:
+        m = re.search(r'_(\d{2})(\d{2})-(\d{2})(\d{2})\.pdf', url, re.IGNORECASE)
+        if m:
+            year_match = re.search(r'/(\d{4})/', url)
+            year = year_match.group(1) if year_match else str(datetime.date.today().year)
+            m1, d1, m2, d2 = m.group(1), m.group(2), m.group(3), m.group(4)
+            result = f"{year}.{m1}.{d1}. - {year}.{m2}.{d2}."
+            print(f"   📅 CBA/Príma URL regex → {result}")
+            return result
+        return None
+
+    # --- Többi bolt: HTML fetch ---
+    try:
+        headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'}
+        resp = requests.get(url, headers=headers, timeout=10)
+        resp.raise_for_status()
+        html = resp.text
+    except Exception as e:
+        print(f"   ⚠️ HTML fetch hiba ({store}): {e}")
+        return None
+
+    # --- ALDI: <title> tagből ---
+    # pl. "ALDI Online akciós újság - 24. hét / 2026.06.11.-2026.06.17."
+    if 'aldi' in store_lower:
+        m = re.search(r'<title>[^<]*?(\d{4}\.\d{2}\.\d{2})\.-(\d{4}\.\d{2}\.\d{2})', html)
+        if m:
+            result = f"{m.group(1)}. - {m.group(2)}."
+            print(f"   📅 Aldi title → {result}")
+            return result
+        return None
+
+    # --- PENNY: meta description ---
+    # pl. "Akciós ajánlatok június 11. és június 17. között"
+    if 'penny' in store_lower:
+        m = re.search(r'<meta[^>]+name=["\']description["\'][^>]+content=["\']([^"\']+)["\']', html, re.IGNORECASE)
+        if not m:
+            m = re.search(r'<meta[^>]+content=["\']([^"\']+)["\'][^>]+name=["\']description["\']', html, re.IGNORECASE)
+        if m:
+            desc = m.group(1)
+            honap_map = {
+                'január': '01', 'február': '02', 'március': '03', 'április': '04',
+                'május': '05', 'június': '06', 'július': '07', 'augusztus': '08',
+                'szeptember': '09', 'október': '10', 'november': '11', 'december': '12'
+            }
+            # "június 11. és június 17. között"
+            dm = re.search(r'(\w+)\s+(\d+)\.\s+és\s+(\w+)\s+(\d+)\.', desc, re.IGNORECASE)
+            if dm:
+                h1 = honap_map.get(dm.group(1).lower())
+                d1 = dm.group(2).zfill(2)
+                h2 = honap_map.get(dm.group(3).lower())
+                d2 = dm.group(4).zfill(2)
+                year = str(datetime.date.today().year)
+                if h1 and h2:
+                    result = f"{year}.{h1}.{d1}. - {year}.{h2}.{d2}."
+                    print(f"   📅 Penny meta description → {result}")
+                    return result
+        return None
+
+    # --- METRO: meta description ---
+    # pl. "2026. JÚNIUS 1-30."
+    if 'metro' in store_lower:
+        m = re.search(r'<meta[^>]+name=["\']description["\'][^>]+content=["\']([^"\']+)["\']', html, re.IGNORECASE)
+        if not m:
+            m = re.search(r'<meta[^>]+content=["\']([^"\']+)["\'][^>]+name=["\']description["\']', html, re.IGNORECASE)
+        if m:
+            desc = m.group(1)
+            honap_map = {
+                'JANUÁR': '01', 'FEBRUÁR': '02', 'MÁRCIUS': '03', 'ÁPRILIS': '04',
+                'MÁJUS': '05', 'JÚNIUS': '06', 'JÚLIUS': '07', 'AUGUSZTUS': '08',
+                'SZEPTEMBER': '09', 'OKTÓBER': '10', 'NOVEMBER': '11', 'DECEMBER': '12'
+            }
+            # "2026. JÚNIUS 1-30."
+            dm = re.search(r'(\d{4})\.\s+(\w+)\s+(\d+)-(\d+)\.', desc)
+            if dm:
+                year = dm.group(1)
+                honap = honap_map.get(dm.group(2).upper())
+                d1 = dm.group(3).zfill(2)
+                d2 = dm.group(4).zfill(2)
+                if honap:
+                    result = f"{year}.{honap}.{d1}. - {year}.{honap}.{d2}."
+                    print(f"   📅 Metro meta description → {result}")
+                    return result
+        return None
+
+    # --- COOP: meta description ---
+    # pl. "AJÁNLATAINK 2026.06.11 - 06.17. KÖZÖTT ÉRVÉNYESEK"
+    if 'coop' in store_lower:
+        m = re.search(r'<meta[^>]+name=["\']description["\'][^>]+content=["\']([^"\']+)["\']', html, re.IGNORECASE)
+        if not m:
+            m = re.search(r'<meta[^>]+content=["\']([^"\']+)["\'][^>]+name=["\']description["\']', html, re.IGNORECASE)
+        if m:
+            desc = m.group(1)
+            # "2026.06.11 - 06.17."
+            dm = re.search(r'(\d{4})\.(\d{2})\.(\d{2})\s*-\s*(\d{2})\.(\d{2})', desc)
+            if dm:
+                year = dm.group(1)
+                result = f"{year}.{dm.group(2)}.{dm.group(3)}. - {year}.{dm.group(4)}.{dm.group(5)}."
+                print(f"   📅 Coop meta description → {result}")
+                return result
+            # Fallback: "2026.06.11 - 2026.06.17"
+            dm2 = re.search(r'(\d{4}\.\d{2}\.\d{2})\s*[-–]\s*(\d{4}\.\d{2}\.\d{2})', desc)
+            if dm2:
+                result = f"{dm2.group(1)}. - {dm2.group(2)}."
+                print(f"   📅 Coop meta description (fallback) → {result}")
+                return result
+        return None
+
+    return None
+
+# ===============================================================================
 # 2. MODUL: AI ELEMZÉS
 # ===============================================================================
 def interpret_image_with_ai(image_path, page_num, store_name, title_name, link_hint, pre_calc_date=None, need_vision_pagenum=False, double_page_info=None):
@@ -627,6 +749,21 @@ if __name__ == "__main__":
     if spar_links:
         print("\n🍏 SPAR ÉRVÉNYESSÉGEK ELŐTÖLTÉSE...")
         pre_fetched_dates.update(get_spar_pre_dates(spar_links))
+
+    # --- ÚJ: HTML/URL alapú dátum előtöltés ---
+    HTML_DATE_STORES = ['aldi', 'penny', 'metro', 'coop', 'cba', 'príma', 'prima']
+    print("\n🌐 HTML/URL ALAPÚ ÉRVÉNYESSÉGEK ELŐTÖLTÉSE (Aldi, Penny, Metro, Coop, CBA, Príma)...")
+    for flyer in current_flyers:
+        store_lower = flyer['store'].lower()
+        if any(s in store_lower for s in HTML_DATE_STORES):
+            validity = get_validity_from_html(flyer['url'], flyer['store'])
+            if validity:
+                pre_fetched_dates[flyer['url']] = validity
+                print(f"   ✅ {flyer['store']}: {validity}")
+            else:
+                print(f"   ⚠️ {flyer['store']} ({flyer['title']}): nem sikerült kinyerni")
+    # --- ÚJ vége ---
+
     final_products = []
     processed_urls = set()
     for product in old_products:
