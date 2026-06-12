@@ -137,6 +137,121 @@ def parse_page_counter(counter_text):
         return n, n
     return None, None
 
+# ===============================================================================
+# URL ALAPÚ OLDALANKÉNTI FOTÓZÁS (Aldi, Metro, Coop, Auchan, Penny, Tesco, Lidl)
+# ===============================================================================
+def build_page_urls(alap_url, store_name, count=4):
+    """
+    Boltonként generálja az oldalankénti URL-eket.
+    1. oldal = az alap URL (ahogy a flyers.json-ban van)
+    2-4. oldal = oldalszám alapján épített URL-ek
+    """
+    store_lower = store_name.lower()
+    urls = []
+    for page_num in range(1, count + 1):
+        if 'aldi' in store_lower:
+            # Aldi: .../page/1, .../page/2 ...
+            base = re.sub(r'/page/\d+$', '', alap_url.rstrip('/'))
+            urls.append((page_num, f"{base}/page/{page_num}"))
+        elif 'metro' in store_lower:
+            # Metro: .../page/1, .../page/2 ...
+            base = re.sub(r'/page/\d+$', '', alap_url.rstrip('/'))
+            urls.append((page_num, f"{base}/page/{page_num}"))
+        elif 'coop' in store_lower:
+            # Coop: .../  → .../page/2, .../page/3 ...
+            base = alap_url.rstrip('/')
+            base = re.sub(r'/page/\d+$', '', base)
+            if page_num == 1:
+                urls.append((page_num, alap_url))
+            else:
+                urls.append((page_num, f"{base}/page/{page_num}"))
+        elif 'auchan' in store_lower:
+            # Auchan: ...ajanlataink?page=1, ?page=2 ...
+            base = alap_url.split('?')[0].rstrip('/')
+            urls.append((page_num, f"{base}?page={page_num}"))
+        elif 'penny' in store_lower:
+            # Penny: .../202624/1/, .../202624/2/ ...
+            base = re.sub(r'/\d+/?$', '/', alap_url.rstrip('/') + '/')
+            urls.append((page_num, f"{base}{page_num}/"))
+        elif 'tesco' in store_lower:
+            # Tesco: .../tesco-ujsag-2026-06-11/1, /2 ...
+            base = re.sub(r'/\d+$', '', alap_url.rstrip('/'))
+            urls.append((page_num, f"{base}/{page_num}"))
+        elif 'lidl' in store_lower:
+            # Lidl: .../view/flyer/page/1?lf=HHZ, /page/2 ...
+            m = re.search(r'(https://www\.lidl\.hu/l/hu/ujsag/[^/]+)', alap_url)
+            lf_match = re.search(r'(\?lf=[^&]+)', alap_url)
+            lf = lf_match.group(1) if lf_match else ''
+            if m:
+                base = m.group(1)
+                urls.append((page_num, f"{base}/view/flyer/page/{page_num}{lf}"))
+            else:
+                urls.append((page_num, alap_url))
+        else:
+            urls.append((page_num, alap_url))
+    return urls
+
+def capture_pages_by_url(alap_url, store_name, count=4):
+    """
+    URL alapú oldalankénti fotózás — nincs lapozgatás!
+    Minden oldalt külön URL-en nyit meg és fotóz le.
+    1 fotó = 1 újságoldal = 1 pontos link.
+    """
+    print(f"\n📸 URL ALAPÚ FOTÓZÁS INDUL ({store_name}): {alap_url}")
+    page_urls = build_page_urls(alap_url, store_name, count)
+    chrome_options = Options()
+    chrome_options.add_argument("--headless")
+    chrome_options.add_argument("--window-size=1280,900")
+    chrome_options.add_argument("--disable-gpu")
+    chrome_options.add_argument("--no-sandbox")
+    chrome_options.add_argument("--disable-dev-shm-usage")
+    chrome_options.add_argument("--disable-blink-features=AutomationControlled")
+    chrome_options.add_argument("user-agent=Mozilla/5.0 (Macintosh; Intel Mac OS X 14_4) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.4 Safari/605.1.15")
+    captured_data = []
+    try:
+        service = Service(ChromeDriverManager().install())
+        driver = webdriver.Chrome(service=service, options=chrome_options)
+        driver.execute_cdp_cmd("Page.addScriptToEvaluateOnNewDocument", {
+            "source": "Object.defineProperty(navigator, 'webdriver', {get: () => undefined})"
+        })
+        for page_num, page_url in page_urls:
+            print(f"   📄 Oldal {page_num}: {page_url[-70:]}")
+            fajl_nev = os.path.join(TEMP_DIR, f"{store_name}_oldal_{page_num}.png")
+            try:
+                driver.get(page_url)
+                time.sleep(8)
+                # Cookie banner eltüntetés (csak első oldalnál szükséges igazán)
+                if page_num == 1:
+                    try:
+                        buttons = driver.find_elements(By.TAG_NAME, "button")
+                        for btn in buttons:
+                            txt = btn.text.lower()
+                            if any(x in txt for x in ["elfogad", "accept", "ok", "rendben"]):
+                                driver.execute_script("arguments[0].click();", btn)
+                                time.sleep(1)
+                                break
+                    except: pass
+                    try:
+                        driver.execute_script("document.querySelectorAll('div[class*=\"cookie\"], #onetrust-banner-sdk').forEach(el => el.remove());")
+                    except: pass
+                driver.save_screenshot(fajl_nev)
+                captured_data.append({
+                    "image_path": fajl_nev,
+                    "page_url": page_url,
+                    "page_num": page_num,
+                    "left_page": None,
+                    "right_page": None,
+                })
+                print(f"   ✅ Oldal {page_num} fotózva")
+            except Exception as e:
+                print(f"   ❌ Oldal {page_num} hiba: {e}")
+        return captured_data
+    except Exception as e:
+        print(f"❌ Hiba az URL alapú fotózásnál: {e}")
+        return []
+    finally:
+        if 'driver' in locals(): driver.quit()
+
 def capture_pages_with_selenium(target_url, store_name):
     print(f"\n📸 FOTÓZÁS INDUL ({store_name}): {target_url}")
     chrome_options = Options()
@@ -622,10 +737,10 @@ def process_images_with_ai(captured_data, flyer_meta, all_flyers, pre_calc_date=
     store_name = flyer_meta['store']
     store_lower = store_name.lower()
 
-    # Dupla oldalas viewerek ahol DOM lapszámlálóból kell az oldalszámot kezelni
-    is_double_page_viewer = any(x in store_lower for x in ['auchan', 'lidl', 'penny', 'tesco', 'coop'])
+    # URL alapú fotózásnál már nincs dupla oldal — 1 fotó = 1 oldal
+    is_double_page_viewer = False
 
-    # Spar és Issuu esetén Vision olvassa az oldalszámot
+    # Spar és Issuu esetén Vision olvassa az oldalszámot (ők még Seleniummal lapoznak)
     use_vision_pagenum = 'spar' in store_lower or 'issuu' in flyer_meta['url'].lower()
     
     link_hint = "N/A"
@@ -807,7 +922,14 @@ if __name__ == "__main__":
                 print(f"⏰ Időlimit elérve! {flyer['title']} marad a következő futásra.")
                 break
             pre_calc_date = pre_fetched_dates.get(flyer['url'])
-            pages = capture_pages_from_pdf(flyer['url'], flyer['store']) if flyer['url'].lower().endswith('.pdf') else capture_pages_with_selenium(flyer['url'], flyer['store'])
+            store_lower_main = flyer['store'].lower()
+            url_based_stores = ['aldi', 'metro', 'coop', 'auchan', 'penny', 'tesco', 'lidl']
+            if flyer['url'].lower().endswith('.pdf'):
+                pages = capture_pages_from_pdf(flyer['url'], flyer['store'])
+            elif any(s in store_lower_main for s in url_based_stores):
+                pages = capture_pages_by_url(flyer['url'], flyer['store'])
+            else:
+                pages = capture_pages_with_selenium(flyer['url'], flyer['store'])
             if pages:
                 new_items = process_images_with_ai(pages, flyer, current_flyers, pre_calc_date)
                 final_products.extend(new_items)
