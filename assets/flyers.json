@@ -1,5 +1,5 @@
 {
-    "last_updated": "2026-06-12 08:49:22.085068",
+    "last_updated": "2026-06-12 13:51:19.227703",
     "flyers": [
         {
             "store": "Spar",
@@ -20,6 +20,31 @@
             "store": "Spar",
             "title": "260611-4-spar-market-city-spar",
             "url": "https://www.spar.hu/ajanlatok/spar-market/260611-4-spar-market-city-spar"
+        },
+        {
+            "store": "Spar",
+            "title": "260618-1-spar-szorolap-p",
+            "url": "https://www.spar.hu/ajanlatok/spar/260618-1-spar-szorolap-p"
+        },
+        {
+            "store": "Spar",
+            "title": "260618-4-spar-bp-ors-vezer-tere-uzlet-megujulas",
+            "url": "https://www.spar.hu/ajanlatok/spar/260618-4-spar-bp-ors-vezer-tere-uzlet-megujulas"
+        },
+        {
+            "store": "Spar",
+            "title": "260618-5-spar-dunaharaszti-uzlet-megujulas",
+            "url": "https://www.spar.hu/ajanlatok/spar/260618-5-spar-dunaharaszti-uzlet-megujulas"
+        },
+        {
+            "store": "Spar",
+            "title": "260618-2-interspar-szorolap-p",
+            "url": "https://www.spar.hu/ajanlatok/interspar/260618-2-interspar-szorolap-p"
+        },
+        {
+            "store": "Spar",
+            "title": "260618-3-spar-market-city-spar",
+            "url": "https://www.spar.hu/ajanlatok/spar-market/260618-3-spar-market-city-spar"
         },
         {
             "store": "Penny",
@@ -83,8 +108,8 @@
         },
         {
             "store": "Auchan",
-            "title": "2026-06-04-06-17-feher-hetek-ajanlatai",
-            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr23/2026-06-04-06-17-feher-hetek-ajanlatai"
+            "title": "2026-06-11-06-24-szurkolj-velunk",
+            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr241/2026-06-11-06-24-szurkolj-velunk"
         },
         {
             "store": "Auchan",
@@ -93,18 +118,18 @@
         },
         {
             "store": "Auchan",
-            "title": "2026-06-11-06-17-heti-szupermarket-ajanlataink",
-            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr241/2026-06-11-06-17-heti-szupermarket-ajanlataink"
-        },
-        {
-            "store": "Auchan",
-            "title": "2026-06-11-06-24-szurkolj-velunk",
-            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr241/2026-06-11-06-24-szurkolj-velunk"
-        },
-        {
-            "store": "Auchan",
             "title": "2026-06-11-06-17-hetes-nyari-ajanlataink",
             "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr241/2026-06-11-06-17-hetes-nyari-ajanlataink"
+        },
+        {
+            "store": "Auchan",
+            "title": "2026-06-04-06-17-feher-hetek-ajanlatai",
+            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr23/2026-06-04-06-17-feher-hetek-ajanlatai"
+        },
+        {
+            "store": "Auchan",
+            "title": "2026-06-11-06-17-heti-szupermarket-ajanlataink",
+            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr241/2026-06-11-06-17-heti-szupermarket-ajanlataink"
         },
         {
             "store": "Aldi",
