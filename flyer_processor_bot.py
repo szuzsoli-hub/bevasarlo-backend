@@ -111,7 +111,7 @@ def build_page_urls(alap_url, store_name, count=4):
     urls = []
     for page_num in range(1, count + 1):
         if 'aldi' in store_lower:
-            base = re.sub(r'/page/\d+$', '', alap_url.rstrip('/'))
+            base = re.sub(r'/page/[\d-]+$', '', alap_url.rstrip('/'))
             urls.append((page_num, f"{base}/page/{page_num}"))
         elif 'metro' in store_lower:
             base = re.sub(r'/page/\d+$', '', alap_url.rstrip('/'))
@@ -872,6 +872,9 @@ def build_forras_link(alap_link, page_num, store_name):
         elif 'tesco' in store_lower:
             base = re.sub(r'/\d+$', '', alap_link.rstrip('/'))
             return f"{base}/{page_num}"
+        elif 'aldi' in store_lower or 'metro' in store_lower:
+            base = re.sub(r'/page/[\d-]+$', '', alap_link.rstrip('/'))
+            return f"{base}/page/{page_num}"
         elif 'coop' in store_lower:
             base = alap_link.rstrip('/')
             return f"{base}/page/{page_num}"
