@@ -72,7 +72,7 @@ def get_page_counter_from_dom(driver):
             for el in els:
                 txt = el.text.strip()
                 if re.search(r'\d+\s*[-/]\s*\d+', txt):
-                    print(f"   📄 DOM lapszamlalo: '{txt}' (selector: {sel})")
+                    print(f"   DOM lapszamlalo: '{txt}' (selector: {sel})")
                     return txt
         result = driver.execute_script("""
             var all = document.querySelectorAll('*');
@@ -85,7 +85,7 @@ def get_page_counter_from_dom(driver):
             return null;
         """)
         if result:
-            print(f"   📄 DOM lapszamlalo (JS): '{result}'")
+            print(f"   DOM lapszamlalo (JS): '{result}'")
             return result
     except Exception as e:
         print(f"   Lapszamlalo hiba: {e}")
@@ -104,7 +104,263 @@ def parse_page_counter(counter_text):
     return None, None
 
 # ===============================================================================
-# URL ALAPU OLDALANKENTI FOTOZAS
+# PUBLITAS KEPEAPI (Aldi, Metro)
+# ===============================================================================
+def _get_publitas_data_json(alap_url, store_name):
+    """Publitas data.json letöltése — oldalankénti képURL-ek kinyeréséhez."""
+    store_lower = store_name.lower()
+    if 'aldi' in store_lower:
+        # szorolap.aldi.hu/slug -> Publitas account=96383
+        slug_match = re.search(r'szorolap\.aldi\.hu/([^/?#]+)', alap_url)
+        if not slug_match:
+            return None, None, None
+        slug = slug_match.group(1)
+        # Publitas publication keresése
+        headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'}
+        try:
+            r = requests.get(alap_url, headers=headers, timeout=15)
+            pub_match = re.search(r'"publicationId"\s*:\s*(\d+)', r.text)
+            acc_match = re.search(r'"accountId"\s*:\s*(\d+)', r.text)
+            if pub_match and acc_match:
+                pub_id = pub_match.group(1)
+                acc_id = acc_match.group(1)
+                data_url = f"https://view.publitas.com/{acc_id}/{pub_id}/data.json"
+                dr = requests.get(data_url, headers=headers, timeout=15)
+                if dr.status_code == 200:
+                    return dr.json(), acc_id, pub_id
+        except Exception as e:
+            print(f"   Publitas data.json hiba (Aldi): {e}")
+        return None, None, None
+
+    elif 'metro' in store_lower:
+        # katalogus.metro.hu/slug/page/1
+        headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'}
+        try:
+            r = requests.get(alap_url, headers=headers, timeout=15)
+            pub_match = re.search(r'"publicationId"\s*:\s*(\d+)', r.text)
+            acc_match = re.search(r'"accountId"\s*:\s*(\d+)', r.text)
+            if pub_match and acc_match:
+                pub_id = pub_match.group(1)
+                acc_id = acc_match.group(1)
+                data_url = f"https://view.publitas.com/{acc_id}/{pub_id}/data.json"
+                dr = requests.get(data_url, headers=headers, timeout=15)
+                if dr.status_code == 200:
+                    return dr.json(), acc_id, pub_id
+        except Exception as e:
+            print(f"   Publitas data.json hiba (Metro): {e}")
+        return None, None, None
+
+    return None, None, None
+
+def capture_pages_publitas(alap_url, store_name, count=4):
+    """Publitas direkt képAPI - memóriában, nem menti lemezre a képeket."""
+    print(f"\nPUBLITAS KEPAPI INDUL ({store_name}): {alap_url}")
+    store_lower = store_name.lower()
+
+    data, acc_id, pub_id = _get_publitas_data_json(alap_url, store_name)
+    if not data:
+        print(f"   Publitas data.json nem sikerult, Selenium fallbackre esik")
+        return None  # None = fallback jelzés
+
+    spreads = data.get('spreads', [])
+    if not spreads:
+        print(f"   Publitas: nincs spreads adat")
+        return None
+
+    print(f"   Publitas: {len(spreads)} spread talalva, pub_id={pub_id}, acc_id={acc_id}")
+
+    captured_data = []
+    headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'}
+
+    # Oldalak összegyűjtése spread-ekből
+    page_list = []  # [(page_num, image_url, forras_url)]
+
+    for spread_idx, spread in enumerate(spreads):
+        pages = spread.get('pages', [])
+        for page in pages:
+            page_num = page.get('number')
+            if page_num is None:
+                continue
+            # Képméret: at1600 a legjobb minőség
+            images = page.get('images', {})
+            img_url = images.get('at1600') or images.get('at1200') or images.get('at800')
+            if img_url and not img_url.startswith('http'):
+                img_url = f"https://view.publitas.com{img_url}"
+
+            # forrasLink buildolása
+            forras = build_forras_link(alap_url, page_num, store_name)
+            page_list.append((page_num, img_url, forras))
+
+    # Csak az első `count` oldalt dolgozzuk fel
+    page_list = page_list[:count]
+
+    for page_num, img_url, forras in page_list:
+        if not img_url:
+            print(f"   Oldal {page_num}: nincs kép URL")
+            continue
+        try:
+            print(f"   Oldal {page_num} letoltese: {img_url[-60:]}")
+            r = requests.get(img_url, headers=headers, timeout=20)
+            if r.status_code == 200 and 'image' in r.headers.get('content-type', ''):
+                # Memóriában tartjuk, temp fájlba írjuk az AI feldolgozáshoz
+                fajl_nev = os.path.join(TEMP_DIR, f"{store_name}_oldal_{page_num}.png")
+                with open(fajl_nev, 'wb') as f:
+                    f.write(r.content)
+                captured_data.append({
+                    "image_path": fajl_nev,
+                    "page_url": forras,
+                    "page_num": page_num,
+                    "left_page": page_num,
+                    "right_page": page_num,
+                })
+                print(f"   Oldal {page_num} OK")
+            else:
+                print(f"   Oldal {page_num}: HTTP {r.status_code}")
+        except Exception as e:
+            print(f"   Oldal {page_num} hiba: {e}")
+
+    if captured_data:
+        print(f"   Publitas KEPES: {len(captured_data)} oldal letoltve")
+        return captured_data
+    return None
+
+# ===============================================================================
+# IPAPER KEPAPI (Auchan)
+# ===============================================================================
+def capture_pages_ipaper(alap_url, store_name, count=4):
+    """iPaper direkt képAPI - Auchan."""
+    print(f"\nIPAPER KEPAPI INDUL ({store_name}): {alap_url}")
+
+    # iPaper slug kinyerése az URL-ből
+    # pl. https://reklamujsag.auchan.hu/online-katalogusok/2026/tr241/2026-06-11-06-17-heti-hipermarket-ajanlataink
+    slug_match = re.search(r'/online-katalogusok/(\d+)/([^/]+)/([^/?#]+)', alap_url)
+    if not slug_match:
+        print(f"   iPaper: nem sikerult slug kinyerése")
+        return None
+
+    year = slug_match.group(1)
+    tr = slug_match.group(2)
+    slug = slug_match.group(3)
+
+    # iPaper Image API URL minta Auchan-nál
+    ipaper_base = f"https://ipaper.ipapercms.dk/auchan-hungary/online-katalogusok/{year}/{tr}/{slug}/Image.ashx"
+    referer = alap_url
+
+    api_headers = {
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36',
+        'Referer': referer,
+    }
+
+    captured_data = []
+    api_ok = True
+
+    for page_num in range(1, count + 1):
+        api_url = f"{ipaper_base}?PageNumber={page_num}&ImageType=Large"
+        try:
+            r = requests.get(api_url, headers=api_headers, timeout=15)
+            if r.status_code == 200 and 'image' in r.headers.get('content-type', ''):
+                fajl_nev = os.path.join(TEMP_DIR, f"{store_name}_oldal_{page_num}.png")
+                with open(fajl_nev, 'wb') as f:
+                    f.write(r.content)
+                forras = build_forras_link(alap_url, page_num, store_name)
+                captured_data.append({
+                    "image_path": fajl_nev,
+                    "page_url": forras,
+                    "page_num": page_num,
+                    "left_page": page_num,
+                    "right_page": page_num,
+                })
+                print(f"   iPaper oldal {page_num} OK")
+            else:
+                print(f"   iPaper oldal {page_num}: HTTP {r.status_code} - API nem megy")
+                api_ok = False
+                break
+        except Exception as e:
+            print(f"   iPaper hiba: {e}")
+            api_ok = False
+            break
+
+    if api_ok and len(captured_data) == count:
+        print(f"   iPaper KEPES: {len(captured_data)} oldal letoltve")
+        return captured_data
+
+    print(f"   iPaper API nem sikerult, Selenium fallbackre esik")
+    return None  # None = fallback jelzés
+
+# ===============================================================================
+# MOBIL SELENIUM (Lidl, Tesco, Penny, Coop)
+# ===============================================================================
+MOBILE_UA = "Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile/15E148 Safari/604.1"
+MOBILE_WIDTH = 390
+MOBILE_HEIGHT = 844
+
+def _make_mobile_driver():
+    """Mobilos Chrome driver létrehozása."""
+    opts = Options()
+    opts.add_argument("--headless")
+    opts.add_argument(f"--window-size={MOBILE_WIDTH},{MOBILE_HEIGHT}")
+    opts.add_argument("--disable-gpu")
+    opts.add_argument("--no-sandbox")
+    opts.add_argument("--disable-dev-shm-usage")
+    opts.add_argument("--disable-blink-features=AutomationControlled")
+    opts.add_argument(f"user-agent={MOBILE_UA}")
+    service = Service(ChromeDriverManager().install())
+    driver = webdriver.Chrome(service=service, options=opts)
+    driver.execute_cdp_cmd("Page.addScriptToEvaluateOnNewDocument", {
+        "source": "Object.defineProperty(navigator, 'webdriver', {get: () => undefined})"
+    })
+    return driver
+
+def capture_pages_mobile_selenium(alap_url, store_name, count=4):
+    """Mobilos Selenium screenshot - egyoldalas megjelenítés."""
+    print(f"\nMOBIL SELENIUM INDUL ({store_name}): {alap_url}")
+    store_lower = store_name.lower()
+    page_urls = build_page_urls(alap_url, store_name, count)
+    captured_data = []
+
+    try:
+        driver = _make_mobile_driver()
+
+        for page_num, page_url in page_urls:
+            print(f"   Oldal {page_num}: {page_url[-70:]}")
+            fajl_nev = os.path.join(TEMP_DIR, f"{store_name}_oldal_{page_num}.png")
+            try:
+                driver.get(page_url)
+                time.sleep(8)
+                if page_num == 1:
+                    try:
+                        buttons = driver.find_elements(By.TAG_NAME, "button")
+                        for btn in buttons:
+                            txt = btn.text.lower()
+                            if any(x in txt for x in ["elfogad", "accept", "ok", "rendben"]):
+                                driver.execute_script("arguments[0].click();", btn)
+                                time.sleep(1)
+                                break
+                    except: pass
+                    try:
+                        driver.execute_script("document.querySelectorAll('div[class*=\"cookie\"], #onetrust-banner-sdk').forEach(el => el.remove());")
+                    except: pass
+                driver.save_screenshot(fajl_nev)
+                captured_data.append({
+                    "image_path": fajl_nev,
+                    "page_url": page_url,
+                    "page_num": page_num,
+                    "left_page": page_num,
+                    "right_page": page_num,
+                })
+                print(f"   Oldal {page_num} fotozva")
+            except Exception as e:
+                print(f"   Oldal {page_num} hiba: {e}")
+        return captured_data
+    except Exception as e:
+        print(f"   Mobil Selenium hiba: {e}")
+        return []
+    finally:
+        if 'driver' in locals():
+            driver.quit()
+
+# ===============================================================================
+# URL ALAPU OLDALANKENTI FOTOZAS (eredeti - Spar fallback és egyéb)
 # ===============================================================================
 def build_page_urls(alap_url, store_name, count=4):
     store_lower = store_name.lower()
@@ -147,7 +403,57 @@ def build_page_urls(alap_url, store_name, count=4):
     return urls
 
 def capture_pages_by_url(alap_url, store_name, count=4):
+    """Fő belépési pont az URL-alapú boltoknál. API-t próbál, fallback Selenium."""
+    store_lower = store_name.lower()
     print(f"\nURL ALAPU FOTOZAS INDUL ({store_name}): {alap_url}")
+
+    # --- ALDI: Publitas képAPI ---
+    if 'aldi' in store_lower:
+        result = capture_pages_publitas(alap_url, store_name, count)
+        if result:
+            return result
+        print(f"   Aldi: Publitas API sikertelen, Selenium fallback")
+        # Fallback: eredeti Selenium desktop módban
+        return _capture_pages_selenium_desktop(alap_url, store_name, count)
+
+    # --- METRO: Publitas képAPI ---
+    elif 'metro' in store_lower:
+        result = capture_pages_publitas(alap_url, store_name, count)
+        if result:
+            return result
+        print(f"   Metro: Publitas API sikertelen, Selenium fallback")
+        return _capture_pages_selenium_desktop(alap_url, store_name, count)
+
+    # --- AUCHAN: iPaper képAPI ---
+    elif 'auchan' in store_lower:
+        result = capture_pages_ipaper(alap_url, store_name, count)
+        if result:
+            return result
+        print(f"   Auchan: iPaper API sikertelen, mobil Selenium fallback")
+        return capture_pages_mobile_selenium(alap_url, store_name, count)
+
+    # --- LIDL: mobilos Selenium ---
+    elif 'lidl' in store_lower:
+        return capture_pages_mobile_selenium(alap_url, store_name, count)
+
+    # --- TESCO: mobilos Selenium ---
+    elif 'tesco' in store_lower:
+        return capture_pages_mobile_selenium(alap_url, store_name, count)
+
+    # --- PENNY: mobilos Selenium ---
+    elif 'penny' in store_lower:
+        return capture_pages_mobile_selenium(alap_url, store_name, count)
+
+    # --- COOP: mobilos Selenium ---
+    elif 'coop' in store_lower:
+        return capture_pages_mobile_selenium(alap_url, store_name, count)
+
+    # --- Egyéb: eredeti desktop Selenium ---
+    else:
+        return _capture_pages_selenium_desktop(alap_url, store_name, count)
+
+def _capture_pages_selenium_desktop(alap_url, store_name, count=4):
+    """Eredeti desktop Selenium - fallback."""
     page_urls = build_page_urls(alap_url, store_name, count)
     chrome_options = Options()
     chrome_options.add_argument("--headless")
@@ -459,7 +765,6 @@ def capture_pages_spar(target_url, store_name, count=4):
 
 
 def _spar_lapoz(driver):
-    # 1. iPaper JS API
     try:
         result = driver.execute_script("""
             if (window.iPaperAPI && typeof window.iPaperAPI.goToNextPage === 'function') {
@@ -479,7 +784,6 @@ def _spar_lapoz(driver):
     except Exception as e:
         print(f"   iPaper JS API hiba: {e}")
 
-    # 2. CSS selector
     try:
         nyil_selectorok = [
             "[class*='next']", "[class*='Next']",
@@ -497,7 +801,6 @@ def _spar_lapoz(driver):
     except Exception as e:
         print(f"   CSS selector hiba: {e}")
 
-    # 3. Koordinata kattintas
     try:
         w = driver.execute_script("return window.innerWidth")
         h = driver.execute_script("return window.innerHeight")
@@ -770,24 +1073,18 @@ FALLBACK ha nem latod: {link_hint}"""
     else:
         pagenum_instr = f'OLDALSZAM: Az "oldalszam" mezobe ird: {page_num}'
 
-    prompt = f"""Ez egy magyar akcioS ujsag oldala. Bolt: {store_name} — {title_name}.
+    prompt = f"""Nezd meg alaposan ezt a kepet. Nem kell sietni.
+
+Ez egy magyar akcioS ujsag oldala. Add vissza az osszes aron szereplo termeket JSON formatumban.
+
 {date_instr}
 
-FELADATOD: Add vissza az osszes akcioS termeKet amit ezen az oldalon latsz.
-A felhasznalo vasarlasi dontest hoz — minden lathato informacio fontos!
-
-TERMEKENKENTI SZABALYOK:
-- "nev": marka + pontos termeknev (pl. "S-Budget csirkemellfile", "Lay's chips Max")
-- "kiszereles": gramm, kg, liter, db, csomag stb. ahogy az ujsagban latod (pl. "500g", "1,5l", "10db") — ha nem lathato: null
-- "ar": az akcioS ar MINDIG Ft-tal! Ha latod a szamot de nincs Ft jelolve, add hozza! (pl. "1199 Ft")
-- "ar_egyseg": egysegar ha lathato (pl. "2398 Ft/kg", "199 Ft/l", "49 Ft/db") — osszehasonlitashoz kritikus! Ha nem lathato: null
-- "ar_info": MINDEN egyeb feltetel es info amit latsz, pontosan ahogy az ujsagban szerepel:
-    * darabszam feltetel pl: "2 db vasarlasaKor, 1 db ara: 1499 Ft"
-    * idoszaki ervenYesseg pl: "csak 06.11-06.14. kozott"
-    * kartYafeltetel pl: "MySpar kartyaval"
-    * normal ar pl: "normal ar: 1599 Ft"
-    * ezek kombinacioja is lehetseges
-    * Ha nincs ilyen info: null
+MEZOK:
+- "nev": marka + pontos termeknev
+- "kiszereles": gramm, kg, liter, db, csomag stb. — ha nem lathato: null
+- "ar": az akcioS ar MINDIG Ft-tal (pl. "1199 Ft")
+- "ar_egyseg": egysegar ha lathato (pl. "2398 Ft/kg") — ha nem lathato: null
+- "ar_info": MINDEN egyeb info: mennyisegi feltetelek, kartya feltetelek, normal ar, idoszaki ervenyesseg — ha nincs: null
 
 {pagenum_instr}
 
@@ -883,7 +1180,6 @@ def build_forras_link(alap_link, page_num, store_name):
     return alap_link
 
 def _format_validity(raw_date):
-    """Érvényesség szöveg formázása egységesen."""
     if not raw_date or raw_date == "N/A":
         return "N/A"
     return f"Újság érvényessége: {raw_date} (egyes termékek akciós érvényessége eltérhet, ellenőrizd az újságban!)"
