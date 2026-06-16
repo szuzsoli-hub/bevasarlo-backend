@@ -1105,6 +1105,7 @@ ELVART JSON:
 
     response = client.chat.completions.create(
         model="gpt-4o", temperature=0,
+        max_tokens=16000,
         response_format={"type": "json_object"},
         messages=[{"role": "user", "content": [
             {"type": "image_url", "image_url": {"url": f"data:image/png;base64,{image_data}"}},
@@ -1112,7 +1113,11 @@ ELVART JSON:
         ]}]
     )
     time.sleep(1)
-    return json.loads(response.choices[0].message.content)
+    try:
+        return json.loads(response.choices[0].message.content)
+    except (json.JSONDecodeError, TypeError) as e:
+        print(f"   JSON parse hiba: {e} - ures lista visszaadva")
+        return {"termekek": [], "ervenyesseg": "N/A", "oldalszam": page_num}
 
 def check_validity_date(date_string, current_flyer_meta, all_flyers):
     if not date_string or date_string == "N/A":
