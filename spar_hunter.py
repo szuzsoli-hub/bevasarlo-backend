@@ -85,17 +85,65 @@ def scan_spar_only():
     found_flyers = []
     today = datetime.date.today()
 
+    def _spar_get_soup(url):
+        """Spar oldal letöltése - 3 fallback úttal."""
+        headers = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"}
+
+        # 1. út: requests
+        try:
+            print(f"📡 1. út: requests -> {url}")
+            r = req_lib.get(url, headers=headers, timeout=20)
+            print(f"   requests HTTP: {r.status_code}")
+            if r.status_code == 200:
+                return BeautifulSoup(r.text, 'html.parser')
+        except Exception as e:
+            print(f"   requests hiba: {e}")
+
+        # 2. út: curl_cffi
+        try:
+            print(f"   2. út: curl_cffi...")
+            from curl_cffi import requests as cffi_req
+            r2 = cffi_req.get(url, impersonate="chrome120", timeout=20)
+            print(f"   curl_cffi HTTP: {r2.status_code}")
+            if r2.status_code == 200:
+                return BeautifulSoup(r2.text, 'html.parser')
+        except Exception as e:
+            print(f"   curl_cffi hiba: {e}")
+
+        # 3. út: Selenium mobilos
+        try:
+            print(f"   3. út: Selenium mobilos...")
+            from selenium import webdriver
+            from selenium.webdriver.chrome.service import Service
+            from selenium.webdriver.chrome.options import Options
+            from webdriver_manager.chrome import ChromeDriverManager
+            opts = Options()
+            opts.add_argument("--headless")
+            opts.add_argument("--no-sandbox")
+            opts.add_argument("--disable-dev-shm-usage")
+            opts.add_argument("--window-size=390,844")
+            opts.add_argument("--disable-blink-features=AutomationControlled")
+            opts.add_argument("user-agent=Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile/15E148 Safari/604.1")
+            driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=opts)
+            driver.execute_cdp_cmd("Page.addScriptToEvaluateOnNewDocument", {
+                "source": "Object.defineProperty(navigator, \'webdriver\', {get: () => undefined})"
+            })
+            driver.get(url)
+            time.sleep(8)
+            src = driver.page_source
+            driver.quit()
+            print(f"   Selenium: oldal betöltve ({len(src)} karakter)")
+            return BeautifulSoup(src, 'html.parser')
+        except Exception as e:
+            print(f"   Selenium hiba: {e}")
+
+        return None
+
     try:
-        print(f"📡 Kapcsolódás: {url} ...")
-        response = req_lib.get(url, headers={
-            "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
-        }, timeout=20)
-
-        if response.status_code != 200:
-            print(f"❌ HTTP hiba: {response.status_code}")
+        soup = _spar_get_soup(url)
+        if not soup:
+            print("❌ Spar: egyik út sem működött")
             return []
-
-        soup = BeautifulSoup(response.text, 'html.parser')
 
         # JSON-LD keresés
         json_ld_data = None
