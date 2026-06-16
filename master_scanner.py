@@ -299,7 +299,7 @@ def _penny_parse_html(html_text, processed_ids, found, mode):
                 status = analyze_link("Penny", title, href)
                 if status == "KEEP":
                     print(f"[KEEP] {title} -> {href} ({mode} HTML)")
-                    found.append({"store": "Penny", "title": title, "url": href})
+                    found.append({"store": "Penny", "title": title, "url": href.split("?")[0]})
 
     # 2. __NUXT_DATA__ script
     if not found:
@@ -318,7 +318,7 @@ def _penny_parse_html(html_text, processed_ids, found, mode):
                     status = analyze_link("Penny", title, clean_link)
                     if status == "KEEP":
                         print(f"[KEEP] {title} -> {clean_link} ({mode} NUXT)")
-                        found.append({"store": "Penny", "title": title, "url": clean_link})
+                        found.append({"store": "Penny", "title": title, "url": clean_link.split("?")[0]})
 
     # 3. Általános regex az egész HTML-en
     if not found:
@@ -334,7 +334,7 @@ def _penny_parse_html(html_text, processed_ids, found, mode):
                 status = analyze_link("Penny", title, base_url)
                 if status == "KEEP":
                     print(f"[KEEP] {title} -> {base_url} ({mode} regex)")
-                    found.append({"store": "Penny", "title": title, "url": base_url})
+                    found.append({"store": "Penny", "title": title, "url": base_url.split("?")[0]})
 
 
 def scan_penny():
