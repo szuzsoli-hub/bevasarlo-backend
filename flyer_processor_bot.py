@@ -1090,6 +1090,25 @@ def get_validity_from_html(url, store):
                 return result
         return None
 
+    # *** JAVITAS: Tesco URL-alapu datum kinyeres ***
+    if 'tesco' in store_lower:
+        m = re.search(r'tesco-ujsag-(\d{4})-(\d{2})-(\d{2})', url)
+        if m:
+            result = f"{m.group(1)}.{m.group(2)}.{m.group(3)}."
+            print(f"   Tesco URL datum: {result}")
+            return result
+        return None
+
+    # *** JAVITAS: Spar URL-alapu datum kinyeres ***
+    if 'spar' in store_lower:
+        m = re.search(r'(\d{2})(\d{2})(\d{2})-\d+-\w+', url)
+        if m:
+            year = f"20{m.group(1)}"
+            result = f"{year}.{m.group(2)}.{m.group(3)}."
+            print(f"   Spar URL datum: {result}")
+            return result
+        return None
+
     return None
 
 # ===============================================================================
@@ -1379,7 +1398,7 @@ if __name__ == "__main__":
         print("\nSPAR ERVENYESSEGEK ELOTOLTESE...")
         pre_fetched_dates.update(get_spar_pre_dates(spar_links))
 
-    HTML_DATE_STORES = ['aldi', 'penny', 'metro', 'coop', 'cba', 'prima']
+    HTML_DATE_STORES = ['aldi', 'penny', 'metro', 'coop', 'cba', 'prima', 'tesco', 'spar']
     print("\nHTML/URL ALAPU ERVENYESSEGEK ELOTOLTESE...")
     for flyer in current_flyers:
         store_lower = flyer['store'].lower()
