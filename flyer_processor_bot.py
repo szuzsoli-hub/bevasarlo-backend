@@ -128,7 +128,6 @@ def _get_publitas_data_json(alap_url, store_name):
         return None, None, None
 
     elif 'metro' in store_lower:
-        # FIX: Metro Publitas API - Selenium kell mert SPA oldal, JS kell hozzá
         opts = Options()
         opts.add_argument("--headless")
         opts.add_argument("--window-size=1280,900")
@@ -145,7 +144,6 @@ def _get_publitas_data_json(alap_url, store_name):
             pub_match = re.search(r'"publicationId"\s*:\s*(\d+)', page_source)
             acc_match = re.search(r'"accountId"\s*:\s*(\d+)', page_source)
             if not pub_match or not acc_match:
-                # JS változóból próbáljuk
                 result = driver.execute_script("""
                     try {
                         var cfg = window.__PUBLITAS_CONFIG__ || window.publitas || {};
@@ -175,7 +173,6 @@ def _get_publitas_data_json(alap_url, store_name):
 def capture_pages_publitas(alap_url, store_name, count=4):
     """Publitas direkt képAPI - memóriában, nem menti lemezre a képeket."""
     print(f"\nPUBLITAS KEPAPI INDUL ({store_name}): {alap_url}")
-    store_lower = store_name.lower()
 
     data, acc_id, pub_id = _get_publitas_data_json(alap_url, store_name)
     if not data:
@@ -191,7 +188,6 @@ def capture_pages_publitas(alap_url, store_name, count=4):
 
     captured_data = []
     headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'}
-
     page_list = []
 
     for spread_idx, spread in enumerate(spreads):
@@ -204,7 +200,6 @@ def capture_pages_publitas(alap_url, store_name, count=4):
             img_url = images.get('at1600') or images.get('at1200') or images.get('at800')
             if img_url and not img_url.startswith('http'):
                 img_url = f"https://view.publitas.com{img_url}"
-
             forras = build_forras_link(alap_url, page_num, store_name)
             page_list.append((page_num, img_url, forras))
 
@@ -307,7 +302,6 @@ MOBILE_WIDTH = 390
 MOBILE_HEIGHT = 844
 
 def _make_mobile_driver():
-    """Mobilos Chrome driver létrehozása."""
     opts = Options()
     opts.add_argument("--headless")
     opts.add_argument(f"--window-size={MOBILE_WIDTH},{MOBILE_HEIGHT}")
@@ -324,7 +318,6 @@ def _make_mobile_driver():
     return driver
 
 def capture_pages_mobile_selenium(alap_url, store_name, count=4):
-    """Mobilos Selenium screenshot - egyoldalas megjelenítés."""
     print(f"\nMOBIL SELENIUM INDUL ({store_name}): {alap_url}")
     page_urls = build_page_urls(alap_url, store_name, count)
     captured_data = []
@@ -393,7 +386,6 @@ def build_page_urls(alap_url, store_name, count=4):
             base = alap_url.split('?')[0].rstrip('/')
             urls.append((page_num, f"{base}?page={page_num}"))
         elif 'penny' in store_lower:
-            # FIX: UTM paraméter levágás, query_part eltávolítva
             path_part = alap_url.split('?')[0].rstrip('/')
             path_part = re.sub(r'/(\d{1,2})$', '', path_part)
             urls.append((page_num, f"{path_part}/{page_num}/"))
@@ -414,7 +406,6 @@ def build_page_urls(alap_url, store_name, count=4):
     return urls
 
 def capture_pages_by_url(alap_url, store_name, count=4):
-    """Fő belépési pont az URL-alapú boltoknál. API-t próbál, fallback Selenium."""
     store_lower = store_name.lower()
     print(f"\nURL ALAPU FOTOZAS INDUL ({store_name}): {alap_url}")
 
@@ -430,7 +421,6 @@ def capture_pages_by_url(alap_url, store_name, count=4):
         if result:
             return result
         print(f"   Metro: Publitas API sikertelen, mobil Selenium fallback")
-        # FIX: Metro fallback mobilos Selenium (nem desktop) - így nincs duplikátum
         return capture_pages_mobile_selenium(alap_url, store_name, count)
 
     elif 'auchan' in store_lower:
@@ -456,7 +446,6 @@ def capture_pages_by_url(alap_url, store_name, count=4):
         return _capture_pages_selenium_desktop(alap_url, store_name, count)
 
 def _capture_pages_selenium_desktop(alap_url, store_name, count=4):
-    """Eredeti desktop Selenium - fallback."""
     page_urls = build_page_urls(alap_url, store_name, count)
     chrome_options = Options()
     chrome_options.add_argument("--headless")
@@ -867,14 +856,11 @@ def capture_pages_from_pdf(target_url, store_name):
 # FIX: CBA Príma5 - Issuu helyett PDF letöltés
 # ===============================================================================
 def capture_pages_prima5_pdf(issuu_url, store_name, count=4):
-    """CBA Príma5: Issuu URL-ből PDF link kinyerése és feldolgozása."""
     print(f"\nPRIMA5 PDF KERESES INDUL: {issuu_url}")
 
-    # 1. Próba: Issuu page source-ból PDF link kinyerése
     try:
         headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'}
         r = requests.get(issuu_url, headers=headers, timeout=15)
-        # Issuu PDF download URL minta
         pdf_match = re.search(r'"(?:pdfUrl|pdf_url|downloadUrl)"\s*:\s*"([^"]+\.pdf[^"]*)"', r.text)
         if not pdf_match:
             pdf_match = re.search(r'(https://[^"\'<>\s]+\.pdf)', r.text)
@@ -885,7 +871,6 @@ def capture_pages_prima5_pdf(issuu_url, store_name, count=4):
     except Exception as e:
         print(f"   Issuu requests hiba: {e}")
 
-    # 2. Próba: Selenium-mal nyitjuk meg és keressük a PDF linket
     try:
         opts = Options()
         opts.add_argument("--headless")
@@ -898,7 +883,6 @@ def capture_pages_prima5_pdf(issuu_url, store_name, count=4):
         driver.get(issuu_url)
         time.sleep(8)
         page_source = driver.page_source
-        # Hálózati logból PDF URL keresése
         logs = driver.get_log("performance")
         pdf_url = None
         for entry in logs:
@@ -913,7 +897,6 @@ def capture_pages_prima5_pdf(issuu_url, store_name, count=4):
         if pdf_url:
             print(f"   PDF URL network logbol: {pdf_url}")
             return capture_pages_from_pdf(pdf_url, store_name)
-        # Page source-ból
         pdf_match = re.search(r'(https://[^"\'<>\s]+\.pdf)', page_source)
         if pdf_match:
             pdf_url = pdf_match.group(1)
@@ -923,7 +906,6 @@ def capture_pages_prima5_pdf(issuu_url, store_name, count=4):
         print(f"   Issuu Selenium hiba: {e}")
 
     print(f"   Prima5: PDF URL nem talalhato, Issuu screenshot fallback")
-    # 3. Végső fallback: screenshot az Issuu oldalról (csak 1. oldal)
     return capture_pages_with_selenium(issuu_url, store_name)
 
 # ===============================================================================
@@ -1120,7 +1102,6 @@ def interpret_image_with_ai(image_path, page_num, store_name, title_name, link_h
     date_instr = ""
     if page_num == 1:
         if pre_calc_date and pre_calc_date != "N/A":
-            # FIX: Ha van előtöltött dátum, AI-nak TILOS felülírni
             date_instr = f'DATUM: Mar tudjuk, NE keresd a kepen! Az "ervenyesseg" mezobe pontosan ezt ird: {pre_calc_date}'
         else:
             date_instr = f"""DATUM KERESES: Keresd meg az ervenyessegi idot a kepen.
@@ -1138,18 +1119,37 @@ FALLBACK ha nem latod: {link_hint}"""
     else:
         pagenum_instr = f'OLDALSZAM: Az "oldalszam" mezobe ird: {page_num}'
 
+    # *** JAVÍTOTT PROMPT: aktív keresés + matek fallback ***
     prompt = f"""Nezd meg alaposan ezt a kepet. Nem kell sietni.
 
 Ez egy magyar akcioS ujsag oldala. Add vissza az osszes aron szereplo termeket JSON formatumban.
 
 {date_instr}
 
-MEZOK:
+MEZOK — FONTOS SZABALYOK:
+
 - "nev": marka + pontos termeknev
-- "kiszereles": gramm, kg, liter, db, csomag stb. — ha nem lathato: null
+
+- "kiszereles": AKTIVAN KERESD meg minden termeknel! Nezheto: a termek neve mellett, alatt, felette, kicsi betuvel a sarokban, a leirasban. Tipikus formatum: 500g, 1l, 2x200ml, 6db, 1kg stb.
+  Ha a keprol semmilyen modon nem olvasod ki, szamitsd ki: egysegar / akcioS ar alapjan visszaszamolhato (pl. ha ar=799 Ft es ar_egyseg=1598 Ft/kg, akkor kiszereles="500g [sz]").
+  A "[sz]" jeloles azt jelenti: szamitott ertek, nem a kepen szerepelt.
+  Ha sem olvasni nem lehet, sem szamitani nem lehet: null
+
 - "ar": az akcioS ar MINDIG Ft-tal (pl. "1199 Ft")
-- "ar_egyseg": egysegar ha lathato (pl. "2398 Ft/kg") — ha nem lathato: null
+
+- "ar_egyseg": AKTIVAN KERESD meg minden termeknel! Nezheto: a termekblokk aljaban, sarokban, kis betuvel (pl. "2398 Ft/kg", "1199 Ft/l", "599 Ft/db").
+  Ha a keprol nem olvasod ki, de van ar es kiszereles, SZAMITSD KI: ar / kiszereles_kg_vagy_liter.
+  Szamitas pelda: ar=799 Ft, kiszereles=500g → ar_egyseg="1598 Ft/kg [sz]"
+  Szamitas pelda: ar=349 Ft, kiszereles=1l → ar_egyseg="349 Ft/l [sz]"
+  A "[sz]" jeloles azt jelenti: szamitott ertek, nem a kepen szerepelt.
+  Ha sem olvasni nem lehet, sem szamitani nem lehet (pl. nincs kiszereles sem): null
+
 - "ar_info": MINDEN egyeb info: mennyisegi feltetelek, kartya feltetelek, normal ar, idoszaki ervenyesseg — ha nincs: null
+
+SZAMITAS LOGIKA (ember modjara gondolkodj):
+1. Latom az arat es a kiszerelest? → kiszamolom az egysegarat ha nincs kiirva
+2. Latom az arat es az egysegarat? → visszaszamolom a kiszerelest ha nincs kiirva
+3. Mindketto hianyzik es nem szamithato? → null
 
 {pagenum_instr}
 
@@ -1160,9 +1160,9 @@ ELVART JSON:
   "termekek": [
     {{
       "nev": "marka + termekNev",
-      "kiszereles": "pl. 500g vagy null",
+      "kiszereles": "pl. 500g vagy 500g [sz] vagy null",
       "ar": "akcioS ar Ft-tal",
-      "ar_egyseg": "pl. 2398 Ft/kg vagy null",
+      "ar_egyseg": "pl. 2398 Ft/kg vagy 2398 Ft/kg [sz] vagy null",
       "ar_info": "minden egyeb info vagy null"
     }}
   ]
@@ -1234,7 +1234,6 @@ def build_forras_link(alap_link, page_num, store_name):
                 return f"{base}/view/flyer/page/{page_num}{lf}"
             return alap_link
         elif 'penny' in store_lower:
-            # FIX: UTM levágás a forrasLink-ből is
             base = alap_link.split('?')[0].rstrip('/')
             base = re.sub(r'/\d+$', '', base)
             return f"{base}/{page_num}/"
@@ -1307,7 +1306,6 @@ def process_images_with_ai(captured_data, flyer_meta, all_flyers, pre_calc_date=
         )
 
         if item['page_num'] == 1:
-            # FIX: SPAR és minden más bolt - előtöltött dátum MINDIG prioritás az AI fölött
             if pre_calc_date and pre_calc_date != "N/A":
                 detected_validity = _format_validity(pre_calc_date)
             else:
@@ -1439,7 +1437,6 @@ if __name__ == "__main__":
             elif 'spar' in store_lower_main:
                 pages = capture_pages_spar(flyer['url'], flyer['store'])
             elif 'prima5' in store_lower_main or 'príma5' in store_lower_main:
-                # FIX: CBA Príma5 - PDF alapú feldolgozás Issuu helyett
                 pages = capture_pages_prima5_pdf(flyer['url'], flyer['store'])
             elif any(s in store_lower_main for s in url_based_stores):
                 pages = capture_pages_by_url(flyer['url'], flyer['store'])
