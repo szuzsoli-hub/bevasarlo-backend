@@ -832,10 +832,12 @@ def _crop_screenshot(screenshot_bytes, output_path, side='left'):
 
 def capture_pages_from_pdf(target_url, store_name):
     """
-    CBA / CBA Príma digitális PDF — natív szöveges kinyerés.
-    fitz page.get_text('blocks') → 100% karakterpontos, 0 Vision API hívás.
+    PDF feldolgozás két módban:
+    - Szöveges PDF (pl. borkatalogus): natív szöveg → interpret_pdf_text_with_ai
+    - Szkennelt/képes PDF (pl. CBA heti): képpé raszterizál → Vision pipeline
+    Ha az első 2 oldal összesen < 50 karakter → szkennelt.
     """
-    print(f"\nPDF SZOVEGES KINYERES ({store_name}): {target_url}")
+    print(f"\nPDF FELDOLGOZAS ({store_name}): {target_url}")
     captured_data = []
     temp_pdf_path = os.path.join(TEMP_DIR, f"{store_name}_temp.pdf")
     try:
@@ -849,24 +851,51 @@ def capture_pages_from_pdf(target_url, store_name):
             f.write(response.content)
         doc = fitz.open(temp_pdf_path)
         print(f"   PDF megnyitva: {len(doc)} oldal")
+
+        # Szöveges vagy szkennelt?
+        total_chars = 0
+        for i in range(min(2, len(doc))):
+            blocks = doc.load_page(i).get_text("blocks")
+            total_chars += sum(len(b[4].strip()) for b in blocks if b[6] == 0)
+        is_scanned = total_chars < 50
+        print(f"   Típus: {'SZKENNELT → Vision pipeline' if is_scanned else 'SZOVEGES → natív szöveg pipeline'} ({total_chars} kar.)")
+
         for i in range(min(4, len(doc))):
             page_num = i + 1
             page = doc.load_page(i)
-            blocks = page.get_text("blocks")
-            text_blocks = sorted(
-                [b for b in blocks if b[6] == 0],
-                key=lambda b: (b[1], b[0])
-            )
-            page_text = "\n".join(b[4].strip() for b in text_blocks if b[4].strip())
-            print(f"   Oldal {page_num}: {len(page_text)} karakter kinyerve")
-            captured_data.append({
-                "image_path": None,
-                "pdf_text": page_text,
-                "page_url": f"{target_url}#page={page_num}",
-                "page_num": page_num,
-                "left_page": page_num,
-                "right_page": page_num,
-            })
+
+            if is_scanned:
+                # Képpé raszterizál → Vision olvassa
+                mat = fitz.Matrix(2.0, 2.0)
+                pix = page.get_pixmap(matrix=mat)
+                img_path = os.path.join(TEMP_DIR, f"{store_name}_pdf_p{page_num}.png")
+                pix.save(img_path)
+                print(f"   Oldal {page_num}: kép {pix.width}x{pix.height}")
+                captured_data.append({
+                    "image_path": img_path,
+                    "pdf_text": None,
+                    "page_url": f"{target_url}#page={page_num}",
+                    "page_num": page_num,
+                    "left_page": page_num,
+                    "right_page": page_num,
+                })
+            else:
+                # Natív szöveg kinyerés
+                blocks = page.get_text("blocks")
+                text_blocks = sorted(
+                    [b for b in blocks if b[6] == 0],
+                    key=lambda b: (b[1], b[0])
+                )
+                page_text = "\n".join(b[4].strip() for b in text_blocks if b[4].strip())
+                print(f"   Oldal {page_num}: {len(page_text)} karakter (szöveges)")
+                captured_data.append({
+                    "image_path": None,
+                    "pdf_text": page_text,
+                    "page_url": f"{target_url}#page={page_num}",
+                    "page_num": page_num,
+                    "left_page": page_num,
+                    "right_page": page_num,
+                })
         doc.close()
         return captured_data
     except Exception as e:
