@@ -372,6 +372,61 @@ def validalj_termeket(termek):
 
 
 # ===============================================================================
+# ÚJ: PDF SZÖVEGES PIPELINE (CBA / CBA Príma — nincs OCR, natív szöveg)
+# ===============================================================================
+
+def process_pdf_text_pipeline(pdf_text, page_num, store_name, title_name, link_hint,
+                              pre_calc_date=None):
+    """
+    PDF natív szöveg feldolgozása (CBA, CBA Príma).
+    Az OCR lépést teljesen kihagyja — 100% karakterpontos szöveg jön a fitz-ből.
+    1. gpt-4o szöveges értelmezés (ugyanaz mint az OCR pipeline-ban)
+    2. gpt-4o-mini JSON struktúrálás
+    3. Python validáció
+    """
+    print(f"\n   📄 PDF szöveges pipeline: oldal {page_num}")
+
+    if not pdf_text or len(pdf_text.strip()) < 20:
+        print(f"   ⚠️ Üres/rövid PDF szöveg — oldal kihagyva ({store_name}, {page_num})")
+        return {"termekek": [], "ervenyesseg": "N/A", "oldalszam": page_num}
+
+    print(f"   → Natív PDF szöveg: {len(pdf_text)} karakter")
+
+    # --- GPT-4o értelmezés (ugyanaz mint OCR pipeline-ban) ---
+    interpreted = interpret_ocr_text_with_gpt(
+        pdf_text, page_num, store_name, title_name, link_hint, pre_calc_date
+    )
+
+    # --- GPT-4o-mini JSON struktúrálás ---
+    structured = structure_with_gpt_mini(
+        interpreted, page_num, store_name, pre_calc_date, link_hint
+    )
+
+    # --- Python validáció ---
+    termekek = structured.get("termekek", [])
+    validalt_termekek = []
+    kiszurt = 0
+
+    for termek in termekek:
+        javitott, validacio = validalj_termeket(termek)
+        if not validacio['ar_valid']:
+            kiszurt += 1
+            print(f"      ❌ Kiszűrve (irreális ár): {termek.get('nev', '?')}")
+            continue
+        javitott['_validacio'] = validacio
+        if validacio.get('figyelmeztetesek'):
+            for msg in validacio['figyelmeztetesek']:
+                print(f"      ⚠️ {msg}")
+        validalt_termekek.append(javitott)
+
+    if kiszurt > 0:
+        print(f"   🔍 Validáció: {kiszurt} termék kiszűrve, {len(validalt_termekek)} maradt")
+
+    structured["termekek"] = validalt_termekek
+    return structured
+
+
+# ===============================================================================
 # ÚJ: TELJES OCR PIPELINE (lecseréli az interpret_image_with_ai-t)
 # ===============================================================================
 
@@ -969,7 +1024,12 @@ def capture_pages_spar(target_url, store_name, count=4):
 
 
 def capture_pages_from_pdf(target_url, store_name):
-    print(f"\nPDF LETOLTES ES SZELETELES ({store_name}): {target_url}")
+    """
+    PDF letöltés és szöveges kinyerés fitz page.get_text('blocks') segítségével.
+    CBA és CBA Príma digitális PDF-ekhez — 100% karakterpontos, nem kell OCR/Vision!
+    Visszaad egy listát ahol image_path=None, pdf_text=szöveg.
+    """
+    print(f"\nPDF SZOVEGES KINYERES ({store_name}): {target_url}")
     captured_data = []
     temp_pdf_path = os.path.join(TEMP_DIR, f"{store_name}_temp.pdf")
     try:
@@ -979,15 +1039,29 @@ def capture_pages_from_pdf(target_url, store_name):
         with open(temp_pdf_path, 'wb') as f:
             f.write(response.content)
         doc = fitz.open(temp_pdf_path)
+        print(f"   PDF megnyitva: {len(doc)} oldal")
         for i in range(min(4, len(doc))):
             page_num = i + 1
-            pix = doc.load_page(i).get_pixmap(dpi=200)
-            fajl_nev = os.path.join(TEMP_DIR, f"{store_name}_oldal_{page_num}.png")
-            pix.save(fajl_nev)
+            page = doc.load_page(i)
+            # Szöveges blokkok kinyerése koordinátákkal
+            blocks = page.get_text("blocks")
+            # Csak szöveges blokkok (type=0), koordináta szerint rendezve (fentről lefelé)
+            text_blocks = sorted(
+                [b for b in blocks if b[6] == 0],
+                key=lambda b: (b[1], b[0])  # y, x koordináta
+            )
+            page_text = "\n".join(b[4].strip() for b in text_blocks if b[4].strip())
+            if page_text:
+                print(f"   Oldal {page_num}: {len(page_text)} karakter kinyerve (szöveges)")
+            else:
+                print(f"   Oldal {page_num}: üres szöveg (szkennelt PDF?)")
             captured_data.append({
-                "image_path": fajl_nev,
+                "image_path": None,       # nincs kép — szöveges feldolgozás
+                "pdf_text": page_text,    # ÚJ: natív PDF szöveg
                 "page_url": f"{target_url}#page={page_num}",
-                "page_num": page_num
+                "page_num": page_num,
+                "left_page": page_num,
+                "right_page": page_num,
             })
         doc.close()
         return captured_data
@@ -1299,15 +1373,28 @@ def process_images_with_ai(captured_data, flyer_meta, all_flyers, pre_calc_date=
         else:
             effective_pagenum = item['page_num']
 
-        # *** OCR PIPELINE HÍVÁS ***
-        structured = process_image_ocr_pipeline(
-            item['image_path'],
-            effective_pagenum,
-            store_name,
-            flyer_meta['title'],
-            link_hint,
-            pre_calc_date
-        )
+        # *** PIPELINE VÁLASZTÁS: PDF szöveges vs OCR ***
+        pdf_text = item.get('pdf_text')
+        if item.get('image_path') is None and pdf_text is not None:
+            # CBA / CBA Príma — natív PDF szöveg, nincs OCR
+            structured = process_pdf_text_pipeline(
+                pdf_text,
+                effective_pagenum,
+                store_name,
+                flyer_meta['title'],
+                link_hint,
+                pre_calc_date
+            )
+        else:
+            # Minden más bolt — OCR pipeline (Google Vision + GPT)
+            structured = process_image_ocr_pipeline(
+                item['image_path'],
+                effective_pagenum,
+                store_name,
+                flyer_meta['title'],
+                link_hint,
+                pre_calc_date
+            )
 
         # Érvényesség első oldalból
         if item['page_num'] == 1:
