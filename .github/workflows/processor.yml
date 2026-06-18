@@ -25,12 +25,18 @@ jobs:
           python-version: '3.10'
       - name: Programok telepitese
         run: |
-          pip install requests beautifulsoup4 selenium webdriver-manager openai python-dotenv curl_cffi PyMuPDF
+          pip install requests beautifulsoup4 selenium webdriver-manager openai python-dotenv curl_cffi PyMuPDF google-cloud-vision
       - name: Google Chrome telepitese
         uses: browser-actions/setup-chrome@latest
+      - name: Google credentials beallitasa
+        run: |
+          echo '${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}' > /tmp/google_key.json
+        env:
+          GOOGLE_APPLICATION_CREDENTIALS: /tmp/google_key.json
       - name: Akciovadasz Robot Inditasa
         env:
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          GOOGLE_APPLICATION_CREDENTIALS: /tmp/google_key.json
         run: python flyer_processor_bot.py
       - name: Eredmeny mentese
         run: |
