@@ -29,10 +29,11 @@ jobs:
       - name: Google Chrome telepitese
         uses: browser-actions/setup-chrome@latest
       - name: Google credentials beallitasa
-        run: |
-          echo '${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}' > /tmp/google_key.json
         env:
+          GCLOUD_KEY: ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}
           GOOGLE_APPLICATION_CREDENTIALS: /tmp/google_key.json
+        run: |
+          echo "$GCLOUD_KEY" > /tmp/google_key.json
       - name: Akciovadasz Robot Inditasa
         env:
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
