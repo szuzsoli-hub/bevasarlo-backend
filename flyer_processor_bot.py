@@ -411,7 +411,7 @@ def process_pdf_text_pipeline(pdf_text, page_num, store_name, title_name, link_h
         javitott, validacio = validalj_termeket(termek)
         if not validacio['ar_valid']:
             kiszurt += 1
-            print(f"      ❌ Kiszűrve (irreális ár): {termek.get('nev', '?')}")
+            print(f"      ❌ Kiszűrve (irreális ár): {termek.get('nev') or '?'}")
             continue
         javitott['_validacio'] = validacio
         if validacio.get('figyelmeztetesek'):
@@ -472,7 +472,7 @@ def process_image_ocr_pipeline(image_path, page_num, store_name, title_name, lin
 
         if not validacio['ar_valid']:
             kiszurt += 1
-            print(f"      ❌ Kiszűrve (irreális ár): {termek.get('nev', '?')}")
+            print(f"      ❌ Kiszűrve (irreális ár): {termek.get('nev') or '?'}")
             continue
 
         validalt_termekek.append(javitott)
@@ -1427,8 +1427,8 @@ def process_images_with_ai(captured_data, flyer_meta, all_flyers, pre_calc_date=
             forras = item['page_url']
 
             # Confidence info az ar_info-ba (ha alacsony)
-            ar_conf = product.get('ar_confidence', 1.0)
-            nev_conf = product.get('nev_confidence', 1.0)
+            ar_conf = product.get('ar_confidence') or 1.0
+            nev_conf = product.get('nev_confidence') or 1.0
             extra_info = product.get("ar_info") or ""
             if ar_conf < 0.7:
                 extra_info = f"[bizonytalan ár: {ar_conf:.0%}] " + extra_info
@@ -1441,7 +1441,8 @@ def process_images_with_ai(captured_data, flyer_meta, all_flyers, pre_calc_date=
                 for f_msg in validacio['figyelmeztetesek']:
                     print(f"      ⚠️ {f_msg}")
 
-            print(f"      -> {product.get('nev', '?')[:30]} | {ar_val} | oldal={product_page}")
+            nev_print = (product.get('nev') or '?')[:30]
+            print(f"      -> {nev_print} | {ar_val} | oldal={product_page}")
 
             results.append({
                 "bolt": store_name,
