@@ -110,8 +110,12 @@ def _get_publitas_data_json(alap_url, store_name):
     """Publitas data.json letöltése — Selenium-mal hogy JS lefusson."""
     store_lower = store_name.lower()
 
-    if 'aldi' in store_lower:
+    if 'aldi' in store_lower or 'coop' in store_lower:
+        # Aldi: szorolap.aldi.hu/{slug}/page/1
+        # Coop: katalogus.coop.hu/{slug}/
+        # Mindkettő sima Publitas oldal — publicationId és accountId benne van a HTML-ben
         headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'}
+        store_tag = "Aldi" if 'aldi' in store_lower else "Coop"
         try:
             r = requests.get(alap_url, headers=headers, timeout=15)
             pub_match = re.search(r'"publicationId"\s*:\s*(\d+)', r.text)
@@ -124,7 +128,7 @@ def _get_publitas_data_json(alap_url, store_name):
                 if dr.status_code == 200:
                     return dr.json(), acc_id, pub_id
         except Exception as e:
-            print(f"   Publitas data.json hiba (Aldi): {e}")
+            print(f"   Publitas data.json hiba ({store_tag}): {e}")
         return None, None, None
 
     elif 'metro' in store_lower:
@@ -440,6 +444,10 @@ def capture_pages_by_url(alap_url, store_name, count=4):
         return capture_pages_mobile_selenium(alap_url, store_name, count)
 
     elif 'coop' in store_lower:
+        result = capture_pages_publitas(alap_url, store_name, count)
+        if result:
+            return result
+        print(f"   Coop: Publitas API sikertelen, mobil Selenium fallback")
         return capture_pages_mobile_selenium(alap_url, store_name, count)
 
     else:
