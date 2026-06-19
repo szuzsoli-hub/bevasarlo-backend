@@ -911,27 +911,16 @@ def capture_pages_from_pdf(target_url, store_name):
 def capture_pages_prima5_pdf(issuu_url, store_name, count=4):
     """
     Prima5 katalogus: 4 lepeses PDF kereses.
-    1. prima5.hu direkt PDF
-    2. Issuu reader API
-    3. Issuu scraping
+    1. Issuu reader API (AKTUALIS katalogus)
+    2. Issuu scraping (AKTUALIS katalogus)
+    3. prima5.hu direkt PDF (FIGYELEM: ez egy FIX URL, lehet REGI/elavult katalogus!
+       Csak legvegso fallbackkent hasznaljuk, ha az Issuu-s utak nem mukodnek.)
     4. Selenium fallback
     """
     print(f"\nPRIMA5 PDF KERESES INDUL: {issuu_url}")
     headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'}
 
-    # 1. prima5.hu direkt PDF
-    direct_pdf = "https://prima5.hu/images/prima_katalogus.pdf"
-    try:
-        r = requests.head(direct_pdf, headers=headers, timeout=10, allow_redirects=True)
-        ct = r.headers.get('Content-Type', '')
-        if r.status_code == 200 and 'pdf' in ct.lower():
-            print(f"   Prima5 direkt PDF OK: {direct_pdf}")
-            return capture_pages_from_pdf(direct_pdf, store_name)
-        print(f"   Prima5 direkt PDF: HTTP {r.status_code}")
-    except Exception as e:
-        print(f"   Prima5 direkt PDF hiba: {e}")
-
-    # 2. Issuu reader API
+    # 1. Issuu reader API (ELSŐ — ez adja az aktuális katalógust!)
     doc_id_match = re.search(r'/docs/([^/?#]+)', issuu_url)
     if doc_id_match:
         doc_id = doc_id_match.group(1)
@@ -943,12 +932,12 @@ def capture_pages_prima5_pdf(issuu_url, store_name, count=4):
                 doc_info = data.get('document', {})
                 pdf_url = doc_info.get('originalPdfUrl') or doc_info.get('pdfDownloadLink')
                 if pdf_url:
-                    print(f"   Issuu API PDF: {pdf_url[:80]}")
+                    print(f"   Issuu API PDF (AKTUALIS): {pdf_url[:80]}")
                     return capture_pages_from_pdf(pdf_url, store_name)
         except Exception as e:
             print(f"   Issuu API hiba: {e}")
 
-    # 3. Issuu scraping
+    # 2. Issuu scraping (AKTUALIS katalógus)
     try:
         r = requests.get(issuu_url, headers=headers, timeout=15)
         for pattern in [
@@ -958,10 +947,23 @@ def capture_pages_prima5_pdf(issuu_url, store_name, count=4):
             pdf_match = re.search(pattern, r.text)
             if pdf_match:
                 pdf_url = pdf_match.group(1)
-                print(f"   Issuu scraping PDF: {pdf_url[:80]}")
+                print(f"   Issuu scraping PDF (AKTUALIS): {pdf_url[:80]}")
                 return capture_pages_from_pdf(pdf_url, store_name)
     except Exception as e:
         print(f"   Issuu scraping hiba: {e}")
+
+    # 3. prima5.hu direkt PDF — FIGYELEM: fix URL, lehet régi katalógus!
+    #    Csak akkor használjuk, ha az Issuu-s utak (1-2) nem találtak semmit.
+    direct_pdf = "https://prima5.hu/images/prima_katalogus.pdf"
+    try:
+        r = requests.head(direct_pdf, headers=headers, timeout=10, allow_redirects=True)
+        ct = r.headers.get('Content-Type', '')
+        if r.status_code == 200 and 'pdf' in ct.lower():
+            print(f"   ⚠️ Prima5 FIX PDF fallback (lehet regi!): {direct_pdf}")
+            return capture_pages_from_pdf(direct_pdf, store_name)
+        print(f"   Prima5 direkt PDF: HTTP {r.status_code}")
+    except Exception as e:
+        print(f"   Prima5 direkt PDF hiba: {e}")
 
     # 4. Selenium fallback
     print(f"   Prima5: PDF nem talalhato, Selenium fallback")
@@ -1175,10 +1177,12 @@ def get_validity_from_html(url, store):
 # ===============================================================================
 def interpret_image_with_ai(image_path, page_num, store_name, title_name, link_hint, pre_calc_date=None, need_vision_pagenum=False, double_page_info=None):
     """
-    DUPLA GPT-4o VISION PIPELINE — OCR nélkül, csak Vision.
+    DUPLA (+ опционális 3.) GPT-4o VISION PIPELINE — OCR nélkül, csak Vision.
 
-    1. hívás: "Listázd ki az összes terméket és árat!" → nyers lista
-    2. hívás: ellenőrzés és JSON struktúrálás
+    1. hívás: "Hány terméket látsz? Listázd ki mindet!" → nyers lista + becsült darabszám
+    1b. hívás (ha kevesebbet listázott mint amennyit becsült): ismétlés, hiányzók pótlása
+    2. hívás: ellenőrzés és JSON struktúrálás (ar_info = csak ár-feltétel, leiras = minden egyéb)
+    2b. célzott visszakérdezés: ha van olyan termék aminek nincs ára, rákérdezünk még egyszer
     """
     with open(image_path, "rb") as f:
         image_data = base64.b64encode(f.read()).decode("utf-8")
@@ -1205,25 +1209,29 @@ FALLBACK ha nem latod: {link_hint}"""
         pagenum_instr = f'OLDALSZAM: Az "oldalszam" mezobe ird: {page_num}'
 
     # ============================================================
-    # 1. HÍVÁS: Termék lista kinyerése
+    # 1. HÍVÁS: Termék lista kinyerése — ELŐSZÖR DARABSZÁM BECSLÉS!
     # ============================================================
-    prompt1 = f"""Nezd meg alaposan ezt a magyar akcioS ujsag kepet.
+    prompt1 = f"""Nezd meg ALAPOSAN, NE SIESS ezt a magyar akcios ujsag kepet.
 
-FELADAT: Sorold fel az OSSZES akcios termelket amit latsz!
-Csak elelmiszert, italt es drogeriat! Hazihartasi gep, butor, sportszer, kerti eszkoz, ruha: KIHAGYNI!
+ELSO LEPES: Mielott listazol, SZAMOLD MEG kb. hany kulonallo akcios termelket/arcedulat latsz a kepen osszesen (beleertve az italokat, alkoholt, sort, bort is — ezek IS akcios termekek!).
+Ird ki ezt elsokent: "OSSZESEN: [szam] termek"
+
+MASODIK LEPES: Sorold fel MINDEGYIK terméket egyenkent, EGYET SE HAGYJ KI!
+Csak elelmiszert, italt (beleertve alkoholt: sor, bor, palinka) es drogeriat! Hazihartasi gep, butor, sportszer, kerti eszkoz, ruha: KIHAGYNI!
 
 Minden termekhez:
 - Termek neve (marka + termeknev)
 - Akciosar (Ft)
 - Kiszereles (g, ml, l, kg, db stb.) — ha latod
 - Egysegar (Ft/kg, Ft/l stb.) — ha latod vagy ki tudod szamolni
-- Egyeb info (kártyás ár, mennyisegi feltetel stb.)
+- AR FELTETEL: csak az arhoz kotodo feltetelek (pl. "2 db-tol 100 Ft/db", "kartyas ar", "+50 Ft visszavaltasi dij")
+- LEIRAS: minden egyeb amit latsz a termeken (pl. "Glutenmentes", "Hazai termek", "Extra edes", "98% hustartalom")
 
 {date_instr}
 {pagenum_instr}
 
-Valaszolj egy egyszerü szoveges listaval, termekenként uj sorban:
-TERMEK: [nev] | AR: [ar] Ft | KISZERE: [kiszereles] | EGYSEGAR: [egysegar] | EGYEB: [info]
+Valaszolj eloszor a "OSSZESEN: [szam] termek" sorral, majd egyszerü szoveges listaval, termekenként uj sorban:
+TERMEK: [nev] | AR: [ar] Ft | KISZERE: [kiszereles] | EGYSEGAR: [egysegar] | FELTETEL: [ar feltetel] | LEIRAS: [leiras]
 ---"""
 
     resp1 = client.chat.completions.create(
@@ -1232,7 +1240,38 @@ TERMEK: [nev] | AR: [ar] Ft | KISZERE: [kiszereles] | EGYSEGAR: [egysegar] | EGY
     )
     time.sleep(1)
     raw_list = resp1.choices[0].message.content or ""
-    print(f"   Vision 1. hivas: {len(raw_list)} kar, ~{raw_list.count('TERMEK:')} termek")
+    listazott_db = raw_list.count('TERMEK:')
+
+    # Becsült darabszám kinyerése az "OSSZESEN: X termek" sorból
+    becsult_db = None
+    m = re.search(r'OSSZESEN:\s*(\d+)', raw_list, re.IGNORECASE)
+    if m:
+        becsult_db = int(m.group(1))
+
+    print(f"   Vision 1. hivas: {len(raw_list)} kar, becsult={becsult_db}, listazott={listazott_db}")
+
+    # --- HA KEVESEBBET LISTAZOTT MINT BECSULT: ismétlés, hiányzók pótlása ---
+    if becsult_db is not None and listazott_db < becsult_db:
+        print(f"   ⚠️ Eltérés: {becsult_db} becsult vs {listazott_db} listazott — ujra kerjuk a hianyzokat...")
+        prompt1b = f"""Korabban azt mondtad kb. {becsult_db} terméket latsz ezen a kepen, de csak {listazott_db}-at listaztal:
+
+{raw_list}
+
+Nezd at MEGEGYSZER NAGYON ALAPOSAN a kepet, kulonosen a sarkokat, kis betus reszeket, italokat/alkoholt. Listazd ki MOST a HIANYZO termeket is, ugyanabban a formatumban:
+TERMEK: [nev] | AR: [ar] Ft | KISZERE: [kiszereles] | EGYSEGAR: [egysegar] | FELTETEL: [ar feltetel] | LEIRAS: [leiras]"""
+        try:
+            resp1b = client.chat.completions.create(
+                model="gpt-4o", temperature=0, max_tokens=2000,
+                messages=[{"role": "user", "content": [image_content, {"type": "text", "text": prompt1b}]}]
+            )
+            time.sleep(1)
+            extra_list = resp1b.choices[0].message.content or ""
+            extra_db = extra_list.count('TERMEK:')
+            if extra_db > 0:
+                print(f"   ✅ Pótlás: +{extra_db} termék találva")
+                raw_list = raw_list + "\n" + extra_list
+        except Exception as e:
+            print(f"   Pótlási hívás hiba: {e}")
 
     # ============================================================
     # 2. HÍVÁS: JSON struktúrálás + ellenőrzés
@@ -1244,13 +1283,14 @@ TERMEK: [nev] | AR: [ar] Ft | KISZERE: [kiszereles] | EGYSEGAR: [egysegar] | EGY
 FELADAT: Ellenorizd a kepen az adatokat es add vissza VALIDOS JSON-ban!
 
 SZABALYOK:
-- Csak elelmiszert, italt, drogeriat! Hazihartasi gep, butor, sportszer, kerti eszkoz, ruha, konyv: KIHAGYNI!
+- Csak elelmiszert, italt (beleertve alkoholt), drogeriat! Hazihartasi gep, butor, sportszer, kerti eszkoz, ruha, konyv: KIHAGYNI!
 - Ha az ujsag neve jelenik meg termekként (pl. "Nyári extra katalógus"): KIHAGYNI!
 - "nev": marka + pontos termeknev
 - "kiszereles": amit latsz a kepen, vagy [sz] jellel szamitott ertek, vagy null
-- "ar": akciosar Ft-tal (pl. "329 Ft")
+- "ar": akciosar Ft-tal (pl. "329 Ft") — ha TENYLEG nem latod sehol, null, de nezd meg meg egyszer alaposan mielott null-t irsz!
 - "ar_egyseg": Ft/kg vagy Ft/l stb., vagy [sz] jellel szamitott, vagy null
-- "ar_info": kártyas ar, mennyisegi feltetel, normal ar stb., vagy null
+- "ar_info": KIZAROLAG az arhoz kotodo feltetelek (pl. "2 db-tol -33%", "kartyas ar", "+50 Ft visszavaltasi dij"), vagy null ha nincs ilyen
+- "leiras": MINDEN EGYEB amit latsz a termeken, ami NEM ar-feltetel (pl. "Glutenmentes", "Hazai termek", "Extra edes", "98% hustartalom"), vagy null ha nincs ilyen
 - Ha van ar + kiszereles de nincs egysegar: SZAMITSD KI! (ar/kiszereles, "[sz]" jelolessel)
 
 {pagenum_instr}
@@ -1265,7 +1305,8 @@ ELVART JSON:
       "kiszereles": "pl. 500g vagy null",
       "ar": "pl. 329 Ft",
       "ar_egyseg": "pl. 658 Ft/l vagy null",
-      "ar_info": "egyeb info vagy null"
+      "ar_info": "ar-feltetel vagy null",
+      "leiras": "egyeb leiras vagy null"
     }}
   ]
 }}"""
@@ -1280,10 +1321,44 @@ ELVART JSON:
     time.sleep(1)
     try:
         result = json.loads(resp2.choices[0].message.content)
-        print(f"   Vision 2. hivas: {len(result.get('termekek', []))} termek strukturalva")
+        termekek = result.get('termekek', [])
+        print(f"   Vision 2. hivas: {len(termekek)} termek strukturalva")
+
+        # --- CÉLZOTT VISSZAKÉRDEZÉS: ha van termék ár nélkül, rákérdezünk még egyszer ---
+        ar_nelkuli = [t.get('nev', '?') for t in termekek if not t.get('ar') or str(t.get('ar')).lower() in ('null', 'none', '')]
+        if ar_nelkuli:
+            print(f"   ⚠️ {len(ar_nelkuli)} termeknek nincs ara, visszakerdezes...")
+            nevek_str = ", ".join(ar_nelkuli)
+            prompt2b = f"""Ezeknel a termekeknel nem talaltal arat: {nevek_str}
+
+Nezd meg MEGEGYSZER NAGYON ALAPOSAN a kepet ezeknel a termekeknel — biztosan nincs sehol ar feltuntetve (pl. arcedulan, kis betuvel, mellette)?
+Ha talalsz arat, add vissza JSON-ban csak ezeket a termekeket a megtalalt arral:
+{{"termekek": [{{"nev": "...", "ar": "... Ft"}}]}}
+Ha tenyleg nincs sehol ar, add vissza ures listat: {{"termekek": []}}"""
+            try:
+                resp2b = client.chat.completions.create(
+                    model="gpt-4o", temperature=0, max_tokens=1000,
+                    response_format={"type": "json_object"},
+                    messages=[{"role": "user", "content": [image_content, {"type": "text", "text": prompt2b}]}]
+                )
+                time.sleep(1)
+                javitasok = json.loads(resp2b.choices[0].message.content).get('termekek', [])
+                javitott_db = 0
+                for jav in javitasok:
+                    jav_nev = jav.get('nev', '')
+                    jav_ar = jav.get('ar')
+                    if jav_ar:
+                        for t in termekek:
+                            if t.get('nev', '') == jav_nev:
+                                t['ar'] = jav_ar
+                                javitott_db += 1
+                                break
+                if javitott_db > 0:
+                    print(f"   ✅ Visszakérdezés: {javitott_db} ár pótolva")
+            except Exception as e:
+                print(f"   Visszakérdezés hiba: {e}")
 
         # --- Python validáció ---
-        termekek = result.get('termekek', [])
         validalt = []
         kiszurt = 0
         for termek in termekek:
@@ -1395,12 +1470,13 @@ def interpret_pdf_text_with_ai(pdf_text, page_num, store_name, title_name, link_
 FELADAT: Azonosítsd az ÖSSZES akciós terméket és add vissza JSON formátumban!
 
 SZABÁLYOK:
-- Csak élelmiszer, ital, drogéria! Háztartási gép, bútor, sportszer, ruha: KIHAGYNI!
+- Csak élelmiszer, ital (beleértve alkoholt: bor, sör), drogéria! Háztartási gép, bútor, sportszer, ruha: KIHAGYNI!
 - "nev": márka + pontos terméknév
 - "kiszereles": gramm, ml, l, kg, db stb. — ha szerepel
 - "ar": akciós ár Ft-tal (pl. "329 Ft")
 - "ar_egyseg": Ft/kg vagy Ft/l stb. — ha szerepel vagy kiszámítható
-- "ar_info": kártyás ár, mennyiségi feltétel, normál ár stb. — ha szerepel
+- "ar_info": KIZÁRÓLAG az árhoz kötődő feltételek (pl. "2 db-tól -33%", "kártyás ár", "+50 Ft visszaváltási díj"), vagy null
+- "leiras": MINDEN EGYÉB, ami NEM ár-feltétel (pl. "Gluténmentes", "Hazai termék", "Extra édes"), vagy null
 {date_instr}
 
 ELVÁRT JSON:
@@ -1413,7 +1489,8 @@ ELVÁRT JSON:
       "kiszereles": "pl. 500g vagy null",
       "ar": "pl. 329 Ft",
       "ar_egyseg": "pl. 658 Ft/l vagy null",
-      "ar_info": "egyéb info vagy null"
+      "ar_info": "ár-feltétel vagy null",
+      "leiras": "egyéb leírás vagy null"
     }}
   ]
 }}"""
@@ -1632,6 +1709,7 @@ def process_images_with_ai(captured_data, flyer_meta, all_flyers, pre_calc_date=
                     "ar": ar_val,
                     "ar_egyseg": product.get("ar_egyseg"),
                     "ar_info": product.get("ar_info"),
+                    "leiras": product.get("leiras"),
                     "forrasLink": forras,
                     "alap_link": flyer_meta['url']
                 })
