@@ -128,46 +128,6 @@ def dedup_metro(found):
     return [v["item"] for v in seen.values()]
 
 
-def _scan_metro_publitas_api():
-    """Publitas Group API fallback Metro-hoz. groupId: 445, domain: katalogus.metro.hu"""
-    print("   [FALLBACK] Metro Publitas Group API próba...")
-    found = []
-    try:
-        headers = {
-            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
-            'Accept': 'application/json',
-        }
-        api_url = "https://view.publitas.com/api/v1/groups/445/publications?status=published&per_page=25"
-        r = requests.get(api_url, headers=headers, timeout=15)
-        if r.status_code != 200:
-            r = cffi_requests.get(api_url, impersonate="chrome120", timeout=15)
-        if r.status_code == 200:
-            data = r.json()
-            publications = data.get('publications', data.get('items', []))
-            print(f"   Metro Publitas API: {len(publications)} publikáció")
-            seen = set()
-            for pub in publications:
-                slug = pub.get('slug', '')
-                raw_title = pub.get('title', slug)
-                if not slug:
-                    continue
-                full_url = f"https://katalogus.metro.hu/{slug}/page/1"
-                if full_url in seen:
-                    continue
-                status = analyze_link("Metro", raw_title, full_url)
-                if status == "KEEP":
-                    print(f"[KEEP] {raw_title} -> {full_url}")
-                    found.append({"store": "Metro", "title": raw_title, "url": full_url})
-                    seen.add(full_url)
-                else:
-                    print(f"[DROP] {raw_title} -> {full_url}")
-        else:
-            print(f"   Metro Publitas API hiba: HTTP {r.status_code}")
-    except Exception as e:
-        print(f"   Metro Publitas API kivétel: {e}")
-    return found
-
-
 def scan_metro():
     print("\n--- METRO Szkennelés ---")
     api_url = "https://cdn.metro-online.com/api/catalog-filter?resolution=600&feeds=metro-nagykereskedelem&collection_id=6365&metatags%5B%5D=channel=website"
@@ -193,13 +153,7 @@ def scan_metro():
         except Exception as e:
             print(f"❌ Metro API hiba ({attempt+1}/3): {e}")
             time.sleep(3)
-    # 2. FALLBACK: Publitas API ha CDN API üres
-    if not found:
-        print("   Metro CDN API üres, Publitas Group API fallback...")
-        found = _scan_metro_publitas_api()
-        if found:
-            return dedup_metro(found)
-    # 3. FALLBACK: dátum alapú URL-ek (eredeti logika)
+    # 2. FALLBACK: mindig lefut, hozzáadja ami még nincs benne
     existing_urls = {f["url"] for f in found}
     now = datetime.date.today()
     ym = now.strftime("%Y-%m")
@@ -518,53 +472,10 @@ def scan_tesco():
     return found
 
 
-def _scan_aldi_publitas_api():
-    """Publitas Group API fallback Aldihoz. groupId: 96383, domain: szorolap.aldi.hu"""
-    print("   [FALLBACK] Aldi Publitas Group API próba...")
-    found = []
-    try:
-        headers = {
-            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
-            'Accept': 'application/json',
-            'Referer': 'https://www.aldi.hu/'
-        }
-        api_url = "https://view.publitas.com/api/v1/groups/96383/publications?status=published&per_page=25"
-        r = requests.get(api_url, headers=headers, timeout=15)
-        if r.status_code != 200:
-            r = cffi_requests.get(api_url, impersonate="chrome120", timeout=15)
-        if r.status_code == 200:
-            data = r.json()
-            publications = data.get('publications', data.get('items', []))
-            print(f"   Aldi Publitas API: {len(publications)} publikáció")
-            seen = set()
-            for pub in publications:
-                slug = pub.get('slug', '')
-                title = pub.get('title', slug)
-                if not slug:
-                    continue
-                full_url = f"https://szorolap.aldi.hu/{slug}/page/1"
-                if full_url in seen:
-                    continue
-                status = analyze_link("Aldi", title, full_url)
-                if status == "KEEP":
-                    better_title = get_slug_title("Aldi", title, full_url)
-                    print(f"[KEEP] {better_title} -> {full_url}")
-                    found.append({"store": "Aldi", "title": better_title, "url": full_url})
-                    seen.add(full_url)
-                else:
-                    print(f"[DROP] {title} -> {full_url}")
-        else:
-            print(f"   Aldi Publitas API hiba: HTTP {r.status_code}")
-    except Exception as e:
-        print(f"   Aldi Publitas API kivétel: {e}")
-    return found
-
-
 def scan_aldi():
     print("\n--- ALDI Szkennelés ---")
     url = "https://www.aldi.hu/hu/ajanlatok/online-akcios-ujsag.html"
     found = []
-    # 1. ELSŐDLEGES: aldi.hu scraping
     try:
         response = requests.get(url, headers={'User-Agent': 'Mozilla/5.0'})
         soup = BeautifulSoup(response.text, 'html.parser')
@@ -576,20 +487,61 @@ def scan_aldi():
                 if href not in seen:
                     status = analyze_link("Aldi", title, href)
                     if status == "KEEP":
+                        # --- ÚJ: CÍM CSERÉJE A LINK VÉGÉRE (SLUG) ---
                         better_title = get_slug_title("Aldi", title, href)
-                        print(f"[KEEP] {better_title} -> {href}")
+
+                        print(f"[{status}] {better_title} -> {href}")
+                        # VALIDITY TÖRÖLVE
                         found.append({"store": "Aldi", "title": better_title, "url": href})
                     seen.add(href)
     except Exception as e:
         print(f"   Aldi scraping hiba: {e}")
-    # 2. FALLBACK: Ha scraping üres → Publitas Group API
-    if not found:
-        print("   Aldi scraping üres, Publitas Group API fallback...")
-        found = _scan_aldi_publitas_api()
-    if not found:
-        print("   ❌ Aldi: scraping és Publitas API is sikertelen")
-    else:
-        print(f"   ✅ Aldi: {len(found)} db találat")
+
+    if found:
+        return found
+
+    # --- 2. SZINT FALLBACK: szorolap.aldi.hu gyökér -> canonical link kinyerése ---
+    print("   Aldi scraping üres, szorolap.aldi.hu canonical fallback...")
+    try:
+        r = requests.get("https://szorolap.aldi.hu/", headers={'User-Agent': 'Mozilla/5.0'}, timeout=15)
+        canon_match = re.search(r'<link rel="canonical" href="([^"]+)"', r.text)
+        if canon_match:
+            canon_url = canon_match.group(1).rstrip('/')
+            # canon_url pl.: https://szorolap.aldi.hu/aldi_online_akcios_ujsag_2026_06_18_kw25_xxxx
+            slug_match = re.search(r'szorolap\.aldi\.hu/([^/]+)', canon_url)
+            if slug_match:
+                slug = slug_match.group(1)
+                page1_url = f"https://szorolap.aldi.hu/{slug}/page/1"
+                print(f"   [FALLBACK-2] Aldi canonical talalat: {page1_url}")
+                found.append({"store": "Aldi", "title": slug, "url": page1_url})
+                return found
+        print("   Aldi canonical fallback: nem talalhato canonical link")
+    except Exception as e:
+        print(f"   Aldi canonical fallback hiba: {e}")
+
+    # --- 3. SZINT FALLBACK: Publitas Group API (JAVÍTOTT domain + slug) ---
+    print("   [FALLBACK-3] Aldi Publitas Group API proba...")
+    try:
+        api_url = "https://api.publitas.com/v1/groups/hu-aldi-magyarorszag-elelmiszer-bt/publications.json"
+        r = requests.get(api_url, headers={'User-Agent': 'Mozilla/5.0'}, timeout=15)
+        if r.status_code == 200:
+            data = r.json()
+            pubs = data if isinstance(data, list) else data.get('publications', [])
+            for pub in pubs[:3]:
+                slug = pub.get('slug') or pub.get('url_slug')
+                if slug:
+                    page1_url = f"https://szorolap.aldi.hu/{slug}/page/1"
+                    title = pub.get('title', slug)
+                    print(f"   [FALLBACK-3] Aldi Publitas talalat: {page1_url}")
+                    found.append({"store": "Aldi", "title": title, "url": page1_url})
+            if found:
+                return found
+        else:
+            print(f"   Aldi Publitas API hiba: HTTP {r.status_code}")
+    except Exception as e:
+        print(f"   Aldi Publitas API hiba: {e}")
+
+    print("   ❌ Aldi: mindharom fallback sikertelen")
     return found
 
 
