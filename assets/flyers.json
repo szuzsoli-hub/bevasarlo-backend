@@ -1,5 +1,5 @@
 {
-    "last_updated": "2026-06-19 18:14:19.719215",
+    "last_updated": "2026-06-20 08:05:56.553356",
     "flyers": [
         {
             "store": "Spar",
@@ -72,19 +72,14 @@
             "url": "https://www.spar.hu/ajanlatok/spar-market/260625-5-city-spar-bp-irinyi-j-utca-uzlet-megujulas"
         },
         {
-            "store": "Penny",
-            "title": "Penny Akciós Újság 25. heti (202625)",
-            "url": "https://files.rewe.co.at/PennyIntLeaflet/HU/202625/"
+            "store": "Lidl",
+            "title": "Lidl akcios-ujsag-26-het",
+            "url": "https://www.lidl.hu/l/hu/ujsag/akcios-ujsag-26-het-2026/ar/0?lf=HHZ"
         },
         {
             "store": "Lidl",
             "title": "Lidl akcios-ujsag-25-het",
             "url": "https://www.lidl.hu/l/hu/ujsag/akcios-ujsag-25-het-2026/ar/0?lf=HHZ"
-        },
-        {
-            "store": "Lidl",
-            "title": "Lidl akcios-ujsag-24-het",
-            "url": "https://www.lidl.hu/l/hu/ujsag/akcios-ujsag-24-het-2026/ar/0?lf=HHZ"
         },
         {
             "store": "Lidl",
@@ -128,13 +123,13 @@
         },
         {
             "store": "Auchan",
-            "title": "2026-06-18-06-24-grill-ajanlataink",
-            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr25/2026-06-18-06-24-grill-ajanlataink"
+            "title": "2026-06-11-07-01-nyari-extra-ajanlataink",
+            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr241/2026-06-11-07-01-nyari-extra-ajanlataink"
         },
         {
             "store": "Auchan",
-            "title": "2026-06-18-06-24-heti-hipermarket-ajanlataink",
-            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr25/2026-06-18-06-24-heti-hipermarket-ajanlataink"
+            "title": "2026-06-18-06-24-grill-ajanlataink",
+            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr25/2026-06-18-06-24-grill-ajanlataink"
         },
         {
             "store": "Auchan",
@@ -148,8 +143,8 @@
         },
         {
             "store": "Auchan",
-            "title": "2026-06-11-07-01-nyari-extra-ajanlataink",
-            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr241/2026-06-11-07-01-nyari-extra-ajanlataink"
+            "title": "2026-06-18-06-24-heti-hipermarket-ajanlataink",
+            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr25/2026-06-18-06-24-heti-hipermarket-ajanlataink"
         },
         {
             "store": "Auchan",
