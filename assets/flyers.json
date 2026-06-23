@@ -1,5 +1,5 @@
 {
-    "last_updated": "2026-06-23 08:06:10.149098",
+    "last_updated": "2026-06-23 12:54:42.804768",
     "flyers": [
         {
             "store": "Spar",
@@ -128,6 +128,11 @@
         },
         {
             "store": "Auchan",
+            "title": "2026-06-25-07-01-heti-szupermarket-ajanlataink",
+            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr26/2026-06-25-07-01-heti-szupermarket-ajanlataink"
+        },
+        {
+            "store": "Auchan",
             "title": "2026-06-18-06-24-heti-szupermarket-ajanlataink",
             "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr25/2026-06-18-06-24-heti-szupermarket-ajanlataink"
         },
@@ -138,13 +143,13 @@
         },
         {
             "store": "Auchan",
-            "title": "2026-06-18-06-24-jegkrem-ajanlataink",
-            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr25/2026-06-18-06-24-jegkrem-ajanlataink"
+            "title": "2026-06-11-07-01-nyari-extra-ajanlataink",
+            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr241/2026-06-11-07-01-nyari-extra-ajanlataink"
         },
         {
             "store": "Auchan",
-            "title": "2026-06-25-07-08-grill-ajanlataink",
-            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr26/2026-06-25-07-08-grill-ajanlataink"
+            "title": "2026-06-11-06-24-szurkolj-velunk",
+            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr241/2026-06-11-06-24-szurkolj-velunk"
         },
         {
             "store": "Auchan",
@@ -158,23 +163,18 @@
         },
         {
             "store": "Auchan",
-            "title": "2026-06-11-06-24-szurkolj-velunk",
-            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr241/2026-06-11-06-24-szurkolj-velunk"
-        },
-        {
-            "store": "Auchan",
-            "title": "2026-06-25-07-01-heti-szupermarket-ajanlataink",
-            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr26/2026-06-25-07-01-heti-szupermarket-ajanlataink"
-        },
-        {
-            "store": "Auchan",
             "title": "2026-06-25-07-01-heti-hipermarket-ajanlataink",
             "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr26/2026-06-25-07-01-heti-hipermarket-ajanlataink"
         },
         {
             "store": "Auchan",
-            "title": "2026-06-11-07-01-nyari-extra-ajanlataink",
-            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr241/2026-06-11-07-01-nyari-extra-ajanlataink"
+            "title": "2026-06-18-06-24-jegkrem-ajanlataink",
+            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr25/2026-06-18-06-24-jegkrem-ajanlataink"
+        },
+        {
+            "store": "Auchan",
+            "title": "2026-06-25-07-08-grill-ajanlataink",
+            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr26/2026-06-25-07-08-grill-ajanlataink"
         },
         {
             "store": "Aldi",
