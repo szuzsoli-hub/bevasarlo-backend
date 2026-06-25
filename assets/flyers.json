@@ -1,5 +1,5 @@
 {
-    "last_updated": "2026-06-24 18:15:38.210260",
+    "last_updated": "2026-06-25 08:02:06.737096",
     "flyers": [
         {
             "store": "Spar",
@@ -13,43 +13,18 @@
         },
         {
             "store": "Spar",
-            "title": "260603-4-nyar-katalogus",
-            "url": "https://www.spar.hu/ajanlatok/egyeb/260603-4-nyar-katalogus"
-        },
-        {
-            "store": "Spar",
             "title": "260611-5-veszprem-togo-nyitas",
             "url": "https://www.spar.hu/ajanlatok/egyeb/260611-5-veszprem-togo-nyitas"
         },
         {
             "store": "Spar",
-            "title": "260618-2-interspar-szorolap",
-            "url": "https://www.spar.hu/ajanlatok/interspar/260618-2-interspar-szorolap"
+            "title": "260625-6-koktel-katalogus",
+            "url": "https://www.spar.hu/ajanlatok/egyeb/260625-6-koktel-katalogus"
         },
         {
             "store": "Spar",
-            "title": "260625-2-interspar-szorolap-p",
-            "url": "https://www.spar.hu/ajanlatok/interspar/260625-2-interspar-szorolap-p"
-        },
-        {
-            "store": "Spar",
-            "title": "260618-4-spar-bp-ors-vezer-tere-uzlet-megujulas",
-            "url": "https://www.spar.hu/ajanlatok/spar/260618-4-spar-bp-ors-vezer-tere-uzlet-megujulas"
-        },
-        {
-            "store": "Spar",
-            "title": "260618-5-spar-dunaharaszti-uzlet-megujulas",
-            "url": "https://www.spar.hu/ajanlatok/spar/260618-5-spar-dunaharaszti-uzlet-megujulas"
-        },
-        {
-            "store": "Spar",
-            "title": "260618-1-spar-szorolap",
-            "url": "https://www.spar.hu/ajanlatok/spar/260618-1-spar-szorolap"
-        },
-        {
-            "store": "Spar",
-            "title": "260625-1-spar-szorolap-p",
-            "url": "https://www.spar.hu/ajanlatok/spar/260625-1-spar-szorolap-p"
+            "title": "260625-2-interspar-szorolap",
+            "url": "https://www.spar.hu/ajanlatok/interspar/260625-2-interspar-szorolap"
         },
         {
             "store": "Spar",
@@ -58,8 +33,8 @@
         },
         {
             "store": "Spar",
-            "title": "260618-3-spar-market-city-spar",
-            "url": "https://www.spar.hu/ajanlatok/spar-market/260618-3-spar-market-city-spar"
+            "title": "260625-1-spar-szorolap",
+            "url": "https://www.spar.hu/ajanlatok/spar/260625-1-spar-szorolap"
         },
         {
             "store": "Spar",
@@ -70,11 +45,6 @@
             "store": "Spar",
             "title": "260625-5-city-spar-bp-irinyi-j-utca-uzlet-megujulas",
             "url": "https://www.spar.hu/ajanlatok/spar-market/260625-5-city-spar-bp-irinyi-j-utca-uzlet-megujulas"
-        },
-        {
-            "store": "Penny",
-            "title": "Penny Akciós Újság 25. heti (202625)",
-            "url": "https://files.rewe.co.at/PennyIntLeaflet/HU/202625/"
         },
         {
             "store": "Penny",
@@ -108,16 +78,6 @@
         },
         {
             "store": "Tesco",
-            "title": "Tesco hipermarket/tesco-ujsag-2026-06-18",
-            "url": "https://www.tesco.hu/akciok/katalogusok/hipermarket/tesco-ujsag-2026-06-18/1"
-        },
-        {
-            "store": "Tesco",
-            "title": "Tesco szupermarket/tesco-ujsag-2026-06-18",
-            "url": "https://www.tesco.hu/akciok/katalogusok/szupermarket/tesco-ujsag-2026-06-18/1"
-        },
-        {
-            "store": "Tesco",
             "title": "Tesco hipermarket/tesco-ujsag-2026-06-25",
             "url": "https://www.tesco.hu/akciok/katalogusok/hipermarket/tesco-ujsag-2026-06-25/1"
         },
@@ -128,38 +88,13 @@
         },
         {
             "store": "Auchan",
-            "title": "2026-06-25-07-01-borond-ajanlataink",
-            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr26/2026-06-25-07-01-borond-ajanlataink"
-        },
-        {
-            "store": "Auchan",
-            "title": "2026-06-11-07-01-nyari-extra-ajanlataink",
-            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr241/2026-06-11-07-01-nyari-extra-ajanlataink"
-        },
-        {
-            "store": "Auchan",
             "title": "2026-06-25-07-01-heti-hipermarket-ajanlataink",
             "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr26/2026-06-25-07-01-heti-hipermarket-ajanlataink"
         },
         {
             "store": "Auchan",
-            "title": "2026-06-18-06-24-grill-ajanlataink",
-            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr25/2026-06-18-06-24-grill-ajanlataink"
-        },
-        {
-            "store": "Auchan",
-            "title": "2026-06-11-06-24-szurkolj-velunk",
-            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr241/2026-06-11-06-24-szurkolj-velunk"
-        },
-        {
-            "store": "Auchan",
-            "title": "2026-06-25-07-08-grill-ajanlataink",
-            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr26/2026-06-25-07-08-grill-ajanlataink"
-        },
-        {
-            "store": "Auchan",
-            "title": "2026-06-18-06-24-heti-hipermarket-ajanlataink",
-            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr25/2026-06-18-06-24-heti-hipermarket-ajanlataink"
+            "title": "2026-06-25-07-01-borond-ajanlataink",
+            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr26/2026-06-25-07-01-borond-ajanlataink"
         },
         {
             "store": "Auchan",
@@ -168,13 +103,13 @@
         },
         {
             "store": "Auchan",
-            "title": "2026-06-18-06-24-heti-szupermarket-ajanlataink",
-            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr25/2026-06-18-06-24-heti-szupermarket-ajanlataink"
+            "title": "2026-06-11-07-01-nyari-extra-ajanlataink",
+            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr241/2026-06-11-07-01-nyari-extra-ajanlataink"
         },
         {
             "store": "Auchan",
-            "title": "2026-06-18-06-24-jegkrem-ajanlataink",
-            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr25/2026-06-18-06-24-jegkrem-ajanlataink"
+            "title": "2026-06-25-07-08-grill-ajanlataink",
+            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr26/2026-06-25-07-08-grill-ajanlataink"
         },
         {
             "store": "Aldi",
@@ -182,19 +117,9 @@
             "url": "https://szorolap.aldi.hu/aldi_online_akcios_ujsag_2026_06_25_kw26_76cnk42d/page/1"
         },
         {
-            "store": "CBA",
-            "title": "cba_0618-0624.pdf",
-            "url": "https://www.cba.hu/wp-content/uploads/2026/06/cba_0618-0624.pdf"
-        },
-        {
             "store": "CBA Príma",
             "title": "cba_borkatalogus_web.pdf",
             "url": "https://www.prima.hu/wp-content/uploads/2026/05/cba_borkatalogus_web.pdf"
-        },
-        {
-            "store": "CBA Príma",
-            "title": "prima_0618-0624.pdf",
-            "url": "https://www.prima.hu/wp-content/uploads/2026/06/prima_0618-0624.pdf"
         },
         {
             "store": "CBA Príma5",
@@ -203,23 +128,8 @@
         },
         {
             "store": "Tisza-Coop",
-            "title": "coop-coop-szolnok-markatermek-szorolap-2026-junius-2-het",
-            "url": "https://katalogus.coop.hu/coop-coop-szolnok-markatermek-szorolap-2026-junius-2-het/"
-        },
-        {
-            "store": "Tisza-Coop",
-            "title": "coop-tisza-szorolap-2026-junius-3-het-abc-szuper",
-            "url": "https://katalogus.coop.hu/coop-tisza-szorolap-2026-junius-3-het-abc-szuper/"
-        },
-        {
-            "store": "Tisza-Coop",
             "title": "coop-tisza-szorolap-2026-junius-4-het-abc-szuper",
             "url": "https://katalogus.coop.hu/coop-tisza-szorolap-2026-junius-4-het-abc-szuper/"
-        },
-        {
-            "store": "Alföld Pro-Coop",
-            "title": "coop-alfold-szorolap-2026-junius-3-het",
-            "url": "https://katalogus.coop.hu/coop-alfold-szorolap-2026-junius-3-het/"
         },
         {
             "store": "Alföld Pro-Coop",
@@ -228,18 +138,8 @@
         },
         {
             "store": "Észak-Kelet Pro-Coop",
-            "title": "coop-eszak-kelet-szorolap-2026-junius-3-het",
-            "url": "https://katalogus.coop.hu/coop-eszak-kelet-szorolap-2026-junius-3-het/"
-        },
-        {
-            "store": "Észak-Kelet Pro-Coop",
             "title": "coop-eszak-kelet-szorolap-2026-junius-4-het",
             "url": "https://katalogus.coop.hu/coop-eszak-kelet-szorolap-2026-junius-4-het/"
-        },
-        {
-            "store": "Coop Mecsek Füszért",
-            "title": "coop-mecsek-szorolap-2026-junius-3-het",
-            "url": "https://katalogus.coop.hu/coop-mecsek-szorolap-2026-junius-3-het/"
         },
         {
             "store": "Coop Mecsek Füszért",
