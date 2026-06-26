@@ -1,5 +1,5 @@
 {
-    "last_updated": "2026-06-26 12:34:08.986517",
+    "last_updated": "2026-06-26 18:10:59.018533",
     "flyers": [
         {
             "store": "Spar",
@@ -118,16 +118,6 @@
         },
         {
             "store": "Auchan",
-            "title": "2026-06-25-07-01-heti-hipermarket-ajanlataink",
-            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr26/2026-06-25-07-01-heti-hipermarket-ajanlataink"
-        },
-        {
-            "store": "Auchan",
-            "title": "2026-06-25-07-08-grill-ajanlataink",
-            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr26/2026-06-25-07-08-grill-ajanlataink"
-        },
-        {
-            "store": "Auchan",
             "title": "2026-06-11-07-01-nyari-extra-ajanlataink",
             "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr241/2026-06-11-07-01-nyari-extra-ajanlataink"
         },
@@ -140,6 +130,16 @@
             "store": "Auchan",
             "title": "2026-06-25-07-01-heti-szupermarket-ajanlataink",
             "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr26/2026-06-25-07-01-heti-szupermarket-ajanlataink"
+        },
+        {
+            "store": "Auchan",
+            "title": "2026-06-25-07-01-heti-hipermarket-ajanlataink",
+            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr26/2026-06-25-07-01-heti-hipermarket-ajanlataink"
+        },
+        {
+            "store": "Auchan",
+            "title": "2026-06-25-07-08-grill-ajanlataink",
+            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr26/2026-06-25-07-08-grill-ajanlataink"
         },
         {
             "store": "Aldi",
