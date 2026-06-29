@@ -1,5 +1,5 @@
 {
-    "last_updated": "2026-06-28 17:43:07.662607",
+    "last_updated": "2026-06-29 09:15:05.831835",
     "flyers": [
         {
             "store": "Spar",
@@ -77,6 +77,16 @@
             "url": "https://www.spar.hu/ajanlatok/spar-market/260702-5-spar-market-bak-nagykapornak-zalalovo-szorolap"
         },
         {
+            "store": "Penny",
+            "title": "Penny Akciós Újság 26. heti (202626)",
+            "url": "https://files.rewe.co.at/PennyIntLeaflet/HU/202626/"
+        },
+        {
+            "store": "Penny",
+            "title": "Penny Akciós Újság 27. heti (202627)",
+            "url": "https://files.rewe.co.at/PennyIntLeaflet/HU/202627/"
+        },
+        {
             "store": "Lidl",
             "title": "Lidl akcios-ujsag-27-het",
             "url": "https://www.lidl.hu/l/hu/ujsag/akcios-ujsag-27-het-2026/ar/0?lf=HHZ"
@@ -123,8 +133,13 @@
         },
         {
             "store": "Auchan",
-            "title": "2026-06-25-07-01-heti-szupermarket-ajanlataink",
-            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr26/2026-06-25-07-01-heti-szupermarket-ajanlataink"
+            "title": "2026-06-25-07-01-borond-ajanlataink",
+            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr26/2026-06-25-07-01-borond-ajanlataink"
+        },
+        {
+            "store": "Auchan",
+            "title": "2026-06-25-07-08-grill-ajanlataink",
+            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr26/2026-06-25-07-08-grill-ajanlataink"
         },
         {
             "store": "Auchan",
@@ -133,18 +148,13 @@
         },
         {
             "store": "Auchan",
+            "title": "2026-06-25-07-01-heti-szupermarket-ajanlataink",
+            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr26/2026-06-25-07-01-heti-szupermarket-ajanlataink"
+        },
+        {
+            "store": "Auchan",
             "title": "2026-06-25-07-01-heti-hipermarket-ajanlataink",
             "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr26/2026-06-25-07-01-heti-hipermarket-ajanlataink"
-        },
-        {
-            "store": "Auchan",
-            "title": "2026-06-25-07-01-borond-ajanlataink",
-            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr26/2026-06-25-07-01-borond-ajanlataink"
-        },
-        {
-            "store": "Auchan",
-            "title": "2026-06-25-07-08-grill-ajanlataink",
-            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr26/2026-06-25-07-08-grill-ajanlataink"
         },
         {
             "store": "Aldi",
@@ -167,9 +177,19 @@
             "url": "https://katalogus.coop.hu/coop-tisza-szorolap-2026-junius-4-het-abc-szuper/"
         },
         {
+            "store": "Tisza-Coop",
+            "title": "coop-orszagos-szorolap-2026-julius-1-het-abc-szuper",
+            "url": "https://katalogus.coop.hu/coop-orszagos-szorolap-2026-julius-1-het-abc-szuper/"
+        },
+        {
             "store": "Alföld Pro-Coop",
             "title": "coop-alfold-szorolap-2026-junius-4-het",
             "url": "https://katalogus.coop.hu/coop-alfold-szorolap-2026-junius-4-het/"
+        },
+        {
+            "store": "Alföld Pro-Coop",
+            "title": "coop-alfold-szorolap-2026-julius-1-het-szuper-plusz",
+            "url": "https://katalogus.coop.hu/coop-alfold-szorolap-2026-julius-1-het-szuper-plusz/"
         },
         {
             "store": "Észak-Kelet Pro-Coop",
