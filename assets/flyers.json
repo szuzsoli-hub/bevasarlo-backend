@@ -1,5 +1,5 @@
 {
-    "last_updated": "2026-07-09 08:00:34.984246",
+    "last_updated": "2026-07-09 18:20:43.204952",
     "flyers": [
         {
             "store": "Spar",
@@ -98,11 +98,6 @@
         },
         {
             "store": "Auchan",
-            "title": "2026-07-09-15-heti-szupermarket-ajanlataink",
-            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr28/2026-07-09-15-heti-szupermarket-ajanlataink"
-        },
-        {
-            "store": "Auchan",
             "title": "2026-07-09-15-heti-hipermarket-ajanlataink",
             "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr28/2026-07-09-15-heti-hipermarket-ajanlataink"
         },
@@ -117,39 +112,19 @@
             "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr28/2026-07-09-22-kihagyhatatlan-ziccerek-bajnok-arakon"
         },
         {
+            "store": "Auchan",
+            "title": "2026-07-09-15-heti-szupermarket-ajanlataink",
+            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr28/2026-07-09-15-heti-szupermarket-ajanlataink"
+        },
+        {
             "store": "Aldi",
             "title": "aldi_kozepso_sor_2026_07_09_kw28_9e36myyd",
             "url": "https://szorolap.aldi.hu/aldi_kozepso_sor_2026_07_09_kw28_9e36myyd/page/1"
         },
         {
-            "store": "CBA",
-            "title": "cba_0709-0715.pdf",
-            "url": "https://www.cba.hu/wp-content/uploads/2026/07/cba_0709-0715.pdf"
-        },
-        {
-            "store": "CBA Príma",
-            "title": "prima_0709-0715.pdf",
-            "url": "https://www.prima.hu/wp-content/uploads/2026/07/prima_0709-0715.pdf"
-        },
-        {
             "store": "CBA Príma5",
             "title": "prima_47_het_205x293mm_scpaper",
             "url": "https://issuu.com/dataedgekft/docs/prima_47_het_205x293mm_scpaper"
-        },
-        {
-            "store": "Tisza-Coop",
-            "title": "coop-coop-szolnok-markatermek-szorolap-2026-junius-2-het",
-            "url": "https://katalogus.coop.hu/coop-coop-szolnok-markatermek-szorolap-2026-junius-2-het/"
-        },
-        {
-            "store": "Coop hid_abc",
-            "title": "coop-orszagos-szorolap-2026-julius-2-het-abc-szuper",
-            "url": "https://katalogus.coop.hu/coop-orszagos-szorolap-2026-julius-2-het-abc-szuper/"
-        },
-        {
-            "store": "Alföld Pro-Coop",
-            "title": "coop-alfold-szorolap-2026-julius-2-het-szuper-plusz",
-            "url": "https://katalogus.coop.hu/coop-alfold-szorolap-2026-julius-2-het-szuper-plusz/"
         }
     ]
 }
