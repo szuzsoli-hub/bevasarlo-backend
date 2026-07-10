@@ -1,5 +1,5 @@
 {
-    "last_updated": "2026-07-09 18:20:43.204952",
+    "last_updated": "2026-07-10 07:55:55.350009",
     "flyers": [
         {
             "store": "Spar",
@@ -93,8 +93,8 @@
         },
         {
             "store": "Auchan",
-            "title": "2026-07-09-15-heti-hipermarket-ajanlataink-a-nagy-pizza-parbaj",
-            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr28/2026-07-09-15-heti-hipermarket-ajanlataink-a-nagy-pizza-parbaj"
+            "title": "2026-07-02-07-15-szepseg-ajanlataink",
+            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr27/2026-07-02-07-15-szepseg-ajanlataink"
         },
         {
             "store": "Auchan",
@@ -103,8 +103,8 @@
         },
         {
             "store": "Auchan",
-            "title": "2026-07-02-07-15-szepseg-ajanlataink",
-            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr27/2026-07-02-07-15-szepseg-ajanlataink"
+            "title": "2026-07-09-15-heti-szupermarket-ajanlataink",
+            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr28/2026-07-09-15-heti-szupermarket-ajanlataink"
         },
         {
             "store": "Auchan",
@@ -113,13 +113,23 @@
         },
         {
             "store": "Auchan",
-            "title": "2026-07-09-15-heti-szupermarket-ajanlataink",
-            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr28/2026-07-09-15-heti-szupermarket-ajanlataink"
+            "title": "2026-07-09-15-heti-hipermarket-ajanlataink-a-nagy-pizza-parbaj",
+            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr28/2026-07-09-15-heti-hipermarket-ajanlataink-a-nagy-pizza-parbaj"
         },
         {
             "store": "Aldi",
             "title": "aldi_kozepso_sor_2026_07_09_kw28_9e36myyd",
             "url": "https://szorolap.aldi.hu/aldi_kozepso_sor_2026_07_09_kw28_9e36myyd/page/1"
+        },
+        {
+            "store": "CBA",
+            "title": "cba_0709-0715.pdf",
+            "url": "https://www.cba.hu/wp-content/uploads/2026/07/cba_0709-0715.pdf"
+        },
+        {
+            "store": "CBA Príma",
+            "title": "prima_0709-0715.pdf",
+            "url": "https://www.prima.hu/wp-content/uploads/2026/07/prima_0709-0715.pdf"
         },
         {
             "store": "CBA Príma5",
