@@ -1,5 +1,5 @@
 {
-    "last_updated": "2026-07-11 06:29:29.420114",
+    "last_updated": "2026-07-11 11:33:34.726318",
     "flyers": [
         {
             "store": "Spar",
@@ -143,8 +143,8 @@
         },
         {
             "store": "Auchan",
-            "title": "2026-07-09-15-heti-szupermarket-ajanlataink",
-            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr28/2026-07-09-15-heti-szupermarket-ajanlataink"
+            "title": "2026-07-02-07-15-szepseg-ajanlataink",
+            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr27/2026-07-02-07-15-szepseg-ajanlataink"
         },
         {
             "store": "Auchan",
@@ -153,18 +153,18 @@
         },
         {
             "store": "Auchan",
+            "title": "2026-07-09-22-kihagyhatatlan-ziccerek-bajnok-arakon",
+            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr28/2026-07-09-22-kihagyhatatlan-ziccerek-bajnok-arakon"
+        },
+        {
+            "store": "Auchan",
             "title": "2026-07-09-15-heti-hipermarket-ajanlataink-a-nagy-pizza-parbaj",
             "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr28/2026-07-09-15-heti-hipermarket-ajanlataink-a-nagy-pizza-parbaj"
         },
         {
             "store": "Auchan",
-            "title": "2026-07-02-07-15-szepseg-ajanlataink",
-            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr27/2026-07-02-07-15-szepseg-ajanlataink"
-        },
-        {
-            "store": "Auchan",
-            "title": "2026-07-09-22-kihagyhatatlan-ziccerek-bajnok-arakon",
-            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr28/2026-07-09-22-kihagyhatatlan-ziccerek-bajnok-arakon"
+            "title": "2026-07-09-15-heti-szupermarket-ajanlataink",
+            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr28/2026-07-09-15-heti-szupermarket-ajanlataink"
         },
         {
             "store": "Aldi",
@@ -172,19 +172,24 @@
             "url": "https://szorolap.aldi.hu/aldi_kozepso_sor_2026_07_16_kw29_q6etnrt5/page/1"
         },
         {
-            "store": "CBA",
-            "title": "cba_0709-0715.pdf",
-            "url": "https://www.cba.hu/wp-content/uploads/2026/07/cba_0709-0715.pdf"
-        },
-        {
-            "store": "CBA Príma",
-            "title": "prima_0709-0715.pdf",
-            "url": "https://www.prima.hu/wp-content/uploads/2026/07/prima_0709-0715.pdf"
-        },
-        {
             "store": "CBA Príma5",
             "title": "prima_47_het_205x293mm_scpaper",
             "url": "https://issuu.com/dataedgekft/docs/prima_47_het_205x293mm_scpaper"
+        },
+        {
+            "store": "Tisza-Coop",
+            "title": "coop-coop-szolnok-markatermek-szorolap-2026-junius-2-het",
+            "url": "https://katalogus.coop.hu/coop-coop-szolnok-markatermek-szorolap-2026-junius-2-het/"
+        },
+        {
+            "store": "Coop hid_abc",
+            "title": "coop-orszagos-szorolap-2026-julius-2-het-abc-szuper",
+            "url": "https://katalogus.coop.hu/coop-orszagos-szorolap-2026-julius-2-het-abc-szuper/"
+        },
+        {
+            "store": "Alföld Pro-Coop",
+            "title": "coop-alfold-szorolap-2026-julius-2-het-szuper-plusz",
+            "url": "https://katalogus.coop.hu/coop-alfold-szorolap-2026-julius-2-het-szuper-plusz/"
         }
     ]
 }
