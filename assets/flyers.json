@@ -1,5 +1,5 @@
 {
-    "last_updated": "2026-07-12 17:31:00.235766",
+    "last_updated": "2026-07-13 07:45:23.537068",
     "flyers": [
         {
             "store": "Spar",
@@ -25,11 +25,6 @@
             "store": "Spar",
             "title": "260701-8-bor-nyar",
             "url": "https://www.spar.hu/ajanlatok/egyeb/260701-8-bor-nyar"
-        },
-        {
-            "store": "Spar",
-            "title": "260702-9-nyari-kuponfuzet",
-            "url": "https://www.spar.hu/ajanlatok/egyeb/260702-9-nyari-kuponfuzet"
         },
         {
             "store": "Spar",
@@ -143,8 +138,18 @@
         },
         {
             "store": "Auchan",
+            "title": "2026-07-02-07-15-szepseg-ajanlataink",
+            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr27/2026-07-02-07-15-szepseg-ajanlataink"
+        },
+        {
+            "store": "Auchan",
             "title": "2026-07-09-15-heti-hipermarket-ajanlataink-a-nagy-pizza-parbaj",
             "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr28/2026-07-09-15-heti-hipermarket-ajanlataink-a-nagy-pizza-parbaj"
+        },
+        {
+            "store": "Auchan",
+            "title": "2026-07-09-22-kihagyhatatlan-ziccerek-bajnok-arakon",
+            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr28/2026-07-09-22-kihagyhatatlan-ziccerek-bajnok-arakon"
         },
         {
             "store": "Auchan",
@@ -157,19 +162,29 @@
             "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr28/2026-07-09-15-heti-hipermarket-ajanlataink"
         },
         {
-            "store": "Auchan",
-            "title": "2026-07-02-07-15-szepseg-ajanlataink",
-            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr27/2026-07-02-07-15-szepseg-ajanlataink"
-        },
-        {
-            "store": "Auchan",
-            "title": "2026-07-09-22-kihagyhatatlan-ziccerek-bajnok-arakon",
-            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr28/2026-07-09-22-kihagyhatatlan-ziccerek-bajnok-arakon"
-        },
-        {
             "store": "Aldi",
             "title": "aldi_kozepso_sor_2026_07_16_kw29_q6etnrt5",
             "url": "https://szorolap.aldi.hu/aldi_kozepso_sor_2026_07_16_kw29_q6etnrt5/page/1"
+        },
+        {
+            "store": "CBA",
+            "title": "cba_0709-0715.pdf",
+            "url": "https://www.cba.hu/wp-content/uploads/2026/07/cba_0709-0715.pdf"
+        },
+        {
+            "store": "CBA",
+            "title": "cba_0716-0722.pdf",
+            "url": "https://www.cba.hu/wp-content/uploads/2026/07/cba_0716-0722.pdf"
+        },
+        {
+            "store": "CBA Príma",
+            "title": "prima_0709-0715.pdf",
+            "url": "https://www.prima.hu/wp-content/uploads/2026/07/prima_0709-0715.pdf"
+        },
+        {
+            "store": "CBA Príma",
+            "title": "prima_0716-0722.pdf",
+            "url": "https://www.prima.hu/wp-content/uploads/2026/07/prima_0716-0722.pdf"
         },
         {
             "store": "CBA Príma5",
