@@ -1,5 +1,5 @@
 {
-    "last_updated": "2026-07-14 17:37:20.935055",
+    "last_updated": "2026-07-15 06:35:51.053024",
     "flyers": [
         {
             "store": "Spar",
@@ -138,28 +138,23 @@
         },
         {
             "store": "Auchan",
+            "title": "2026-07-09-15-heti-hipermarket-ajanlataink",
+            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr28/2026-07-09-15-heti-hipermarket-ajanlataink"
+        },
+        {
+            "store": "Auchan",
             "title": "2026-07-16-07-22-heti-hipermarket-ajanlataink",
             "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr29/2026-07-16-07-22-heti-hipermarket-ajanlataink"
         },
         {
             "store": "Auchan",
-            "title": "2026-07-02-07-15-szepseg-ajanlataink",
-            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr27/2026-07-02-07-15-szepseg-ajanlataink"
-        },
-        {
-            "store": "Auchan",
-            "title": "2026-07-09-22-kihagyhatatlan-ziccerek-bajnok-arakon",
-            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr28/2026-07-09-22-kihagyhatatlan-ziccerek-bajnok-arakon"
-        },
-        {
-            "store": "Auchan",
-            "title": "2026-07-16-07-22-azsiai-ajanlataink",
-            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr29/2026-07-16-07-22-azsiai-ajanlataink"
-        },
-        {
-            "store": "Auchan",
             "title": "2026-07-09-15-heti-hipermarket-ajanlataink-a-nagy-pizza-parbaj",
             "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr28/2026-07-09-15-heti-hipermarket-ajanlataink-a-nagy-pizza-parbaj"
+        },
+        {
+            "store": "Auchan",
+            "title": "2026-07-16-07-22-heti-szupermarket-ajanlataink",
+            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr29/2026-07-16-07-22-heti-szupermarket-ajanlataink"
         },
         {
             "store": "Auchan",
@@ -173,13 +168,18 @@
         },
         {
             "store": "Auchan",
-            "title": "2026-07-09-15-heti-hipermarket-ajanlataink",
-            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr28/2026-07-09-15-heti-hipermarket-ajanlataink"
+            "title": "2026-07-09-22-kihagyhatatlan-ziccerek-bajnok-arakon",
+            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr28/2026-07-09-22-kihagyhatatlan-ziccerek-bajnok-arakon"
         },
         {
             "store": "Auchan",
-            "title": "2026-07-16-07-22-heti-szupermarket-ajanlataink",
-            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr29/2026-07-16-07-22-heti-szupermarket-ajanlataink"
+            "title": "2026-07-16-07-22-azsiai-ajanlataink",
+            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr29/2026-07-16-07-22-azsiai-ajanlataink"
+        },
+        {
+            "store": "Auchan",
+            "title": "2026-07-02-07-15-szepseg-ajanlataink",
+            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr27/2026-07-02-07-15-szepseg-ajanlataink"
         },
         {
             "store": "Aldi",
@@ -210,6 +210,46 @@
             "store": "CBA Príma5",
             "title": "prima_47_het_205x293mm_scpaper",
             "url": "https://issuu.com/dataedgekft/docs/prima_47_het_205x293mm_scpaper"
+        },
+        {
+            "store": "Tisza-Coop",
+            "title": "coop-coop-szolnok-szorolap-2026-julius-2-het",
+            "url": "https://katalogus.coop.hu/coop-coop-szolnok-szorolap-2026-julius-2-het/"
+        },
+        {
+            "store": "Tisza-Coop",
+            "title": "coop-tisza-szorolap-2026-julius-3-het-abc-szuper",
+            "url": "https://katalogus.coop.hu/coop-tisza-szorolap-2026-julius-3-het-abc-szuper/"
+        },
+        {
+            "store": "Alföld Pro-Coop",
+            "title": "coop-alfold-szorolap-2026-julius-2-het-szuper-plusz",
+            "url": "https://katalogus.coop.hu/coop-alfold-szorolap-2026-julius-2-het-szuper-plusz/"
+        },
+        {
+            "store": "Alföld Pro-Coop",
+            "title": "coop-alfold-szorolap-2026-julius-3-het",
+            "url": "https://katalogus.coop.hu/coop-alfold-szorolap-2026-julius-3-het/"
+        },
+        {
+            "store": "Észak-Kelet Pro-Coop",
+            "title": "coop-eszak-kelet-szorolap-2026-julius-3-het",
+            "url": "https://katalogus.coop.hu/coop-eszak-kelet-szorolap-2026-julius-3-het/"
+        },
+        {
+            "store": "Coop pecs",
+            "title": "coop-orszagos-szorolap-2026-julius-2-het-abc-szuper",
+            "url": "https://katalogus.coop.hu/coop-orszagos-szorolap-2026-julius-2-het-abc-szuper/"
+        },
+        {
+            "store": "Coop pecs",
+            "title": "coop-mecsek-szorolap-2026-julius-3-het",
+            "url": "https://katalogus.coop.hu/coop-mecsek-szorolap-2026-julius-3-het/"
+        },
+        {
+            "store": "Coop szombathely",
+            "title": "coop-hetforras-szorolap-2026-julius-3-4-het",
+            "url": "https://katalogus.coop.hu/coop-hetforras-szorolap-2026-julius-3-4-het/"
         }
     ]
 }
