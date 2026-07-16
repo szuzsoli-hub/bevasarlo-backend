@@ -1,5 +1,5 @@
 {
-    "last_updated": "2026-07-16 06:47:47.660363",
+    "last_updated": "2026-07-16 11:57:15.415794",
     "flyers": [
         {
             "store": "Spar",
@@ -103,11 +103,6 @@
         },
         {
             "store": "Auchan",
-            "title": "2026-07-16-07-22-grill-ajanlataink",
-            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr29/2026-07-16-07-22-grill-ajanlataink"
-        },
-        {
-            "store": "Auchan",
             "title": "2026-07-16-07-22-heti-szupermarket-ajanlataink",
             "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr29/2026-07-16-07-22-heti-szupermarket-ajanlataink"
         },
@@ -115,6 +110,11 @@
             "store": "Auchan",
             "title": "2026-07-16-07-22-azsiai-ajanlataink",
             "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr29/2026-07-16-07-22-azsiai-ajanlataink"
+        },
+        {
+            "store": "Auchan",
+            "title": "2026-07-16-07-22-grill-ajanlataink",
+            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr29/2026-07-16-07-22-grill-ajanlataink"
         },
         {
             "store": "Auchan",
@@ -132,39 +132,19 @@
             "url": "https://szorolap.aldi.hu/aldi_kozepso_sor_2026_07_16_kw29_q6etnrt5/page/1"
         },
         {
+            "store": "CBA",
+            "title": "cba_0716-0722.pdf",
+            "url": "https://www.cba.hu/wp-content/uploads/2026/07/cba_0716-0722.pdf"
+        },
+        {
+            "store": "CBA Príma",
+            "title": "prima_0716-0722.pdf",
+            "url": "https://www.prima.hu/wp-content/uploads/2026/07/prima_0716-0722.pdf"
+        },
+        {
             "store": "CBA Príma5",
             "title": "prima_47_het_205x293mm_scpaper",
             "url": "https://issuu.com/dataedgekft/docs/prima_47_het_205x293mm_scpaper"
-        },
-        {
-            "store": "Tisza-Coop",
-            "title": "coop-tisza-szorolap-2026-julius-3-het-szuper-plusz",
-            "url": "https://katalogus.coop.hu/coop-tisza-szorolap-2026-julius-3-het-szuper-plusz/"
-        },
-        {
-            "store": "Tisza-Coop",
-            "title": "coop-tisza-szorolap-2026-julius-3-het-abc-szuper",
-            "url": "https://katalogus.coop.hu/coop-tisza-szorolap-2026-julius-3-het-abc-szuper/"
-        },
-        {
-            "store": "Alföld Pro-Coop",
-            "title": "coop-alfold-szorolap-2026-julius-3-het",
-            "url": "https://katalogus.coop.hu/coop-alfold-szorolap-2026-julius-3-het/"
-        },
-        {
-            "store": "Észak-Kelet Pro-Coop",
-            "title": "coop-eszak-kelet-szorolap-2026-julius-3-het",
-            "url": "https://katalogus.coop.hu/coop-eszak-kelet-szorolap-2026-julius-3-het/"
-        },
-        {
-            "store": "Coop Mecsek Füszért",
-            "title": "coop-mecsek-szorolap-2026-julius-3-het",
-            "url": "https://katalogus.coop.hu/coop-mecsek-szorolap-2026-julius-3-het/"
-        },
-        {
-            "store": "Coop Hétforrás",
-            "title": "coop-hetforras-szorolap-2026-julius-3-4-het",
-            "url": "https://katalogus.coop.hu/coop-hetforras-szorolap-2026-julius-3-4-het/"
         }
     ]
 }
