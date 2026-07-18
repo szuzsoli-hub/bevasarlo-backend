@@ -1,5 +1,5 @@
 {
-    "last_updated": "2026-07-17 17:38:16.716190",
+    "last_updated": "2026-07-18 06:25:56.300197",
     "flyers": [
         {
             "store": "Spar",
@@ -82,24 +82,24 @@
             "url": "https://www.spar.hu/ajanlatok/spar-market/260723-3-spar-market-city-spar"
         },
         {
-            "store": "Spar",
-            "title": "260723-5-spar-market-bak-nagykapornak-zalalovo-szorolap",
-            "url": "https://www.spar.hu/ajanlatok/spar-market/260723-5-spar-market-bak-nagykapornak-zalalovo-szorolap"
-        },
-        {
             "store": "Penny",
             "title": "Penny Akciós Újság 29. heti (202629)",
             "url": "https://files.rewe.co.at/PennyIntLeaflet/HU/202629/"
         },
         {
-            "store": "Lidl",
-            "title": "Lidl akcios-ujsag-29-het",
-            "url": "https://www.lidl.hu/l/hu/ujsag/akcios-ujsag-29-het-2026/ar/0?lf=HHZ"
+            "store": "Penny",
+            "title": "Penny Akciós Újság 30. heti (202630)",
+            "url": "https://files.rewe.co.at/PennyIntLeaflet/HU/202630/"
         },
         {
             "store": "Lidl",
-            "title": "Lidl akcios-ujsag-28-het",
-            "url": "https://www.lidl.hu/l/hu/ujsag/akcios-ujsag-28-het-2026/ar/0?lf=HHZ"
+            "title": "Lidl akcios-ujsag-30-het",
+            "url": "https://www.lidl.hu/l/hu/ujsag/akcios-ujsag-30-het-2026/ar/0?lf=HHZ"
+        },
+        {
+            "store": "Lidl",
+            "title": "Lidl akcios-ujsag-29-het",
+            "url": "https://www.lidl.hu/l/hu/ujsag/akcios-ujsag-29-het-2026/ar/0?lf=HHZ"
         },
         {
             "store": "Metro",
@@ -138,8 +138,13 @@
         },
         {
             "store": "Auchan",
-            "title": "2026-07-16-07-22-azsiai-ajanlataink",
-            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr29/2026-07-16-07-22-azsiai-ajanlataink"
+            "title": "2026-07-16-07-22-grill-ajanlataink",
+            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr29/2026-07-16-07-22-grill-ajanlataink"
+        },
+        {
+            "store": "Auchan",
+            "title": "2026-07-16-07-22-heti-hipermarket-ajanlataink",
+            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr29/2026-07-16-07-22-heti-hipermarket-ajanlataink"
         },
         {
             "store": "Auchan",
@@ -148,23 +153,18 @@
         },
         {
             "store": "Auchan",
-            "title": "2026-07-16-07-22-grill-ajanlataink",
-            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr29/2026-07-16-07-22-grill-ajanlataink"
-        },
-        {
-            "store": "Auchan",
             "title": "2026-07-09-22-kihagyhatatlan-ziccerek-bajnok-arakon",
             "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr28/2026-07-09-22-kihagyhatatlan-ziccerek-bajnok-arakon"
         },
         {
             "store": "Auchan",
-            "title": "2026-07-16-07-22-heti-hipermarket-ajanlataink",
-            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr29/2026-07-16-07-22-heti-hipermarket-ajanlataink"
+            "title": "2026-07-16-07-22-azsiai-ajanlataink",
+            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr29/2026-07-16-07-22-azsiai-ajanlataink"
         },
         {
             "store": "Aldi",
-            "title": "aldi_kozepso_sor_2026_07_16_kw29_q6etnrt5",
-            "url": "https://szorolap.aldi.hu/aldi_kozepso_sor_2026_07_16_kw29_q6etnrt5/page/1"
+            "title": "aldi_online_akcios_ujsag_2026_07_23_kw30_r374zfuo",
+            "url": "https://szorolap.aldi.hu/aldi_online_akcios_ujsag_2026_07_23_kw30_r374zfuo/page/1"
         },
         {
             "store": "CBA",
