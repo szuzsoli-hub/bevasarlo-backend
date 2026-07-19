@@ -1,5 +1,5 @@
 {
-    "last_updated": "2026-07-19 11:46:03.954273",
+    "last_updated": "2026-07-19 17:23:22.961994",
     "flyers": [
         {
             "store": "Spar",
@@ -138,18 +138,8 @@
         },
         {
             "store": "Auchan",
-            "title": "2026-07-16-07-22-heti-szupermarket-ajanlataink",
-            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr29/2026-07-16-07-22-heti-szupermarket-ajanlataink"
-        },
-        {
-            "store": "Auchan",
             "title": "2026-07-16-07-22-grill-ajanlataink",
             "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr29/2026-07-16-07-22-grill-ajanlataink"
-        },
-        {
-            "store": "Auchan",
-            "title": "2026-07-09-22-kihagyhatatlan-ziccerek-bajnok-arakon",
-            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr28/2026-07-09-22-kihagyhatatlan-ziccerek-bajnok-arakon"
         },
         {
             "store": "Auchan",
@@ -162,9 +152,29 @@
             "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr29/2026-07-16-07-22-azsiai-ajanlataink"
         },
         {
+            "store": "Auchan",
+            "title": "2026-07-16-07-22-heti-szupermarket-ajanlataink",
+            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr29/2026-07-16-07-22-heti-szupermarket-ajanlataink"
+        },
+        {
+            "store": "Auchan",
+            "title": "2026-07-09-22-kihagyhatatlan-ziccerek-bajnok-arakon",
+            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr28/2026-07-09-22-kihagyhatatlan-ziccerek-bajnok-arakon"
+        },
+        {
             "store": "Aldi",
             "title": "aldi_online_akcios_ujsag_2026_07_23_kw30_r374zfuo",
             "url": "https://szorolap.aldi.hu/aldi_online_akcios_ujsag_2026_07_23_kw30_r374zfuo/page/1"
+        },
+        {
+            "store": "CBA",
+            "title": "cba_0716-0722.pdf",
+            "url": "https://www.cba.hu/wp-content/uploads/2026/07/cba_0716-0722.pdf"
+        },
+        {
+            "store": "CBA Príma",
+            "title": "prima_0716-0722.pdf",
+            "url": "https://www.prima.hu/wp-content/uploads/2026/07/prima_0716-0722.pdf"
         },
         {
             "store": "CBA Príma5",
