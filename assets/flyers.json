@@ -1,5 +1,5 @@
 {
-    "last_updated": "2026-07-22 12:19:45.021639",
+    "last_updated": "2026-07-22 17:57:29.163661",
     "flyers": [
         {
             "store": "Spar",
@@ -143,18 +143,8 @@
         },
         {
             "store": "Auchan",
-            "title": "2026-07-09-22-kihagyhatatlan-ziccerek-bajnok-arakon",
-            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr28/2026-07-09-22-kihagyhatatlan-ziccerek-bajnok-arakon"
-        },
-        {
-            "store": "Auchan",
             "title": "2026-07-23-07-29-lego-ajanlataink",
             "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr30/2026-07-23-07-29-lego-ajanlataink"
-        },
-        {
-            "store": "Auchan",
-            "title": "2026-07-23-07-29-iskolakezdes-ajanlataink",
-            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr30/2026-07-23-07-29-iskolakezdes-ajanlataink"
         },
         {
             "store": "Auchan",
@@ -163,13 +153,8 @@
         },
         {
             "store": "Auchan",
-            "title": "2026-07-16-07-22-azsiai-ajanlataink",
-            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr29/2026-07-16-07-22-azsiai-ajanlataink"
-        },
-        {
-            "store": "Auchan",
-            "title": "2026-07-23-07-29-heti-hipermarket-ajanlataink",
-            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr30/2026-07-23-07-29-heti-hipermarket-ajanlataink"
+            "title": "2026-07-23-07-29-iskolakezdes-ajanlataink",
+            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr30/2026-07-23-07-29-iskolakezdes-ajanlataink"
         },
         {
             "store": "Auchan",
@@ -178,8 +163,23 @@
         },
         {
             "store": "Auchan",
+            "title": "2026-07-16-07-22-azsiai-ajanlataink",
+            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr29/2026-07-16-07-22-azsiai-ajanlataink"
+        },
+        {
+            "store": "Auchan",
             "title": "2026-07-16-07-22-grill-ajanlataink",
             "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr29/2026-07-16-07-22-grill-ajanlataink"
+        },
+        {
+            "store": "Auchan",
+            "title": "2026-07-23-07-29-heti-hipermarket-ajanlataink",
+            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr30/2026-07-23-07-29-heti-hipermarket-ajanlataink"
+        },
+        {
+            "store": "Auchan",
+            "title": "2026-07-09-22-kihagyhatatlan-ziccerek-bajnok-arakon",
+            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr28/2026-07-09-22-kihagyhatatlan-ziccerek-bajnok-arakon"
         },
         {
             "store": "Aldi",
