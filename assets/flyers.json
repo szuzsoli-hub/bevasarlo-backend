@@ -1,5 +1,5 @@
 {
-    "last_updated": "2026-07-24 06:55:56.763271",
+    "last_updated": "2026-07-24 12:03:28.439169",
     "flyers": [
         {
             "store": "Spar",
@@ -33,6 +33,16 @@
         },
         {
             "store": "Spar",
+            "title": "260730-2-interspar-szorolap-p",
+            "url": "https://www.spar.hu/ajanlatok/interspar/260730-2-interspar-szorolap-p"
+        },
+        {
+            "store": "Spar",
+            "title": "260730-4-interspar-iskola-katalogus",
+            "url": "https://www.spar.hu/ajanlatok/interspar/260730-4-interspar-iskola-katalogus"
+        },
+        {
+            "store": "Spar",
             "title": "260723-4-spar-dabas-szorolap",
             "url": "https://www.spar.hu/ajanlatok/spar/260723-4-spar-dabas-szorolap"
         },
@@ -43,8 +53,23 @@
         },
         {
             "store": "Spar",
+            "title": "260730-1-spar-szorolap-p",
+            "url": "https://www.spar.hu/ajanlatok/spar/260730-1-spar-szorolap-p"
+        },
+        {
+            "store": "Spar",
+            "title": "260730-2-spar-bp-marosheviz-u-1",
+            "url": "https://www.spar.hu/ajanlatok/spar/260730-2-spar-bp-marosheviz-u-1"
+        },
+        {
+            "store": "Spar",
             "title": "260723-3-spar-market-city-spar",
             "url": "https://www.spar.hu/ajanlatok/spar-market/260723-3-spar-market-city-spar"
+        },
+        {
+            "store": "Spar",
+            "title": "260730-5-spar-market-city-spar",
+            "url": "https://www.spar.hu/ajanlatok/spar-market/260730-5-spar-market-city-spar"
         },
         {
             "store": "Penny",
@@ -88,23 +113,23 @@
         },
         {
             "store": "Auchan",
-            "title": "2026-07-23-07-29-iskolakezdes-ajanlataink",
-            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr30/2026-07-23-07-29-iskolakezdes-ajanlataink"
-        },
-        {
-            "store": "Auchan",
             "title": "2026-07-23-07-29-lego-ajanlataink",
             "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr30/2026-07-23-07-29-lego-ajanlataink"
         },
         {
             "store": "Auchan",
-            "title": "2026-07-23-07-29-heti-szupermarket-ajanlataink",
-            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr30/2026-07-23-07-29-heti-szupermarket-ajanlataink"
+            "title": "2026-07-23-07-29-heti-hipermarket-ajanlataink",
+            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr30/2026-07-23-07-29-heti-hipermarket-ajanlataink"
         },
         {
             "store": "Auchan",
-            "title": "2026-07-23-07-29-heti-hipermarket-ajanlataink",
-            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr30/2026-07-23-07-29-heti-hipermarket-ajanlataink"
+            "title": "2026-07-23-07-29-iskolakezdes-ajanlataink",
+            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr30/2026-07-23-07-29-iskolakezdes-ajanlataink"
+        },
+        {
+            "store": "Auchan",
+            "title": "2026-07-23-07-29-heti-szupermarket-ajanlataink",
+            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr30/2026-07-23-07-29-heti-szupermarket-ajanlataink"
         },
         {
             "store": "Aldi",
