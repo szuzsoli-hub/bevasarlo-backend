@@ -1,5 +1,5 @@
 {
-    "last_updated": "2026-07-26 17:23:22.326785",
+    "last_updated": "2026-07-27 07:59:01.113276",
     "flyers": [
         {
             "store": "Spar",
@@ -143,8 +143,8 @@
         },
         {
             "store": "Auchan",
-            "title": "2026-07-23-07-29-lego-ajanlataink",
-            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr30/2026-07-23-07-29-lego-ajanlataink"
+            "title": "2026-07-23-07-29-iskolakezdes-ajanlataink",
+            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr30/2026-07-23-07-29-iskolakezdes-ajanlataink"
         },
         {
             "store": "Auchan",
@@ -153,8 +153,8 @@
         },
         {
             "store": "Auchan",
-            "title": "2026-07-23-07-29-iskolakezdes-ajanlataink",
-            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr30/2026-07-23-07-29-iskolakezdes-ajanlataink"
+            "title": "2026-07-23-07-29-lego-ajanlataink",
+            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr30/2026-07-23-07-29-lego-ajanlataink"
         },
         {
             "store": "Aldi",
@@ -172,9 +172,19 @@
             "url": "https://katalogus.coop.hu/coop-tisza-szorolap-2026-julius-4-het-abc-szuper/"
         },
         {
+            "store": "Tisza-Coop",
+            "title": "coop-orszagos-szorolap-2026-augusztus-1-het-abc-szuper",
+            "url": "https://katalogus.coop.hu/coop-orszagos-szorolap-2026-augusztus-1-het-abc-szuper/"
+        },
+        {
             "store": "Alföld Pro-Coop",
             "title": "coop-alfold-szorolap-2026-julius-4-het",
             "url": "https://katalogus.coop.hu/coop-alfold-szorolap-2026-julius-4-het/"
+        },
+        {
+            "store": "Alföld Pro-Coop",
+            "title": "coop-alfold-szorolap-2026-augusztuis-1-het-szuper-plusz",
+            "url": "https://katalogus.coop.hu/coop-alfold-szorolap-2026-augusztuis-1-het-szuper-plusz/"
         },
         {
             "store": "Észak-Kelet Pro-Coop",
