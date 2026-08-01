@@ -1,5 +1,5 @@
 {
-    "last_updated": "2026-08-01 11:42:41.279117",
+    "last_updated": "2026-08-01 17:30:59.051237",
     "flyers": [
         {
             "store": "Spar",
@@ -123,23 +123,8 @@
         },
         {
             "store": "Auchan",
-            "title": "2026-07-30-08-05-heti-hipermarket-ajanlataink",
-            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr31/2026-07-30-08-05-heti-hipermarket-ajanlataink"
-        },
-        {
-            "store": "Auchan",
-            "title": "2026-08-06-08-19-iskolakezdes-ajanlataink",
-            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr32/2026-08-06-08-19-iskolakezdes-ajanlataink"
-        },
-        {
-            "store": "Auchan",
             "title": "2026-08-06-08-12-heti-hipermarket-ajanlataink",
             "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr32/2026-08-06-08-12-heti-hipermarket-ajanlataink"
-        },
-        {
-            "store": "Auchan",
-            "title": "2026-07-30-08-12-nemzetkozi-konyha-ajanlataink",
-            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr31/2026-07-30-08-12-nemzetkozi-konyha-ajanlataink"
         },
         {
             "store": "Auchan",
@@ -148,8 +133,18 @@
         },
         {
             "store": "Auchan",
+            "title": "2026-07-30-08-05-heti-szupermarket-ajanlataink",
+            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr31/2026-07-30-08-05-heti-szupermarket-ajanlataink"
+        },
+        {
+            "store": "Auchan",
             "title": "2026-08-06-08-12-heti-szupermarket-ajanlataink",
             "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr32/2026-08-06-08-12-heti-szupermarket-ajanlataink"
+        },
+        {
+            "store": "Auchan",
+            "title": "2026-08-06-08-19-iskolakezdes-ajanlataink",
+            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr32/2026-08-06-08-19-iskolakezdes-ajanlataink"
         },
         {
             "store": "Auchan",
@@ -158,8 +153,13 @@
         },
         {
             "store": "Auchan",
-            "title": "2026-07-30-08-05-heti-szupermarket-ajanlataink",
-            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr31/2026-07-30-08-05-heti-szupermarket-ajanlataink"
+            "title": "2026-07-30-08-05-heti-hipermarket-ajanlataink",
+            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr31/2026-07-30-08-05-heti-hipermarket-ajanlataink"
+        },
+        {
+            "store": "Auchan",
+            "title": "2026-07-30-08-12-nemzetkozi-konyha-ajanlataink",
+            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr31/2026-07-30-08-12-nemzetkozi-konyha-ajanlataink"
         },
         {
             "store": "Aldi",
