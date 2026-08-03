@@ -1,5 +1,5 @@
 {
-    "last_updated": "2026-08-02 17:23:23.486899",
+    "last_updated": "2026-08-03 08:02:40.727247",
     "flyers": [
         {
             "store": "Spar",
@@ -67,6 +67,16 @@
             "url": "https://www.spar.hu/ajanlatok/spar-market/260806-3-spar-market-city-spar"
         },
         {
+            "store": "Penny",
+            "title": "Penny Akciós Újság 31. heti (202631)",
+            "url": "https://files.rewe.co.at/PennyIntLeaflet/HU/202631/"
+        },
+        {
+            "store": "Penny",
+            "title": "Penny Akciós Újság 32. heti (202632)",
+            "url": "https://files.rewe.co.at/PennyIntLeaflet/HU/202632/"
+        },
+        {
             "store": "Lidl",
             "title": "Lidl akcios-ujsag-31-het",
             "url": "https://www.lidl.hu/l/hu/ujsag/akcios-ujsag-31-het-2026/ar/0?lf=HHZ"
@@ -75,16 +85,6 @@
             "store": "Lidl",
             "title": "Lidl akcios-ujsag-32-het",
             "url": "https://www.lidl.hu/l/hu/ujsag/akcios-ujsag-32-het-2026/ar/0?lf=HHZ"
-        },
-        {
-            "store": "Lidl",
-            "title": "Lidl regionalis-akciok-papa-jokai-mor-utca-31het",
-            "url": "https://www.lidl.hu/l/hu/ujsag/regionalis-akciok-papa-jokai-mor-utca-31het/ar/0?lf=HHZ"
-        },
-        {
-            "store": "Lidl",
-            "title": "Lidl akciosujsag-extra-31het",
-            "url": "https://www.lidl.hu/l/hu/ujsag/akciosujsag-extra-31het-2026/ar/0?lf=HHZ"
         },
         {
             "store": "Metro",
@@ -113,6 +113,16 @@
         },
         {
             "store": "Auchan",
+            "title": "2026-08-06-08-12-heti-hipermarket-ajanlataink",
+            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr32/2026-08-06-08-12-heti-hipermarket-ajanlataink"
+        },
+        {
+            "store": "Auchan",
+            "title": "2026-07-30-08-05-heti-hipermarket-ajanlataink",
+            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr31/2026-07-30-08-05-heti-hipermarket-ajanlataink"
+        },
+        {
+            "store": "Auchan",
             "title": "2026-08-06-08-19-iskolakezdes-ajanlataink",
             "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr32/2026-08-06-08-19-iskolakezdes-ajanlataink"
         },
@@ -123,33 +133,23 @@
         },
         {
             "store": "Auchan",
-            "title": "2026-08-06-08-12-heti-szupermarket-ajanlataink",
-            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr32/2026-08-06-08-12-heti-szupermarket-ajanlataink"
-        },
-        {
-            "store": "Auchan",
-            "title": "2026-08-06-08-12-heti-hipermarket-ajanlataink",
-            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr32/2026-08-06-08-12-heti-hipermarket-ajanlataink"
-        },
-        {
-            "store": "Auchan",
-            "title": "2026-07-30-08-05-bor-ajanlataink",
-            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr31/2026-07-30-08-05-bor-ajanlataink"
-        },
-        {
-            "store": "Auchan",
             "title": "2026-07-30-08-12-nemzetkozi-konyha-ajanlataink",
             "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr31/2026-07-30-08-12-nemzetkozi-konyha-ajanlataink"
         },
         {
             "store": "Auchan",
-            "title": "2026-07-30-08-05-heti-hipermarket-ajanlataink",
-            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr31/2026-07-30-08-05-heti-hipermarket-ajanlataink"
+            "title": "2026-08-06-08-12-heti-szupermarket-ajanlataink",
+            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr32/2026-08-06-08-12-heti-szupermarket-ajanlataink"
         },
         {
             "store": "Auchan",
             "title": "2026-07-30-08-05-heti-szupermarket-ajanlataink",
             "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr31/2026-07-30-08-05-heti-szupermarket-ajanlataink"
+        },
+        {
+            "store": "Auchan",
+            "title": "2026-07-30-08-05-bor-ajanlataink",
+            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr31/2026-07-30-08-05-bor-ajanlataink"
         },
         {
             "store": "Aldi",
@@ -172,9 +172,19 @@
             "url": "https://katalogus.coop.hu/coop-orszagos-szorolap-2026-augusztus-1-het-abc-szuper/"
         },
         {
+            "store": "Coop hid_abc",
+            "title": "coop-orszagos-szorolap-2026-augusztus-2-het-abc-szuper",
+            "url": "https://katalogus.coop.hu/coop-orszagos-szorolap-2026-augusztus-2-het-abc-szuper/"
+        },
+        {
             "store": "Alföld Pro-Coop",
             "title": "coop-alfold-szorolap-2026-augusztuis-1-het-szuper-plusz",
             "url": "https://katalogus.coop.hu/coop-alfold-szorolap-2026-augusztuis-1-het-szuper-plusz/"
+        },
+        {
+            "store": "Alföld Pro-Coop",
+            "title": "coop-alfold-szorolap-2026-augusztus-2-het-szuper-plusz",
+            "url": "https://katalogus.coop.hu/coop-alfold-szorolap-2026-augusztus-2-het-szuper-plusz/"
         }
     ]
 }
