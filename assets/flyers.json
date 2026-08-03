@@ -1,5 +1,5 @@
 {
-    "last_updated": "2026-08-03 08:02:40.727247",
+    "last_updated": "2026-08-03 13:36:24.173273",
     "flyers": [
         {
             "store": "Spar",
@@ -78,13 +78,13 @@
         },
         {
             "store": "Lidl",
-            "title": "Lidl akcios-ujsag-31-het",
-            "url": "https://www.lidl.hu/l/hu/ujsag/akcios-ujsag-31-het-2026/ar/0?lf=HHZ"
+            "title": "Lidl akcios-ujsag-32-het",
+            "url": "https://www.lidl.hu/l/hu/ujsag/akcios-ujsag-32-het-2026/ar/0?lf=HHZ"
         },
         {
             "store": "Lidl",
-            "title": "Lidl akcios-ujsag-32-het",
-            "url": "https://www.lidl.hu/l/hu/ujsag/akcios-ujsag-32-het-2026/ar/0?lf=HHZ"
+            "title": "Lidl akcios-ujsag-31-het",
+            "url": "https://www.lidl.hu/l/hu/ujsag/akcios-ujsag-31-het-2026/ar/0?lf=HHZ"
         },
         {
             "store": "Metro",
@@ -113,8 +113,8 @@
         },
         {
             "store": "Auchan",
-            "title": "2026-08-06-08-12-heti-hipermarket-ajanlataink",
-            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr32/2026-08-06-08-12-heti-hipermarket-ajanlataink"
+            "title": "2026-08-06-08-12-heti-szupermarket-ajanlataink",
+            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr32/2026-08-06-08-12-heti-szupermarket-ajanlataink"
         },
         {
             "store": "Auchan",
@@ -123,13 +123,13 @@
         },
         {
             "store": "Auchan",
-            "title": "2026-08-06-08-19-iskolakezdes-ajanlataink",
-            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr32/2026-08-06-08-19-iskolakezdes-ajanlataink"
+            "title": "2026-07-30-08-05-bor-ajanlataink",
+            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr31/2026-07-30-08-05-bor-ajanlataink"
         },
         {
             "store": "Auchan",
-            "title": "2026-07-30-08-05-iskolakezdes-ajanlataink",
-            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr31/2026-07-30-08-05-iskolakezdes-ajanlataink"
+            "title": "2026-08-06-08-19-mennyisegi-ajanlataink",
+            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr32/2026-08-06-08-19-mennyisegi-ajanlataink"
         },
         {
             "store": "Auchan",
@@ -138,8 +138,8 @@
         },
         {
             "store": "Auchan",
-            "title": "2026-08-06-08-12-heti-szupermarket-ajanlataink",
-            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr32/2026-08-06-08-12-heti-szupermarket-ajanlataink"
+            "title": "2026-07-30-08-05-iskolakezdes-ajanlataink",
+            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr31/2026-07-30-08-05-iskolakezdes-ajanlataink"
         },
         {
             "store": "Auchan",
@@ -148,8 +148,23 @@
         },
         {
             "store": "Auchan",
-            "title": "2026-07-30-08-05-bor-ajanlataink",
-            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr31/2026-07-30-08-05-bor-ajanlataink"
+            "title": "2026-08-06-08-19-iskolakezdes-ajanlataink",
+            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr32/2026-08-06-08-19-iskolakezdes-ajanlataink"
+        },
+        {
+            "store": "Auchan",
+            "title": "2026-08-06-08-12-szekszardi-nyitasi-ajanlataink",
+            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr32/2026-08-06-08-12-szekszardi-nyitasi-ajanlataink"
+        },
+        {
+            "store": "Auchan",
+            "title": "2026-08-06-08-12-pekseg-ajanlataink",
+            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr32/2026-08-06-08-12-pekseg-ajanlataink"
+        },
+        {
+            "store": "Auchan",
+            "title": "2026-08-06-08-12-heti-hipermarket-ajanlataink",
+            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr32/2026-08-06-08-12-heti-hipermarket-ajanlataink"
         },
         {
             "store": "Aldi",
