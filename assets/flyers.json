@@ -1,5 +1,5 @@
 {
-    "last_updated": "2026-08-06 06:53:00.755206",
+    "last_updated": "2026-08-06 12:26:38.954019",
     "flyers": [
         {
             "store": "Spar",
@@ -93,18 +93,8 @@
         },
         {
             "store": "Auchan",
-            "title": "2026-08-06-08-12-pekseg-ajanlataink",
-            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr32/2026-08-06-08-12-pekseg-ajanlataink"
-        },
-        {
-            "store": "Auchan",
-            "title": "2026-08-06-08-19-iskolakezdes-ajanlataink",
-            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr32/2026-08-06-08-19-iskolakezdes-ajanlataink"
-        },
-        {
-            "store": "Auchan",
-            "title": "2026-08-06-08-19-mennyisegi-ajanlataink",
-            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr32/2026-08-06-08-19-mennyisegi-ajanlataink"
+            "title": "2026-08-06-08-12-heti-szupermarket-ajanlataink",
+            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr32/2026-08-06-08-12-heti-szupermarket-ajanlataink"
         },
         {
             "store": "Auchan",
@@ -113,18 +103,28 @@
         },
         {
             "store": "Auchan",
-            "title": "2026-08-06-08-12-heti-szupermarket-ajanlataink",
-            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr32/2026-08-06-08-12-heti-szupermarket-ajanlataink"
-        },
-        {
-            "store": "Auchan",
             "title": "2026-07-30-08-12-nemzetkozi-konyha-ajanlataink",
             "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr31/2026-07-30-08-12-nemzetkozi-konyha-ajanlataink"
         },
         {
             "store": "Auchan",
+            "title": "2026-08-06-08-12-pekseg-ajanlataink",
+            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr32/2026-08-06-08-12-pekseg-ajanlataink"
+        },
+        {
+            "store": "Auchan",
             "title": "2026-08-06-08-12-szekszardi-nyitasi-ajanlataink",
             "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr32/2026-08-06-08-12-szekszardi-nyitasi-ajanlataink"
+        },
+        {
+            "store": "Auchan",
+            "title": "2026-08-06-08-19-mennyisegi-ajanlataink",
+            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr32/2026-08-06-08-19-mennyisegi-ajanlataink"
+        },
+        {
+            "store": "Auchan",
+            "title": "2026-08-06-08-19-iskolakezdes-ajanlataink",
+            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr32/2026-08-06-08-19-iskolakezdes-ajanlataink"
         },
         {
             "store": "Aldi",
