@@ -1,5 +1,5 @@
 {
-    "last_updated": "2026-08-07 11:23:35.671937",
+    "last_updated": "2026-08-07 17:23:26.905185",
     "flyers": [
         {
             "store": "Spar",
@@ -112,14 +112,14 @@
             "url": "https://www.tesco.hu/akciok/katalogusok/szupermarket/tesco-ujsag-2026-08-06/1"
         },
         {
-            "store": "Auchan",
-            "title": "2026-07-30-08-12-nemzetkozi-konyha-ajanlataink",
-            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr31/2026-07-30-08-12-nemzetkozi-konyha-ajanlataink"
+            "store": "Tesco",
+            "title": "Tesco hipermarket/tesco-ujsag-2026-08-13",
+            "url": "https://www.tesco.hu/akciok/katalogusok/hipermarket/tesco-ujsag-2026-08-13/1"
         },
         {
-            "store": "Auchan",
-            "title": "2026-08-06-08-12-szekszardi-nyitasi-ajanlataink",
-            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr32/2026-08-06-08-12-szekszardi-nyitasi-ajanlataink"
+            "store": "Tesco",
+            "title": "Tesco szupermarket/tesco-ujsag-2026-08-13",
+            "url": "https://www.tesco.hu/akciok/katalogusok/szupermarket/tesco-ujsag-2026-08-13/1"
         },
         {
             "store": "Auchan",
@@ -128,8 +128,8 @@
         },
         {
             "store": "Auchan",
-            "title": "2026-08-06-08-12-pekseg-ajanlataink",
-            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr32/2026-08-06-08-12-pekseg-ajanlataink"
+            "title": "2026-08-06-08-12-szekszardi-nyitasi-ajanlataink",
+            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr32/2026-08-06-08-12-szekszardi-nyitasi-ajanlataink"
         },
         {
             "store": "Auchan",
@@ -143,8 +143,18 @@
         },
         {
             "store": "Auchan",
+            "title": "2026-07-30-08-12-nemzetkozi-konyha-ajanlataink",
+            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr31/2026-07-30-08-12-nemzetkozi-konyha-ajanlataink"
+        },
+        {
+            "store": "Auchan",
             "title": "2026-08-06-08-12-heti-hipermarket-ajanlataink",
             "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr32/2026-08-06-08-12-heti-hipermarket-ajanlataink"
+        },
+        {
+            "store": "Auchan",
+            "title": "2026-08-06-08-12-pekseg-ajanlataink",
+            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr32/2026-08-06-08-12-pekseg-ajanlataink"
         },
         {
             "store": "Aldi",
