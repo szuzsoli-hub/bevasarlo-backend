@@ -9,6 +9,7 @@ from datetime import datetime, timezone, timedelta
 import uuid
 import certifi
 from flask_socketio import SocketIO, join_room, leave_room, emit # <-- ÚJ: A Rádiótorony alkatrészei
+from coupons import register_coupon_routes
 
 app = Flask(__name__)
 
@@ -33,7 +34,8 @@ def require_api_key():
     if request.path.startswith('/get_image/'): return 
     if request.path.startswith('/socket.io/'): return 
     if request.path == '/webhook': return  # RevenueCat saját hitelesítést használ
-    
+    if request.path == '/admin_generate_coupons': return
+
     client_key = request.headers.get('X-API-KEY')
     if client_key != EXPECTED_API_KEY:
         return jsonify({"error": "Hozzáférés megtagadva. Érvénytelen API kulcs!"}), 401
@@ -51,6 +53,7 @@ kollekcio = db["listak"]
 tagok_kollekcio = db["csoport_tagok"]
 ai_naplo = db["ai_naplo"]
 kepek_kollekcio = db["termek_kepek"]
+kuponok_kollekcio = db["kuponok"]
 
 def encode_image(image_file):
     return base64.b64encode(image_file.read()).decode('utf-8')
@@ -506,6 +509,8 @@ def handle_leave_room(data):
 
 # ==============================================================================
 
+register_coupon_routes(app, kuponok_kollekcio)
+
 if __name__ == '__main__':
     port = int(os.environ.get('PORT', 5000))
-    socketio.run(app, host='0.0.0.0', port=port, allow_unsafe_werkzeug=True)
+    socketio.run(app, host='0.0.0.0', port=port)
