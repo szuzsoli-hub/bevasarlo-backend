@@ -35,6 +35,9 @@ def require_api_key():
     if request.path.startswith('/socket.io/'): return 
     if request.path == '/webhook': return  # RevenueCat saját hitelesítést használ
     if request.path == '/admin_generate_coupons': return
+    if request.path == '/redeem': return  # <-- ÚJ SOR: a Brevo emailekben kiküldött,
+                                           #     böngészőből nyitott kattintható link,
+                                           #     nincs hozzá X-API-KEY headere.
 
     client_key = request.headers.get('X-API-KEY')
     if client_key != EXPECTED_API_KEY:
