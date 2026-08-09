@@ -1,7 +1,10 @@
 import random
 import string
 import re
-from datetime import datetime, timezone
+import json
+import urllib.request
+import urllib.error
+from datetime import datetime, timezone, timedelta
 from flask import Blueprint, request, jsonify
 
 coupons_bp = Blueprint('coupons', __name__)
@@ -15,7 +18,49 @@ def generate_coupon_code():
     return f"{part1}-{part2}"
 
 
-def register_coupon_routes(app, kuponok_kollekcio):
+def _grant_promotional_entitlement(app_user_id, revenuecat_secret_key,
+                                    entitlement_id='pro_mode', days=180):
+    """
+    Közvetlenül, Google Play vásárlás NÉLKÜL ad [entitlement_id] jogosultságot
+    a felhasználónak [days] napra a RevenueCat "Grant a Promotional
+    Entitlement" API-ján keresztül.
+
+    Ez azért kell, mert a Google Play soha nem engedi egy már-volt-előfizető
+    fióknak "újra megvenni" ugyanazt a terméket, bármilyen ajánlattal
+    próbálkozunk (a "Fejlesztő által meghatározott" jogosultság ezt NEM
+    tudja felülírni - ez egy Play-szintű, nem eligibility-szintű
+    korlátozás). A promotional entitlement grant teljesen megkerüli a
+    Play Billing-et, ezért ez a tesztelőknél (akik jellemzően már voltak
+    korábban előfizetők/tesztelők) is mindig működik.
+
+    Visszatérési érték: (siker: bool, hibaüzenet: str | None)
+    """
+    end_time_ms = int(
+        (datetime.now(timezone.utc) + timedelta(days=days)).timestamp() * 1000
+    )
+    url = (
+        f'https://api.revenuecat.com/v1/subscribers/{app_user_id}'
+        f'/entitlements/{entitlement_id}/promotional'
+    )
+    payload = json.dumps({'end_time_ms': end_time_ms}).encode('utf-8')
+
+    req = urllib.request.Request(url, data=payload, method='POST')
+    req.add_header('Authorization', f'Bearer {revenuecat_secret_key}')
+    req.add_header('Content-Type', 'application/json')
+
+    try:
+        with urllib.request.urlopen(req, timeout=15) as resp:
+            if 200 <= resp.status < 300:
+                return True, None
+            return False, f'RevenueCat HTTP {resp.status}'
+    except urllib.error.HTTPError as e:
+        body = e.read().decode('utf-8', errors='ignore')
+        return False, f'RevenueCat hiba {e.code}: {body}'
+    except Exception as e:
+        return False, str(e)
+
+
+def register_coupon_routes(app, kuponok_kollekcio, revenuecat_secret_key):
     @app.route('/admin_generate_coupons', methods=['GET'])
     def admin_generate_coupons():
         secret = request.args.get('secret')
@@ -44,23 +89,41 @@ def register_coupon_routes(app, kuponok_kollekcio):
         app_user_id = data.get('app_user_id')
         if not code or not app_user_id:
             return jsonify({"error": "missing_fields"}), 400
-        kupon = kuponok_kollekcio.find_one({"code": code})
-        if not kupon:
-            return jsonify({"error": "invalid_code", "message": "Érvénytelen kód"}), 404
-        if kupon.get("redeemed"):
-            return jsonify({"error": "already_redeemed", "message": "Ez a kód már fel lett használva"}), 409
-        kuponok_kollekcio.update_one(
-            {"code": code},
+
+        # Atomikusan foglaljuk le a kódot (find_one_and_update), hogy két
+        # egyidejű kérés ne válthassa be ugyanazt a kódot kétszer.
+        kupon = kuponok_kollekcio.find_one_and_update(
+            {"code": code, "redeemed": False},
             {"$set": {
                 "redeemed": True,
                 "redeemed_at": datetime.now(timezone.utc),
                 "redeemed_by": app_user_id
             }}
         )
-        return jsonify({
-            "status": "success",
-            "offer_id": "pro-tester-180days"
-        }), 200
+
+        if kupon is None:
+            letezik = kuponok_kollekcio.find_one({"code": code})
+            if not letezik:
+                return jsonify({"error": "invalid_code", "message": "Érvénytelen kód"}), 404
+            return jsonify({"error": "already_redeemed", "message": "Ez a kód már fel lett használva"}), 409
+
+        ok, hiba = _grant_promotional_entitlement(app_user_id, revenuecat_secret_key)
+
+        if not ok:
+            # Ha a RevenueCat hívás elbukott, visszaállítjuk a kódot
+            # beválthatóra, hogy a felhasználó (vagy te) újra
+            # próbálkozhasson - a kód nem "égett el" hiába.
+            kuponok_kollekcio.update_one(
+                {"code": code},
+                {"$set": {"redeemed": False, "redeemed_at": None, "redeemed_by": None}}
+            )
+            print(f"❌ RevenueCat entitlement grant hiba ({app_user_id}): {hiba}")
+            return jsonify({
+                "error": "grant_failed",
+                "message": "A kupon beváltása most nem sikerült. Kérlek próbáld újra néhány perc múlva!"
+            }), 502
+
+        return jsonify({"status": "success"}), 200
 
     @app.route('/redeem', methods=['GET'])
     def redeem_landing_page():
@@ -76,9 +139,6 @@ def register_coupon_routes(app, kuponok_kollekcio):
         """
         code = (request.args.get('code') or '').strip().upper()
 
-        # Egyszerű validáció - ne engedjünk be akármilyen szemetet a
-        # deep linkbe (XSS ellen is védelem, mert közvetlenül string
-        # interpolációval kerül a HTML-be).
         if not re.fullmatch(r'[A-Z0-9]{4}-[A-Z0-9]{4}', code):
             code = ''
 
