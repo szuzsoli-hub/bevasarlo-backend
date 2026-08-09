@@ -80,7 +80,15 @@ def register_coupon_routes(app, kuponok_kollekcio, revenuecat_secret_key):
                 "created_at": datetime.now(timezone.utc)
             })
             generated.append(code)
-        return jsonify({"status": "success", "codes": generated}), 200
+
+        # EZ AZ EGYETLEN MÓDOSÍTÁS: a nyers kód helyett a teljes,
+        # koppintható linket írjuk ki, soronként egyet - így egyenként
+        # is kijelölhető és másolható mindegyik.
+        links = [
+            f"https://bevasarlo-backend.onrender.com/redeem?code={code}"
+            for code in generated
+        ]
+        return "\n".join(links), 200, {'Content-Type': 'text/plain; charset=utf-8'}
 
     @app.route('/redeem_coupon', methods=['POST'])
     def redeem_coupon():
