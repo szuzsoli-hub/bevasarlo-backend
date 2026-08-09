@@ -58,6 +58,11 @@ ai_naplo = db["ai_naplo"]
 kepek_kollekcio = db["termek_kepek"]
 kuponok_kollekcio = db["kuponok"]
 
+# ==============================================================================
+# 🔑 REVENUECAT SECRET KEY (modul-szinten, hogy a coupons.py is elérje)
+# ==============================================================================
+REVENUECAT_SECRET_KEY = "sk_eWifEVYaUmYuxmsMtQfjTVEoOKGID"
+
 def encode_image(image_file):
     return base64.b64encode(image_file.read()).decode('utf-8')
 
@@ -70,10 +75,9 @@ def index():
 # ==============================================================================
 
 def get_user_status(app_user_id):
-    REVENUECAT_API_KEY = "sk_eWifEVYaUmYuxmsMtQfjTVEoOKGID"
     url = f"https://api.revenuecat.com/v1/subscribers/{app_user_id}"
     req = urllib.request.Request(url)
-    req.add_header('Authorization', f'Bearer {REVENUECAT_API_KEY}')
+    req.add_header('Authorization', f'Bearer {REVENUECAT_SECRET_KEY}')
     req.add_header('Content-Type', 'application/json')
     
     is_pro = False
@@ -512,7 +516,7 @@ def handle_leave_room(data):
 
 # ==============================================================================
 
-register_coupon_routes(app, kuponok_kollekcio)
+register_coupon_routes(app, kuponok_kollekcio, REVENUECAT_SECRET_KEY)
 
 if __name__ == '__main__':
     port = int(os.environ.get('PORT', 5000))
