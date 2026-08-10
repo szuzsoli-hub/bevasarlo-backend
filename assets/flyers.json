@@ -1,5 +1,5 @@
 {
-    "last_updated": "2026-08-09 17:08:44.752040",
+    "last_updated": "2026-08-10 06:00:32.413829",
     "flyers": [
         {
             "store": "Spar",
@@ -88,11 +88,6 @@
         },
         {
             "store": "Lidl",
-            "title": "Lidl regionalis-akciok-sopron-lofuttato-utca-32het",
-            "url": "https://www.lidl.hu/l/hu/ujsag/regionalis-akciok-sopron-lofuttato-utca-32het/ar/0?lf=HHZ"
-        },
-        {
-            "store": "Lidl",
             "title": "Lidl akciosujsag-extra-31het",
             "url": "https://www.lidl.hu/l/hu/ujsag/akciosujsag-extra-31het-2026/ar/0?lf=HHZ"
         },
@@ -128,13 +123,8 @@
         },
         {
             "store": "Auchan",
-            "title": "2026-08-06-08-12-pekseg-ajanlataink",
-            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr32/2026-08-06-08-12-pekseg-ajanlataink"
-        },
-        {
-            "store": "Auchan",
-            "title": "2026-08-06-08-12-heti-szupermarket-ajanlataink",
-            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr32/2026-08-06-08-12-heti-szupermarket-ajanlataink"
+            "title": "2026-08-06-08-19-mennyisegi-ajanlataink",
+            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr32/2026-08-06-08-19-mennyisegi-ajanlataink"
         },
         {
             "store": "Auchan",
@@ -143,8 +133,13 @@
         },
         {
             "store": "Auchan",
-            "title": "2026-08-06-08-12-heti-hipermarket-ajanlataink",
-            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr32/2026-08-06-08-12-heti-hipermarket-ajanlataink"
+            "title": "2026-07-30-08-12-nemzetkozi-konyha-ajanlataink",
+            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr31/2026-07-30-08-12-nemzetkozi-konyha-ajanlataink"
+        },
+        {
+            "store": "Auchan",
+            "title": "2026-08-06-08-12-pekseg-ajanlataink",
+            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr32/2026-08-06-08-12-pekseg-ajanlataink"
         },
         {
             "store": "Auchan",
@@ -153,13 +148,13 @@
         },
         {
             "store": "Auchan",
-            "title": "2026-07-30-08-12-nemzetkozi-konyha-ajanlataink",
-            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr31/2026-07-30-08-12-nemzetkozi-konyha-ajanlataink"
+            "title": "2026-08-06-08-12-heti-hipermarket-ajanlataink",
+            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr32/2026-08-06-08-12-heti-hipermarket-ajanlataink"
         },
         {
             "store": "Auchan",
-            "title": "2026-08-06-08-19-mennyisegi-ajanlataink",
-            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr32/2026-08-06-08-19-mennyisegi-ajanlataink"
+            "title": "2026-08-06-08-12-heti-szupermarket-ajanlataink",
+            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr32/2026-08-06-08-12-heti-szupermarket-ajanlataink"
         },
         {
             "store": "Aldi",
@@ -182,9 +177,34 @@
             "url": "https://katalogus.coop.hu/coop-orszagos-szorolap-2026-augusztus-2-het-abc-szuper/"
         },
         {
+            "store": "Coop hid_abc",
+            "title": "coop-tisza-szorolap-2026-augusztus-3-het-abc-szuper",
+            "url": "https://katalogus.coop.hu/coop-tisza-szorolap-2026-augusztus-3-het-abc-szuper/"
+        },
+        {
             "store": "Alföld Pro-Coop",
             "title": "coop-alfold-szorolap-2026-augusztus-2-het-szuper-plusz",
             "url": "https://katalogus.coop.hu/coop-alfold-szorolap-2026-augusztus-2-het-szuper-plusz/"
+        },
+        {
+            "store": "Alföld Pro-Coop",
+            "title": "coop-alfold-szorolap-2026-augusztus-3-het",
+            "url": "https://katalogus.coop.hu/coop-alfold-szorolap-2026-augusztus-3-het/"
+        },
+        {
+            "store": "Észak-Kelet Pro-Coop",
+            "title": "coop-eszak-kelet-szorolap-2026-augusztus-3-het",
+            "url": "https://katalogus.coop.hu/coop-eszak-kelet-szorolap-2026-augusztus-3-het/"
+        },
+        {
+            "store": "Coop pecs",
+            "title": "coop-mecsek-szorolap-2026-augusztus-3-het",
+            "url": "https://katalogus.coop.hu/coop-mecsek-szorolap-2026-augusztus-3-het/"
+        },
+        {
+            "store": "Coop szombathely",
+            "title": "coop-hetforras-szorolap-2026-augusztus-3-4-5-het",
+            "url": "https://katalogus.coop.hu/coop-hetforras-szorolap-2026-augusztus-3-4-5-het/"
         }
     ]
 }
