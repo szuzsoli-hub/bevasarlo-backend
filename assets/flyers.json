@@ -1,5 +1,5 @@
 {
-    "last_updated": "2026-08-10 17:23:08.172915",
+    "last_updated": "2026-08-11 05:40:21.806018",
     "flyers": [
         {
             "store": "Spar",
@@ -128,23 +128,23 @@
         },
         {
             "store": "Auchan",
+            "title": "2026-08-13-08-26-grill-ajanlataink",
+            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr33/2026-08-13-08-26-grill-ajanlataink"
+        },
+        {
+            "store": "Auchan",
             "title": "2026-08-13-08-19-heti-szupermarket-ajanlataink",
             "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr33/2026-08-13-08-19-heti-szupermarket-ajanlataink"
         },
         {
             "store": "Auchan",
-            "title": "2026-08-06-08-19-iskolakezdes-ajanlataink",
-            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr32/2026-08-06-08-19-iskolakezdes-ajanlataink"
+            "title": "2026-08-06-08-12-pekseg-ajanlataink",
+            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr32/2026-08-06-08-12-pekseg-ajanlataink"
         },
         {
             "store": "Auchan",
             "title": "2026-07-30-08-12-nemzetkozi-konyha-ajanlataink",
             "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr31/2026-07-30-08-12-nemzetkozi-konyha-ajanlataink"
-        },
-        {
-            "store": "Auchan",
-            "title": "2026-08-06-08-19-mennyisegi-ajanlataink",
-            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr32/2026-08-06-08-19-mennyisegi-ajanlataink"
         },
         {
             "store": "Auchan",
@@ -158,18 +158,13 @@
         },
         {
             "store": "Auchan",
-            "title": "2026-08-13-08-26-grill-ajanlataink",
-            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr33/2026-08-13-08-26-grill-ajanlataink"
-        },
-        {
-            "store": "Auchan",
-            "title": "2026-08-06-08-12-pekseg-ajanlataink",
-            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr32/2026-08-06-08-12-pekseg-ajanlataink"
-        },
-        {
-            "store": "Auchan",
             "title": "2026-08-06-08-12-szekszardi-nyitasi-ajanlataink",
             "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr32/2026-08-06-08-12-szekszardi-nyitasi-ajanlataink"
+        },
+        {
+            "store": "Auchan",
+            "title": "2026-08-06-08-19-iskolakezdes-ajanlataink",
+            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr32/2026-08-06-08-19-iskolakezdes-ajanlataink"
         },
         {
             "store": "Auchan",
@@ -177,9 +172,19 @@
             "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr33/2026-08-13-08-19-zoldsgeg-gyumolcs-ajanlataink"
         },
         {
+            "store": "Auchan",
+            "title": "2026-08-06-08-19-mennyisegi-ajanlataink",
+            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr32/2026-08-06-08-19-mennyisegi-ajanlataink"
+        },
+        {
             "store": "Aldi",
             "title": "aldi_kozepso_sor_2026_kw33",
             "url": "https://szorolap.aldi.hu/aldi_kozepso_sor_2026_kw33/page/1"
+        },
+        {
+            "store": "CBA",
+            "title": "cba_0813-0819.pdf",
+            "url": "https://www.cba.hu/wp-content/uploads/2026/08/cba_0813-0819.pdf"
         },
         {
             "store": "CBA Príma5",
