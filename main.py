@@ -28,6 +28,15 @@ socketio = SocketIO(
 # ==============================================================================
 EXPECTED_API_KEY = "aK9mX3rL7vN2pQ8tB4wF6hD1sJ5cR0eUgY2jM8"
 
+# ==============================================================================
+# 📱 LEGFRISSEBB APP VERZIÓ (kézzel frissítendő minden kiadás után!)
+# Ezt a versionName-mel (pubspec.yaml "1.0.50+55" elejével) kell szinkronban
+# tartani, NEM a buildNumberrel. Csak azután emeld, hogy a kiadás ténylegesen
+# megjelent a Play Áruházban, különben olyan frissítésre figyelmeztetsz,
+# ami még nem tölthető le.
+# ==============================================================================
+LATEST_VERSION = "1.0.51"
+
 @app.before_request
 def require_api_key():
     if request.path == '/': return
@@ -347,6 +356,13 @@ def get_list():
         return jsonify({"list_data": csalad.get("list_data"), "timestamp": csalad.get("timestamp"), "member_count": member_count}), 200
     
     return jsonify({"list_data": {"items": []}, "timestamp": 0, "member_count": 0}), 200
+
+# ==============================================================================
+# 📱 LEGFRISSEBB VERZIÓ LEKÉRDEZÉSE (induláskori frissítés-értesítéshez)
+# ==============================================================================
+@app.route('/latest_version', methods=['GET'])
+def latest_version():
+    return jsonify({"latest_version": LATEST_VERSION}), 200
 
 # ==============================================================================
 # 🤝 CSALÁD KEZELŐ FUNKCIÓK
