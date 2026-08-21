@@ -35,7 +35,7 @@ EXPECTED_API_KEY = "aK9mX3rL7vN2pQ8tB4wF6hD1sJ5cR0eUgY2jM8"
 # megjelent a Play Áruházban, különben olyan frissítésre figyelmeztetsz,
 # ami még nem tölthető le.
 # ==============================================================================
-LATEST_VERSION = "1.0.51"
+LATEST_VERSION = "1.0.54"
 
 @app.before_request
 def require_api_key():
