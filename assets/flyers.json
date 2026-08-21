@@ -1,5 +1,5 @@
 {
-    "last_updated": "2026-08-21 05:01:38.990457",
+    "last_updated": "2026-08-21 11:03:52.829214",
     "flyers": [
         {
             "store": "Spar",
@@ -113,8 +113,13 @@
         },
         {
             "store": "Auchan",
-            "title": "2026-08-21-08-26-iskolakezdes-ajanlataink",
-            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr34/2026-08-21-08-26-iskolakezdes-ajanlataink"
+            "title": "2026-08-21-08-26-heti-szupermarket-ajanlataink",
+            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr34/2026-08-21-08-26-heti-szupermarket-ajanlataink"
+        },
+        {
+            "store": "Auchan",
+            "title": "2026-08-13-08-26-grill-ajanlataink",
+            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr33/2026-08-13-08-26-grill-ajanlataink"
         },
         {
             "store": "Auchan",
@@ -123,13 +128,8 @@
         },
         {
             "store": "Auchan",
-            "title": "2026-08-21-08-26-heti-szupermarket-ajanlataink",
-            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr34/2026-08-21-08-26-heti-szupermarket-ajanlataink"
-        },
-        {
-            "store": "Auchan",
-            "title": "2026-08-13-08-26-grill-ajanlataink",
-            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr33/2026-08-13-08-26-grill-ajanlataink"
+            "title": "2026-08-21-08-26-iskolakezdes-ajanlataink",
+            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr34/2026-08-21-08-26-iskolakezdes-ajanlataink"
         },
         {
             "store": "Auchan",
