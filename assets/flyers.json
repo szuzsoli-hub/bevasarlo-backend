@@ -1,5 +1,5 @@
 {
-    "last_updated": "2026-08-21 17:00:32.390593",
+    "last_updated": "2026-08-22 05:06:03.693443",
     "flyers": [
         {
             "store": "Spar",
@@ -77,14 +77,19 @@
             "url": "https://files.rewe.co.at/PennyIntLeaflet/HU/202634/"
         },
         {
-            "store": "Lidl",
-            "title": "Lidl akcios-ujsag-34-het",
-            "url": "https://www.lidl.hu/l/hu/ujsag/akcios-ujsag-34-het-2026/ar/0?lf=HHZ"
+            "store": "Penny",
+            "title": "Penny Akciós Újság 35. heti (202635)",
+            "url": "https://files.rewe.co.at/PennyIntLeaflet/HU/202635/"
         },
         {
             "store": "Lidl",
-            "title": "Lidl akcios-ujsag-33-het",
-            "url": "https://www.lidl.hu/l/hu/ujsag/akcios-ujsag-33-het-2026/ar/0?lf=HHZ"
+            "title": "Lidl akcios-ujsag-35-het",
+            "url": "https://www.lidl.hu/l/hu/ujsag/akcios-ujsag-35-het-2026/ar/0?lf=HHZ"
+        },
+        {
+            "store": "Lidl",
+            "title": "Lidl akcios-ujsag-34-het",
+            "url": "https://www.lidl.hu/l/hu/ujsag/akcios-ujsag-34-het-2026/ar/0?lf=HHZ"
         },
         {
             "store": "Lidl",
@@ -123,16 +128,6 @@
         },
         {
             "store": "Auchan",
-            "title": "2026-08-21-08-09-02-hazai-termek-ajanlataink",
-            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr34/2026-08-21-08-09-02-hazai-termek-ajanlataink"
-        },
-        {
-            "store": "Auchan",
-            "title": "2026-08-13-08-26-grill-ajanlataink",
-            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr33/2026-08-13-08-26-grill-ajanlataink"
-        },
-        {
-            "store": "Auchan",
             "title": "2026-08-21-08-26-heti-szupermarket-ajanlataink",
             "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr34/2026-08-21-08-26-heti-szupermarket-ajanlataink"
         },
@@ -143,8 +138,8 @@
         },
         {
             "store": "Auchan",
-            "title": "2026-08-21-08-26-heti-hipermarket-ajanlataink",
-            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr34/2026-08-21-08-26-heti-hipermarket-ajanlataink"
+            "title": "2026-08-21-08-09-02-hazai-termek-ajanlataink",
+            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr34/2026-08-21-08-09-02-hazai-termek-ajanlataink"
         },
         {
             "store": "Auchan",
@@ -152,9 +147,19 @@
             "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr34/2026-08-21-08-26-lakberendezes-ajanlataink"
         },
         {
+            "store": "Auchan",
+            "title": "2026-08-21-08-26-heti-hipermarket-ajanlataink",
+            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr34/2026-08-21-08-26-heti-hipermarket-ajanlataink"
+        },
+        {
+            "store": "Auchan",
+            "title": "2026-08-13-08-26-grill-ajanlataink",
+            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr33/2026-08-13-08-26-grill-ajanlataink"
+        },
+        {
             "store": "Aldi",
-            "title": "aldi_kozepso_sor_2026_kw34",
-            "url": "https://szorolap.aldi.hu/aldi_kozepso_sor_2026_kw34/page/1"
+            "title": "aldi_kozepso_sor_2026_kw35",
+            "url": "https://szorolap.aldi.hu/aldi_kozepso_sor_2026_kw35/page/1"
         },
         {
             "store": "CBA Príma5",
