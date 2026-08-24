@@ -324,9 +324,12 @@ def sync_list():
         if regi_csalad:
             db_timestamp = regi_csalad.get("timestamp", 0)
 
-            if base_timestamp is not None and base_timestamp < db_timestamp:
+            if base_timestamp is not None and base_timestamp != db_timestamp:
                 print(f"⚠️ Ütközés! A kliens {base_timestamp} alapján mentett, "
-                      f"de a szerveren már {db_timestamp} van (family_id={family_id}).")
+                      f"de a szerveren jelenleg {db_timestamp} van (family_id={family_id}). "
+                      f"Ez akkor is jelentkezik, ha a kliens 'base_timestamp'-je NAGYOBB, "
+                      f"mint a szerveré — enélkül egy hibás/manipulált kliens megkerülhetné "
+                      f"az ütközés-védelmet egy 'jövőbeli' értékkel.")
                 conflict_member_count = tagok_kollekcio.count_documents({"family_id": family_id})
                 return jsonify({
                     "status": "conflict",
