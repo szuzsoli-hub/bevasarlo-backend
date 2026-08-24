@@ -283,6 +283,27 @@ def get_image(image_id):
 # ==============================================================================
 # ☁️ LISTA SZINKRONIZÁCIÓ (+ KUKÁSAUTÓ ÉS ALAPÍTÓ RÖGZÍTÉSE)
 # ==============================================================================
+#
+# ÚJ, 2026.08.24-i MÓDOSÍTÁS — SZERVER-OLDALI IDŐBÉLYEG (mint Messenger/Viber):
+#
+# EDDIG: a kliens (telefon) küldte a "timestamp"-et, a szerver csak elhitte.
+#        Ha két telefon órája eltért egymástól, ez zavart, félrevezető
+#        ütközés-döntéseket okozott, és tételek tűntek el.
+#
+# MOSTANTÓL: a szerver a SAJÁT órájával bélyegzi az adatot minden mentésnél
+#            (server_timestamp). A kliens órája a mentésnél többé NEM számít.
+#
+# ÜTKÖZÉS-VÉDELEM: a kliens elküldheti a "base_timestamp" mezőt is (milyen
+#            szerver-állapotot látott utoljára, mielőtt módosított). Ha a
+#            szerveren azóta újabb adat van, a kérést 409-cel elutasítjuk,
+#            és visszaadjuk a friss állapotot — a kliens dolga eldönteni,
+#            mit kezd vele (frissül, majd újrapróbálja).
+#
+# VISSZAFELÉ KOMPATIBILIS: ha egy régebbi app-verzió nem küld
+#            "base_timestamp"-et, nem ellenőrzünk ütközést nála — de attól
+#            még ő is a szerver-időbélyeget kapja vissza, tehát az
+#            óraeltérés-hiba rá nézve is azonnal javul.
+# ==============================================================================
 @app.route('/sync_list', methods=['POST'])
 def sync_list():
     data = request.get_json()
@@ -291,18 +312,27 @@ def sync_list():
     if not family_id: return jsonify({"error": "Nincs id"}), 400
     
     list_data = data.get('list_data')
-    incoming_timestamp = data.get('timestamp', 0)
-    
+
+    # A kliens ezt küldheti: "milyen szerver-időbélyeget látott utoljára,
+    # mielőtt módosított". Ha nincs elküldve (régi app-verzió), None marad,
+    # és nem ellenőrzünk ütközést — csak a szerver-időbélyegzés fut le rá is.
+    base_timestamp = data.get('base_timestamp')
+
     try:
         regi_csalad = kollekcio.find_one({"family_id": family_id})
-        
+
         if regi_csalad:
             db_timestamp = regi_csalad.get("timestamp", 0)
-            
-            if incoming_timestamp < db_timestamp:
-                print(f"⚠️ Elavult adat eldobva! (Bejövő: {incoming_timestamp} < DB: {db_timestamp})")
-                socketio.emit('list_updated', {"family_id": family_id, "timestamp": db_timestamp}, room=family_id)
-                return jsonify({"status": "ignored", "message": "Elavult adat, szinkronizacio eldobva"}), 200
+
+            if base_timestamp is not None and base_timestamp < db_timestamp:
+                print(f"⚠️ Ütközés! A kliens {base_timestamp} alapján mentett, "
+                      f"de a szerveren már {db_timestamp} van (family_id={family_id}).")
+                return jsonify({
+                    "status": "conflict",
+                    "message": "Közben más frissítette a listát. Frissülj, majd próbáld újra.",
+                    "list_data": regi_csalad.get("list_data"),
+                    "timestamp": db_timestamp
+                }), 409
 
         if regi_csalad and "list_data" in regi_csalad:
             regi_linkek = set()
@@ -330,9 +360,12 @@ def sync_list():
     except Exception as e:
         pass
 
+    # A szerver saját, aktuális ideje — SOHA nem a kliens órája.
+    server_timestamp = int(datetime.now(timezone.utc).timestamp() * 1000)
+
     kollekcio.update_one({"family_id": family_id}, 
                          {
-                             "$set": {"list_data": list_data, "timestamp": incoming_timestamp},
+                             "$set": {"list_data": list_data, "timestamp": server_timestamp},
                              "$setOnInsert": {"owner_id": user_id}
                          }, 
                          upsert=True)
@@ -340,12 +373,12 @@ def sync_list():
     if user_id:
         tagok_kollekcio.update_one(
             {"family_id": family_id, "user_id": user_id},
-            {"$setOnInsert": {"user_name": "Alapító", "joined_at": incoming_timestamp}},
+            {"$setOnInsert": {"user_name": "Alapító", "joined_at": server_timestamp}},
             upsert=True
         )
 
-    socketio.emit('list_updated', {"family_id": family_id, "timestamp": incoming_timestamp}, room=family_id)
-    return jsonify({"status": "success"}), 200
+    socketio.emit('list_updated', {"family_id": family_id, "timestamp": server_timestamp}, room=family_id)
+    return jsonify({"status": "success", "timestamp": server_timestamp}), 200
 
 @app.route('/get_list', methods=['GET'])
 def get_list():
