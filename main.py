@@ -327,11 +327,13 @@ def sync_list():
             if base_timestamp is not None and base_timestamp < db_timestamp:
                 print(f"⚠️ Ütközés! A kliens {base_timestamp} alapján mentett, "
                       f"de a szerveren már {db_timestamp} van (family_id={family_id}).")
+                conflict_member_count = tagok_kollekcio.count_documents({"family_id": family_id})
                 return jsonify({
                     "status": "conflict",
                     "message": "Közben más frissítette a listát. Frissülj, majd próbáld újra.",
                     "list_data": regi_csalad.get("list_data"),
-                    "timestamp": db_timestamp
+                    "timestamp": db_timestamp,
+                    "member_count": conflict_member_count
                 }), 409
 
         if regi_csalad and "list_data" in regi_csalad:
