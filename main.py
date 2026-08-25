@@ -391,9 +391,32 @@ def get_list():
     csalad = kollekcio.find_one({"family_id": family_id})
     if csalad:
         member_count = tagok_kollekcio.count_documents({"family_id": family_id})
-        return jsonify({"list_data": csalad.get("list_data"), "timestamp": csalad.get("timestamp"), "member_count": member_count}), 200
-    
-    return jsonify({"list_data": {"items": []}, "timestamp": 0, "member_count": 0}), 200
+        owner_id = csalad.get("owner_id")
+        owner_name = None
+        if owner_id:
+            owner_doc = tagok_kollekcio.find_one({"family_id": family_id, "user_id": owner_id})
+            if owner_doc:
+                owner_name = owner_doc.get("user_name")
+        return jsonify({
+            "exists": True,
+            "list_data": csalad.get("list_data"),
+            "timestamp": csalad.get("timestamp"),
+            "member_count": member_count,
+            "owner_id": owner_id,
+            "owner_name": owner_name
+        }), 200
+
+    # ÚJ: explicit "exists": False — a kliens ne a member_count==0-ra
+    # (ami egy vadonatúj, de legitim listánál is előfordulhatna) hanem
+    # erre a mezőre alapozza a "nem létező kód" döntést.
+    return jsonify({
+        "exists": False,
+        "list_data": {"items": []},
+        "timestamp": 0,
+        "member_count": 0,
+        "owner_id": None,
+        "owner_name": None
+    }), 200
 
 # ==============================================================================
 # 📱 LEGFRISSEBB VERZIÓ LEKÉRDEZÉSE (induláskori frissítés-értesítéshez)
@@ -412,6 +435,16 @@ def join_group():
     family_id = data.get('family_id')
     user_id = data.get('user_id')
     user_name = data.get('user_name')
+
+    # ÚJ: nem engedjük regisztrálni a tagságot/nevet nem létező (pl. elgépelt)
+    # kódra — eddig ez "csendben sikeres" csatlakozásnak tűnt a kliens felől,
+    # miközben valójában egy szellem-bejegyzés jött létre.
+    # Idempotens marad: az Alapító (vagy bármely meglévő tag) a SAJÁT nevét
+    # bármikor frissítheti ugyanezen a végponton, mert a saját listája már
+    # mindig létezik ilyenkor.
+    csalad = kollekcio.find_one({"family_id": family_id})
+    if not csalad:
+        return jsonify({"error": "Ehhez a kódhoz nem tartozik lista.", "exists": False}), 404
 
     tagok_kollekcio.update_one(
         {"family_id": family_id, "user_id": user_id},
