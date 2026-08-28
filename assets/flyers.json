@@ -1,5 +1,5 @@
 {
-    "last_updated": "2026-08-28 01:14:44.961364",
+    "last_updated": "2026-08-28 16:46:53.390519",
     "flyers": [
         {
             "store": "Spar",
@@ -28,6 +28,11 @@
         },
         {
             "store": "Spar",
+            "title": "260903-2-interspar-szorolap-p",
+            "url": "https://www.spar.hu/ajanlatok/interspar/260903-2-interspar-szorolap-p"
+        },
+        {
+            "store": "Spar",
             "title": "260827-2-spar-szombathely-uzletnyitas",
             "url": "https://www.spar.hu/ajanlatok/spar/260827-2-spar-szombathely-uzletnyitas"
         },
@@ -48,8 +53,23 @@
         },
         {
             "store": "Spar",
+            "title": "260903-1-spar-szorolap-p",
+            "url": "https://www.spar.hu/ajanlatok/spar/260903-1-spar-szorolap-p"
+        },
+        {
+            "store": "Spar",
+            "title": "260903-4-spar-letenye-uzlet-megujulas",
+            "url": "https://www.spar.hu/ajanlatok/spar/260903-4-spar-letenye-uzlet-megujulas"
+        },
+        {
+            "store": "Spar",
             "title": "260827-6-spar-market-city-spar",
             "url": "https://www.spar.hu/ajanlatok/spar-market/260827-6-spar-market-city-spar"
+        },
+        {
+            "store": "Spar",
+            "title": "260903-3-spar-market-city-spar",
+            "url": "https://www.spar.hu/ajanlatok/spar-market/260903-3-spar-market-city-spar"
         },
         {
             "store": "Penny",
@@ -87,14 +107,14 @@
             "url": "https://www.tesco.hu/akciok/katalogusok/szupermarket/tesco-ujsag-2026-08-27/1"
         },
         {
-            "store": "Auchan",
-            "title": "2026-08-27-09-02-iskolakezdes-ajanlataink",
-            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr35/2026-08-27-09-02-iskolakezdes-ajanlataink"
+            "store": "Tesco",
+            "title": "Tesco hipermarket/tesco-ujsag-2026-09-03",
+            "url": "https://www.tesco.hu/akciok/katalogusok/hipermarket/tesco-ujsag-2026-09-03/1"
         },
         {
-            "store": "Auchan",
-            "title": "2026-08-27-09-02-reggeli-ajanlataink",
-            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr35/2026-08-27-09-02-reggeli-ajanlataink"
+            "store": "Tesco",
+            "title": "Tesco szupermarket/tesco-ujsag-2026-09-03",
+            "url": "https://www.tesco.hu/akciok/katalogusok/szupermarket/tesco-ujsag-2026-09-03/1"
         },
         {
             "store": "Auchan",
@@ -103,13 +123,23 @@
         },
         {
             "store": "Auchan",
-            "title": "2026-08-27-09-02-heti-szupermarket-ajanlataink",
-            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr35/2026-08-27-09-02-heti-szupermarket-ajanlataink"
+            "title": "2026-08-27-09-02-reggeli-ajanlataink",
+            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr35/2026-08-27-09-02-reggeli-ajanlataink"
         },
         {
             "store": "Auchan",
             "title": "2026-08-27-09-02-heti-hipermarket-ajanlataink",
             "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr35/2026-08-27-09-02-heti-hipermarket-ajanlataink"
+        },
+        {
+            "store": "Auchan",
+            "title": "2026-08-27-09-02-heti-szupermarket-ajanlataink",
+            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr35/2026-08-27-09-02-heti-szupermarket-ajanlataink"
+        },
+        {
+            "store": "Auchan",
+            "title": "2026-08-27-09-02-iskolakezdes-ajanlataink",
+            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr35/2026-08-27-09-02-iskolakezdes-ajanlataink"
         },
         {
             "store": "Auchan",
