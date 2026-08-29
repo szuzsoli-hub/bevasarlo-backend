@@ -324,6 +324,17 @@ def tagsag_tiltva(family_id, user_id):
     return bool(tag.get("banned", False))
 
 
+def aktiv_tagok_szama(family_id):
+    """
+    A ténylegesen aktív (nem kitiltott) tagok száma — 2026.08.29-től ez a
+    valós, felhasználóknak megjelenített taglétszám alapja, NEM az összes
+    valaha regisztrált tag (ami a kitiltottakat is tartalmazná).
+    """
+    return tagok_kollekcio.count_documents(
+        {"family_id": family_id, "banned": {"$ne": True}}
+    )
+
+
 # ==============================================================================
 # ☁️ LISTA SZINKRONIZÁCIÓ (+ KUKÁSAUTÓ ÉS ALAPÍTÓ RÖGZÍTÉSE)
 # ==============================================================================
@@ -360,7 +371,9 @@ def sync_list():
                   f"Ez akkor is jelentkezik, ha a kliens 'base_timestamp'-je NAGYOBB, "
                   f"mint a szerveré — enélkül egy hibás/manipulált kliens megkerülhetné "
                   f"az ütközés-védelmet egy 'jövőbeli' értékkel.")
-            conflict_member_count = tagok_kollekcio.count_documents({"family_id": family_id})
+            # ÚJ, 2026.08.29: itt is a VALÓS, aktív taglétszámot adjuk vissza,
+            # nem az összes valaha regisztráltat.
+            conflict_member_count = aktiv_tagok_szama(family_id)
             return jsonify({
                 "status": "conflict",
                 "message": "Közben más frissítette a listát. Frissülj, majd próbáld újra.",
@@ -432,7 +445,10 @@ def get_list():
                 "banned": True
             }), 403
 
-        member_count = tagok_kollekcio.count_documents({"family_id": family_id})
+        # ÚJ, 2026.08.29: a VALÓS, aktív taglétszám — a kitiltott tagok nem
+        # számítanak bele, hogy a felhasználó a helyes, aktuális állapotot
+        # lássa (kitiltáskor -1, visszaengedéskor +1).
+        member_count = aktiv_tagok_szama(family_id)
         owner_id = csalad.get("owner_id")
         owner_name = None
         if owner_id:
