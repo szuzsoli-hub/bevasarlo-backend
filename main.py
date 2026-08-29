@@ -510,7 +510,42 @@ def leave_group():
     data = request.get_json()
     family_id = data.get('family_id')
     user_id = data.get('user_id')
-    
+
+    # ÚJ, 2026.08.29-i SZABÁLY: az Alapító nem egyszerűen "kilép" — ha ő
+    # kezdeményezi a leválasztást (a kliens "Priváttá tétel" gombja, ami
+    # az Alapítónál az EGYETLEN elérhető opció, a sima kilépés nála nem is
+    # jelenik meg), az az EGÉSZ közös lista feloszlatását jelenti mindenki
+    # számára — nem csak neki válik priváttá, hanem mindenkinek. A kliens
+    # ugyanezt a végpontot hívja Alapítóként és nem-Alapítóként is; itt,
+    # szerveroldalon dől el, melyik eset áll fenn.
+    csalad = kollekcio.find_one({"family_id": family_id})
+
+    if csalad and csalad.get("owner_id") == user_id:
+        list_data = csalad.get("list_data") or {}
+        try:
+            if "items" in list_data:
+                for item in list_data["items"]:
+                    unit = item.get("unit", "")
+                    if ":::" in unit:
+                        link = unit.split(":::")[1]
+                        if "/get_image/" in link:
+                            kep_id = link.split("/")[-1]
+                            kepek_kollekcio.delete_one({"image_id": kep_id})
+        except Exception:
+            pass
+
+        tagok_kollekcio.delete_many({"family_id": family_id})
+        kollekcio.delete_one({"family_id": family_id})
+
+        # A maradék tagok kliensei ugyanazt a "group_deleted" eseményt kapják,
+        # mint eddig is — a kliens-oldali kezelést kell privatizálásra
+        # (tartalom megtartása, csak leválasztás a felhőről) módosítani,
+        # NEM törlésre, ahogy eddig tette.
+        socketio.emit('group_deleted', {"family_id": family_id}, room=family_id)
+        return jsonify({"status": "owner_dissolved"}), 200
+
+    # Nem az Alapító lép ki: csak az ő tagsága törlődik, a csoport a
+    # többieknek változatlanul tovább él.
     tagok_kollekcio.delete_one({"family_id": family_id, "user_id": user_id})
     maradek_tagok = tagok_kollekcio.count_documents({"family_id": family_id})
     
