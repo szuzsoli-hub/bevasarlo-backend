@@ -1,5 +1,5 @@
 {
-    "last_updated": "2026-09-04 08:58:47.758645",
+    "last_updated": "2026-09-04 14:29:46.678213",
     "flyers": [
         {
             "store": "Spar",
@@ -18,6 +18,11 @@
         },
         {
             "store": "Spar",
+            "title": "260910-2-interspar-szorolap-p",
+            "url": "https://www.spar.hu/ajanlatok/interspar/260910-2-interspar-szorolap-p"
+        },
+        {
+            "store": "Spar",
             "title": "260903-4-spar-letenye-uzlet-megujulas",
             "url": "https://www.spar.hu/ajanlatok/spar/260903-4-spar-letenye-uzlet-megujulas"
         },
@@ -33,8 +38,23 @@
         },
         {
             "store": "Spar",
+            "title": "260910-4-spar-paks-uzlet-megujulas",
+            "url": "https://www.spar.hu/ajanlatok/spar/260910-4-spar-paks-uzlet-megujulas"
+        },
+        {
+            "store": "Spar",
             "title": "260903-3-spar-market-city-spar",
             "url": "https://www.spar.hu/ajanlatok/spar-market/260903-3-spar-market-city-spar"
+        },
+        {
+            "store": "Spar",
+            "title": "260910-3-spar-market-city-spar",
+            "url": "https://www.spar.hu/ajanlatok/spar-market/260910-3-spar-market-city-spar"
+        },
+        {
+            "store": "Spar",
+            "title": "260910-5-spar-market-torokbalint-szorolap",
+            "url": "https://www.spar.hu/ajanlatok/spar-market/260910-5-spar-market-torokbalint-szorolap"
         },
         {
             "store": "Penny",
@@ -72,19 +92,29 @@
             "url": "https://www.tesco.hu/akciok/katalogusok/szupermarket/tesco-ujsag-2026-09-03/1"
         },
         {
+            "store": "Tesco",
+            "title": "Tesco hipermarket/tesco-ujsag-2026-09-10",
+            "url": "https://www.tesco.hu/akciok/katalogusok/hipermarket/tesco-ujsag-2026-09-10/1"
+        },
+        {
+            "store": "Tesco",
+            "title": "Tesco szupermarket/tesco-ujsag-2026-09-10",
+            "url": "https://www.tesco.hu/akciok/katalogusok/szupermarket/tesco-ujsag-2026-09-10/1"
+        },
+        {
             "store": "Auchan",
             "title": "2026-09-03-09-09-heti-szupermarket-ajanlataink",
             "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr36/2026-09-03-09-09-heti-szupermarket-ajanlataink"
         },
         {
             "store": "Auchan",
-            "title": "2026-09-03-09-09-sajatmarkas-termekeink",
-            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr36/2026-09-03-09-09-sajatmarkas-termekeink"
+            "title": "2026-09-03-09-09-heti-hipermarket-ajanlataink",
+            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr36/2026-09-03-09-09-heti-hipermarket-ajanlataink"
         },
         {
             "store": "Auchan",
-            "title": "2026-09-03-09-09-heti-hipermarket-ajanlataink",
-            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr36/2026-09-03-09-09-heti-hipermarket-ajanlataink"
+            "title": "2026-09-03-09-09-sajatmarkas-termekeink",
+            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr36/2026-09-03-09-09-sajatmarkas-termekeink"
         },
         {
             "store": "Aldi",
