@@ -1,5 +1,5 @@
 {
-    "last_updated": "2026-09-04 14:29:46.678213",
+    "last_updated": "2026-09-04 19:07:21.418732",
     "flyers": [
         {
             "store": "Spar",
@@ -103,11 +103,6 @@
         },
         {
             "store": "Auchan",
-            "title": "2026-09-03-09-09-heti-szupermarket-ajanlataink",
-            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr36/2026-09-03-09-09-heti-szupermarket-ajanlataink"
-        },
-        {
-            "store": "Auchan",
             "title": "2026-09-03-09-09-heti-hipermarket-ajanlataink",
             "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr36/2026-09-03-09-09-heti-hipermarket-ajanlataink"
         },
@@ -115,6 +110,11 @@
             "store": "Auchan",
             "title": "2026-09-03-09-09-sajatmarkas-termekeink",
             "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr36/2026-09-03-09-09-sajatmarkas-termekeink"
+        },
+        {
+            "store": "Auchan",
+            "title": "2026-09-03-09-09-heti-szupermarket-ajanlataink",
+            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr36/2026-09-03-09-09-heti-szupermarket-ajanlataink"
         },
         {
             "store": "Aldi",
