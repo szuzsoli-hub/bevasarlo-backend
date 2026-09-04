@@ -1,5 +1,5 @@
 {
-    "last_updated": "2026-09-03 19:25:16.442442",
+    "last_updated": "2026-09-04 08:58:47.758645",
     "flyers": [
         {
             "store": "Spar",
@@ -25,6 +25,11 @@
             "store": "Spar",
             "title": "260903-1-spar-szorolap",
             "url": "https://www.spar.hu/ajanlatok/spar/260903-1-spar-szorolap"
+        },
+        {
+            "store": "Spar",
+            "title": "260910-1-spar-szorolap-p",
+            "url": "https://www.spar.hu/ajanlatok/spar/260910-1-spar-szorolap-p"
         },
         {
             "store": "Spar",
@@ -73,13 +78,13 @@
         },
         {
             "store": "Auchan",
-            "title": "2026-09-03-09-09-heti-hipermarket-ajanlataink",
-            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr36/2026-09-03-09-09-heti-hipermarket-ajanlataink"
+            "title": "2026-09-03-09-09-sajatmarkas-termekeink",
+            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr36/2026-09-03-09-09-sajatmarkas-termekeink"
         },
         {
             "store": "Auchan",
-            "title": "2026-09-03-09-09-sajatmarkas-termekeink",
-            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr36/2026-09-03-09-09-sajatmarkas-termekeink"
+            "title": "2026-09-03-09-09-heti-hipermarket-ajanlataink",
+            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr36/2026-09-03-09-09-heti-hipermarket-ajanlataink"
         },
         {
             "store": "Aldi",
