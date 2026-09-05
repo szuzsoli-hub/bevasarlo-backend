@@ -1,5 +1,5 @@
 {
-    "last_updated": "2026-09-04 19:07:21.418732",
+    "last_updated": "2026-09-05 08:29:00.257420",
     "flyers": [
         {
             "store": "Spar",
@@ -62,14 +62,19 @@
             "url": "https://files.rewe.co.at/PennyIntLeaflet/HU/202636/"
         },
         {
-            "store": "Lidl",
-            "title": "Lidl akcios-ujsag-36-het",
-            "url": "https://www.lidl.hu/l/hu/ujsag/akcios-ujsag-36-het-2026/ar/0?lf=HHZ"
+            "store": "Penny",
+            "title": "Penny Akciós Újság 37. heti (202637)",
+            "url": "https://files.rewe.co.at/PennyIntLeaflet/HU/202637/"
         },
         {
             "store": "Lidl",
-            "title": "Lidl akcios-ujsag-35-het",
-            "url": "https://www.lidl.hu/l/hu/ujsag/akcios-ujsag-35-het-2026/ar/0?lf=HHZ"
+            "title": "Lidl akcios-ujsag-37-het",
+            "url": "https://www.lidl.hu/l/hu/ujsag/akcios-ujsag-37-het-2026/ar/0?lf=HHZ"
+        },
+        {
+            "store": "Lidl",
+            "title": "Lidl akcios-ujsag-36-het",
+            "url": "https://www.lidl.hu/l/hu/ujsag/akcios-ujsag-36-het-2026/ar/0?lf=HHZ"
         },
         {
             "store": "Metro",
@@ -103,13 +108,13 @@
         },
         {
             "store": "Auchan",
-            "title": "2026-09-03-09-09-heti-hipermarket-ajanlataink",
-            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr36/2026-09-03-09-09-heti-hipermarket-ajanlataink"
+            "title": "2026-09-03-09-09-sajatmarkas-termekeink",
+            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr36/2026-09-03-09-09-sajatmarkas-termekeink"
         },
         {
             "store": "Auchan",
-            "title": "2026-09-03-09-09-sajatmarkas-termekeink",
-            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr36/2026-09-03-09-09-sajatmarkas-termekeink"
+            "title": "2026-09-03-09-09-heti-hipermarket-ajanlataink",
+            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr36/2026-09-03-09-09-heti-hipermarket-ajanlataink"
         },
         {
             "store": "Auchan",
@@ -118,8 +123,8 @@
         },
         {
             "store": "Aldi",
-            "title": "aldi_online_akcios_ujsag_2026_kw36",
-            "url": "https://szorolap.aldi.hu/aldi_online_akcios_ujsag_2026_kw36/page/1"
+            "title": "aldi_kozepso_sor_2026_kw37",
+            "url": "https://szorolap.aldi.hu/aldi_kozepso_sor_2026_kw37/page/1"
         },
         {
             "store": "CBA Príma5",
