@@ -1,5 +1,5 @@
 {
-    "last_updated": "2026-09-07 20:05:55.873849",
+    "last_updated": "2026-09-08 08:59:49.371156",
     "flyers": [
         {
             "store": "Spar",
@@ -113,13 +113,13 @@
         },
         {
             "store": "Auchan",
-            "title": "2026-09-03-09-09-heti-szupermarket-ajanlataink",
-            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr36/2026-09-03-09-09-heti-szupermarket-ajanlataink"
+            "title": "2026-09-03-09-09-heti-hipermarket-ajanlataink",
+            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr36/2026-09-03-09-09-heti-hipermarket-ajanlataink"
         },
         {
             "store": "Auchan",
-            "title": "2026-09-03-09-09-heti-hipermarket-ajanlataink",
-            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr36/2026-09-03-09-09-heti-hipermarket-ajanlataink"
+            "title": "2026-09-10-09-16-konyhai-eszkoz-ajanlataink",
+            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr37/2026-09-10-09-16-konyhai-eszkoz-ajanlataink"
         },
         {
             "store": "Auchan",
@@ -128,23 +128,23 @@
         },
         {
             "store": "Auchan",
-            "title": "2026-09-10-09-23-kedvenc-markaink",
-            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr37/2026-09-10-09-23-kedvenc-markaink"
-        },
-        {
-            "store": "Auchan",
             "title": "2026-09-03-09-09-sajatmarkas-termekeink",
             "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr36/2026-09-03-09-09-sajatmarkas-termekeink"
         },
         {
             "store": "Auchan",
-            "title": "2026-09-10-09-16-heti-hipermarket-ajanlataink",
-            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr37/2026-09-10-09-16-heti-hipermarket-ajanlataink"
+            "title": "2026-09-03-09-09-heti-szupermarket-ajanlataink",
+            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr36/2026-09-03-09-09-heti-szupermarket-ajanlataink"
         },
         {
             "store": "Auchan",
-            "title": "2026-09-10-09-16-konyhai-eszkoz-ajanlataink",
-            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr37/2026-09-10-09-16-konyhai-eszkoz-ajanlataink"
+            "title": "2026-09-10-09-23-kedvenc-markaink",
+            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr37/2026-09-10-09-23-kedvenc-markaink"
+        },
+        {
+            "store": "Auchan",
+            "title": "2026-09-10-09-16-heti-hipermarket-ajanlataink",
+            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr37/2026-09-10-09-16-heti-hipermarket-ajanlataink"
         },
         {
             "store": "Aldi",
