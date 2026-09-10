@@ -1,5 +1,5 @@
 {
-    "last_updated": "2026-09-10 14:34:21.055536",
+    "last_updated": "2026-09-10 19:15:02.509616",
     "flyers": [
         {
             "store": "Spar",
@@ -73,11 +73,6 @@
         },
         {
             "store": "Auchan",
-            "title": "2026-09-10-09-23-nemzetkozi-konyha-ajanlataink",
-            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr37/2026-09-10-09-23-nemzetkozi-konyha-ajanlataink"
-        },
-        {
-            "store": "Auchan",
             "title": "2026-09-10-09-23-kedvenc-markaink",
             "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr37/2026-09-10-09-23-kedvenc-markaink"
         },
@@ -88,13 +83,18 @@
         },
         {
             "store": "Auchan",
+            "title": "2026-09-10-09-16-heti-szupermarket-ajanlataink",
+            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr37/2026-09-10-09-16-heti-szupermarket-ajanlataink"
+        },
+        {
+            "store": "Auchan",
             "title": "2026-09-10-09-16-heti-hipermarket-ajanlataink",
             "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr37/2026-09-10-09-16-heti-hipermarket-ajanlataink"
         },
         {
             "store": "Auchan",
-            "title": "2026-09-10-09-16-heti-szupermarket-ajanlataink",
-            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr37/2026-09-10-09-16-heti-szupermarket-ajanlataink"
+            "title": "2026-09-10-09-23-nemzetkozi-konyha-ajanlataink",
+            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr37/2026-09-10-09-23-nemzetkozi-konyha-ajanlataink"
         },
         {
             "store": "Aldi",
