@@ -1,5 +1,5 @@
 {
-    "last_updated": "2026-09-18 19:09:53.190805",
+    "last_updated": "2026-09-19 08:55:50.202277",
     "flyers": [
         {
             "store": "Spar",
@@ -57,14 +57,29 @@
             "url": "https://files.rewe.co.at/PennyIntLeaflet/HU/202638/"
         },
         {
+            "store": "Penny",
+            "title": "Penny Akciós Újság 39. heti (202639)",
+            "url": "https://files.rewe.co.at/PennyIntLeaflet/HU/202639/"
+        },
+        {
+            "store": "Lidl",
+            "title": "Lidl akcios-ujsag-39-het",
+            "url": "https://www.lidl.hu/l/hu/ujsag/akcios-ujsag-39-het-2026/ar/0?lf=HHZ"
+        },
+        {
             "store": "Lidl",
             "title": "Lidl akcios-ujsag-38-het",
             "url": "https://www.lidl.hu/l/hu/ujsag/akcios-ujsag-38-het-2026/ar/0?lf=HHZ"
         },
         {
             "store": "Lidl",
-            "title": "Lidl akcios-ujsag-37-het",
-            "url": "https://www.lidl.hu/l/hu/ujsag/akcios-ujsag-37-het-2026/ar/0?lf=HHZ"
+            "title": "Lidl regionalis-akciok-veszprem-papai-ut-39het",
+            "url": "https://www.lidl.hu/l/hu/ujsag/regionalis-akciok-veszprem-papai-ut-39het/ar/0?lf=HHZ"
+        },
+        {
+            "store": "Lidl",
+            "title": "Lidl regionalis-akciok-debrecen-monostorpalyi-ut-39het",
+            "url": "https://www.lidl.hu/l/hu/ujsag/regionalis-akciok-debrecen-monostorpalyi-ut-39het/ar/0?lf=HHZ"
         },
         {
             "store": "Lidl",
@@ -93,28 +108,13 @@
         },
         {
             "store": "Auchan",
+            "title": "2026-09-10-09-23-nemzetkozi-konyha-ajanlataink",
+            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr37/2026-09-10-09-23-nemzetkozi-konyha-ajanlataink"
+        },
+        {
+            "store": "Auchan",
             "title": "2026-09-17-23-szekszardi-ajanlataink",
             "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr38/2026-09-17-23-szekszardi-ajanlataink"
-        },
-        {
-            "store": "Auchan",
-            "title": "2026-09-17-23-hagyomany-es-minoseg-hipermarket-ajanlataink",
-            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr38/2026-09-17-23-hagyomany-es-minoseg-hipermarket-ajanlataink"
-        },
-        {
-            "store": "Auchan",
-            "title": "2026-09-17-09-23-heti-hipermarket-ajanlataink",
-            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr38/2026-09-17-09-23-heti-hipermarket-ajanlataink"
-        },
-        {
-            "store": "Auchan",
-            "title": "2026-09-17-09-30-bajor-sorfesztival-hipermarket-ajanlataink",
-            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr38/2026-09-17-09-30-bajor-sorfesztival-hipermarket-ajanlataink"
-        },
-        {
-            "store": "Auchan",
-            "title": "2026-09-10-09-23-kedvenc-markaink",
-            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr37/2026-09-10-09-23-kedvenc-markaink"
         },
         {
             "store": "Auchan",
@@ -123,13 +123,28 @@
         },
         {
             "store": "Auchan",
-            "title": "2026-09-10-09-23-nemzetkozi-konyha-ajanlataink",
-            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr37/2026-09-10-09-23-nemzetkozi-konyha-ajanlataink"
+            "title": "2026-09-17-09-23-heti-hipermarket-ajanlataink",
+            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr38/2026-09-17-09-23-heti-hipermarket-ajanlataink"
+        },
+        {
+            "store": "Auchan",
+            "title": "2026-09-17-23-hagyomany-es-minoseg-hipermarket-ajanlataink",
+            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr38/2026-09-17-23-hagyomany-es-minoseg-hipermarket-ajanlataink"
+        },
+        {
+            "store": "Auchan",
+            "title": "2026-09-10-09-23-kedvenc-markaink",
+            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr37/2026-09-10-09-23-kedvenc-markaink"
+        },
+        {
+            "store": "Auchan",
+            "title": "2026-09-17-09-30-bajor-sorfesztival-hipermarket-ajanlataink",
+            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr38/2026-09-17-09-30-bajor-sorfesztival-hipermarket-ajanlataink"
         },
         {
             "store": "Aldi",
-            "title": "aldi_kozepso_sor_2026_kw38",
-            "url": "https://szorolap.aldi.hu/aldi_kozepso_sor_2026_kw38/page/1"
+            "title": "aldi_kozepso_sor_2026_kw39",
+            "url": "https://szorolap.aldi.hu/aldi_kozepso_sor_2026_kw39/page/1"
         },
         {
             "store": "CBA Príma5",
