@@ -1,5 +1,5 @@
 {
-    "last_updated": "2026-09-19 14:10:16.784193",
+    "last_updated": "2026-09-19 18:44:30.081380",
     "flyers": [
         {
             "store": "Spar",
@@ -108,28 +108,13 @@
         },
         {
             "store": "Auchan",
-            "title": "2026-09-10-09-23-nemzetkozi-konyha-ajanlataink",
-            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr37/2026-09-10-09-23-nemzetkozi-konyha-ajanlataink"
-        },
-        {
-            "store": "Auchan",
-            "title": "2026-09-10-09-23-kedvenc-markaink",
-            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr37/2026-09-10-09-23-kedvenc-markaink"
-        },
-        {
-            "store": "Auchan",
-            "title": "2026-09-17-09-23-heti-szupermarket-ajanlataink",
-            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr38/2026-09-17-09-23-heti-szupermarket-ajanlataink"
-        },
-        {
-            "store": "Auchan",
             "title": "2026-09-17-23-szekszardi-ajanlataink",
             "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr38/2026-09-17-23-szekszardi-ajanlataink"
         },
         {
             "store": "Auchan",
-            "title": "2026-09-17-23-hagyomany-es-minoseg-hipermarket-ajanlataink",
-            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr38/2026-09-17-23-hagyomany-es-minoseg-hipermarket-ajanlataink"
+            "title": "2026-09-17-09-23-heti-hipermarket-ajanlataink",
+            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr38/2026-09-17-09-23-heti-hipermarket-ajanlataink"
         },
         {
             "store": "Auchan",
@@ -138,8 +123,23 @@
         },
         {
             "store": "Auchan",
-            "title": "2026-09-17-09-23-heti-hipermarket-ajanlataink",
-            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr38/2026-09-17-09-23-heti-hipermarket-ajanlataink"
+            "title": "2026-09-17-09-23-heti-szupermarket-ajanlataink",
+            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr38/2026-09-17-09-23-heti-szupermarket-ajanlataink"
+        },
+        {
+            "store": "Auchan",
+            "title": "2026-09-10-09-23-nemzetkozi-konyha-ajanlataink",
+            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr37/2026-09-10-09-23-nemzetkozi-konyha-ajanlataink"
+        },
+        {
+            "store": "Auchan",
+            "title": "2026-09-17-23-hagyomany-es-minoseg-hipermarket-ajanlataink",
+            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr38/2026-09-17-23-hagyomany-es-minoseg-hipermarket-ajanlataink"
+        },
+        {
+            "store": "Auchan",
+            "title": "2026-09-10-09-23-kedvenc-markaink",
+            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr37/2026-09-10-09-23-kedvenc-markaink"
         },
         {
             "store": "Aldi",
