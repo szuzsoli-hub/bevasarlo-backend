@@ -1,5 +1,5 @@
 {
-    "last_updated": "2026-09-24 15:14:22.963646",
+    "last_updated": "2026-09-24 20:07:02.139552",
     "flyers": [
         {
             "store": "Spar",
@@ -83,13 +83,23 @@
         },
         {
             "store": "Auchan",
-            "title": "2026-09-17-09-30-bajor-sorfesztival-hipermarket-ajanlataink",
-            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr38/2026-09-17-09-30-bajor-sorfesztival-hipermarket-ajanlataink"
+            "title": "2026-09-24-09-30-heti-szupermarket-ajanlataink",
+            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr39/2026-09-24-09-30-heti-szupermarket-ajanlataink"
         },
         {
             "store": "Auchan",
             "title": "2026-09-24-10-07-allatvilag-ajanlataink",
             "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr39/2026-09-24-10-07-allatvilag-ajanlataink"
+        },
+        {
+            "store": "Auchan",
+            "title": "2026-09-24-10-13-oszi-takaritas",
+            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr39/2026-09-24-10-13-oszi-takaritas"
+        },
+        {
+            "store": "Auchan",
+            "title": "2026-09-17-09-30-bajor-sorfesztival-hipermarket-ajanlataink",
+            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr38/2026-09-17-09-30-bajor-sorfesztival-hipermarket-ajanlataink"
         },
         {
             "store": "Auchan",
@@ -100,16 +110,6 @@
             "store": "Auchan",
             "title": "2026-09-24-09-30-heti-szekszardi-ajanlataink",
             "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr39/2026-09-24-09-30-heti-szekszardi-ajanlataink"
-        },
-        {
-            "store": "Auchan",
-            "title": "2026-09-24-09-30-heti-szupermarket-ajanlataink",
-            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr39/2026-09-24-09-30-heti-szupermarket-ajanlataink"
-        },
-        {
-            "store": "Auchan",
-            "title": "2026-09-24-10-13-oszi-takaritas",
-            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr39/2026-09-24-10-13-oszi-takaritas"
         },
         {
             "store": "Aldi",
