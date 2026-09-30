@@ -1,5 +1,5 @@
 {
-    "last_updated": "2026-09-29 20:54:42.409643",
+    "last_updated": "2026-09-30 10:37:07.375677",
     "flyers": [
         {
             "store": "Spar",
@@ -113,38 +113,13 @@
         },
         {
             "store": "Auchan",
-            "title": "2026-09-24-10-07-kave-ajanlataink",
-            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr39/2026-09-24-10-07-kave-ajanlataink"
-        },
-        {
-            "store": "Auchan",
-            "title": "2026-09-24-10-07-allatvilag-ajanlataink",
-            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr39/2026-09-24-10-07-allatvilag-ajanlataink"
-        },
-        {
-            "store": "Auchan",
-            "title": "2026-10-01-10-07-filleres-ajanlataink",
-            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr40/2026-10-01-10-07-filleres-ajanlataink"
-        },
-        {
-            "store": "Auchan",
-            "title": "2026-09-24-09-30-heti-szekszardi-ajanlataink",
-            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr39/2026-09-24-09-30-heti-szekszardi-ajanlataink"
-        },
-        {
-            "store": "Auchan",
-            "title": "2026-09-17-09-30-bajor-sorfesztival-hipermarket-ajanlataink",
-            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr38/2026-09-17-09-30-bajor-sorfesztival-hipermarket-ajanlataink"
-        },
-        {
-            "store": "Auchan",
-            "title": "2026-10-01-10-07-heti-hipermarket-ajanlataink",
-            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr40/2026-10-01-10-07-heti-hipermarket-ajanlataink"
-        },
-        {
-            "store": "Auchan",
             "title": "2026-10-01-10-21-bor-ajanlataink",
             "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr40/2026-10-01-10-21-bor-ajanlataink"
+        },
+        {
+            "store": "Auchan",
+            "title": "2026-09-24-09-30-heti-hipermarket-ajanlataink",
+            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr39/2026-09-24-09-30-heti-hipermarket-ajanlataink"
         },
         {
             "store": "Auchan",
@@ -153,18 +128,18 @@
         },
         {
             "store": "Auchan",
-            "title": "2026-10-01-10-07-halloweeni-ajanlataink",
-            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr40/2026-10-01-10-07-halloweeni-ajanlataink"
+            "title": "2026-10-01-10-07-heti-hipermarket-ajanlataink",
+            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr40/2026-10-01-10-07-heti-hipermarket-ajanlataink"
         },
         {
             "store": "Auchan",
-            "title": "2026-10-01-10-07-heti-szupermarket-ajanlataink",
-            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr40/2026-10-01-10-07-heti-szupermarket-ajanlataink"
+            "title": "2026-10-01-10-11-oszi-kuponnapok",
+            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr40/2026-10-01-10-11-oszi-kuponnapok"
         },
         {
             "store": "Auchan",
-            "title": "2026-09-24-09-30-heti-hipermarket-ajanlataink",
-            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr39/2026-09-24-09-30-heti-hipermarket-ajanlataink"
+            "title": "2026-09-24-10-07-allatvilag-ajanlataink",
+            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr39/2026-09-24-10-07-allatvilag-ajanlataink"
         },
         {
             "store": "Auchan",
@@ -178,8 +153,33 @@
         },
         {
             "store": "Auchan",
-            "title": "2026-10-01-10-11-oszi-kuponnapok",
-            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr40/2026-10-01-10-11-oszi-kuponnapok"
+            "title": "2026-10-01-10-07-heti-szupermarket-ajanlataink",
+            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr40/2026-10-01-10-07-heti-szupermarket-ajanlataink"
+        },
+        {
+            "store": "Auchan",
+            "title": "2026-09-24-10-07-kave-ajanlataink",
+            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr39/2026-09-24-10-07-kave-ajanlataink"
+        },
+        {
+            "store": "Auchan",
+            "title": "2026-09-17-09-30-bajor-sorfesztival-hipermarket-ajanlataink",
+            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr38/2026-09-17-09-30-bajor-sorfesztival-hipermarket-ajanlataink"
+        },
+        {
+            "store": "Auchan",
+            "title": "2026-09-24-09-30-heti-szekszardi-ajanlataink",
+            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr39/2026-09-24-09-30-heti-szekszardi-ajanlataink"
+        },
+        {
+            "store": "Auchan",
+            "title": "2026-10-01-10-07-halloweeni-ajanlataink",
+            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr40/2026-10-01-10-07-halloweeni-ajanlataink"
+        },
+        {
+            "store": "Auchan",
+            "title": "2026-10-01-10-07-filleres-ajanlataink",
+            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr40/2026-10-01-10-07-filleres-ajanlataink"
         },
         {
             "store": "Aldi",
@@ -197,9 +197,19 @@
             "url": "https://katalogus.coop.hu/coop-tisza-szorolap-2026-szeptember-4-het-abc-szuper/"
         },
         {
+            "store": "Tisza-Coop",
+            "title": "coop-orszagos-szorolap-2026-oktober-1-het-abc-szuper",
+            "url": "https://katalogus.coop.hu/coop-orszagos-szorolap-2026-oktober-1-het-abc-szuper/"
+        },
+        {
             "store": "Alföld Pro-Coop",
             "title": "coop-alfold-szorolap-2026-szeptember-4-het",
             "url": "https://katalogus.coop.hu/coop-alfold-szorolap-2026-szeptember-4-het/"
+        },
+        {
+            "store": "Alföld Pro-Coop",
+            "title": "coop-alfold-szorolap-2026-oktober-1-het-szuper-plusz",
+            "url": "https://katalogus.coop.hu/coop-alfold-szorolap-2026-oktober-1-het-szuper-plusz/"
         },
         {
             "store": "Észak-Kelet Pro-Coop",
