@@ -1,5 +1,5 @@
 {
-    "last_updated": "2026-10-01 21:12:58.129130",
+    "last_updated": "2026-10-02 10:38:05.766544",
     "flyers": [
         {
             "store": "Spar",
@@ -18,13 +18,43 @@
         },
         {
             "store": "Spar",
+            "title": "261008-2-interspar-szorolap-p",
+            "url": "https://www.spar.hu/ajanlatok/interspar/261008-2-interspar-szorolap-p"
+        },
+        {
+            "store": "Spar",
+            "title": "261008-5-interspar-hodmezovasarhely-uzlet-ujranyitas",
+            "url": "https://www.spar.hu/ajanlatok/interspar/261008-5-interspar-hodmezovasarhely-uzlet-ujranyitas"
+        },
+        {
+            "store": "Spar",
             "title": "261001-1-spar-szorolap",
             "url": "https://www.spar.hu/ajanlatok/spar/261001-1-spar-szorolap"
         },
         {
             "store": "Spar",
+            "title": "261008-1-spar-szorolap-p",
+            "url": "https://www.spar.hu/ajanlatok/spar/261008-1-spar-szorolap-p"
+        },
+        {
+            "store": "Spar",
+            "title": "261008-4-spar-szombathely-uzlet-ujranyitas",
+            "url": "https://www.spar.hu/ajanlatok/spar/261008-4-spar-szombathely-uzlet-ujranyitas"
+        },
+        {
+            "store": "Spar",
             "title": "261001-3-spar-market-city-spar",
             "url": "https://www.spar.hu/ajanlatok/spar-market/261001-3-spar-market-city-spar"
+        },
+        {
+            "store": "Spar",
+            "title": "261008-3-spar-market-city-spar",
+            "url": "https://www.spar.hu/ajanlatok/spar-market/261008-3-spar-market-city-spar"
+        },
+        {
+            "store": "Spar",
+            "title": "261008-6-spar-market-nagykapornak-zalalovo-szorolap",
+            "url": "https://www.spar.hu/ajanlatok/spar-market/261008-6-spar-market-nagykapornak-zalalovo-szorolap"
         },
         {
             "store": "Penny",
@@ -68,23 +98,28 @@
         },
         {
             "store": "Auchan",
-            "title": "2026-10-01-10-07-heti-szupermarket-ajanlataink",
-            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr40/2026-10-01-10-07-heti-szupermarket-ajanlataink"
-        },
-        {
-            "store": "Auchan",
-            "title": "2026-09-24-10-13-oszi-takaritas",
-            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr39/2026-09-24-10-13-oszi-takaritas"
-        },
-        {
-            "store": "Auchan",
             "title": "2026-10-01-10-21-oszi-ruhazat",
             "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr40/2026-10-01-10-21-oszi-ruhazat"
         },
         {
             "store": "Auchan",
-            "title": "2026-10-01-10-07-filleres-ajanlataink",
-            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr40/2026-10-01-10-07-filleres-ajanlataink"
+            "title": "2026-10-01-10-11-oszi-kuponnapok",
+            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr40/2026-10-01-10-11-oszi-kuponnapok"
+        },
+        {
+            "store": "Auchan",
+            "title": "2026-09-24-10-07-kave-ajanlataink",
+            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr39/2026-09-24-10-07-kave-ajanlataink"
+        },
+        {
+            "store": "Auchan",
+            "title": "2026-09-24-10-07-allatvilag-ajanlataink",
+            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr39/2026-09-24-10-07-allatvilag-ajanlataink"
+        },
+        {
+            "store": "Auchan",
+            "title": "2026-10-01-10-07-heti-szupermarket-ajanlataink",
+            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr40/2026-10-01-10-07-heti-szupermarket-ajanlataink"
         },
         {
             "store": "Auchan",
@@ -93,8 +128,13 @@
         },
         {
             "store": "Auchan",
-            "title": "2026-10-01-10-11-oszi-kuponnapok",
-            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr40/2026-10-01-10-11-oszi-kuponnapok"
+            "title": "2026-09-24-10-13-oszi-takaritas",
+            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr39/2026-09-24-10-13-oszi-takaritas"
+        },
+        {
+            "store": "Auchan",
+            "title": "2026-10-01-10-07-filleres-ajanlataink",
+            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr40/2026-10-01-10-07-filleres-ajanlataink"
         },
         {
             "store": "Auchan",
@@ -105,16 +145,6 @@
             "store": "Auchan",
             "title": "2026-10-01-10-21-bor-ajanlataink",
             "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr40/2026-10-01-10-21-bor-ajanlataink"
-        },
-        {
-            "store": "Auchan",
-            "title": "2026-09-24-10-07-allatvilag-ajanlataink",
-            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr39/2026-09-24-10-07-allatvilag-ajanlataink"
-        },
-        {
-            "store": "Auchan",
-            "title": "2026-09-24-10-07-kave-ajanlataink",
-            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr39/2026-09-24-10-07-kave-ajanlataink"
         },
         {
             "store": "Aldi",
