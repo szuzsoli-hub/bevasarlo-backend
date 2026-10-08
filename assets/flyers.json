@@ -1,5 +1,5 @@
 {
-    "last_updated": "2026-10-08 11:38:20.838224",
+    "last_updated": "2026-10-08 21:28:01.026452",
     "flyers": [
         {
             "store": "Spar",
@@ -25,6 +25,11 @@
             "store": "Spar",
             "title": "261008-2-interspar-szorolap",
             "url": "https://www.spar.hu/ajanlatok/interspar/261008-2-interspar-szorolap"
+        },
+        {
+            "store": "Spar",
+            "title": "261008-5-interspar-togo-zalaegerszeg",
+            "url": "https://www.spar.hu/ajanlatok/interspar/261008-5-interspar-togo-zalaegerszeg"
         },
         {
             "store": "Spar",
@@ -88,31 +93,6 @@
         },
         {
             "store": "Auchan",
-            "title": "2026-09-24-10-13-oszi-takaritas",
-            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr39/2026-09-24-10-13-oszi-takaritas"
-        },
-        {
-            "store": "Auchan",
-            "title": "2026-10-01-10-11-oszi-kuponnapok",
-            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr40/2026-10-01-10-11-oszi-kuponnapok"
-        },
-        {
-            "store": "Auchan",
-            "title": "2026-10-08-10-14-heti-hipermarket-ajanlataink",
-            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr41/2026-10-08-10-14-heti-hipermarket-ajanlataink"
-        },
-        {
-            "store": "Auchan",
-            "title": "2026-10-08-10-21-csokolade-ajanlataink",
-            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr41/2026-10-08-10-21-csokolade-ajanlataink"
-        },
-        {
-            "store": "Auchan",
-            "title": "2026-10-08-10-14-heti-szupermarket-ajanlataink",
-            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr41/2026-10-08-10-14-heti-szupermarket-ajanlataink"
-        },
-        {
-            "store": "Auchan",
             "title": "2026-10-01-10-21-bor-ajanlataink",
             "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr40/2026-10-01-10-21-bor-ajanlataink"
         },
@@ -128,8 +108,33 @@
         },
         {
             "store": "Auchan",
+            "title": "2026-09-24-10-13-oszi-takaritas",
+            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr39/2026-09-24-10-13-oszi-takaritas"
+        },
+        {
+            "store": "Auchan",
             "title": "2026-10-08-10-21-azsiai-ajanlataink",
             "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr41/2026-10-08-10-21-azsiai-ajanlataink"
+        },
+        {
+            "store": "Auchan",
+            "title": "2026-10-08-10-21-csokolade-ajanlataink",
+            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr41/2026-10-08-10-21-csokolade-ajanlataink"
+        },
+        {
+            "store": "Auchan",
+            "title": "2026-10-08-10-14-heti-hipermarket-ajanlataink",
+            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr41/2026-10-08-10-14-heti-hipermarket-ajanlataink"
+        },
+        {
+            "store": "Auchan",
+            "title": "2026-10-08-10-14-heti-szupermarket-ajanlataink",
+            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr41/2026-10-08-10-14-heti-szupermarket-ajanlataink"
+        },
+        {
+            "store": "Auchan",
+            "title": "2026-10-01-10-11-oszi-kuponnapok",
+            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr40/2026-10-01-10-11-oszi-kuponnapok"
         },
         {
             "store": "Aldi",
