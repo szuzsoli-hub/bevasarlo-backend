@@ -1,5 +1,5 @@
 {
-    "last_updated": "2026-10-09 11:31:07.613835",
+    "last_updated": "2026-10-09 21:02:23.223336",
     "flyers": [
         {
             "store": "Spar",
@@ -123,6 +123,41 @@
         },
         {
             "store": "Auchan",
+            "title": "2026-10-08-10-14-szekszardi-ajanlataink",
+            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr41/2026-10-08-10-14-szekszardi-ajanlataink"
+        },
+        {
+            "store": "Auchan",
+            "title": "2026-10-01-10-21-oszi-ruhazat",
+            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr40/2026-10-01-10-21-oszi-ruhazat"
+        },
+        {
+            "store": "Auchan",
+            "title": "2026-10-08-10-14-heti-szupermarket-ajanlataink",
+            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr41/2026-10-08-10-14-heti-szupermarket-ajanlataink"
+        },
+        {
+            "store": "Auchan",
+            "title": "2026-10-08-10-21-csokolade-ajanlataink",
+            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr41/2026-10-08-10-21-csokolade-ajanlataink"
+        },
+        {
+            "store": "Auchan",
+            "title": "2026-10-08-10-14-heti-hipermarket-ajanlataink",
+            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr41/2026-10-08-10-14-heti-hipermarket-ajanlataink"
+        },
+        {
+            "store": "Auchan",
+            "title": "2026-09-24-10-13-oszi-takaritas",
+            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr39/2026-09-24-10-13-oszi-takaritas"
+        },
+        {
+            "store": "Auchan",
+            "title": "2026-10-01-10-21-bor-ajanlataink",
+            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr40/2026-10-01-10-21-bor-ajanlataink"
+        },
+        {
+            "store": "Auchan",
             "title": "2026-10-01-10-11-oszi-kuponnapok",
             "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr40/2026-10-01-10-11-oszi-kuponnapok"
         },
@@ -132,44 +167,9 @@
             "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr41/2026-10-08-10-21-azsiai-ajanlataink"
         },
         {
-            "store": "Auchan",
-            "title": "2026-10-08-10-14-heti-hipermarket-ajanlataink",
-            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr41/2026-10-08-10-14-heti-hipermarket-ajanlataink"
-        },
-        {
-            "store": "Auchan",
-            "title": "2026-10-08-10-14-szekszardi-ajanlataink",
-            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr41/2026-10-08-10-14-szekszardi-ajanlataink"
-        },
-        {
-            "store": "Auchan",
-            "title": "2026-10-08-10-14-heti-szupermarket-ajanlataink",
-            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr41/2026-10-08-10-14-heti-szupermarket-ajanlataink"
-        },
-        {
-            "store": "Auchan",
-            "title": "2026-10-01-10-21-oszi-ruhazat",
-            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr40/2026-10-01-10-21-oszi-ruhazat"
-        },
-        {
-            "store": "Auchan",
-            "title": "2026-10-08-10-21-csokolade-ajanlataink",
-            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr41/2026-10-08-10-21-csokolade-ajanlataink"
-        },
-        {
-            "store": "Auchan",
-            "title": "2026-10-01-10-21-bor-ajanlataink",
-            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr40/2026-10-01-10-21-bor-ajanlataink"
-        },
-        {
-            "store": "Auchan",
-            "title": "2026-09-24-10-13-oszi-takaritas",
-            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr39/2026-09-24-10-13-oszi-takaritas"
-        },
-        {
             "store": "Aldi",
-            "title": "aldi_kozepso_sor_2026_kw41",
-            "url": "https://szorolap.aldi.hu/aldi_kozepso_sor_2026_kw41/page/1"
+            "title": "aldi_kozepso_sor_2026_kw42",
+            "url": "https://szorolap.aldi.hu/aldi_kozepso_sor_2026_kw42/page/1"
         },
         {
             "store": "CBA Príma5",
