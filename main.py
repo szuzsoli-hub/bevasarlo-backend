@@ -70,7 +70,7 @@ kuponok_kollekcio = db["kuponok"]
 # ==============================================================================
 # 🔑 REVENUECAT SECRET KEY (modul-szinten, hogy a coupons.py is elérje)
 # ==============================================================================
-REVENUECAT_SECRET_KEY = "sk_eWifEVYaUmYuxmsMtQfjTVEoOKGID"
+REVENUECAT_SECRET_KEY = os.environ.get("REVENUECAT_SECRET_KEY")
 
 def encode_image(image_file):
     return base64.b64encode(image_file.read()).decode('utf-8')
