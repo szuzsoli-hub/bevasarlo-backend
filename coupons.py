@@ -1,3 +1,4 @@
+import os
 import random
 import string
 import re
@@ -9,7 +10,9 @@ from flask import Blueprint, request, jsonify
 
 coupons_bp = Blueprint('coupons', __name__)
 
-ADMIN_SECRET = "TesztAdmin2026Titkos!"  # ezt cseréld le saját titkos szövegre
+# A jelszó a Render környezeti változójából jön (ADMIN_SECRET), nem a kódból.
+# Ha hiányzik, a kupongenerálás le van tiltva (lásd lent).
+ADMIN_SECRET = os.environ.get("ADMIN_SECRET", "")
 
 
 def generate_coupon_code():
@@ -64,7 +67,8 @@ def register_coupon_routes(app, kuponok_kollekcio, revenuecat_secret_key):
     @app.route('/admin_generate_coupons', methods=['GET'])
     def admin_generate_coupons():
         secret = request.args.get('secret')
-        if secret != ADMIN_SECRET:
+        # Ha a Renderen nincs beállítva ADMIN_SECRET, senki ne generálhasson.
+        if not ADMIN_SECRET or secret != ADMIN_SECRET:
             return jsonify({"error": "unauthorized"}), 401
         count = int(request.args.get('count', 20))
         generated = []
