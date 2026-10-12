@@ -1,5 +1,5 @@
 {
-    "last_updated": "2026-10-11 20:24:49.780525",
+    "last_updated": "2026-10-12 12:10:49.846956",
     "flyers": [
         {
             "store": "Spar",
@@ -117,16 +117,6 @@
             "url": "https://www.lidl.hu/l/hu/ujsag/regionalis-akciok-koszeg-caki-ut-42het/ar/0?lf=HHZ"
         },
         {
-            "store": "Lidl",
-            "title": "Lidl regionalis-akciok-debrecen-veszprem-41het",
-            "url": "https://www.lidl.hu/l/hu/ujsag/regionalis-akciok-debrecen-veszprem-41het/ar/0?lf=HHZ"
-        },
-        {
-            "store": "Lidl",
-            "title": "Lidl regionalis-akciok-koszeg-caki-ut-41het",
-            "url": "https://www.lidl.hu/l/hu/ujsag/regionalis-akciok-koszeg-caki-ut-41het/ar/0?lf=HHZ"
-        },
-        {
             "store": "Metro",
             "title": "Élelmiszer és Szezonális 2026/10",
             "url": "https://katalogus.metro.hu/elelmiszer-es-szezonalis-ajanlataink-kiskereskedoknek-2026-10/page/1"
@@ -142,39 +132,14 @@
             "url": "https://www.tesco.hu/akciok/katalogusok/szupermarket/tesco-ujsag-2026-10-08/1"
         },
         {
-            "store": "Auchan",
-            "title": "2026-10-01-10-11-oszi-kuponnapok",
-            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr40/2026-10-01-10-11-oszi-kuponnapok"
+            "store": "Tesco",
+            "title": "Tesco hipermarket/tesco-ujsag-2026-10-15",
+            "url": "https://www.tesco.hu/akciok/katalogusok/hipermarket/tesco-ujsag-2026-10-15/1"
         },
         {
-            "store": "Auchan",
-            "title": "2026-10-01-10-21-bor-ajanlataink",
-            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr40/2026-10-01-10-21-bor-ajanlataink"
-        },
-        {
-            "store": "Auchan",
-            "title": "2026-10-08-10-21-csokolade-ajanlataink",
-            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr41/2026-10-08-10-21-csokolade-ajanlataink"
-        },
-        {
-            "store": "Auchan",
-            "title": "2026-10-08-10-14-heti-hipermarket-ajanlataink",
-            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr41/2026-10-08-10-14-heti-hipermarket-ajanlataink"
-        },
-        {
-            "store": "Auchan",
-            "title": "2026-10-08-10-21-azsiai-ajanlataink",
-            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr41/2026-10-08-10-21-azsiai-ajanlataink"
-        },
-        {
-            "store": "Auchan",
-            "title": "2026-10-08-10-14-szekszardi-ajanlataink",
-            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr41/2026-10-08-10-14-szekszardi-ajanlataink"
-        },
-        {
-            "store": "Auchan",
-            "title": "2026-10-01-10-21-oszi-ruhazat",
-            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr40/2026-10-01-10-21-oszi-ruhazat"
+            "store": "Tesco",
+            "title": "Tesco szupermarket/tesco-ujsag-2026-10-15",
+            "url": "https://www.tesco.hu/akciok/katalogusok/szupermarket/tesco-ujsag-2026-10-15/1"
         },
         {
             "store": "Auchan",
@@ -183,8 +148,48 @@
         },
         {
             "store": "Auchan",
+            "title": "2026-10-01-10-21-oszi-ruhazat",
+            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr40/2026-10-01-10-21-oszi-ruhazat"
+        },
+        {
+            "store": "Auchan",
+            "title": "2026-10-15-10-21-heti-szupermarket-ajanlataink",
+            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr42/2026-10-15-10-21-heti-szupermarket-ajanlataink"
+        },
+        {
+            "store": "Auchan",
             "title": "2026-10-08-10-14-heti-szupermarket-ajanlataink",
             "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr41/2026-10-08-10-14-heti-szupermarket-ajanlataink"
+        },
+        {
+            "store": "Auchan",
+            "title": "2026-10-08-10-21-csokolade-ajanlataink",
+            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr41/2026-10-08-10-21-csokolade-ajanlataink"
+        },
+        {
+            "store": "Auchan",
+            "title": "2026-10-15-10-21-sajatmarkas-ajanlataink",
+            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr42/2026-10-15-10-21-sajatmarkas-ajanlataink"
+        },
+        {
+            "store": "Auchan",
+            "title": "2026-10-08-10-14-szekszardi-ajanlataink",
+            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr41/2026-10-08-10-14-szekszardi-ajanlataink"
+        },
+        {
+            "store": "Auchan",
+            "title": "2026-10-08-10-14-heti-hipermarket-ajanlataink",
+            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr41/2026-10-08-10-14-heti-hipermarket-ajanlataink"
+        },
+        {
+            "store": "Auchan",
+            "title": "2026-10-01-10-21-bor-ajanlataink",
+            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr40/2026-10-01-10-21-bor-ajanlataink"
+        },
+        {
+            "store": "Auchan",
+            "title": "2026-10-08-10-21-azsiai-ajanlataink",
+            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr41/2026-10-08-10-21-azsiai-ajanlataink"
         },
         {
             "store": "Aldi",
@@ -202,14 +207,39 @@
             "url": "https://katalogus.coop.hu/coop-coop-szolnok-szorolap-2026-oktober-2-het/"
         },
         {
+            "store": "Tisza-Coop",
+            "title": "coop-tisza-szorolap-2026-oktober-3-het-abc-szuper",
+            "url": "https://katalogus.coop.hu/coop-tisza-szorolap-2026-oktober-3-het-abc-szuper/"
+        },
+        {
             "store": "Alföld Pro-Coop",
             "title": "coop-alfold-szorolap-2026-oktober-2-het-szuper-plusz",
             "url": "https://katalogus.coop.hu/coop-alfold-szorolap-2026-oktober-2-het-szuper-plusz/"
         },
         {
+            "store": "Alföld Pro-Coop",
+            "title": "coop-alfold-szorolap-2026-oktober-3-het",
+            "url": "https://katalogus.coop.hu/coop-alfold-szorolap-2026-oktober-3-het/"
+        },
+        {
+            "store": "Észak-Kelet Pro-Coop",
+            "title": "coop-eszak-kelet-szorolap-2026-oktober-3-het",
+            "url": "https://katalogus.coop.hu/coop-eszak-kelet-szorolap-2026-oktober-3-het/"
+        },
+        {
             "store": "Coop pecs",
             "title": "coop-orszagos-szorolap-2026-oktober-2-het-abc-szuper",
             "url": "https://katalogus.coop.hu/coop-orszagos-szorolap-2026-oktober-2-het-abc-szuper/"
+        },
+        {
+            "store": "Coop pecs",
+            "title": "coop-mecsek-szorolap-2026-oktober-3-het",
+            "url": "https://katalogus.coop.hu/coop-mecsek-szorolap-2026-oktober-3-het/"
+        },
+        {
+            "store": "Coop szombathely",
+            "title": "coop-hetforras-szorolap-2026-oktober-3-4-het",
+            "url": "https://katalogus.coop.hu/coop-hetforras-szorolap-2026-oktober-3-4-het/"
         }
     ]
 }
