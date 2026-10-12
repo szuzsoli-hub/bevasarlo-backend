@@ -1,64 +1,112 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="hu">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Jogi Nyilatkozat - Bevásárlólista</title>
-    <style>
-        body { font-family: 'Segoe UI', Arial, sans-serif; line-height: 1.6; margin: 0; padding: 20px; background-color: #f4f7f6; color: #333; }
-        .container { max-width: 800px; margin: auto; background: #fff; padding: 40px; border-radius: 15px; box-shadow: 0 5px 15px rgba(0,0,0,0.08); }
-        h1 { color: #2c3e50; border-bottom: 3px solid #3498db; padding-bottom: 10px; text-align: center; }
-        h2 { color: #2980b9; margin-top: 30px; border-left: 5px solid #3498db; padding-left: 15px; }
-        p, li { font-size: 16px; color: #444; margin-bottom: 10px; }
-        .info-box { background: #e8f4fd; padding: 15px; border-radius: 8px; margin-top: 20px; border: 1px solid #d1e9f9; }
-        .warning { color: #e74c3c; font-weight: bold; }
-        a { color: #3498db; text-decoration: none; }
-        a:hover { text-decoration: underline; }
-    </style>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Jogi Nyilatkozat - Bevásárlólista</title>
+<style>
+  body { font-family: system-ui, sans-serif; max-width: 760px; margin: 32px auto; padding: 0 16px; color: #222; line-height: 1.55; }
+  h1 { font-size: 26px; }
+  h2 { font-size: 20px; margin-top: 32px; border-bottom: 1px solid #eee; padding-bottom: 4px; }
+  h3 { font-size: 16px; margin: 18px 0 4px; }
+  li { margin-bottom: 6px; }
+  .meta { background: #f6f6f6; border-radius: 8px; padding: 12px 16px; }
+  .note { color: #666; font-size: 14px; }
+</style>
 </head>
 <body>
-<div class="container">
-    <h1>📜 Jogi Nyilatkozat és Adatvédelem</h1>
-    
-    <div class="info-box">
-        <p><strong>Alkalmazás neve:</strong> Bevásárlólista<br>
-        <strong>Kiadó:</strong> Juhász Ilona EV — adószám: 91999407-1-26<br>
-        <strong>Székhely:</strong> 6722 Szeged, Bécsi körút 23. A ép. fszt. 1.<br>
-        <strong>Kapcsolat:</strong> <a href="mailto:bevasarlolista.app@gmail.com">bevasarlolista.app@gmail.com</a><br>
-        <strong>Utolsó frissítés:</strong> 2026. április</p>
-    </div>
 
-    <h2>1. Általános Szerződési Feltételek (ÁSZF)</h2>
-    <ul>
-        <li><strong>Függetlenség:</strong> Az alkalmazás független fejlesztés, nem áll kapcsolatban az abban megjelenített áruházláncokkal. A megjelenített márkanevek a tulajdonosok védjegyei.</li>
-        <li><strong>Akcióvadász:</strong> Az akciós adatok tájékoztató jellegűek. <span class="warning">A hiteles ár a bolti kasszánál érvényes ár.</span></li>
-        <li><strong>Felelősség kizárása:</strong> Az alkalmazást "ahogy van" alapon nyújtjuk. Nem vállalunk felelősséget adatvesztésért vagy szolgáltatáskiesésért.</li>
-        <li><strong>Előfizetések és Elállási jog:</strong> Az előfizetések (590 Ft/hó, 990 Ft/hó, 5 900 Ft/év, 9 900 Ft/év) a Google Play / App Store rendszerén keresztül történnek. <span class="warning">A digitális tartalom megkezdésével a Felhasználó kifejezetten tudomásul veszi, hogy elveszíti a 14 napos elállási jogát.</span></li>
-        <li><strong>Visszatérítés:</strong> Minden pénzügyi tranzakciót és visszatérítési igényt az adott alkalmazásáruház (Google Play / App Store) kezel.</li>
-    </ul>
+<h1>📜 Jogi Nyilatkozat és Adatvédelem</h1>
 
-    <h2>2. Adatkezelési Tájékoztató (Privacy Policy)</h2>
-    <ul>
-        <li><strong>Azonosítás:</strong> A felhős szinkronhoz a Google profiladatokat (név, e-mail) használjuk az eszközök összekapcsolásához.</li>
-        <li><strong>AI Képfelismerés (PRO):</strong> A beküldött képeket feldolgozás után nem tároljuk. Kizárólag a termékadatokat nyerjük ki belőlük. A képek feldolgozása az OpenAI rendszerén keresztül történik.</li>
-        <li><strong>Adattörlés (Right to be Forgotten):</strong> A Felhasználó bármikor törölheti fiókját és adatait az alkalmazáson belüli „Fiók és adatok törlése" menüponton keresztül, vagy e-mailben a fenti címen. A törlés végleges és nem vonható vissza.</li>
-        <li><strong>Adatbiztonság:</strong> Az adatokat titkosított csatornán továbbítjuk a szerverre.</li>
-        <li><strong>Hibajelentés:</strong> Az alkalmazás összeomlásairól automatikus, anonim hibajelentés készül (Sentry) a minőség javítása érdekében. Személyes adatot nem tartalmaz.</li>
-    </ul>
-
-    <h2>3. Adatfeldolgozók</h2>
-    <ul>
-        <li><strong>Google LLC</strong> — Bejelentkezés, Play Store előfizetések</li>
-        <li><strong>OpenAI</strong> — AI képfelismerés (PRO funkció)</li>
-        <li><strong>MongoDB Atlas</strong> — Felhős adattárolás</li>
-        <li><strong>RevenueCat</strong> — Előfizetés kezelés</li>
-        <li><strong>Sentry</strong> — Anonim hibajelentés</li>
-        <li><strong>Render</strong> — Szerverinfrastruktúra</li>
-    </ul>
-
-    <div class="info-box">
-        <p>Az alkalmazás használatával Ön elfogadja a fenti feltételeket.</p>
-    </div>
+<div class="meta">
+<strong>Alkalmazás neve:</strong> Bevásárlólista<br>
+<strong>Kiadó és adatkezelő:</strong> Juhász Ilona EV — adószám: 91999407-1-26<br>
+<strong>Székhely:</strong> 6722 Szeged, Bécsi körút 23. A ép. fszt. 1.<br>
+<strong>Kapcsolat:</strong> <a href="mailto:bevasarlolista.app@gmail.com">bevasarlolista.app@gmail.com</a><br>
+<strong>Weboldal:</strong> <a href="https://szuzsoli-hub.github.io">szuzsoli-hub.github.io</a><br>
+<strong>Hatályos:</strong> 2026. október 13-tól
 </div>
+
+<h2>1. Általános Szerződési Feltételek (ÁSZF)</h2>
+
+<h3>1.1. Az alkalmazás</h3>
+<ul>
+  <li><strong>Függetlenség:</strong> Az alkalmazás független fejlesztés, nem áll kapcsolatban az abban megjelenített áruházláncokkal. A megjelenített márkanevek és logók a tulajdonosaik védjegyei.</li>
+  <li><strong>Akciós adatok:</strong> Az akciós újságok és árak tájékoztató jellegűek. A hiteles ár a bolti kasszánál érvényes ár.</li>
+  <li><strong>Felelősség kizárása:</strong> Az alkalmazást „ahogy van” alapon nyújtjuk. Nem vállalunk felelősséget adatvesztésért vagy szolgáltatáskiesésért.</li>
+</ul>
+
+<h3>1.2. Csomagok</h3>
+<ul>
+  <li><strong>Ingyenes verzió:</strong> az alkalmazás alapfunkciói (listák, hangbevitel, fénykép csatolása, hűségkártyák, akciós újságok) díjmentesen használhatók. Az ingyenes verzió <strong>reklámokat jelenít meg</strong>.</li>
+  <li><strong>Közös (felhős) lista az ingyenes verzióban:</strong> egy jutalmazott reklám végignézéséért az adott készüléken 3 napig működik a felhős szinkron. Ha éppen nem érhető el reklám, a szinkron 24 órára díjmentesen feloldódik. A feloldás lejárta után a lista a készüléken megmarad, a szinkron szünetel, és újabb feloldással folytatható.</li>
+  <li><strong>Pro előfizetés:</strong> reklámmentes használat, korlátlan felhős szinkron és AI képfelismerés (gördülő 30 napban legfeljebb 60 kép). Havi vagy éves előfizetésként érhető el; az aktuális árat és az esetleges kedvezményes első időszakot a Google Play áruház mutatja a vásárlás előtt.</li>
+  <li><strong>Kiegészítő AI-csomag:</strong> Pro előfizetők +20 AI képet vásárolhatnak, amely a vásárlástól számított 30 napig használható fel.</li>
+  <li><strong>Promóciós (ajándék) Pro:</strong> kuponnal vagy promócióval kapott Pro hozzáférés a megadott időtartamig érvényes, azt követően automatikusan nem újul meg.</li>
+</ul>
+
+<h3>1.3. Fizetés, lemondás, elállás</h3>
+<ul>
+  <li><strong>Fizetés:</strong> minden vásárlás és előfizetés a Google Play rendszerén keresztül történik.</li>
+  <li><strong>Lemondás:</strong> az előfizetés bármikor lemondható a Google Play előfizetés-kezelőjében (az alkalmazásban: Menü → Előfizetés kezelése). A lemondás után a Pro funkciók a kifizetett időszak végéig elérhetők, utána az alkalmazás ingyenes verzióként működik tovább, a listák megmaradnak.</li>
+  <li><strong>Elállási jog:</strong> a digitális tartalom szolgáltatásának megkezdésével a Felhasználó kifejezetten tudomásul veszi, hogy elveszíti a 14 napos elállási jogát.</li>
+  <li><strong>Visszatérítés:</strong> minden pénzügyi tranzakciót és visszatérítési igényt a Google Play kezel.</li>
+</ul>
+
+<h3>1.4. Hűségkártyák</h3>
+<ul>
+  <li>A hűségkártyák adatai (vonalkód, QR-kód) kizárólag a Felhasználó készülékén tárolódnak, a szerverünkre nem kerülnek. Ha a készüléken be van kapcsolva a Google biztonsági mentés, az a készülék beállításai szerint ezeket is tartalmazhatja.</li>
+  <li>A kártyák bolti elfogadásáért az alkalmazás nem vállal felelősséget.</li>
+</ul>
+
+<h2>2. Adatkezelési Tájékoztató</h2>
+
+<h3>2.1. Milyen adatokat kezelünk és miért</h3>
+<ul>
+  <li><strong>Bevásárlólisták (helyben):</strong> a listák alapértelmezetten csak a készüléken tárolódnak.</li>
+  <li><strong>Felhős szinkron és közös lista:</strong> bejelentkezéskor a Google-fiók nevét, e-mail-címét és azonosítóját használjuk az eszközök összekapcsolásához. A közös listák tartalma, a tagok azonosítója és a Felhasználó által megadott becenév a szerverünkön tárolódik; a becenevet a lista többi tagja is látja. Jogalap: a szolgáltatás nyújtása (szerződés teljesítése).</li>
+  <li><strong>Csatolt fényképek:</strong> a tételekhez csatolt fotók a szerverünkre kerülnek, hogy a lista tagjai is lássák őket. A fotó törlődik, amikor a hozzá tartozó tétel kikerül a közös listából, vagy a lista megszűnik.</li>
+  <li><strong>AI képfelismerés (Pro):</strong> a beküldött képet az OpenAI dolgozza fel; a képet ezután nem tároljuk, csak a kinyert termékadatokat. A havi keret számításához a felhasználás idejét és egy névtelen felhasználói azonosítót naplózunk.</li>
+  <li><strong>Hangbevitel:</strong> a beszédfelismerést a készülék beépített (Google) szolgáltatása végzi; hangfelvételt mi nem kapunk és nem tárolunk.</li>
+  <li><strong>Előfizetések:</strong> a vásárlások állapotát a RevenueCat kezeli egy névtelen azonosítóval. Bankkártyaadatot nem látunk és nem tárolunk; a fizetést a Google Play végzi.</li>
+  <li><strong>Hibajelentés:</strong> az alkalmazás összeomlásairól automatikus hibajelentés készül (Sentry) a minőség javítása érdekében. Ez technikai adatokat tartalmaz (készüléktípus, rendszerverzió, hibaüzenet).</li>
+</ul>
+
+<h3>2.2. Reklámok (ingyenes verzió)</h3>
+<ul>
+  <li>Az ingyenes verzió a <strong>Google AdMob</strong> szolgáltatásával jelenít meg reklámokat. Pro előfizetőknél a reklámszolgáltatás el sem indul.</li>
+  <li>Reklámmegjelenítéskor a Google a készülék <strong>hirdetési azonosítóját</strong>, IP-címét és technikai adatait kezelheti a reklámok kiszolgálásához, méréséhez és csalásmegelőzéshez.</li>
+  <li><strong>Személyre szabott reklámok</strong> csak a Felhasználó hozzájárulásával jelennek meg. A hozzájárulást az alkalmazás az első indításkor kéri; megadható, elutasítható, és bármikor módosítható vagy visszavonható az alkalmazás menüjében az <strong>„Adatvédelmi beállítások”</strong> pontban. Hozzájárulás nélkül nem személyre szabott reklámok jelennek meg.</li>
+  <li>A hirdetési azonosító a készülék beállításaiban (Google → Hirdetések) törölhető vagy alaphelyzetbe állítható.</li>
+  <li>A Google adatkezeléséről: <a href="https://policies.google.com/technologies/partner-sites">policies.google.com/technologies/partner-sites</a></li>
+</ul>
+
+<h3>2.3. Megőrzés és törlés</h3>
+<ul>
+  <li>A felhős adatokat addig őrizzük, amíg a Felhasználó használja a közös listát, illetve amíg a fiókját nem törli.</li>
+  <li><strong>Adattörlés:</strong> a Felhasználó bármikor törölheti fiókját és adatait az alkalmazásban a „Fiók és adatok törlése” menüpontban, vagy e-mailben a fenti címen. A törlés végleges és nem vonható vissza.</li>
+  <li><strong>Adatbiztonság:</strong> az adatokat titkosított csatornán továbbítjuk.</li>
+</ul>
+
+<h3>2.4. A Felhasználó jogai</h3>
+<ul>
+  <li>A Felhasználó kérhet tájékoztatást a róla kezelt adatokról, kérheti azok helyesbítését, törlését, kezelésük korlátozását, az adatok hordozhatóságát, és tiltakozhat az adatkezelés ellen. A hozzájárulását bármikor visszavonhatja.</li>
+  <li>Kérését a fenti e-mail-címen jelezheti, 30 napon belül válaszolunk.</li>
+  <li>Panasszal a Nemzeti Adatvédelmi és Információszabadság Hatósághoz (NAIH) fordulhat: 1055 Budapest, Falk Miksa utca 9–11., <a href="https://naih.hu">naih.hu</a>.</li>
+</ul>
+
+<h2>3. Adatfeldolgozók</h2>
+<ul>
+  <li><strong>Google</strong> — bejelentkezés, Google Play előfizetések, AdMob reklámok, beszédfelismerés</li>
+  <li><strong>OpenAI</strong> — AI képfelismerés (Pro funkció)</li>
+  <li><strong>MongoDB Atlas</strong> — felhős adattárolás (listák, csatolt fotók)</li>
+  <li><strong>Render</strong> — szerverinfrastruktúra</li>
+  <li><strong>RevenueCat</strong> — előfizetés-kezelés</li>
+  <li><strong>Sentry</strong> — hibajelentés</li>
+</ul>
+
+<p>Az alkalmazás használatával Ön elfogadja a fenti feltételeket.</p>
+<p class="note">Korábbi változat: 2026. április.</p>
+
 </body>
 </html>
