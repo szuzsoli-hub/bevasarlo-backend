@@ -1,5 +1,5 @@
 {
-    "last_updated": "2026-10-15 09:17:06.666002",
+    "last_updated": "2026-10-15 15:08:38.744894",
     "flyers": [
         {
             "store": "Spar",
@@ -103,18 +103,8 @@
         },
         {
             "store": "Auchan",
-            "title": "2026-10-08-10-21-csokolade-ajanlataink",
-            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr41/2026-10-08-10-21-csokolade-ajanlataink"
-        },
-        {
-            "store": "Auchan",
-            "title": "2026-10-01-10-21-oszi-ruhazat",
-            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr40/2026-10-01-10-21-oszi-ruhazat"
-        },
-        {
-            "store": "Auchan",
-            "title": "2026-10-15-10-21-sajatmarkas-ajanlataink",
-            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr42/2026-10-15-10-21-sajatmarkas-ajanlataink"
+            "title": "2026-10-08-10-21-azsiai-ajanlataink",
+            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr41/2026-10-08-10-21-azsiai-ajanlataink"
         },
         {
             "store": "Auchan",
@@ -123,13 +113,23 @@
         },
         {
             "store": "Auchan",
-            "title": "2026-10-08-10-21-azsiai-ajanlataink",
-            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr41/2026-10-08-10-21-azsiai-ajanlataink"
+            "title": "2026-10-15-10-21-sajatmarkas-ajanlataink",
+            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr42/2026-10-15-10-21-sajatmarkas-ajanlataink"
+        },
+        {
+            "store": "Auchan",
+            "title": "2026-10-01-10-21-oszi-ruhazat",
+            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr40/2026-10-01-10-21-oszi-ruhazat"
         },
         {
             "store": "Auchan",
             "title": "2026-10-01-10-21-bor-ajanlataink",
             "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr40/2026-10-01-10-21-bor-ajanlataink"
+        },
+        {
+            "store": "Auchan",
+            "title": "2026-10-08-10-21-csokolade-ajanlataink",
+            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr41/2026-10-08-10-21-csokolade-ajanlataink"
         },
         {
             "store": "Aldi",
