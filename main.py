@@ -51,16 +51,20 @@ if not ACCEPTED_API_KEYS:
 # ==============================================================================
 LATEST_VERSION = "1.0.78"
 
+# Kulcs nélkül elérhető útvonalak:
+#   /webhook                — RevenueCat saját hitelesítést használ
+#   /admin_generate_coupons — saját ADMIN_SECRET védi (coupons.py)
+#   /redeem                 — a Brevo emailekben kiküldött, böngészőből nyitott
+#                             kattintható link, nincs hozzá X-API-KEY headere
+#   /latest_version         — a frissítés-értesítés kulcscsere után is működjön
+#                             (a régi kulccsal futó app-verzióknál is)
+PUBLIC_PATHS = {'/', '/webhook', '/admin_generate_coupons', '/redeem', '/latest_version'}
+PUBLIC_PREFIXES = ('/get_image/', '/socket.io/')
+
 @app.before_request
 def require_api_key():
-    if request.path == '/': return
-    if request.path.startswith('/get_image/'): return 
-    if request.path.startswith('/socket.io/'): return 
-    if request.path == '/webhook': return  # RevenueCat saját hitelesítést használ
-    if request.path == '/admin_generate_coupons': return
-    if request.path == '/redeem': return  # <-- ÚJ SOR: a Brevo emailekben kiküldött,
-                                           #     böngészőből nyitott kattintható link,
-                                           #     nincs hozzá X-API-KEY headere.
+    if request.path in PUBLIC_PATHS or request.path.startswith(PUBLIC_PREFIXES):
+        return
 
     client_key = (request.headers.get('X-API-KEY') or '').encode('utf-8')
     if not client_key or not any(hmac.compare_digest(client_key, k.encode('utf-8'))
