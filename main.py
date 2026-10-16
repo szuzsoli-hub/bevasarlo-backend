@@ -1,4 +1,5 @@
 import os
+import hmac
 from flask import Flask, request, jsonify, Response
 from openai import OpenAI
 import base64
@@ -26,7 +27,20 @@ socketio = SocketIO(
 # ==============================================================================
 # 🛡️ BIZTONSÁGI PAJZS (KAPUŐR)
 # ==============================================================================
-EXPECTED_API_KEY = "aK9mX3rL7vN2pQ8tB4wF6hD1sJ5cR0eUgY2jM8"
+# A kulcsok a Render környezeti változóiból jönnek, NEM a kódból:
+#   BACKEND_API_KEY     — az új kulcs (az új app-verziók ezt küldik)
+#   BACKEND_API_KEY_OLD — a régi kulcs, átmenetileg (a régi app-verziók miatt)
+# Üres / hiányzó változó nem kerül be. Ha mindkettő hiányzik, a szerver fut,
+# de minden védett végpont 401-et ad (üres kulccsal senki nem jut be).
+
+def _env_key(name):
+    v = (os.environ.get(name) or "").strip()
+    return v or None
+
+ACCEPTED_API_KEYS = [k for k in (_env_key("BACKEND_API_KEY"),
+                                 _env_key("BACKEND_API_KEY_OLD")) if k]
+if not ACCEPTED_API_KEYS:
+    print("🚨 Nincs beállítva BACKEND_API_KEY / BACKEND_API_KEY_OLD: a védett végpontok zárva (401).")
 
 # ==============================================================================
 # 📱 LEGFRISSEBB APP VERZIÓ (kézzel frissítendő minden kiadás után!)
@@ -48,8 +62,9 @@ def require_api_key():
                                            #     böngészőből nyitott kattintható link,
                                            #     nincs hozzá X-API-KEY headere.
 
-    client_key = request.headers.get('X-API-KEY')
-    if client_key != EXPECTED_API_KEY:
+    client_key = (request.headers.get('X-API-KEY') or '').encode('utf-8')
+    if not client_key or not any(hmac.compare_digest(client_key, k.encode('utf-8'))
+                                 for k in ACCEPTED_API_KEYS):
         return jsonify({"error": "Hozzáférés megtagadva. Érvénytelen API kulcs!"}), 401
 
 # ==============================================================================
