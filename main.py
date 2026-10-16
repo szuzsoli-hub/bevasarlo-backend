@@ -5,6 +5,7 @@ from openai import OpenAI
 import base64
 import json
 from pymongo import MongoClient
+from pymongo.errors import DuplicateKeyError
 import urllib.request
 from datetime import datetime, timezone, timedelta
 import uuid
@@ -85,6 +86,14 @@ tagok_kollekcio = db["csoport_tagok"]
 ai_naplo = db["ai_naplo"]
 kepek_kollekcio = db["termek_kepek"]
 kuponok_kollekcio = db["kuponok"]
+# A már feldolgozott +20 kép vásárlások (transaction_id), hogy ugyanaz
+# kétszer ne íródjon jóvá (lásd /topup_credits).
+topup_tranzakciok = db["topup_tranzakciok"]
+try:
+    topup_tranzakciok.create_index("transaction_id", unique=True)
+except Exception as e:
+    # Induláskor ne álljon le a szerver; a következő indításkor újra próbálja.
+    print(f"🚨 topup_tranzakciok index hiba: {e}")
 
 # ==============================================================================
 # 🔑 REVENUECAT SECRET KEY (modul-szinten, hogy a coupons.py is elérje)
@@ -686,16 +695,37 @@ def topup_credits():
     if not user_id:
         return jsonify({"error": "Hiányzó user_id"}), 400
 
+    now = datetime.now(timezone.utc)
+
+    # Az új app-verziók a vásárlás tranzakció-azonosítóját is küldik, és
+    # sikertelen válasznál újrapróbálják. Ugyanazt az azonosítót csak egyszer
+    # írjuk jóvá; ismétlésnél 200 (hogy a kliens kivegye a sorából), de
+    # credits_added: 0. Azonosító nélkül (régi app) marad a régi viselkedés.
+    transaction_id = str(data.get('transaction_id') or '').strip()
+    if transaction_id:
+        try:
+            topup_tranzakciok.insert_one({
+                "transaction_id": transaction_id,
+                "app_user_id": user_id,
+                "credits": credits,
+                "created_at": now
+            })
+        except DuplicateKeyError:
+            return jsonify({"status": "success", "credits_added": 0, "duplicate": True}), 200
+
     # Naplózzuk a top-up vásárlást — a kvóta számítás (get_user_status)
     # a non_subscriptions alapján automatikusan látja a +20 kreditet,
     # de ezt a naplóbejegyzést használjuk audit célra.
-    ai_naplo.insert_one({
+    naplo = {
         "app_user_id": user_id,
-        "timestamp": datetime.now(timezone.utc),
+        "timestamp": now,
         "action": "topup_purchase",
         "credits": credits,
         "status": "success"
-    })
+    }
+    if transaction_id:
+        naplo["transaction_id"] = transaction_id
+    ai_naplo.insert_one(naplo)
 
     return jsonify({"status": "success", "credits_added": credits}), 200
 
@@ -711,8 +741,9 @@ def delete_user_data():
     if not user_id:
         return jsonify({"error": "Hiányzó user_id"}), 400
 
-    # 1. AI napló teljes törlése
+    # 1. AI napló teljes törlése (+ a feldolgozott top-up tranzakciók)
     ai_naplo.delete_many({"app_user_id": user_id})
+    topup_tranzakciok.delete_many({"app_user_id": user_id})
 
     # 2. Minden csoportból kiléptetés + üres csoportok törlése
     user_groups = list(tagok_kollekcio.find({"user_id": user_id}))
