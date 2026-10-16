@@ -111,6 +111,16 @@ def index():
 # 📸 AI KÉPFELISMERÉS + OKOS KVÓTA RENDSZER
 # ==============================================================================
 
+TOPUP_PRODUCT_ID = "ai_topup_20"
+
+def is_topup_product(prod_id):
+    """
+    True, ha a RevenueCat termékazonosító a +20 képes csomag. A Google Play
+    azonosító jöhet simán ("ai_topup_20") vagy kiegészítéssel
+    ("ai_topup_20:valami") — mindkettő számít, más termék nem.
+    """
+    return str(prod_id or "").split(":")[0] == TOPUP_PRODUCT_ID
+
 def get_user_status(app_user_id):
     url = f"https://api.revenuecat.com/v1/subscribers/{app_user_id}"
     req = urllib.request.Request(url)
@@ -137,8 +147,12 @@ def get_user_status(app_user_id):
                         is_pro = True
                         break
 
+                # A non_subscriptions kulcsa a termékazonosító; CSAK a +20
+                # képes csomag ad képet (a kávé és más egyszeri vásárlás nem).
                 non_subs = subscriber.get("non_subscriptions", {})
                 for prod_id, purchases in non_subs.items():
+                    if not is_topup_product(prod_id):
+                        continue
                     for p in purchases:
                         p_date_str = p.get("purchase_date")
                         if p_date_str:
