@@ -179,6 +179,46 @@ def get_user_status(app_user_id):
         
     return is_pro, extra_quota
 
+AI_PRO_MONTHLY_QUOTA = 60
+
+
+def ai_monthly_usage(app_user_id, now):
+    """Az elmúlt 30 nap felhasznált képei. CSAK a sikeres képelemzés számít:
+    az ai_naplo-ban más bejegyzés is "success" (pl. a +20 vásárlás naplója,
+    topup_purchase), ami nélkül minden +20 vásárlás csak +19-et ért."""
+    return ai_naplo.count_documents({
+        "app_user_id": app_user_id,
+        "action": "analyze_image",
+        "timestamp": {"$gte": now - timedelta(days=30)},
+        "status": "success"
+    })
+
+
+def ai_total_quota(is_pro, extra_quota):
+    """A 30 napos keret: Pro-nak 60, plusz minden 30 napon belüli +20."""
+    return (AI_PRO_MONTHLY_QUOTA if is_pro else 0) + extra_quota
+
+
+@app.route('/ai_quota', methods=['GET'])
+def ai_quota():
+    """A megmaradt AI-képek száma (az app ezt mutatja a "X/60 kép"
+    címkén). A szerver az igazság forrása; a kliens csak tárolja."""
+    app_user_id = request.args.get('app_user_id')
+    if not app_user_id:
+        return jsonify({"error": "Hiányzó azonosító!"}), 400
+    try:
+        is_pro, extra_quota = get_user_status(app_user_id)
+    except RevenueCatUnavailable:
+        return jsonify({"error": "subscription_check_failed"}), 503
+    total = ai_total_quota(is_pro, extra_quota)
+    used = ai_monthly_usage(app_user_id, datetime.now(timezone.utc))
+    return jsonify({
+        "remaining": max(total - used, 0),
+        "total": total,
+        "is_pro": is_pro,
+    }), 200
+
+
 @app.route('/analyze', methods=['POST'])
 def analyze_image():
     app_user_id = request.form.get('app_user_id')
@@ -218,18 +258,8 @@ def analyze_image():
             "error": "Túl sok kérés! 🚦\n\nKérlek, várj egy picit (kb. 1 percet) a következő kép elemzése előtt!"
         }), 429
 
-    thirty_days_ago = now - timedelta(days=30)
-    # CSAK a sikeres képelemzés számít felhasznált képnek: az ai_naplo-ban
-    # más bejegyzés is "success" (pl. a +20 vásárlás naplója, topup_purchase),
-    # ami nélkül minden +20 vásárlás csak +19-et ért.
-    monthly_usage = ai_naplo.count_documents({
-        "app_user_id": app_user_id,
-        "action": "analyze_image",
-        "timestamp": {"$gte": thirty_days_ago},
-        "status": "success"
-    })
-
-    total_quota = (60 if is_pro else 0) + extra_quota  # ← MÓDOSÍTVA: 100 → 60
+    monthly_usage = ai_monthly_usage(app_user_id, now)
+    total_quota = ai_total_quota(is_pro, extra_quota)
 
     if monthly_usage >= total_quota:
         return jsonify({
@@ -303,6 +333,10 @@ def analyze_image():
         maradek = total_quota - monthly_usage
         if monthly_usage in [20, 40, 55]:  # ← MÓDOSÍTVA: [25, 50, 75] → [20, 40, 55]
             parsed_result["warning"] = f"Még {maradek} fotód maradt a havi AI keretedből!"
+
+        # Az app ebből frissíti a "X/60 kép" címkét (a régi app nem nézi).
+        parsed_result["remaining"] = max(maradek, 0)
+        parsed_result["total"] = total_quota
 
         return jsonify(parsed_result), 200
 
