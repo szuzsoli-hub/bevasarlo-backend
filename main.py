@@ -53,7 +53,9 @@ if not ACCEPTED_API_KEYS:
 LATEST_VERSION = "1.0.78"
 
 # Kulcs nélkül elérhető útvonalak:
-#   /webhook                — RevenueCat saját hitelesítést használ
+#   /webhook                — a RevenueCat hívja, X-API-KEY nélkül; a végpont
+#                             jelenleg NEM ellenőrzi a hívót (az Authorization
+#                             fejlécet sem), csak naplóz (ai_naplo, "logged")
 #   /admin_generate_coupons — saját ADMIN_SECRET védi (coupons.py)
 #   /redeem                 — a Brevo emailekben kiküldött, böngészőből nyitott
 #                             kattintható link, nincs hozzá X-API-KEY headere
@@ -169,7 +171,7 @@ def get_user_status(app_user_id):
                     if p_date_str:
                         p_date = datetime.strptime(p_date_str, "%Y-%m-%dT%H:%M:%SZ").replace(tzinfo=timezone.utc)
                         if p_date > datetime.now(timezone.utc) - timedelta(days=30):
-                            extra_quota += 20  # ← MÓDOSÍTVA: 100 → 20
+                            extra_quota += 20
 
     except RevenueCatUnavailable:
         raise
@@ -331,7 +333,7 @@ def analyze_image():
         monthly_usage += 1
 
         maradek = total_quota - monthly_usage
-        if monthly_usage in [20, 40, 55]:  # ← MÓDOSÍTVA: [25, 50, 75] → [20, 40, 55]
+        if monthly_usage in [20, 40, 55]:
             parsed_result["warning"] = f"Még {maradek} fotód maradt a havi AI keretedből!"
 
         # Az app ebből frissíti a "X/60 kép" címkét (a régi app nem nézi).
