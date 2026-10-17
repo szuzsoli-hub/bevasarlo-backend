@@ -192,8 +192,12 @@ def analyze_image():
         }), 429
 
     thirty_days_ago = now - timedelta(days=30)
+    # CSAK a sikeres képelemzés számít felhasznált képnek: az ai_naplo-ban
+    # más bejegyzés is "success" (pl. a +20 vásárlás naplója, topup_purchase),
+    # ami nélkül minden +20 vásárlás csak +19-et ért.
     monthly_usage = ai_naplo.count_documents({
         "app_user_id": app_user_id,
+        "action": "analyze_image",
         "timestamp": {"$gte": thirty_days_ago},
         "status": "success"
     })
@@ -729,7 +733,8 @@ def topup_credits():
 
     # Naplózzuk a top-up vásárlást — a kvóta számítás (get_user_status)
     # a non_subscriptions alapján automatikusan látja a +20 kreditet,
-    # de ezt a naplóbejegyzést használjuk audit célra.
+    # ez a bejegyzés csak audit célú. Felhasznált képnek NEM számít: az
+    # /analyze csak az "analyze_image" bejegyzéseket számolja.
     naplo = {
         "app_user_id": user_id,
         "timestamp": now,
