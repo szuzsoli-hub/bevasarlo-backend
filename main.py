@@ -121,7 +121,16 @@ def is_topup_product(prod_id):
     """
     return str(prod_id or "").split(":")[0] == TOPUP_PRODUCT_ID
 
+class RevenueCatUnavailable(Exception):
+    """A RevenueCat nem kérdezhető le (hálózat, hibás kulcs, szerverhiba).
+    Ilyenkor NEM tudjuk, Pro-e a felhasználó: nem mondhatjuk, hogy elfogyott
+    a kerete, és azt sem, hogy nincs előfizetése."""
+
+
 def get_user_status(app_user_id):
+    """(is_pro, extra_quota). Ha a RevenueCat nem válaszol rendesen,
+    RevenueCatUnavailable-t dob. (Régen ilyenkor csendben "nem Pro" lett,
+    amiből az app "elfogyott a képkereted" ablakot csinált.)"""
     url = f"https://api.revenuecat.com/v1/subscribers/{app_user_id}"
     req = urllib.request.Request(url)
     req.add_header('Authorization', f'Bearer {REVENUECAT_SECRET_KEY}')
@@ -131,37 +140,42 @@ def get_user_status(app_user_id):
     extra_quota = 0
     
     try:
-        with urllib.request.urlopen(req) as response:
-            if response.status == 200:
-                data = json.loads(response.read().decode())
-                subscriber = data.get("subscriber", {})
-                
-                entitlements = subscriber.get("entitlements", {})
-                for ent_name, ent_data in entitlements.items():
-                    expires_date_str = ent_data.get("expires_date")
-                    if not expires_date_str:
-                        is_pro = True
-                        break
-                    expires_date = datetime.strptime(expires_date_str, "%Y-%m-%dT%H:%M:%SZ").replace(tzinfo=timezone.utc)
-                    if expires_date > datetime.now(timezone.utc):
-                        is_pro = True
-                        break
+        with urllib.request.urlopen(req, timeout=15) as response:
+            # 201: a RevenueCat most hozta létre az ügyfelet (nincs vásárlása).
+            if response.status not in (200, 201):
+                raise RevenueCatUnavailable(f"HTTP {response.status}")
+            data = json.loads(response.read().decode())
+            subscriber = data.get("subscriber", {})
+            
+            entitlements = subscriber.get("entitlements", {})
+            for ent_name, ent_data in entitlements.items():
+                expires_date_str = ent_data.get("expires_date")
+                if not expires_date_str:
+                    is_pro = True
+                    break
+                expires_date = datetime.strptime(expires_date_str, "%Y-%m-%dT%H:%M:%SZ").replace(tzinfo=timezone.utc)
+                if expires_date > datetime.now(timezone.utc):
+                    is_pro = True
+                    break
 
-                # A non_subscriptions kulcsa a termékazonosító; CSAK a +20
-                # képes csomag ad képet (a kávé és más egyszeri vásárlás nem).
-                non_subs = subscriber.get("non_subscriptions", {})
-                for prod_id, purchases in non_subs.items():
-                    if not is_topup_product(prod_id):
-                        continue
-                    for p in purchases:
-                        p_date_str = p.get("purchase_date")
-                        if p_date_str:
-                            p_date = datetime.strptime(p_date_str, "%Y-%m-%dT%H:%M:%SZ").replace(tzinfo=timezone.utc)
-                            if p_date > datetime.now(timezone.utc) - timedelta(days=30):
-                                extra_quota += 20  # ← MÓDOSÍTVA: 100 → 20
+            # A non_subscriptions kulcsa a termékazonosító; CSAK a +20
+            # képes csomag ad képet (a kávé és más egyszeri vásárlás nem).
+            non_subs = subscriber.get("non_subscriptions", {})
+            for prod_id, purchases in non_subs.items():
+                if not is_topup_product(prod_id):
+                    continue
+                for p in purchases:
+                    p_date_str = p.get("purchase_date")
+                    if p_date_str:
+                        p_date = datetime.strptime(p_date_str, "%Y-%m-%dT%H:%M:%SZ").replace(tzinfo=timezone.utc)
+                        if p_date > datetime.now(timezone.utc) - timedelta(days=30):
+                            extra_quota += 20  # ← MÓDOSÍTVA: 100 → 20
 
+    except RevenueCatUnavailable:
+        raise
     except Exception as e:
         print(f"🚨 RevenueCat hiba: {e}")
+        raise RevenueCatUnavailable(str(e)) from e
         
     return is_pro, extra_quota
 
@@ -173,11 +187,24 @@ def analyze_image():
     if not app_user_id:
          return jsonify({"error": "Hiányzó azonosító!"}), 400
 
-    is_pro, extra_quota = get_user_status(app_user_id)
+    # Hibakódok az appnak ("error"), emberi szöveg a "message"-ben:
+    #   503 subscription_check_failed — a RevenueCat nem kérdezhető le
+    #   403 not_pro                   — nincs Pro és nincs +20 kerete
+    #   403 quota_exhausted           — elfogyott a képkeret
+    # A régi app (1.0.78) csak a státuszkódot nézi: 403-ra a +20 ablakot
+    # mutatja (mint eddig), 503-ra általános "próbáld újra" üzenetet.
+    try:
+        is_pro, extra_quota = get_user_status(app_user_id)
+    except RevenueCatUnavailable:
+        return jsonify({
+            "error": "subscription_check_failed",
+            "message": "Most nem sikerült ellenőrizni az előfizetésedet. Kérlek, próbáld újra később!"
+        }), 503
 
     if not is_pro and extra_quota == 0:
         return jsonify({
-            "error": "Prémium funkció 💎\n\nAz AI képfelismerés használatához Pro előfizetés szükséges. Kérlek, válts Prémiumra a beállításokban!"
+            "error": "not_pro",
+            "message": "Prémium funkció 💎\n\nAz AI képfelismerés használatához Pro előfizetés szükséges. Kérlek, válts Prémiumra a beállításokban!"
         }), 403
 
     one_minute_ago = now - timedelta(minutes=1)
@@ -206,7 +233,10 @@ def analyze_image():
 
     if monthly_usage >= total_quota:
         return jsonify({
-            "error": f"Kimerítetted a keretedet! 🔒\n\nElhasználtad a rendelkezésre álló {total_quota} db AI fotódat az elmúlt 30 napban. Vásárolj extra csomagot a folytatáshoz!"
+            "error": "quota_exhausted",
+            "remaining": 0,
+            "total": total_quota,
+            "message": f"Kimerítetted a keretedet! 🔒\n\nElhasználtad a rendelkezésre álló {total_quota} db AI fotódat az elmúlt 30 napban. Vásárolj extra csomagot a folytatáshoz!"
         }), 403
 
     if 'image' not in request.files: return jsonify({"error": "Nincs kép"}), 400
