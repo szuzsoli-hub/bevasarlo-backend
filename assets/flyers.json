@@ -1,5 +1,5 @@
 {
-    "last_updated": "2026-10-18 18:45:52.666835",
+    "last_updated": "2026-10-19 10:01:48.203060",
     "flyers": [
         {
             "store": "Spar",
@@ -93,21 +93,6 @@
         },
         {
             "store": "Lidl",
-            "title": "Lidl regionalis-akciok-debrecen-monostorpalyi-ut-42het",
-            "url": "https://www.lidl.hu/l/hu/ujsag/regionalis-akciok-debrecen-monostorpalyi-ut-42het/ar/0?lf=HHZ"
-        },
-        {
-            "store": "Lidl",
-            "title": "Lidl regionalis-akciok-veszprem-papai-ut-42het",
-            "url": "https://www.lidl.hu/l/hu/ujsag/regionalis-akciok-veszprem-papai-ut-42het/ar/0?lf=HHZ"
-        },
-        {
-            "store": "Lidl",
-            "title": "Lidl regionalis-akciok-koszeg-caki-ut-42het",
-            "url": "https://www.lidl.hu/l/hu/ujsag/regionalis-akciok-koszeg-caki-ut-42het/ar/0?lf=HHZ"
-        },
-        {
-            "store": "Lidl",
             "title": "Lidl regionalis-akciok-koszeg-caki-ut-43het",
             "url": "https://www.lidl.hu/l/hu/ujsag/regionalis-akciok-koszeg-caki-ut-43het/ar/0?lf=HHZ"
         },
@@ -137,19 +122,14 @@
             "url": "https://www.tesco.hu/akciok/katalogusok/szupermarket/tesco-ujsag-2026-10-15/1"
         },
         {
-            "store": "Auchan",
-            "title": "2026-10-08-10-21-azsiai-ajanlataink",
-            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr41/2026-10-08-10-21-azsiai-ajanlataink"
+            "store": "Tesco",
+            "title": "Tesco hipermarket/tesco-ujsag-2026-10-21",
+            "url": "https://www.tesco.hu/akciok/katalogusok/hipermarket/tesco-ujsag-2026-10-21/1"
         },
         {
-            "store": "Auchan",
-            "title": "2026-10-15-10-21-heti-hipermarket-ajanlataink",
-            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr42/2026-10-15-10-21-heti-hipermarket-ajanlataink"
-        },
-        {
-            "store": "Auchan",
-            "title": "2026-10-15-10-21-heti-szupermarket-ajanlataink",
-            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr42/2026-10-15-10-21-heti-szupermarket-ajanlataink"
+            "store": "Tesco",
+            "title": "Tesco szupermarket/tesco-ujsag-2026-10-21",
+            "url": "https://www.tesco.hu/akciok/katalogusok/szupermarket/tesco-ujsag-2026-10-21/1"
         },
         {
             "store": "Auchan",
@@ -158,8 +138,23 @@
         },
         {
             "store": "Auchan",
-            "title": "2026-10-01-10-21-oszi-ruhazat",
-            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr40/2026-10-01-10-21-oszi-ruhazat"
+            "title": "2026-10-08-10-21-azsiai-ajanlataink",
+            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr41/2026-10-08-10-21-azsiai-ajanlataink"
+        },
+        {
+            "store": "Auchan",
+            "title": "2026-10-01-10-21-bor-ajanlataink",
+            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr40/2026-10-01-10-21-bor-ajanlataink"
+        },
+        {
+            "store": "Auchan",
+            "title": "2026-10-15-10-21-heti-hipermarket-ajanlataink",
+            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr42/2026-10-15-10-21-heti-hipermarket-ajanlataink"
+        },
+        {
+            "store": "Auchan",
+            "title": "2026-10-22-10-28-heti-hipermarket-ajanlataink",
+            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr43/2026-10-22-10-28-heti-hipermarket-ajanlataink"
         },
         {
             "store": "Auchan",
@@ -173,13 +168,18 @@
         },
         {
             "store": "Auchan",
-            "title": "2026-10-01-10-21-bor-ajanlataink",
-            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr40/2026-10-01-10-21-bor-ajanlataink"
+            "title": "2026-10-15-10-21-sajatmarkas-ajanlataink",
+            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr42/2026-10-15-10-21-sajatmarkas-ajanlataink"
         },
         {
             "store": "Auchan",
-            "title": "2026-10-15-10-21-sajatmarkas-ajanlataink",
-            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr42/2026-10-15-10-21-sajatmarkas-ajanlataink"
+            "title": "2026-10-15-10-21-heti-szupermarket-ajanlataink",
+            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr42/2026-10-15-10-21-heti-szupermarket-ajanlataink"
+        },
+        {
+            "store": "Auchan",
+            "title": "2026-10-01-10-21-oszi-ruhazat",
+            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr40/2026-10-01-10-21-oszi-ruhazat"
         },
         {
             "store": "Aldi",
@@ -202,9 +202,19 @@
             "url": "https://katalogus.coop.hu/coop-tisza-szorolap-2026-oktober-3-het-abc-szuper/"
         },
         {
+            "store": "Tisza-Coop",
+            "title": "coop-tisza-szorolap-2026-oktober-4-het-abc-szuper",
+            "url": "https://katalogus.coop.hu/coop-tisza-szorolap-2026-oktober-4-het-abc-szuper/"
+        },
+        {
             "store": "Alföld Pro-Coop",
             "title": "coop-alfold-szorolap-2026-oktober-3-het",
             "url": "https://katalogus.coop.hu/coop-alfold-szorolap-2026-oktober-3-het/"
+        },
+        {
+            "store": "Alföld Pro-Coop",
+            "title": "coop-alfold-szorolap-2026-oktober-4-het",
+            "url": "https://katalogus.coop.hu/coop-alfold-szorolap-2026-oktober-4-het/"
         },
         {
             "store": "Észak-Kelet Pro-Coop",
@@ -215,6 +225,11 @@
             "store": "Coop Mecsek Füszért",
             "title": "coop-mecsek-szorolap-2026-oktober-3-het",
             "url": "https://katalogus.coop.hu/coop-mecsek-szorolap-2026-oktober-3-het/"
+        },
+        {
+            "store": "Coop Mecsek Füszért",
+            "title": "coop-mecsek-szorolap-2026-oktober-4-het",
+            "url": "https://katalogus.coop.hu/coop-mecsek-szorolap-2026-oktober-4-het/"
         },
         {
             "store": "Coop Hétforrás",
