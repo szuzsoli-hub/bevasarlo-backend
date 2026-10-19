@@ -1,5 +1,5 @@
 {
-    "last_updated": "2026-10-19 10:01:48.203060",
+    "last_updated": "2026-10-19 17:06:34.598791",
     "flyers": [
         {
             "store": "Spar",
@@ -133,33 +133,8 @@
         },
         {
             "store": "Auchan",
-            "title": "2026-10-08-10-21-csokolade-ajanlataink",
-            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr41/2026-10-08-10-21-csokolade-ajanlataink"
-        },
-        {
-            "store": "Auchan",
-            "title": "2026-10-08-10-21-azsiai-ajanlataink",
-            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr41/2026-10-08-10-21-azsiai-ajanlataink"
-        },
-        {
-            "store": "Auchan",
             "title": "2026-10-01-10-21-bor-ajanlataink",
             "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr40/2026-10-01-10-21-bor-ajanlataink"
-        },
-        {
-            "store": "Auchan",
-            "title": "2026-10-15-10-21-heti-hipermarket-ajanlataink",
-            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr42/2026-10-15-10-21-heti-hipermarket-ajanlataink"
-        },
-        {
-            "store": "Auchan",
-            "title": "2026-10-22-10-28-heti-hipermarket-ajanlataink",
-            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr43/2026-10-22-10-28-heti-hipermarket-ajanlataink"
-        },
-        {
-            "store": "Auchan",
-            "title": "2026-10-22-10-28-halloween-ajanlataink",
-            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr43/2026-10-22-10-28-halloween-ajanlataink"
         },
         {
             "store": "Auchan",
@@ -173,8 +148,38 @@
         },
         {
             "store": "Auchan",
+            "title": "2026-10-15-10-21-heti-hipermarket-ajanlataink",
+            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr42/2026-10-15-10-21-heti-hipermarket-ajanlataink"
+        },
+        {
+            "store": "Auchan",
+            "title": "2026-10-22-10-28-halloween-ajanlataink",
+            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr43/2026-10-22-10-28-halloween-ajanlataink"
+        },
+        {
+            "store": "Auchan",
+            "title": "2026-10-22-10-28-heti-hipermarket-ajanlataink",
+            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr43/2026-10-22-10-28-heti-hipermarket-ajanlataink"
+        },
+        {
+            "store": "Auchan",
             "title": "2026-10-15-10-21-heti-szupermarket-ajanlataink",
             "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr42/2026-10-15-10-21-heti-szupermarket-ajanlataink"
+        },
+        {
+            "store": "Auchan",
+            "title": "2026-10-22-11-25-karacsonyi-ajanlataink",
+            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr43/2026-10-22-11-25-karacsonyi-ajanlataink"
+        },
+        {
+            "store": "Auchan",
+            "title": "2026-10-08-10-21-csokolade-ajanlataink",
+            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr41/2026-10-08-10-21-csokolade-ajanlataink"
+        },
+        {
+            "store": "Auchan",
+            "title": "2026-10-08-10-21-azsiai-ajanlataink",
+            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr41/2026-10-08-10-21-azsiai-ajanlataink"
         },
         {
             "store": "Auchan",
