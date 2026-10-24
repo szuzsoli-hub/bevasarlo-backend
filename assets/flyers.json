@@ -1,5 +1,5 @@
 {
-    "last_updated": "2026-10-23 20:05:18.789885",
+    "last_updated": "2026-10-24 09:00:29.004470",
     "flyers": [
         {
             "store": "Spar",
@@ -62,14 +62,19 @@
             "url": "https://files.rewe.co.at/PennyIntLeaflet/HU/202643/"
         },
         {
-            "store": "Lidl",
-            "title": "Lidl akcios-ujsag-43-het",
-            "url": "https://www.lidl.hu/l/hu/ujsag/akcios-ujsag-43-het-2026/ar/0?lf=HHZ"
+            "store": "Penny",
+            "title": "Penny Akciós Újság 44. heti (202644)",
+            "url": "https://files.rewe.co.at/PennyIntLeaflet/HU/202644/"
         },
         {
             "store": "Lidl",
-            "title": "Lidl akcios-ujsag-42-het",
-            "url": "https://www.lidl.hu/l/hu/ujsag/akcios-ujsag-42-het-2026/ar/0?lf=HHZ"
+            "title": "Lidl akcios-ujsag-44-het",
+            "url": "https://www.lidl.hu/l/hu/ujsag/akcios-ujsag-44-het-2026/ar/0?lf=HHZ"
+        },
+        {
+            "store": "Lidl",
+            "title": "Lidl akcios-ujsag-43-het",
+            "url": "https://www.lidl.hu/l/hu/ujsag/akcios-ujsag-43-het-2026/ar/0?lf=HHZ"
         },
         {
             "store": "Lidl",
@@ -108,8 +113,8 @@
         },
         {
             "store": "Auchan",
-            "title": "2026-10-22-11-25-karacsonyi-ajanlataink",
-            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr43/2026-10-22-11-25-karacsonyi-ajanlataink"
+            "title": "2026-10-22-10-28-heti-hipermarket-ajanlataink",
+            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr43/2026-10-22-10-28-heti-hipermarket-ajanlataink"
         },
         {
             "store": "Auchan",
@@ -118,13 +123,13 @@
         },
         {
             "store": "Auchan",
-            "title": "2026-10-22-10-28-heti-hipermarket-ajanlataink",
-            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr43/2026-10-22-10-28-heti-hipermarket-ajanlataink"
+            "title": "2026-10-22-11-25-karacsonyi-ajanlataink",
+            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr43/2026-10-22-11-25-karacsonyi-ajanlataink"
         },
         {
             "store": "Aldi",
-            "title": "aldi_kozepso_sor_2026_kw43",
-            "url": "https://szorolap.aldi.hu/aldi_kozepso_sor_2026_kw43/page/1"
+            "title": "aldi_kozepso_sor_2026_kw44",
+            "url": "https://szorolap.aldi.hu/aldi_kozepso_sor_2026_kw44/page/1"
         },
         {
             "store": "CBA Príma5",
