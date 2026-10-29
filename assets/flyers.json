@@ -1,5 +1,5 @@
 {
-    "last_updated": "2026-10-28 21:12:11.259202",
+    "last_updated": "2026-10-29 11:01:33.479808",
     "flyers": [
         {
             "store": "Spar",
@@ -18,33 +18,13 @@
         },
         {
             "store": "Spar",
-            "title": "261022-4-interspar-sopron-uzlet-ujranyitas",
-            "url": "https://www.spar.hu/ajanlatok/interspar/261022-4-interspar-sopron-uzlet-ujranyitas"
+            "title": "261029-2-interspar-szorolap",
+            "url": "https://www.spar.hu/ajanlatok/interspar/261029-2-interspar-szorolap"
         },
         {
             "store": "Spar",
-            "title": "261022-2-interspar-szorolap",
-            "url": "https://www.spar.hu/ajanlatok/interspar/261022-2-interspar-szorolap"
-        },
-        {
-            "store": "Spar",
-            "title": "261029-2-interspar-szorolap-p",
-            "url": "https://www.spar.hu/ajanlatok/interspar/261029-2-interspar-szorolap-p"
-        },
-        {
-            "store": "Spar",
-            "title": "261022-1-spar-szorolap",
-            "url": "https://www.spar.hu/ajanlatok/spar/261022-1-spar-szorolap"
-        },
-        {
-            "store": "Spar",
-            "title": "261029-1-spar-szorolap-p",
-            "url": "https://www.spar.hu/ajanlatok/spar/261029-1-spar-szorolap-p"
-        },
-        {
-            "store": "Spar",
-            "title": "261022-3-spar-market-city-spar",
-            "url": "https://www.spar.hu/ajanlatok/spar-market/261022-3-spar-market-city-spar"
+            "title": "261029-1-spar-szorolap",
+            "url": "https://www.spar.hu/ajanlatok/spar/261029-1-spar-szorolap"
         },
         {
             "store": "Spar",
@@ -55,11 +35,6 @@
             "store": "Spar",
             "title": "261029-4-city-spar-bp-xi-fehervari-u-uzlet-ujranyitas",
             "url": "https://www.spar.hu/ajanlatok/spar-market/261029-4-city-spar-bp-xi-fehervari-u-uzlet-ujranyitas"
-        },
-        {
-            "store": "Penny",
-            "title": "Penny Akciós Újság 43. heti (202643)",
-            "url": "https://files.rewe.co.at/PennyIntLeaflet/HU/202643/"
         },
         {
             "store": "Penny",
@@ -88,16 +63,6 @@
         },
         {
             "store": "Tesco",
-            "title": "Tesco hipermarket/tesco-ujsag-2026-10-21",
-            "url": "https://www.tesco.hu/akciok/katalogusok/hipermarket/tesco-ujsag-2026-10-21/1"
-        },
-        {
-            "store": "Tesco",
-            "title": "Tesco szupermarket/tesco-ujsag-2026-10-21",
-            "url": "https://www.tesco.hu/akciok/katalogusok/szupermarket/tesco-ujsag-2026-10-21/1"
-        },
-        {
-            "store": "Tesco",
             "title": "Tesco hipermarket/tesco-ujsag-2026-10-29",
             "url": "https://www.tesco.hu/akciok/katalogusok/hipermarket/tesco-ujsag-2026-10-29/1"
         },
@@ -113,21 +78,6 @@
         },
         {
             "store": "Auchan",
-            "title": "2026-10-22-10-28-heti-hipermarket-ajanlataink",
-            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr43/2026-10-22-10-28-heti-hipermarket-ajanlataink"
-        },
-        {
-            "store": "Auchan",
-            "title": "2026-10-29-11-04-heti-hipermarket-ajanlataink",
-            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr44/2026-10-29-11-04-heti-hipermarket-ajanlataink"
-        },
-        {
-            "store": "Auchan",
-            "title": "2026-10-22-10-28-heti-szupermarket-ajanlataink",
-            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr43/2026-10-22-10-28-heti-szupermarket-ajanlataink"
-        },
-        {
-            "store": "Auchan",
             "title": "2026-10-29-11-04-heti-szupermarket-ajanlataink",
             "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr44/2026-10-29-11-04-heti-szupermarket-ajanlataink"
         },
@@ -138,8 +88,8 @@
         },
         {
             "store": "Auchan",
-            "title": "2026-10-22-10-28-halloween-ajanlataink",
-            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr43/2026-10-22-10-28-halloween-ajanlataink"
+            "title": "2026-10-29-11-04-heti-hipermarket-ajanlataink",
+            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr44/2026-10-29-11-04-heti-hipermarket-ajanlataink"
         },
         {
             "store": "Aldi",
@@ -153,8 +103,8 @@
         },
         {
             "store": "Tisza-Coop",
-            "title": "coop-tisza-szorolap-2026-oktober-4-het-abc-szuper",
-            "url": "https://katalogus.coop.hu/coop-tisza-szorolap-2026-oktober-4-het-abc-szuper/"
+            "title": "coop-tisza-szorolap-2026-november-1-het-szuper-plusz",
+            "url": "https://katalogus.coop.hu/coop-tisza-szorolap-2026-november-1-het-szuper-plusz/"
         },
         {
             "store": "Tisza-Coop",
@@ -163,28 +113,13 @@
         },
         {
             "store": "Alföld Pro-Coop",
-            "title": "coop-alfold-szorolap-2026-oktober-4-het",
-            "url": "https://katalogus.coop.hu/coop-alfold-szorolap-2026-oktober-4-het/"
-        },
-        {
-            "store": "Alföld Pro-Coop",
             "title": "coop-alfold-szorolap-2026-november-1-het-szuper-plusz",
             "url": "https://katalogus.coop.hu/coop-alfold-szorolap-2026-november-1-het-szuper-plusz/"
         },
         {
-            "store": "Coop Mecsek Füszért",
-            "title": "coop-mecsek-szorolap-2026-oktober-4-het",
-            "url": "https://katalogus.coop.hu/coop-mecsek-szorolap-2026-oktober-4-het/"
-        },
-        {
-            "store": "Coop Mecsek Füszért",
+            "store": "Coop pecs",
             "title": "coop-orszagos-szorolap-2026-november-1-het-abc-szuper",
             "url": "https://katalogus.coop.hu/coop-orszagos-szorolap-2026-november-1-het-abc-szuper/"
-        },
-        {
-            "store": "Coop Hétforrás",
-            "title": "coop-hetforras-szorolap-2026-oktober-3-4-het",
-            "url": "https://katalogus.coop.hu/coop-hetforras-szorolap-2026-oktober-3-4-het/"
         }
     ]
 }
