@@ -1,5 +1,5 @@
 {
-    "last_updated": "2026-10-29 21:14:50.557425",
+    "last_updated": "2026-10-30 10:59:40.166705",
     "flyers": [
         {
             "store": "Spar",
@@ -23,8 +23,23 @@
         },
         {
             "store": "Spar",
+            "title": "261105-2-interspar-szorolap-p",
+            "url": "https://www.spar.hu/ajanlatok/interspar/261105-2-interspar-szorolap-p"
+        },
+        {
+            "store": "Spar",
             "title": "261029-1-spar-szorolap",
             "url": "https://www.spar.hu/ajanlatok/spar/261029-1-spar-szorolap"
+        },
+        {
+            "store": "Spar",
+            "title": "261105-1-spar-szorolap-p",
+            "url": "https://www.spar.hu/ajanlatok/spar/261105-1-spar-szorolap-p"
+        },
+        {
+            "store": "Spar",
+            "title": "261105-4-spar-dunaharaszti",
+            "url": "https://www.spar.hu/ajanlatok/spar/261105-4-spar-dunaharaszti"
         },
         {
             "store": "Spar",
@@ -35,6 +50,16 @@
             "store": "Spar",
             "title": "261029-4-city-spar-bp-xi-fehervari-u-uzlet-ujranyitas",
             "url": "https://www.spar.hu/ajanlatok/spar-market/261029-4-city-spar-bp-xi-fehervari-u-uzlet-ujranyitas"
+        },
+        {
+            "store": "Spar",
+            "title": "261105-3-spar-market-city-spar",
+            "url": "https://www.spar.hu/ajanlatok/spar-market/261105-3-spar-market-city-spar"
+        },
+        {
+            "store": "Spar",
+            "title": "261105-5-spar-market-nagykapornak-zalalovo",
+            "url": "https://www.spar.hu/ajanlatok/spar-market/261105-5-spar-market-nagykapornak-zalalovo"
         },
         {
             "store": "Penny",
@@ -73,8 +98,8 @@
         },
         {
             "store": "Auchan",
-            "title": "2026-10-29-11-04-heti-szupermarket-ajanlataink",
-            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr44/2026-10-29-11-04-heti-szupermarket-ajanlataink"
+            "title": "2026-10-22-11-25-karacsonyi-ajanlataink",
+            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr43/2026-10-22-11-25-karacsonyi-ajanlataink"
         },
         {
             "store": "Auchan",
@@ -83,8 +108,8 @@
         },
         {
             "store": "Auchan",
-            "title": "2026-10-22-11-25-karacsonyi-ajanlataink",
-            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr43/2026-10-22-11-25-karacsonyi-ajanlataink"
+            "title": "2026-10-29-11-04-heti-szupermarket-ajanlataink",
+            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr44/2026-10-29-11-04-heti-szupermarket-ajanlataink"
         },
         {
             "store": "Auchan",
