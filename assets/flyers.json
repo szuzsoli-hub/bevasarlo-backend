@@ -1,15 +1,10 @@
 {
-    "last_updated": "2026-10-31 20:06:28.147582",
+    "last_updated": "2026-11-01 11:23:44.851531",
     "flyers": [
         {
             "store": "Spar",
             "title": "260901-1-allateledel-katalogus",
             "url": "https://www.spar.hu/ajanlatok/egyeb/260901-1-allateledel-katalogus"
-        },
-        {
-            "store": "Spar",
-            "title": "261001-4-halloween-katalogus",
-            "url": "https://www.spar.hu/ajanlatok/egyeb/261001-4-halloween-katalogus"
         },
         {
             "store": "Spar",
@@ -93,8 +88,8 @@
         },
         {
             "store": "Metro",
-            "title": "Élelmiszer és Szezonális 2026/10",
-            "url": "https://katalogus.metro.hu/elelmiszer-es-szezonalis-ajanlataink-kiskereskedoknek-2026-10/page/1"
+            "title": "Élelmiszer és Szezonális 2026/11",
+            "url": "https://katalogus.metro.hu/elelmiszer-es-szezonalis-ajanlataink-kiskereskedoknek-2026-11/page/1"
         },
         {
             "store": "Tesco",
@@ -113,11 +108,6 @@
         },
         {
             "store": "Auchan",
-            "title": "2026-10-29-11-04-heti-hipermarket-ajanlataink",
-            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr44/2026-10-29-11-04-heti-hipermarket-ajanlataink"
-        },
-        {
-            "store": "Auchan",
             "title": "2026-10-29-11-04-heti-szupermarket-ajanlataink",
             "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr44/2026-10-29-11-04-heti-szupermarket-ajanlataink"
         },
@@ -125,6 +115,11 @@
             "store": "Auchan",
             "title": "2026-10-29-11-04-heti-filleres-ajanlataink",
             "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr44/2026-10-29-11-04-heti-filleres-ajanlataink"
+        },
+        {
+            "store": "Auchan",
+            "title": "2026-10-29-11-04-heti-hipermarket-ajanlataink",
+            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr44/2026-10-29-11-04-heti-hipermarket-ajanlataink"
         },
         {
             "store": "Aldi",
