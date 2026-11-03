@@ -88,6 +88,8 @@ tagok_kollekcio = db["csoport_tagok"]
 ai_naplo = db["ai_naplo"]
 kepek_kollekcio = db["termek_kepek"]
 kuponok_kollekcio = db["kuponok"]
+# A törölt közös listák kódjai, lásd lista_torolve_jelol().
+torolt_listak = db["torolt_listak"]
 # A már feldolgozott +20 kép vásárlások (transaction_id), hogy ugyanaz
 # kétszer ne íródjon jóvá (lásd /topup_credits).
 topup_tranzakciok = db["topup_tranzakciok"]
@@ -447,6 +449,32 @@ def aktiv_tagok_szama(family_id):
     )
 
 
+def lista_torolve_jelol(family_id):
+    """
+    Megjegyzi, hogy ezt a kódot töröltük. A lista törlése ELŐTT kell hívni: ha
+    utána a törlés elakad, a lista él tovább, és a bejegyzés nem zavar, mert
+    minden végpont előbb magát a listát keresi.
+
+    Miért kell: akinek az appja nem kapta meg a törlés értesítését (nem futott,
+    nem volt internetje), az a következő feltöltésével újra létrehozná a listát.
+    A feltöltésből ez nem különböztethető meg egy új listától, ezért a szervernek
+    emlékeznie kell. Személyes adatot nem tárol. Nem jár le, mert egy telefon
+    hónapokig lehet kikapcsolva.
+    """
+    if not family_id:
+        return
+    torolt_listak.update_one(
+        {"family_id": family_id},
+        {"$setOnInsert": {"deleted_at": int(datetime.now(timezone.utc).timestamp() * 1000)}},
+        upsert=True
+    )
+
+
+def lista_torolve(family_id):
+    """True, ha ezt a kódot korábban töröltük (lásd lista_torolve_jelol)."""
+    return bool(family_id) and torolt_listak.find_one({"family_id": family_id}) is not None
+
+
 # ==============================================================================
 # ☁️ LISTA SZINKRONIZÁCIÓ (+ KUKÁSAUTÓ ÉS ALAPÍTÓ RÖGZÍTÉSE)
 # ==============================================================================
@@ -464,6 +492,16 @@ def sync_list():
     base_timestamp = data.get('base_timestamp')
 
     regi_csalad = kollekcio.find_one({"family_id": family_id})
+
+    # Törölt listát nem hozunk létre újra, akármelyik appverzió kéri. Élő
+    # listánál ez nem fut le. Az új app a 410-ből tudja, hogy priváttá tegye a
+    # listát; a régi app sima hibának veszi, és a tartalom nála megmarad.
+    if not regi_csalad and lista_torolve(family_id):
+        return jsonify({
+            "error": "Ezt a közös listát törölték.",
+            "exists": False,
+            "deleted": True
+        }), 410
 
     # ÚJ: tagság/kitiltás-ellenőrzés — csak MEGLÉVŐ listánál. Új lista
     # létrehozásakor (regi_csalad is None) nincs mit ellenőrizni, hiszen
@@ -581,6 +619,9 @@ def get_list():
     # erre a mezőre alapozza a "nem létező kód" döntést.
     return jsonify({
         "exists": False,
+        # Csak akkor igaz, ha mi töröltük: üres adatbázisnál vagy ismeretlen kódnál
+        # hamis, ezért az app ezen kívül semmitől nem tesz priváttá egy listát.
+        "deleted": lista_torolve(family_id),
         "list_data": {"items": []},
         "timestamp": 0,
         "member_count": 0,
@@ -649,6 +690,7 @@ def leave_group():
     csalad = kollekcio.find_one({"family_id": family_id})
 
     if csalad and csalad.get("owner_id") == user_id:
+        lista_torolve_jelol(family_id)
         list_data = csalad.get("list_data") or {}
         try:
             if "items" in list_data:
@@ -678,6 +720,7 @@ def leave_group():
     maradek_tagok = tagok_kollekcio.count_documents({"family_id": family_id})
     
     if maradek_tagok == 0:
+        lista_torolve_jelol(family_id)
         kollekcio.delete_one({"family_id": family_id})
         socketio.emit('group_deleted', {"family_id": family_id}, room=family_id)
         return jsonify({"status": "last_member_left"}), 200
@@ -838,6 +881,7 @@ def delete_user_data():
 
         maradek = tagok_kollekcio.count_documents({"family_id": family_id})
         if maradek == 0:
+            lista_torolve_jelol(family_id)
             # Ha ő volt az utolsó tag, a lista és a képek is törlődnek
             lista_dok = kollekcio.find_one({"family_id": family_id})
             if lista_dok and "list_data" in lista_dok:
