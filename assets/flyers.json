@@ -1,5 +1,5 @@
 {
-    "last_updated": "2026-11-04 12:15:58.322950",
+    "last_updated": "2026-11-04 22:01:08.788117",
     "flyers": [
         {
             "store": "Spar",
@@ -97,6 +97,11 @@
             "url": "https://www.lidl.hu/l/hu/ujsag/regionalis-akciok-dunaharaszti-nemedi-ut-45het/ar/0?lf=HHZ"
         },
         {
+            "store": "Lidl",
+            "title": "Lidl akcios-ujsag-favorina-katalogus-43-het",
+            "url": "https://www.lidl.hu/l/hu/ujsag/akcios-ujsag-favorina-katalogus-43-het-2026/ar/0?lf=HHZ"
+        },
+        {
             "store": "Metro",
             "title": "Élelmiszer és Szezonális 2026/11",
             "url": "https://katalogus.metro.hu/elelmiszer-es-szezonalis-ajanlataink-kiskereskedoknek-2026-11/page/1"
@@ -123,18 +128,13 @@
         },
         {
             "store": "Auchan",
-            "title": "2026-11-05-11-18-nagy-kiszereles-ajanlataink",
-            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr45/2026-11-05-11-18-nagy-kiszereles-ajanlataink"
+            "title": "2026-11-05-11-11-heti-szupermarket-ajanlataink",
+            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr45/2026-11-05-11-11-heti-szupermarket-ajanlataink"
         },
         {
             "store": "Auchan",
-            "title": "2026-11-05-11-11-heti-hipermarket-ajanlataink",
-            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr45/2026-11-05-11-11-heti-hipermarket-ajanlataink"
-        },
-        {
-            "store": "Auchan",
-            "title": "2026-10-29-11-04-heti-szupermarket-ajanlataink",
-            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr44/2026-10-29-11-04-heti-szupermarket-ajanlataink"
+            "title": "2026-10-29-11-04-heti-filleres-ajanlataink",
+            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr44/2026-10-29-11-04-heti-filleres-ajanlataink"
         },
         {
             "store": "Auchan",
@@ -143,18 +143,23 @@
         },
         {
             "store": "Auchan",
-            "title": "2026-11-05-11-11-heti-szupermarket-ajanlataink",
-            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr45/2026-11-05-11-11-heti-szupermarket-ajanlataink"
-        },
-        {
-            "store": "Auchan",
             "title": "2026-10-29-11-04-heti-hipermarket-ajanlataink",
             "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr44/2026-10-29-11-04-heti-hipermarket-ajanlataink"
         },
         {
             "store": "Auchan",
-            "title": "2026-10-29-11-04-heti-filleres-ajanlataink",
-            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr44/2026-10-29-11-04-heti-filleres-ajanlataink"
+            "title": "2026-11-05-11-11-heti-hipermarket-ajanlataink",
+            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr45/2026-11-05-11-11-heti-hipermarket-ajanlataink"
+        },
+        {
+            "store": "Auchan",
+            "title": "2026-11-05-11-18-nagy-kiszereles-ajanlataink",
+            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr45/2026-11-05-11-18-nagy-kiszereles-ajanlataink"
+        },
+        {
+            "store": "Auchan",
+            "title": "2026-10-29-11-04-heti-szupermarket-ajanlataink",
+            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr44/2026-10-29-11-04-heti-szupermarket-ajanlataink"
         },
         {
             "store": "Aldi",
@@ -178,8 +183,8 @@
         },
         {
             "store": "Tisza-Coop",
-            "title": "coop-tisza-szorolap-2026-november-2-het-abc-szuper",
-            "url": "https://katalogus.coop.hu/coop-tisza-szorolap-2026-november-2-het-abc-szuper/"
+            "title": "coop-coop-szolnok-szorolap-2026-november-2-het",
+            "url": "https://katalogus.coop.hu/coop-coop-szolnok-szorolap-2026-november-2-het/"
         },
         {
             "store": "Alföld Pro-Coop",
