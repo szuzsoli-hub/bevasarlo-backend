@@ -42,6 +42,7 @@ def szerver():
 def app(szerver):
     for gyujtemeny in (szerver.kollekcio, szerver.tagok_kollekcio, szerver.torolt_listak):
         gyujtemeny.delete_many({})
+    szerver.VED.torol()
     return szerver.app.test_client()
 
 

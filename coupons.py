@@ -1,7 +1,9 @@
 import os
-import random
+import hmac
+import secrets
 import string
 import re
+import urllib.parse
 import json
 import urllib.request
 import urllib.error
@@ -15,14 +17,26 @@ coupons_bp = Blueprint('coupons', __name__)
 ADMIN_SECRET = os.environ.get("ADMIN_SECRET", "")
 
 
+KUPON_MINTA = re.compile(r'[A-Z0-9]{4}-[A-Z0-9]{4}')
+_JELEK = string.ascii_uppercase + string.digits
+
+
 def generate_coupon_code():
-    part1 = ''.join(random.choices(string.ascii_uppercase + string.digits, k=4))
-    part2 = ''.join(random.choices(string.ascii_uppercase + string.digits, k=4))
+    # secrets: kiszámíthatatlan véletlen (a random modul sorozata néhány
+    # ismert kódból visszafejthető lenne).
+    part1 = ''.join(secrets.choice(_JELEK) for _ in range(4))
+    part2 = ''.join(secrets.choice(_JELEK) for _ in range(4))
     return f"{part1}-{part2}"
 
 
+def _alap_subscriber_url(app_user_id):
+    return ("https://api.revenuecat.com/v1/subscribers/"
+            + urllib.parse.quote(app_user_id, safe=''))
+
+
 def _grant_promotional_entitlement(app_user_id, revenuecat_secret_key,
-                                    entitlement_id='pro_mode', days=180):
+                                    entitlement_id='pro_mode', days=180,
+                                    subscriber_url=_alap_subscriber_url):
     """
     Közvetlenül, Google Play vásárlás NÉLKÜL ad [entitlement_id] jogosultságot
     a felhasználónak [days] napra a RevenueCat "Grant a Promotional
@@ -41,10 +55,7 @@ def _grant_promotional_entitlement(app_user_id, revenuecat_secret_key,
     end_time_ms = int(
         (datetime.now(timezone.utc) + timedelta(days=days)).timestamp() * 1000
     )
-    url = (
-        f'https://api.revenuecat.com/v1/subscribers/{app_user_id}'
-        f'/entitlements/{entitlement_id}/promotional'
-    )
+    url = subscriber_url(app_user_id) + f'/entitlements/{entitlement_id}/promotional'
     payload = json.dumps({'end_time_ms': end_time_ms}).encode('utf-8')
 
     req = urllib.request.Request(url, data=payload, method='POST')
@@ -63,14 +74,20 @@ def _grant_promotional_entitlement(app_user_id, revenuecat_secret_key,
         return False, str(e)
 
 
-def register_coupon_routes(app, kuponok_kollekcio, revenuecat_secret_key):
+def register_coupon_routes(app, kuponok_kollekcio, revenuecat_secret_key,
+                           korlat=None, subscriber_url=_alap_subscriber_url):
     @app.route('/admin_generate_coupons', methods=['GET'])
     def admin_generate_coupons():
-        secret = request.args.get('secret')
+        secret = request.args.get('secret') or ''
         # Ha a Renderen nincs beállítva ADMIN_SECRET, senki ne generálhasson.
-        if not ADMIN_SECRET or secret != ADMIN_SECRET:
+        if not ADMIN_SECRET or not hmac.compare_digest(
+                secret.encode('utf-8'), ADMIN_SECRET.encode('utf-8')):
             return jsonify({"error": "unauthorized"}), 401
-        count = int(request.args.get('count', 20))
+        try:
+            count = int(request.args.get('count', 20))
+        except ValueError:
+            count = 20
+        count = max(1, min(count, 500))
         generated = []
         for _ in range(count):
             code = generate_coupon_code()
@@ -96,11 +113,22 @@ def register_coupon_routes(app, kuponok_kollekcio, revenuecat_secret_key):
 
     @app.route('/redeem_coupon', methods=['POST'])
     def redeem_coupon():
-        data = request.get_json()
-        code = (data.get('code') or '').strip().upper()
+        data = request.get_json(silent=True)
+        data = data if isinstance(data, dict) else {}
+        code = data.get('code')
+        code = code.strip().upper() if isinstance(code, str) else ''
         app_user_id = data.get('app_user_id')
+        if not isinstance(app_user_id, str) or not 0 < len(app_user_id) <= 128 \
+                or not app_user_id.isprintable():
+            app_user_id = None
         if not code or not app_user_id:
             return jsonify({"error": "missing_fields"}), 400
+        if korlat:
+            tiltas = korlat(app_user_id)
+            if tiltas:
+                return tiltas
+        if not KUPON_MINTA.fullmatch(code):
+            return jsonify({"error": "invalid_code", "message": "Érvénytelen kód"}), 404
 
         # Atomikusan foglaljuk le a kódot (find_one_and_update), hogy két
         # egyidejű kérés ne válthassa be ugyanazt a kódot kétszer.
@@ -119,7 +147,8 @@ def register_coupon_routes(app, kuponok_kollekcio, revenuecat_secret_key):
                 return jsonify({"error": "invalid_code", "message": "Érvénytelen kód"}), 404
             return jsonify({"error": "already_redeemed", "message": "Ez a kód már fel lett használva"}), 409
 
-        ok, hiba = _grant_promotional_entitlement(app_user_id, revenuecat_secret_key)
+        ok, hiba = _grant_promotional_entitlement(app_user_id, revenuecat_secret_key,
+                                                  subscriber_url=subscriber_url)
 
         if not ok:
             # Ha a RevenueCat hívás elbukott, visszaállítjuk a kódot
@@ -151,7 +180,7 @@ def register_coupon_routes(app, kuponok_kollekcio, revenuecat_secret_key):
         """
         code = (request.args.get('code') or '').strip().upper()
 
-        if not re.fullmatch(r'[A-Z0-9]{4}-[A-Z0-9]{4}', code):
+        if not KUPON_MINTA.fullmatch(code):
             code = ''
 
         deep_link = f'bevasarlolista://redeem-coupon?code={code}' if code else ''
