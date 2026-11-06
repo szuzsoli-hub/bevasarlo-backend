@@ -15,6 +15,8 @@ from flask_socketio import SocketIO, join_room, leave_room, emit # <-- ÚJ: A R�
 from coupons import register_coupon_routes
 import vedelem
 from vedelem import Vedelem, szoveg, kod, nev, egesz, cim_kulcs, felhasznalo_kulcs, ujjlenyomat
+import atexit
+import igazolas
 
 app = Flask(__name__)
 
@@ -23,7 +25,7 @@ app = Flask(__name__)
 app.config["MAX_CONTENT_LENGTH"] = 5 * 1024 * 1024
 
 # Ebből látszik kívülről (/latest_version), hogy melyik szerverkód fut.
-SZERVER_VALTOZAT = "2026-11-06-vedelem"
+SZERVER_VALTOZAT = "2026-11-06-igazolas"
 
 # === ÚJ: RÁDIÓTORONY BEKAPCSOLÁSA (JAVÍTOTT VERZIÓ) ===
 socketio = SocketIO(
@@ -210,6 +212,60 @@ try:
     vedelem_naplo.create_index("ido", expireAfterSeconds=30 * 24 * 3600)
 except Exception as e:
     print(f"🚨 vedelem_naplo index hiba: {e}")
+
+# ==============================================================================
+# 🔑 GOOGLE-IGAZOLÁS (igazolas.py): egyelőre csak ellenőrzés és számlálás
+# ==============================================================================
+# Az 1.0.81-es app az X-ID-TOKEN fejlécben elküldi a Google-bejelentkezés
+# igazolását. Most még semmit nem utasítunk el miatta (a régi app nem küldi),
+# csak számoljuk naponta és végpontonként az igazolas_szamlalo gyűjteményben
+# (180 napig): jött-e, érvényes-e, és egyezik-e a kérés user_id-jével.
+igazolas_szamlalo = db["igazolas_szamlalo"]
+try:
+    igazolas_szamlalo.create_index("letrejott", expireAfterSeconds=180 * 24 * 3600)
+except Exception as e:
+    print(f"🚨 igazolas_szamlalo index hiba: {e}")
+
+IGAZOLAS = igazolas.Ellenorzo(
+    cimzett=(os.environ.get("GOOGLE_WEB_CLIENT_ID") or "").strip() or igazolas.WEBES_KLIENS)
+IGAZOLAS_SZAMLALO = igazolas.Szamlalo(igazolas_szamlalo)
+atexit.register(IGAZOLAS_SZAMLALO.kiir)
+
+# Az app ezeknél küldi az igazolást. Az érték: honnan jön a kérésben a
+# Google-azonosító; None, ha a végpont a RevenueCat-azonosítóval dolgozik
+# (azzal nincs mit összevetni, ott csak az érvényesség számít).
+IGAZOLT_VEGPONTOK = {
+    '/sync_list': lambda: kero_json().get('user_id'),
+    '/get_list': lambda: request.args.get('user_id'),
+    '/join_group': lambda: kero_json().get('user_id'),
+    '/leave_group': lambda: kero_json().get('user_id'),
+    '/list_members': lambda: request.args.get('user_id'),
+    '/moderate_member': lambda: kero_json().get('requester_id'),
+    '/ai_quota': None,
+    '/analyze': None,
+    '/upload_image': None,
+    '/redeem_coupon': None,
+    '/topup_credits': None,
+}
+
+
+@app.before_request
+def igazolas_jegyzes():
+    """Csak számol: soha nem utasít el, és hiba esetén sem állítja meg a
+    kérést. A kulcs nélküli és a címenkénti korlát miatt elutasított kérések
+    ide már nem jutnak el (az előző két kapuőr megállítja őket)."""
+    if request.path not in IGAZOLT_VEGPONTOK:
+        return
+    try:
+        eredmeny = IGAZOLAS.ellenoriz(request.headers.get(igazolas.FEJLEC))
+        kinyero = IGAZOLT_VEGPONTOK[request.path]
+        azonosito = szoveg(kinyero()) if kinyero else None
+        eset = igazolas.eset(eredmeny, azonosito, osszevetheto=kinyero is not None)
+        csoport = {igazolas.EGYEZIK: "igazolt", igazolas.NINCS: "igazolas_nelkul"}.get(eset)
+        IGAZOLAS_SZAMLALO.jegyez(request.path.strip('/'), eset,
+                                 felhasznalo=azonosito, csoport=csoport)
+    except Exception as e:
+        print(f"🔑 Igazolás: számlálási hiba ({type(e).__name__}).")
 
 # ==============================================================================
 # 🔑 REVENUECAT SECRET KEY (modul-szinten, hogy a coupons.py is elérje)
