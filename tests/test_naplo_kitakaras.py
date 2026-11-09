@@ -241,6 +241,52 @@ def test_gunicorn_conf_ezt_a_naplot_kapcsolja_be(gunicorn_modulok):
     assert cfg.logger_class.__name__ == "TakaroNaplo"
 
 
+RENDER_INDITAS = ["gunicorn", "-w", "1", "--threads", "50", "--bind", "0.0.0.0:10000", "main:app"]
+# A Render ezt magától beállítja a Python-szolgáltatásoknak (render.com/docs/
+# environment-variables, "Python 3"): innen jön a hozzáférési napló.
+RENDER_GUNICORN_CMD_ARGS = "--preload --access-logfile - --bind=0.0.0.0:10000"
+
+
+def test_render_beallitasaival_is_a_kitakaro_naplo_fut(gunicorn_modulok, monkeypatch):
+    """A gunicorn saját betöltője (WSGIApplication.load_config) a Render
+    indítási parancsával és a GUNICORN_CMD_ARGS-szal: a gunicorn.conf.py
+    betöltődik, a hozzáférési napló be van kapcsolva, és a sor kitakart."""
+    config, modul = gunicorn_modulok
+    # A Windows-on hiányzó folyamatkezelő (Arbiter) itt nem kell: csak a
+    # beállítások betöltését futtatjuk, a szervert nem indítjuk el.
+    if "gunicorn.app.base" not in sys.modules:
+        try:
+            importlib.import_module("gunicorn.arbiter")
+        except Exception:
+            arbiter = types.ModuleType("gunicorn.arbiter")
+            arbiter.Arbiter = object
+            monkeypatch.setitem(sys.modules, "gunicorn.arbiter", arbiter)
+    wsgiapp = importlib.import_module("gunicorn.app.wsgiapp")
+
+    monkeypatch.chdir(GYOKER)
+    monkeypatch.setattr(config.Chdir, "default", str(GYOKER))
+    monkeypatch.setenv("GUNICORN_CMD_ARGS", RENDER_GUNICORN_CMD_ARGS)
+    monkeypatch.setattr(sys, "argv", RENDER_INDITAS)
+
+    alkalmazas = wsgiapp.WSGIApplication("%(prog)s [OPTIONS] [APP_MODULE]")
+    cfg = alkalmazas.cfg
+    assert cfg.accesslog == "-"
+    assert cfg.preload_app is True
+    assert (cfg.workers, cfg.threads, cfg.bind) == (1, 50, ["0.0.0.0:10000"])
+    assert alkalmazas.app_uri == "main:app"
+    assert cfg.logger_class.__name__ == "TakaroNaplo"
+
+    naplo = cfg.logger_class(cfg)
+    kimenet = io.StringIO()
+    for h in naplo.access_log.handlers:
+        h.setStream(kimenet)
+    naplo.access(_Valasz(), _Keres(), _kornyezet(f"/get_list?family_id={KOD}&user_id={USER}"),
+                 timedelta(milliseconds=12))
+    sor = kimenet.getvalue().strip().splitlines()[-1]
+    assert '"GET /get_list?family_id=ab12***&user_id=1098*** HTTP/1.1" 200 512' in sor
+    assert KOD not in sor and USER not in sor
+
+
 def test_a_main_py_nem_valtozott_a_napló_miatt():
     """A kitakarás csak a naplót érinti: a Flask-app nem tölti be."""
     forras = (GYOKER / "main.py").read_text(encoding="utf-8")
