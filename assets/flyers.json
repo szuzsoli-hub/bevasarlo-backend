@@ -1,5 +1,5 @@
 {
-    "last_updated": "2026-11-09 13:00:32.125772",
+    "last_updated": "2026-11-10 00:20:29.524007",
     "flyers": [
         {
             "store": "Spar",
@@ -88,6 +88,11 @@
         },
         {
             "store": "Lidl",
+            "title": "Lidl jatekkatalogus-46-het",
+            "url": "https://www.lidl.hu/l/hu/ujsag/jatekkatalogus-46-het-2026/ar/0?lf=HHZ"
+        },
+        {
+            "store": "Lidl",
             "title": "Lidl akcios-ujsag-45-het",
             "url": "https://www.lidl.hu/l/hu/ujsag/akcios-ujsag-45-het-2026/ar/0?lf=HHZ"
         },
@@ -100,11 +105,6 @@
             "store": "Lidl",
             "title": "Lidl deluxe-katalogus-45-het",
             "url": "https://www.lidl.hu/l/hu/ujsag/deluxe-katalogus-45-het-2026/ar/0?lf=HHZ"
-        },
-        {
-            "store": "Lidl",
-            "title": "Lidl jatekkatalogus-46-het",
-            "url": "https://www.lidl.hu/l/hu/ujsag/jatekkatalogus-46-het-2026/ar/0?lf=HHZ"
         },
         {
             "store": "Lidl",
@@ -138,13 +138,13 @@
         },
         {
             "store": "Auchan",
-            "title": "2026-11-12-11-18-heti-szupermarket-ajanlataink",
-            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr46/2026-11-12-11-18-heti-szupermarket-ajanlataink"
+            "title": "2026-11-12-11-18-heti-hipermarket-ajanlataink",
+            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr46/2026-11-12-11-18-heti-hipermarket-ajanlataink"
         },
         {
             "store": "Auchan",
-            "title": "2026-11-12-11-18-heti-hipermarket-ajanlataink",
-            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr46/2026-11-12-11-18-heti-hipermarket-ajanlataink"
+            "title": "2026-11-05-11-11-heti-szupermarket-ajanlataink",
+            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr45/2026-11-05-11-11-heti-szupermarket-ajanlataink"
         },
         {
             "store": "Auchan",
@@ -158,13 +158,13 @@
         },
         {
             "store": "Auchan",
-            "title": "2026-11-05-11-11-heti-szupermarket-ajanlataink",
-            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr45/2026-11-05-11-11-heti-szupermarket-ajanlataink"
+            "title": "2026-11-05-11-11-heti-hipermarket-ajanlataink",
+            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr45/2026-11-05-11-11-heti-hipermarket-ajanlataink"
         },
         {
             "store": "Auchan",
-            "title": "2026-11-05-11-11-heti-hipermarket-ajanlataink",
-            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr45/2026-11-05-11-11-heti-hipermarket-ajanlataink"
+            "title": "2026-11-12-11-18-heti-szupermarket-ajanlataink",
+            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr46/2026-11-12-11-18-heti-szupermarket-ajanlataink"
         },
         {
             "store": "Aldi",
@@ -205,26 +205,6 @@
             "store": "Alföld Pro-Coop",
             "title": "coop-alfold-szorolap-2026-november-3-het",
             "url": "https://katalogus.coop.hu/coop-alfold-szorolap-2026-november-3-het/"
-        },
-        {
-            "store": "Észak-Kelet Pro-Coop",
-            "title": "coop-eszak-kelet-szorolap-2026-november-3-het",
-            "url": "https://katalogus.coop.hu/coop-eszak-kelet-szorolap-2026-november-3-het/"
-        },
-        {
-            "store": "Coop pecs",
-            "title": "coop-orszagos-szorolap-2026-november-2-het-abc-szuper",
-            "url": "https://katalogus.coop.hu/coop-orszagos-szorolap-2026-november-2-het-abc-szuper/"
-        },
-        {
-            "store": "Coop pecs",
-            "title": "coop-mecsek-szorolap-2026-november-3-het",
-            "url": "https://katalogus.coop.hu/coop-mecsek-szorolap-2026-november-3-het/"
-        },
-        {
-            "store": "Coop szombathely",
-            "title": "coop-hetforras-szorolap-2026-november-3-4-5-het",
-            "url": "https://katalogus.coop.hu/coop-hetforras-szorolap-2026-november-3-4-5-het/"
         }
     ]
 }
