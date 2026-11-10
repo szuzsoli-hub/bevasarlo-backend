@@ -1,5 +1,5 @@
 {
-    "last_updated": "2026-11-10 12:46:54.700921",
+    "last_updated": "2026-11-10 21:55:50.088234",
     "flyers": [
         {
             "store": "Spar",
@@ -138,8 +138,13 @@
         },
         {
             "store": "Auchan",
-            "title": "2026-11-05-11-11-heti-szupermarket-ajanlataink",
-            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr45/2026-11-05-11-11-heti-szupermarket-ajanlataink"
+            "title": "2026-11-12-11-18-heti-szupermarket-ajanlataink",
+            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr46/2026-11-12-11-18-heti-szupermarket-ajanlataink"
+        },
+        {
+            "store": "Auchan",
+            "title": "2026-11-12-11-18-heti-hipermarket-ajanlataink",
+            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr46/2026-11-12-11-18-heti-hipermarket-ajanlataink"
         },
         {
             "store": "Auchan",
@@ -153,18 +158,13 @@
         },
         {
             "store": "Auchan",
-            "title": "2026-11-12-11-18-heti-szupermarket-ajanlataink",
-            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr46/2026-11-12-11-18-heti-szupermarket-ajanlataink"
-        },
-        {
-            "store": "Auchan",
-            "title": "2026-11-12-11-18-heti-hipermarket-ajanlataink",
-            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr46/2026-11-12-11-18-heti-hipermarket-ajanlataink"
-        },
-        {
-            "store": "Auchan",
             "title": "2026-11-05-11-18-nagy-kiszereles-ajanlataink",
             "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr45/2026-11-05-11-18-nagy-kiszereles-ajanlataink"
+        },
+        {
+            "store": "Auchan",
+            "title": "2026-11-05-11-11-heti-szupermarket-ajanlataink",
+            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr45/2026-11-05-11-11-heti-szupermarket-ajanlataink"
         },
         {
             "store": "Aldi",
