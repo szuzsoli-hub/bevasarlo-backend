@@ -1,5 +1,5 @@
 {
-    "last_updated": "2026-11-12 11:46:05",
+    "last_updated": "2026-11-13 10:56:41",
     "flyers": [
         {
             "store": "Aldi",
@@ -424,6 +424,22 @@
             "kategoria": "haztartas",
             "valid_from": null,
             "valid_to": null
+        },
+        {
+            "store": "Príma Szeged",
+            "title": "Príma Szeged (Príma 5, Nova, Cédrus, Mórahalom), 11.12.–11.18.",
+            "url": "https://issuu.com/dataedgekft/docs/prima_47_het_205x293mm_scpaper?v=261111120425",
+            "kategoria": "haztartas",
+            "valid_from": "2026-11-12",
+            "valid_to": "2026-11-18"
+        },
+        {
+            "store": "Príma Szeged",
+            "title": "Príma Szeged Extra ajánlat (Príma 5, Nova, Cédrus, Mórahalom), 11.05.–11.18.",
+            "url": "https://issuu.com/dataedgekft/docs/p5_m_rahalom_2022_okt_ber_szorolap_v03?v=261104122010",
+            "kategoria": "haztartas",
+            "valid_from": "2026-11-05",
+            "valid_to": "2026-11-18"
         }
     ]
 }
