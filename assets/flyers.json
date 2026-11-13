@@ -1,5 +1,5 @@
 {
-    "last_updated": "2026-11-13 10:56:41",
+    "last_updated": "2026-11-13 17:00:36",
     "flyers": [
         {
             "store": "Aldi",
@@ -83,6 +83,14 @@
         },
         {
             "store": "Spar",
+            "title": "SPAR szórólap, jövő hét: 11.19.–11.25.",
+            "url": "https://www.spar.hu/ajanlatok/spar/261119-1-spar-szorolap-p",
+            "kategoria": "haztartas",
+            "valid_from": "2026-11-19",
+            "valid_to": "2026-11-25"
+        },
+        {
+            "store": "Spar",
             "title": "INTERSPAR szórólap, 11.12.–11.18.",
             "url": "https://www.spar.hu/ajanlatok/interspar/261112-2-interspar-szorolap",
             "kategoria": "haztartas",
@@ -91,11 +99,35 @@
         },
         {
             "store": "Spar",
+            "title": "INTERSPAR szórólap, jövő hét: 11.19.–11.25.",
+            "url": "https://www.spar.hu/ajanlatok/interspar/261119-2-interspar-szorolap-p",
+            "kategoria": "haztartas",
+            "valid_from": "2026-11-19",
+            "valid_to": "2026-11-25"
+        },
+        {
+            "store": "Spar",
             "title": "SPAR market és City SPAR szórólap, 11.12.–11.18.",
             "url": "https://www.spar.hu/ajanlatok/spar-market/261112-3-spar-market-city-spar",
             "kategoria": "haztartas",
             "valid_from": "2026-11-12",
             "valid_to": "2026-11-18"
+        },
+        {
+            "store": "Spar",
+            "title": "SPAR market és City SPAR szórólap, jövő hét: 11.19.–11.25.",
+            "url": "https://www.spar.hu/ajanlatok/spar-market/261119-3-spar-market-city-spar",
+            "kategoria": "haztartas",
+            "valid_from": "2026-11-19",
+            "valid_to": "2026-11-25"
+        },
+        {
+            "store": "Spar",
+            "title": "SPAR ajándékkatalógus, jövő hét: 11.18.–12.28.",
+            "url": "https://www.spar.hu/ajanlatok/egyeb/261118-1-ajandek-katalogus-2",
+            "kategoria": "haztartas",
+            "valid_from": "2026-11-18",
+            "valid_to": "2026-12-28"
         },
         {
             "store": "Spar",
@@ -115,6 +147,14 @@
         },
         {
             "store": "Spar",
+            "title": "INTERSPAR Pécs (üzlet-újranyitás), jövő hét: 11.19.–11.25.",
+            "url": "https://www.spar.hu/ajanlatok/interspar/261119-5-interspar-pecs-uzlet-ujranyitas",
+            "kategoria": "haztartas",
+            "valid_from": "2026-11-19",
+            "valid_to": "2026-11-25"
+        },
+        {
+            "store": "Spar",
             "title": "SPAR Gödöllő (üzlet-újranyitás), 11.12.–11.18.",
             "url": "https://www.spar.hu/ajanlatok/spar/261112-4-spar-godollo-uzlet-ujranyitas",
             "kategoria": "haztartas",
@@ -128,6 +168,14 @@
             "kategoria": "haztartas",
             "valid_from": "2026-11-12",
             "valid_to": "2026-11-18"
+        },
+        {
+            "store": "Spar",
+            "title": "SPAR Szentendre (üzlet-megújulás), jövő hét: 11.19.–11.25.",
+            "url": "https://www.spar.hu/ajanlatok/spar/261119-4-spar-szentendre-uzlet-megujulas",
+            "kategoria": "haztartas",
+            "valid_from": "2026-11-19",
+            "valid_to": "2026-11-25"
         },
         {
             "store": "Spar",
