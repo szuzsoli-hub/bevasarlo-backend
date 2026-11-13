@@ -62,7 +62,7 @@ if not ACCEPTED_API_KEYS:
 # megjelent a Play Áruházban, különben olyan frissítésre figyelmeztetsz,
 # ami még nem tölthető le.
 # ==============================================================================
-LATEST_VERSION = "1.0.81"
+LATEST_VERSION = "1.0.82"
 
 # Kulcs nélkül elérhető útvonalak:
 #   /webhook                — a RevenueCat hívja, X-API-KEY nélkül; a végpont
