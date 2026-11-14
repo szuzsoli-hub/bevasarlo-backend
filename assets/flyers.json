@@ -1,5 +1,5 @@
 {
-    "last_updated": "2026-11-13 17:00:36",
+    "last_updated": "2026-11-14 04:41:55",
     "flyers": [
         {
             "store": "Aldi",
@@ -11,10 +11,26 @@
         },
         {
             "store": "Aldi",
+            "title": "ALDI akciós újság, jövő hét: 11.19.–11.25.",
+            "url": "https://szorolap.aldi.hu/aldi_online_akcios_ujsag_2026_kw47",
+            "kategoria": "haztartas",
+            "valid_from": "2026-11-19",
+            "valid_to": "2026-11-25"
+        },
+        {
+            "store": "Aldi",
             "title": "ALDI Középső sor, 11.12.-tól",
             "url": "https://szorolap.aldi.hu/aldi_kozepso_sor_2026_kw46",
             "kategoria": "egyeb",
             "valid_from": "2026-11-12",
+            "valid_to": null
+        },
+        {
+            "store": "Aldi",
+            "title": "ALDI Középső sor, jövő hét: 11.19.-tól",
+            "url": "https://szorolap.aldi.hu/aldi_kozepso_sor_2026_kw47",
+            "kategoria": "egyeb",
+            "valid_from": "2026-11-19",
             "valid_to": null
         },
         {
@@ -24,6 +40,14 @@
             "kategoria": "haztartas",
             "valid_from": "2026-11-12",
             "valid_to": "2026-11-18"
+        },
+        {
+            "store": "Lidl",
+            "title": "Lidl akciós újság, jövő hét: 11.19.–11.25.",
+            "url": "https://www.lidl.hu/l/hu/ujsag/akcios-ujsag-47-het-2026/ar/0?lf=HHZ",
+            "kategoria": "haztartas",
+            "valid_from": "2026-11-19",
+            "valid_to": "2026-11-25"
         },
         {
             "store": "Lidl",
@@ -48,6 +72,14 @@
             "kategoria": "egyeb",
             "valid_from": "2026-11-12",
             "valid_to": "2026-11-18"
+        },
+        {
+            "store": "Lidl",
+            "title": "Lidl nonfood kínálat, jövő hét: 11.19.–11.25.",
+            "url": "https://www.lidl.hu/l/hu/ujsag/akcios-ujsag-nonfood-47-het-2026/ar/0?lf=HHZ",
+            "kategoria": "egyeb",
+            "valid_from": "2026-11-19",
+            "valid_to": "2026-11-25"
         },
         {
             "store": "Lidl",
