@@ -1,5 +1,5 @@
 {
-    "last_updated": "2026-11-14 16:41:44",
+    "last_updated": "2026-11-16 04:41:15",
     "flyers": [
         {
             "store": "Aldi",
@@ -464,14 +464,6 @@
             "kategoria": "haztartas",
             "valid_from": "2026-11-26",
             "valid_to": "2026-12-02"
-        },
-        {
-            "store": "Coop",
-            "title": "Hunor Coop novemberi akció, 11.05.–11.15.",
-            "url": "https://katalogus.coop.hu/coop-hunor-coop-szorolap-2026-november-2-het/",
-            "kategoria": "haztartas",
-            "valid_from": "2026-11-05",
-            "valid_to": "2026-11-15"
         },
         {
             "store": "Coop",
