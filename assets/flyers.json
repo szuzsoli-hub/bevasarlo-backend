@@ -1,5 +1,5 @@
 {
-    "last_updated": "2026-11-16 04:41:15",
+    "last_updated": "2026-11-16 16:42:15",
     "flyers": [
         {
             "store": "Aldi",
@@ -235,6 +235,22 @@
         },
         {
             "store": "Tesco",
+            "title": "Tesco Hipermarket akciós újság, jövő hét: 11.19.–11.25.",
+            "url": "https://www.tesco.hu/akciok/katalogusok/hipermarket/tesco-ujsag-2026-11-19/1",
+            "kategoria": "haztartas",
+            "valid_from": "2026-11-19",
+            "valid_to": "2026-11-25"
+        },
+        {
+            "store": "Tesco",
+            "title": "Tesco Szupermarket akciós újság, jövő hét: 11.19.–11.25.",
+            "url": "https://www.tesco.hu/akciok/katalogusok/szupermarket/tesco-ujsag-2026-11-19/1",
+            "kategoria": "haztartas",
+            "valid_from": "2026-11-19",
+            "valid_to": "2026-11-25"
+        },
+        {
+            "store": "Tesco",
             "title": "Tesco Szupermarket akciós újság, 11.12.–11.18.",
             "url": "https://www.tesco.hu/akciok/katalogusok/szupermarket/tesco-ujsag-2026-11-12/1",
             "kategoria": "haztartas",
@@ -315,6 +331,14 @@
         },
         {
             "store": "Metro",
+            "title": "Metro Együtt a legjobb márkákkal, 11.16.–11.30.",
+            "url": "https://katalogus.metro.hu/markak-katalogus-2026-11/page/1",
+            "kategoria": "haztartas",
+            "valid_from": "2026-11-16",
+            "valid_to": "2026-11-30"
+        },
+        {
+            "store": "Metro",
             "title": "Metro ünnepi italok, 11.02.–11.30.",
             "url": "https://katalogus.metro.hu/unnepi-italok-katalogus-2026-11/page/1",
             "kategoria": "haztartas",
@@ -328,14 +352,6 @@
             "kategoria": "haztartas",
             "valid_from": "2026-11-02",
             "valid_to": "2026-11-30"
-        },
-        {
-            "store": "Metro",
-            "title": "Metro ajándék megoldások",
-            "url": "https://katalogus.metro.hu/ajandek-megoldasok-2026-09/page/1",
-            "kategoria": "egyeb",
-            "valid_from": null,
-            "valid_to": null
         },
         {
             "store": "Metro",
@@ -490,12 +506,28 @@
             "valid_to": "2026-11-18"
         },
         {
+            "store": "CBA",
+            "title": "CBA akciós újság, jövő hét: 11.19.–11.25.",
+            "url": "https://www.cba.hu/3d-flip-book/november-19-25/",
+            "kategoria": "haztartas",
+            "valid_from": "2026-11-19",
+            "valid_to": "2026-11-25"
+        },
+        {
             "store": "CBA Príma",
             "title": "Príma akciós újság, 11.12.–11.18.",
             "url": "https://www.prima.hu/3d-flip-book/november-12-18/",
             "kategoria": "haztartas",
             "valid_from": "2026-11-12",
             "valid_to": "2026-11-18"
+        },
+        {
+            "store": "CBA Príma",
+            "title": "Príma akciós újság, jövő hét: 11.19.–11.25.",
+            "url": "https://www.prima.hu/3d-flip-book/november-19-25/",
+            "kategoria": "haztartas",
+            "valid_from": "2026-11-19",
+            "valid_to": "2026-11-25"
         },
         {
             "store": "CBA Príma",
