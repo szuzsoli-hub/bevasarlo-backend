@@ -1,5 +1,5 @@
 {
-    "last_updated": "2026-11-16 16:42:15",
+    "last_updated": "2026-11-17 16:42:02",
     "flyers": [
         {
             "store": "Aldi",
@@ -88,6 +88,14 @@
             "kategoria": "egyeb",
             "valid_from": "2026-11-12",
             "valid_to": "2026-11-27"
+        },
+        {
+            "store": "Lidl",
+            "title": "Lidl Max & Mila's World katalógus, 11.17.–01.17.",
+            "url": "https://www.lidl.hu/l/hu/ujsag/max-und-mila-katalogus-2026/ar/0?lf=HHZ",
+            "kategoria": "egyeb",
+            "valid_from": "2026-11-17",
+            "valid_to": "2027-01-17"
         },
         {
             "store": "Penny",
