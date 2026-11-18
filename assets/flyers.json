@@ -1,5 +1,5 @@
 {
-    "last_updated": "2026-11-17 16:42:02",
+    "last_updated": "2026-11-18 04:41:52",
     "flyers": [
         {
             "store": "Aldi",
@@ -171,7 +171,7 @@
         },
         {
             "store": "Spar",
-            "title": "SPAR ajándékkatalógus, jövő hét: 11.18.–12.28.",
+            "title": "SPAR ajándékkatalógus, 11.18.–12.28.",
             "url": "https://www.spar.hu/ajanlatok/egyeb/261118-1-ajandek-katalogus-2",
             "kategoria": "haztartas",
             "valid_from": "2026-11-18",
@@ -264,14 +264,6 @@
             "kategoria": "haztartas",
             "valid_from": "2026-11-12",
             "valid_to": "2026-11-18"
-        },
-        {
-            "store": "Tesco",
-            "title": "Tesco katalógus, 10.28.–11.17.",
-            "url": "https://www.tesco.hu/akciok/katalogusok/katalogus/tesco-ujsag-2026-10-28/1",
-            "kategoria": "haztartas",
-            "valid_from": "2026-10-28",
-            "valid_to": "2026-11-17"
         },
         {
             "store": "Tesco",
