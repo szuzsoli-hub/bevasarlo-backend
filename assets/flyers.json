@@ -1,5 +1,5 @@
 {
-    "last_updated": "2026-11-19 04:42:13",
+    "last_updated": "2026-11-19 16:42:12",
     "flyers": [
         {
             "store": "Aldi",
@@ -163,6 +163,22 @@
         },
         {
             "store": "Tesco",
+            "title": "Tesco Hipermarket akciós újság, 11.19.–11.25.",
+            "url": "https://www.tesco.hu/akciok/katalogusok/hipermarket/tesco-ujsag-2026-11-19/1",
+            "kategoria": "haztartas",
+            "valid_from": "2026-11-19",
+            "valid_to": "2026-11-25"
+        },
+        {
+            "store": "Tesco",
+            "title": "Tesco Szupermarket akciós újság, 11.19.–11.25.",
+            "url": "https://www.tesco.hu/akciok/katalogusok/szupermarket/tesco-ujsag-2026-11-19/1",
+            "kategoria": "haztartas",
+            "valid_from": "2026-11-19",
+            "valid_to": "2026-11-25"
+        },
+        {
+            "store": "Tesco",
             "title": "Tesco katalógus, 11.05.–11.25.",
             "url": "https://www.tesco.hu/akciok/katalogusok/katalogus/tesco-ujsag-2026-11-05/1",
             "kategoria": "haztartas",
@@ -181,6 +197,14 @@
             "store": "Auchan",
             "title": "Auchan heti Szupermarket ajánlataink, 11.19.–11.25.",
             "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr47/2026-11-19-11-25-heti-szupermarket-ajanlataink/",
+            "kategoria": "haztartas",
+            "valid_from": "2026-11-19",
+            "valid_to": "2026-11-25"
+        },
+        {
+            "store": "Auchan",
+            "title": "Auchan hazai bor ajánlataink, 11.19.–11.25.",
+            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/s47/2026-11-19-11-25-hazai-bor-ajanlataink/",
             "kategoria": "haztartas",
             "valid_from": "2026-11-19",
             "valid_to": "2026-11-25"
