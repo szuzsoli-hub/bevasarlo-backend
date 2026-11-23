@@ -1,5 +1,5 @@
 {
-    "last_updated": "2026-11-21 16:41:56",
+    "last_updated": "2026-11-23 16:42:00",
     "flyers": [
         {
             "store": "Aldi",
@@ -251,6 +251,14 @@
         },
         {
             "store": "Tesco",
+            "title": "Tesco Hipermarket akciós újság, jövő hét: 11.26.–12.02.",
+            "url": "https://www.tesco.hu/akciok/katalogusok/hipermarket/tesco-ujsag-2026-11-26/1",
+            "kategoria": "haztartas",
+            "valid_from": "2026-11-26",
+            "valid_to": "2026-12-02"
+        },
+        {
+            "store": "Tesco",
             "title": "Tesco Szupermarket akciós újság, 11.19.–11.25.",
             "url": "https://www.tesco.hu/akciok/katalogusok/szupermarket/tesco-ujsag-2026-11-19/1",
             "kategoria": "haztartas",
@@ -259,11 +267,27 @@
         },
         {
             "store": "Tesco",
+            "title": "Tesco Szupermarket akciós újság, jövő hét: 11.26.–12.02.",
+            "url": "https://www.tesco.hu/akciok/katalogusok/szupermarket/tesco-ujsag-2026-11-26/1",
+            "kategoria": "haztartas",
+            "valid_from": "2026-11-26",
+            "valid_to": "2026-12-02"
+        },
+        {
+            "store": "Tesco",
             "title": "Tesco katalógus, 11.05.–11.25.",
             "url": "https://www.tesco.hu/akciok/katalogusok/katalogus/tesco-ujsag-2026-11-05/1",
             "kategoria": "haztartas",
             "valid_from": "2026-11-05",
             "valid_to": "2026-11-25"
+        },
+        {
+            "store": "Tesco",
+            "title": "Tesco katalógus, jövő hét: 11.26.–12.24.",
+            "url": "https://www.tesco.hu/akciok/katalogusok/katalogus/tesco-ujsag-2026-11-26/1",
+            "kategoria": "haztartas",
+            "valid_from": "2026-11-26",
+            "valid_to": "2026-12-24"
         },
         {
             "store": "Auchan",
@@ -363,10 +387,26 @@
         },
         {
             "store": "Metro",
+            "title": "Metro Konyhakész friss húsok",
+            "url": "https://katalogus.metro.hu/konyhakesz-husok-katalogus-9a_amejma77v/page/1",
+            "kategoria": "haztartas",
+            "valid_from": null,
+            "valid_to": null
+        },
+        {
+            "store": "Metro",
             "title": "Metro Olasz katalógus, 08.15.-tól",
             "url": "https://katalogus.metro.hu/olasz-katalogus-qqkqleepqqwm/page/1",
             "kategoria": "haztartas",
             "valid_from": "2026-08-15",
+            "valid_to": null
+        },
+        {
+            "store": "Metro",
+            "title": "Metro Profi megoldások saját márkás kínálatunkból, 08.01.-tól",
+            "url": "https://katalogus.metro.hu/profi-megoldasok-sajat-markas-kinalatunkbol-k8z89w694w7g/page/1",
+            "kategoria": "haztartas",
+            "valid_from": "2026-08-01",
             "valid_to": null
         },
         {
@@ -384,14 +424,6 @@
             "kategoria": "haztartas",
             "valid_from": "2026-11-02",
             "valid_to": "2026-11-30"
-        },
-        {
-            "store": "Metro",
-            "title": "Metro irodai megoldások, 11.02.–12.31.",
-            "url": "https://katalogus.metro.hu/professzionalis-irodai-megoldasok-2026-11-12/page/1",
-            "kategoria": "egyeb",
-            "valid_from": "2026-11-02",
-            "valid_to": "2026-12-31"
         },
         {
             "store": "Coop",
