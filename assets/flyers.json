@@ -1,5 +1,5 @@
 {
-    "last_updated": "2026-11-23 16:42:00",
+    "last_updated": "2026-11-24 16:41:45",
     "flyers": [
         {
             "store": "Aldi",
@@ -7,7 +7,8 @@
             "url": "https://szorolap.aldi.hu/aldi_online_akcios_ujsag_2026_kw47",
             "kategoria": "haztartas",
             "valid_from": "2026-11-19",
-            "valid_to": "2026-11-25"
+            "valid_to": "2026-11-25",
+            "valtozat": null
         },
         {
             "store": "Aldi",
@@ -15,7 +16,8 @@
             "url": "https://szorolap.aldi.hu/aldi_online_akcios_ujsag_2026_kw48",
             "kategoria": "haztartas",
             "valid_from": "2026-11-26",
-            "valid_to": "2026-12-02"
+            "valid_to": "2026-12-02",
+            "valtozat": null
         },
         {
             "store": "Aldi",
@@ -23,7 +25,8 @@
             "url": "https://szorolap.aldi.hu/aldi_kozepso_sor_2026_kw47",
             "kategoria": "egyeb",
             "valid_from": "2026-11-19",
-            "valid_to": null
+            "valid_to": null,
+            "valtozat": null
         },
         {
             "store": "Aldi",
@@ -31,7 +34,8 @@
             "url": "https://szorolap.aldi.hu/aldi_kozepso_sor_2026_kw48",
             "kategoria": "egyeb",
             "valid_from": "2026-11-26",
-            "valid_to": null
+            "valid_to": null,
+            "valtozat": null
         },
         {
             "store": "Lidl",
@@ -39,7 +43,8 @@
             "url": "https://www.lidl.hu/l/hu/ujsag/akcios-ujsag-47-het-2026/ar/0?lf=HHZ",
             "kategoria": "haztartas",
             "valid_from": "2026-11-19",
-            "valid_to": "2026-11-25"
+            "valid_to": "2026-11-25",
+            "valtozat": null
         },
         {
             "store": "Lidl",
@@ -47,7 +52,8 @@
             "url": "https://www.lidl.hu/l/hu/ujsag/akcios-ujsag-48-het-2026/ar/0?lf=HHZ",
             "kategoria": "haztartas",
             "valid_from": "2026-11-26",
-            "valid_to": "2026-12-02"
+            "valid_to": "2026-12-02",
+            "valtozat": null
         },
         {
             "store": "Lidl",
@@ -55,7 +61,8 @@
             "url": "https://www.lidl.hu/l/hu/ujsag/deluxe-katalogus-45-het-2026/ar/0?lf=HHZ",
             "kategoria": "haztartas",
             "valid_from": "2026-11-09",
-            "valid_to": "2026-12-18"
+            "valid_to": "2026-12-18",
+            "valtozat": null
         },
         {
             "store": "Lidl",
@@ -63,7 +70,8 @@
             "url": "https://www.lidl.hu/l/hu/ujsag/akcios-ujsag-favorina-katalogus-43-het-2026/ar/0?lf=HHZ",
             "kategoria": "haztartas",
             "valid_from": "2026-10-22",
-            "valid_to": "2026-12-18"
+            "valid_to": "2026-12-18",
+            "valtozat": null
         },
         {
             "store": "Lidl",
@@ -71,7 +79,8 @@
             "url": "https://www.lidl.hu/l/hu/ujsag/akcios-ujsag-nonfood-47-het-2026/ar/0?lf=HHZ",
             "kategoria": "egyeb",
             "valid_from": "2026-11-19",
-            "valid_to": "2026-11-25"
+            "valid_to": "2026-11-25",
+            "valtozat": null
         },
         {
             "store": "Lidl",
@@ -79,7 +88,8 @@
             "url": "https://www.lidl.hu/l/hu/ujsag/akcios-ujsag-nonfood-48-het-2026/ar/0?lf=HHZ",
             "kategoria": "egyeb",
             "valid_from": "2026-11-26",
-            "valid_to": "2026-12-02"
+            "valid_to": "2026-12-02",
+            "valtozat": null
         },
         {
             "store": "Lidl",
@@ -87,7 +97,8 @@
             "url": "https://www.lidl.hu/l/hu/ujsag/jatekkatalogus-46-het-2026/ar/0?lf=HHZ",
             "kategoria": "egyeb",
             "valid_from": "2026-11-12",
-            "valid_to": "2026-11-27"
+            "valid_to": "2026-11-27",
+            "valtozat": null
         },
         {
             "store": "Lidl",
@@ -95,7 +106,8 @@
             "url": "https://www.lidl.hu/l/hu/ujsag/max-und-mila-katalogus-2026/ar/0?lf=HHZ",
             "kategoria": "egyeb",
             "valid_from": "2026-11-17",
-            "valid_to": "2027-01-17"
+            "valid_to": "2027-01-17",
+            "valtozat": null
         },
         {
             "store": "Penny",
@@ -103,7 +115,8 @@
             "url": "https://files.rewe.co.at/PennyIntLeaflet/HU/202647/",
             "kategoria": "haztartas",
             "valid_from": "2026-11-19",
-            "valid_to": "2026-11-25"
+            "valid_to": "2026-11-25",
+            "valtozat": null
         },
         {
             "store": "Penny",
@@ -111,7 +124,8 @@
             "url": "https://files.rewe.co.at/PennyIntLeaflet/HU/202648/",
             "kategoria": "haztartas",
             "valid_from": "2026-11-26",
-            "valid_to": "2026-12-02"
+            "valid_to": "2026-12-02",
+            "valtozat": null
         },
         {
             "store": "Penny",
@@ -119,7 +133,8 @@
             "url": "https://files.rewe.co.at/PennyIntLeaflet/HU/eletmod/",
             "kategoria": "haztartas",
             "valid_from": null,
-            "valid_to": null
+            "valid_to": null,
+            "valtozat": null
         },
         {
             "store": "Spar",
@@ -127,7 +142,8 @@
             "url": "https://www.spar.hu/ajanlatok/spar/261119-1-spar-szorolap",
             "kategoria": "haztartas",
             "valid_from": "2026-11-19",
-            "valid_to": "2026-11-25"
+            "valid_to": "2026-11-25",
+            "valtozat": "SPAR"
         },
         {
             "store": "Spar",
@@ -135,7 +151,8 @@
             "url": "https://www.spar.hu/ajanlatok/spar/261126-1-spar-szorolap-p",
             "kategoria": "haztartas",
             "valid_from": "2026-11-26",
-            "valid_to": "2026-12-02"
+            "valid_to": "2026-12-02",
+            "valtozat": "SPAR"
         },
         {
             "store": "Spar",
@@ -143,7 +160,8 @@
             "url": "https://www.spar.hu/ajanlatok/interspar/261119-2-interspar-szorolap",
             "kategoria": "haztartas",
             "valid_from": "2026-11-19",
-            "valid_to": "2026-11-25"
+            "valid_to": "2026-11-25",
+            "valtozat": "INTERSPAR"
         },
         {
             "store": "Spar",
@@ -151,7 +169,8 @@
             "url": "https://www.spar.hu/ajanlatok/interspar/261126-2-interspar-szorolap-p",
             "kategoria": "haztartas",
             "valid_from": "2026-11-26",
-            "valid_to": "2026-12-02"
+            "valid_to": "2026-12-02",
+            "valtozat": "INTERSPAR"
         },
         {
             "store": "Spar",
@@ -159,7 +178,8 @@
             "url": "https://www.spar.hu/ajanlatok/spar-market/261119-3-spar-market-city-spar",
             "kategoria": "haztartas",
             "valid_from": "2026-11-19",
-            "valid_to": "2026-11-25"
+            "valid_to": "2026-11-25",
+            "valtozat": "SPAR market"
         },
         {
             "store": "Spar",
@@ -167,7 +187,8 @@
             "url": "https://www.spar.hu/ajanlatok/spar-market/261126-3-spar-market-city-spar",
             "kategoria": "haztartas",
             "valid_from": "2026-11-26",
-            "valid_to": "2026-12-02"
+            "valid_to": "2026-12-02",
+            "valtozat": "SPAR market"
         },
         {
             "store": "Spar",
@@ -175,7 +196,8 @@
             "url": "https://www.spar.hu/ajanlatok/egyeb/261118-1-ajandek-katalogus-2",
             "kategoria": "haztartas",
             "valid_from": "2026-11-18",
-            "valid_to": "2026-12-28"
+            "valid_to": "2026-12-28",
+            "valtozat": null
         },
         {
             "store": "Spar",
@@ -183,7 +205,8 @@
             "url": "https://www.spar.hu/ajanlatok/egyeb/260901-1-allateledel-katalogus",
             "kategoria": "haztartas",
             "valid_from": "2026-09-01",
-            "valid_to": null
+            "valid_to": null,
+            "valtozat": null
         },
         {
             "store": "Spar",
@@ -191,7 +214,8 @@
             "url": "https://www.spar.hu/ajanlatok/egyeb/261125-1-karacsonyi-inyenc-katalogus",
             "kategoria": "haztartas",
             "valid_from": "2026-11-26",
-            "valid_to": "2026-12-28"
+            "valid_to": "2026-12-28",
+            "valtozat": null
         },
         {
             "store": "Spar",
@@ -199,7 +223,8 @@
             "url": "https://www.spar.hu/ajanlatok/egyeb/261105-6-karacsony-online-katalogus",
             "kategoria": "haztartas",
             "valid_from": "2026-11-05",
-            "valid_to": "2026-12-31"
+            "valid_to": "2026-12-31",
+            "valtozat": null
         },
         {
             "store": "Spar",
@@ -207,7 +232,8 @@
             "url": "https://www.spar.hu/ajanlatok/spar-market/261126-4-city-spar-andrassy-ut-uzlet-ujranyitas",
             "kategoria": "haztartas",
             "valid_from": "2026-11-26",
-            "valid_to": "2026-12-02"
+            "valid_to": "2026-12-02",
+            "valtozat": "SPAR market"
         },
         {
             "store": "Spar",
@@ -215,7 +241,8 @@
             "url": "https://www.spar.hu/ajanlatok/interspar/261119-5-interspar-pecs-uzlet-ujranyitas",
             "kategoria": "haztartas",
             "valid_from": "2026-11-19",
-            "valid_to": "2026-11-25"
+            "valid_to": "2026-11-25",
+            "valtozat": "INTERSPAR"
         },
         {
             "store": "Spar",
@@ -223,7 +250,8 @@
             "url": "https://www.spar.hu/ajanlatok/spar-market/261126-5-spar-easy-komarom-uzlet-ujranyitas",
             "kategoria": "haztartas",
             "valid_from": "2026-11-26",
-            "valid_to": "2026-12-02"
+            "valid_to": "2026-12-02",
+            "valtozat": "SPAR market"
         },
         {
             "store": "Spar",
@@ -231,7 +259,8 @@
             "url": "https://www.spar.hu/ajanlatok/spar/261119-4-spar-szentendre-uzlet-megujulas",
             "kategoria": "haztartas",
             "valid_from": "2026-11-19",
-            "valid_to": "2026-11-25"
+            "valid_to": "2026-11-25",
+            "valtozat": "SPAR"
         },
         {
             "store": "Spar",
@@ -239,7 +268,8 @@
             "url": "https://www.spar.hu/ajanlatok/egyeb/261111-1-jatek-katalogus",
             "kategoria": "egyeb",
             "valid_from": "2026-11-11",
-            "valid_to": "2026-12-28"
+            "valid_to": "2026-12-28",
+            "valtozat": null
         },
         {
             "store": "Tesco",
@@ -247,7 +277,8 @@
             "url": "https://www.tesco.hu/akciok/katalogusok/hipermarket/tesco-ujsag-2026-11-19/1",
             "kategoria": "haztartas",
             "valid_from": "2026-11-19",
-            "valid_to": "2026-11-25"
+            "valid_to": "2026-11-25",
+            "valtozat": "Hipermarket"
         },
         {
             "store": "Tesco",
@@ -255,7 +286,8 @@
             "url": "https://www.tesco.hu/akciok/katalogusok/hipermarket/tesco-ujsag-2026-11-26/1",
             "kategoria": "haztartas",
             "valid_from": "2026-11-26",
-            "valid_to": "2026-12-02"
+            "valid_to": "2026-12-02",
+            "valtozat": "Hipermarket"
         },
         {
             "store": "Tesco",
@@ -263,7 +295,8 @@
             "url": "https://www.tesco.hu/akciok/katalogusok/szupermarket/tesco-ujsag-2026-11-19/1",
             "kategoria": "haztartas",
             "valid_from": "2026-11-19",
-            "valid_to": "2026-11-25"
+            "valid_to": "2026-11-25",
+            "valtozat": "Szupermarket"
         },
         {
             "store": "Tesco",
@@ -271,7 +304,8 @@
             "url": "https://www.tesco.hu/akciok/katalogusok/szupermarket/tesco-ujsag-2026-11-26/1",
             "kategoria": "haztartas",
             "valid_from": "2026-11-26",
-            "valid_to": "2026-12-02"
+            "valid_to": "2026-12-02",
+            "valtozat": "Szupermarket"
         },
         {
             "store": "Tesco",
@@ -279,7 +313,8 @@
             "url": "https://www.tesco.hu/akciok/katalogusok/katalogus/tesco-ujsag-2026-11-05/1",
             "kategoria": "haztartas",
             "valid_from": "2026-11-05",
-            "valid_to": "2026-11-25"
+            "valid_to": "2026-11-25",
+            "valtozat": "Hipermarket"
         },
         {
             "store": "Tesco",
@@ -287,7 +322,8 @@
             "url": "https://www.tesco.hu/akciok/katalogusok/katalogus/tesco-ujsag-2026-11-26/1",
             "kategoria": "haztartas",
             "valid_from": "2026-11-26",
-            "valid_to": "2026-12-24"
+            "valid_to": "2026-12-24",
+            "valtozat": "Hipermarket"
         },
         {
             "store": "Auchan",
@@ -295,7 +331,8 @@
             "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr47/2026-11-19-11-25-heti-hipermarket-ajanlataink/",
             "kategoria": "haztartas",
             "valid_from": "2026-11-19",
-            "valid_to": "2026-11-25"
+            "valid_to": "2026-11-25",
+            "valtozat": "Hipermarket"
         },
         {
             "store": "Auchan",
@@ -303,7 +340,8 @@
             "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr47/2026-11-19-11-25-heti-szupermarket-ajanlataink/",
             "kategoria": "haztartas",
             "valid_from": "2026-11-19",
-            "valid_to": "2026-11-25"
+            "valid_to": "2026-11-25",
+            "valtozat": "Szupermarket"
         },
         {
             "store": "Auchan",
@@ -311,7 +349,8 @@
             "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/s47/2026-11-19-11-25-hazai-bor-ajanlataink/",
             "kategoria": "haztartas",
             "valid_from": "2026-11-19",
-            "valid_to": "2026-11-25"
+            "valid_to": "2026-11-25",
+            "valtozat": null
         },
         {
             "store": "Auchan",
@@ -319,7 +358,8 @@
             "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr43/2026-10-22-11-25-karacsonyi-ajanlataink/",
             "kategoria": "haztartas",
             "valid_from": "2026-10-22",
-            "valid_to": "2026-11-25"
+            "valid_to": "2026-11-25",
+            "valtozat": null
         },
         {
             "store": "Auchan",
@@ -327,7 +367,8 @@
             "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr110/2026-11-19-12-23-karacsonyi-elelmiszer-ajanlataink/",
             "kategoria": "haztartas",
             "valid_from": "2026-11-19",
-            "valid_to": "2026-12-23"
+            "valid_to": "2026-12-23",
+            "valtozat": null
         },
         {
             "store": "Auchan",
@@ -335,7 +376,8 @@
             "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr47/2026-11-19-11-25-olasz-napok/",
             "kategoria": "haztartas",
             "valid_from": "2026-11-19",
-            "valid_to": "2026-11-25"
+            "valid_to": "2026-11-25",
+            "valtozat": null
         },
         {
             "store": "Auchan",
@@ -343,7 +385,8 @@
             "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr47/2026-11-19-12-02-elektronikai-ajanlataink/",
             "kategoria": "egyeb",
             "valid_from": "2026-11-19",
-            "valid_to": "2026-12-02"
+            "valid_to": "2026-12-02",
+            "valtozat": null
         },
         {
             "store": "Auchan",
@@ -351,7 +394,8 @@
             "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr110/2026-11-19-12-23-karacsonyi-ajandek-ajanlataink/",
             "kategoria": "egyeb",
             "valid_from": "2026-11-19",
-            "valid_to": "2026-12-23"
+            "valid_to": "2026-12-23",
+            "valtozat": null
         },
         {
             "store": "Auchan",
@@ -359,7 +403,8 @@
             "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr211/2026-11-05-12-02-karacsanyi-muszaki-ajanlataink/",
             "kategoria": "egyeb",
             "valid_from": "2026-11-05",
-            "valid_to": "2026-12-02"
+            "valid_to": "2026-12-02",
+            "valtozat": null
         },
         {
             "store": "Metro",
@@ -367,7 +412,8 @@
             "url": "https://katalogus.metro.hu/elelmiszer-es-szezonalis-ajanlataink-kiskereskedoknek-2026-11/page/1",
             "kategoria": "haztartas",
             "valid_from": "2026-11-02",
-            "valid_to": "2026-11-30"
+            "valid_to": "2026-11-30",
+            "valtozat": null
         },
         {
             "store": "Metro",
@@ -375,7 +421,17 @@
             "url": "https://katalogus.metro.hu/nagyajanlatok-kiskereskedoknek-2026-11/page/1",
             "kategoria": "haztartas",
             "valid_from": "2026-11-02",
-            "valid_to": "2026-11-30"
+            "valid_to": "2026-11-30",
+            "valtozat": null
+        },
+        {
+            "store": "Metro",
+            "title": "Metro Chef hasábburgonya-kollekció",
+            "url": "https://katalogus.metro.hu/sajat-markas-hasabburgonyak/page/1",
+            "kategoria": "haztartas",
+            "valid_from": null,
+            "valid_to": null,
+            "valtozat": null
         },
         {
             "store": "Metro",
@@ -383,7 +439,8 @@
             "url": "https://katalogus.metro.hu/markak-katalogus-2026-11/page/1",
             "kategoria": "haztartas",
             "valid_from": "2026-11-16",
-            "valid_to": "2026-11-30"
+            "valid_to": "2026-11-30",
+            "valtozat": null
         },
         {
             "store": "Metro",
@@ -391,7 +448,8 @@
             "url": "https://katalogus.metro.hu/konyhakesz-husok-katalogus-9a_amejma77v/page/1",
             "kategoria": "haztartas",
             "valid_from": null,
-            "valid_to": null
+            "valid_to": null,
+            "valtozat": null
         },
         {
             "store": "Metro",
@@ -399,7 +457,8 @@
             "url": "https://katalogus.metro.hu/olasz-katalogus-qqkqleepqqwm/page/1",
             "kategoria": "haztartas",
             "valid_from": "2026-08-15",
-            "valid_to": null
+            "valid_to": null,
+            "valtozat": null
         },
         {
             "store": "Metro",
@@ -407,7 +466,8 @@
             "url": "https://katalogus.metro.hu/profi-megoldasok-sajat-markas-kinalatunkbol-k8z89w694w7g/page/1",
             "kategoria": "haztartas",
             "valid_from": "2026-08-01",
-            "valid_to": null
+            "valid_to": null,
+            "valtozat": null
         },
         {
             "store": "Metro",
@@ -415,15 +475,8 @@
             "url": "https://katalogus.metro.hu/unnepi-italok-katalogus-2026-11/page/1",
             "kategoria": "haztartas",
             "valid_from": "2026-11-02",
-            "valid_to": "2026-11-30"
-        },
-        {
-            "store": "Metro",
-            "title": "Metro ünnepi katalógus, 11.02.–11.30.",
-            "url": "https://katalogus.metro.hu/unnepi-katalogus-2026-11/page/1",
-            "kategoria": "haztartas",
-            "valid_from": "2026-11-02",
-            "valid_to": "2026-11-30"
+            "valid_to": "2026-11-30",
+            "valtozat": null
         },
         {
             "store": "Coop",
@@ -431,7 +484,8 @@
             "url": "https://katalogus.coop.hu/coop-alfold-szorolap-2026-november-4-het/",
             "kategoria": "haztartas",
             "valid_from": "2026-11-19",
-            "valid_to": "2026-11-25"
+            "valid_to": "2026-11-25",
+            "valtozat": "Coop Alföld"
         },
         {
             "store": "Coop",
@@ -439,7 +493,8 @@
             "url": "https://katalogus.coop.hu/coop-alfold-szorolap-2026-november-5-het/",
             "kategoria": "haztartas",
             "valid_from": "2026-11-26",
-            "valid_to": "2026-12-02"
+            "valid_to": "2026-12-02",
+            "valtozat": "Coop Alföld"
         },
         {
             "store": "Coop",
@@ -447,7 +502,8 @@
             "url": "https://katalogus.coop.hu/coop-eszak-kelet-szorolap-2026-november-4-het/",
             "kategoria": "haztartas",
             "valid_from": "2026-11-19",
-            "valid_to": "2026-11-25"
+            "valid_to": "2026-11-25",
+            "valtozat": "Coop Észak-Kelet"
         },
         {
             "store": "Coop",
@@ -455,7 +511,8 @@
             "url": "https://katalogus.coop.hu/coop-eszak-kelet-szorolap-2026-november-5-het/",
             "kategoria": "haztartas",
             "valid_from": "2026-11-26",
-            "valid_to": "2026-12-02"
+            "valid_to": "2026-12-02",
+            "valtozat": "Coop Észak-Kelet"
         },
         {
             "store": "Coop",
@@ -463,7 +520,8 @@
             "url": "https://katalogus.coop.hu/coop-hetforras-szorolap-2026-november-3-4-5-het/",
             "kategoria": "haztartas",
             "valid_from": "2026-11-12",
-            "valid_to": "2026-12-02"
+            "valid_to": "2026-12-02",
+            "valtozat": "Coop Hétforrás"
         },
         {
             "store": "Coop",
@@ -471,7 +529,8 @@
             "url": "https://katalogus.coop.hu/coop-mecsek-szorolap-2026-november-4-5-het/",
             "kategoria": "haztartas",
             "valid_from": "2026-11-19",
-            "valid_to": "2026-12-02"
+            "valid_to": "2026-12-02",
+            "valtozat": "Coop Mecsek"
         },
         {
             "store": "Coop",
@@ -479,7 +538,8 @@
             "url": "https://katalogus.coop.hu/coop-nyirzem-szorolap-2026-november-4-5-het/",
             "kategoria": "haztartas",
             "valid_from": "2026-11-19",
-            "valid_to": "2026-12-02"
+            "valid_to": "2026-12-02",
+            "valtozat": "Coop Nyírzem"
         },
         {
             "store": "Coop",
@@ -487,7 +547,8 @@
             "url": "https://katalogus.coop.hu/coop-tisza-szorolap-2026-november-4-het-abc-szuper/",
             "kategoria": "haztartas",
             "valid_from": "2026-11-19",
-            "valid_to": "2026-11-25"
+            "valid_to": "2026-11-25",
+            "valtozat": "Coop Tisza"
         },
         {
             "store": "Coop",
@@ -495,7 +556,8 @@
             "url": "https://katalogus.coop.hu/coop-tisza-szorolap-2026-november-5-het/",
             "kategoria": "haztartas",
             "valid_from": "2026-11-26",
-            "valid_to": "2026-12-02"
+            "valid_to": "2026-12-02",
+            "valtozat": "Coop Tisza"
         },
         {
             "store": "Coop",
@@ -503,7 +565,8 @@
             "url": "https://katalogus.coop.hu/coop-hunor-coop-szorolap-2026-november-4-het/",
             "kategoria": "haztartas",
             "valid_from": "2026-11-19",
-            "valid_to": "2026-11-29"
+            "valid_to": "2026-11-29",
+            "valtozat": "Hunor Coop"
         },
         {
             "store": "CBA",
@@ -511,7 +574,8 @@
             "url": "https://www.cba.hu/3d-flip-book/november-19-25/",
             "kategoria": "haztartas",
             "valid_from": "2026-11-19",
-            "valid_to": "2026-11-25"
+            "valid_to": "2026-11-25",
+            "valtozat": null
         },
         {
             "store": "CBA Príma",
@@ -519,7 +583,8 @@
             "url": "https://www.prima.hu/3d-flip-book/november-19-25/",
             "kategoria": "haztartas",
             "valid_from": "2026-11-19",
-            "valid_to": "2026-11-25"
+            "valid_to": "2026-11-25",
+            "valtozat": null
         },
         {
             "store": "CBA Príma",
@@ -527,7 +592,8 @@
             "url": "https://www.prima.hu/3d-flip-book/borkatalagus-osz-tel/",
             "kategoria": "haztartas",
             "valid_from": null,
-            "valid_to": null
+            "valid_to": null,
+            "valtozat": null
         },
         {
             "store": "Príma Szeged",
@@ -535,7 +601,8 @@
             "url": "https://issuu.com/dataedgekft/docs/prima_47_het_205x293mm_scpaper?v=261118111542",
             "kategoria": "haztartas",
             "valid_from": "2026-11-19",
-            "valid_to": "2026-11-25"
+            "valid_to": "2026-11-25",
+            "valtozat": null
         }
     ]
 }
