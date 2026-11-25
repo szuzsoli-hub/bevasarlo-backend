@@ -1,5 +1,5 @@
 {
-    "last_updated": "2026-11-24 16:41:45",
+    "last_updated": "2026-11-25 16:42:30",
     "flyers": [
         {
             "store": "Aldi",
@@ -350,7 +350,16 @@
             "kategoria": "haztartas",
             "valid_from": "2026-11-19",
             "valid_to": "2026-11-25",
-            "valtozat": null
+            "valtozat": "Hipermarket"
+        },
+        {
+            "store": "Auchan",
+            "title": "Auchan karácsonyi ajándék ajánlataink, 11.19.–12.23.",
+            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr110/2026-11-19-12-23-karacsonyi-ajandek-ajanlataink/",
+            "kategoria": "haztartas",
+            "valid_from": "2026-11-19",
+            "valid_to": "2026-12-23",
+            "valtozat": "Hipermarket"
         },
         {
             "store": "Auchan",
@@ -359,7 +368,7 @@
             "kategoria": "haztartas",
             "valid_from": "2026-10-22",
             "valid_to": "2026-11-25",
-            "valtozat": null
+            "valtozat": "Hipermarket"
         },
         {
             "store": "Auchan",
@@ -368,7 +377,7 @@
             "kategoria": "haztartas",
             "valid_from": "2026-11-19",
             "valid_to": "2026-12-23",
-            "valtozat": null
+            "valtozat": "Hipermarket"
         },
         {
             "store": "Auchan",
@@ -377,7 +386,7 @@
             "kategoria": "haztartas",
             "valid_from": "2026-11-19",
             "valid_to": "2026-11-25",
-            "valtozat": null
+            "valtozat": "Hipermarket"
         },
         {
             "store": "Auchan",
@@ -386,16 +395,7 @@
             "kategoria": "egyeb",
             "valid_from": "2026-11-19",
             "valid_to": "2026-12-02",
-            "valtozat": null
-        },
-        {
-            "store": "Auchan",
-            "title": "Auchan karácsonyi ajándék ajánlataink, 11.19.–12.23.",
-            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr110/2026-11-19-12-23-karacsonyi-ajandek-ajanlataink/",
-            "kategoria": "egyeb",
-            "valid_from": "2026-11-19",
-            "valid_to": "2026-12-23",
-            "valtozat": null
+            "valtozat": "Hipermarket"
         },
         {
             "store": "Auchan",
@@ -404,24 +404,15 @@
             "kategoria": "egyeb",
             "valid_from": "2026-11-05",
             "valid_to": "2026-12-02",
-            "valtozat": null
+            "valtozat": "Hipermarket"
         },
         {
             "store": "Metro",
-            "title": "Metro élelmiszer és szezonális ajánlatok, 11.02.–11.30.",
-            "url": "https://katalogus.metro.hu/elelmiszer-es-szezonalis-ajanlataink-kiskereskedoknek-2026-11/page/1",
+            "title": "Metro Ázsiai ízek, 07.01.-tól",
+            "url": "https://katalogus.metro.hu/azsiai-izek-katalogus/page/1",
             "kategoria": "haztartas",
-            "valid_from": "2026-11-02",
-            "valid_to": "2026-11-30",
-            "valtozat": null
-        },
-        {
-            "store": "Metro",
-            "title": "Metro nagy ajánlatok, 11.02.–11.30.",
-            "url": "https://katalogus.metro.hu/nagyajanlatok-kiskereskedoknek-2026-11/page/1",
-            "kategoria": "haztartas",
-            "valid_from": "2026-11-02",
-            "valid_to": "2026-11-30",
+            "valid_from": "2026-07-01",
+            "valid_to": null,
             "valtozat": null
         },
         {
@@ -435,28 +426,10 @@
         },
         {
             "store": "Metro",
-            "title": "Metro Együtt a legjobb márkákkal, 11.16.–11.30.",
-            "url": "https://katalogus.metro.hu/markak-katalogus-2026-11/page/1",
+            "title": "Metro Mindenünk a kávé!, 09.01.-tól",
+            "url": "https://katalogus.metro.hu/mindenunk-a-kave-katalogus-apyprpvw6qp9/page/1",
             "kategoria": "haztartas",
-            "valid_from": "2026-11-16",
-            "valid_to": "2026-11-30",
-            "valtozat": null
-        },
-        {
-            "store": "Metro",
-            "title": "Metro Konyhakész friss húsok",
-            "url": "https://katalogus.metro.hu/konyhakesz-husok-katalogus-9a_amejma77v/page/1",
-            "kategoria": "haztartas",
-            "valid_from": null,
-            "valid_to": null,
-            "valtozat": null
-        },
-        {
-            "store": "Metro",
-            "title": "Metro Olasz katalógus, 08.15.-tól",
-            "url": "https://katalogus.metro.hu/olasz-katalogus-qqkqleepqqwm/page/1",
-            "kategoria": "haztartas",
-            "valid_from": "2026-08-15",
+            "valid_from": "2026-09-01",
             "valid_to": null,
             "valtozat": null
         },
@@ -471,11 +444,38 @@
         },
         {
             "store": "Metro",
-            "title": "Metro ünnepi italok, 11.02.–11.30.",
-            "url": "https://katalogus.metro.hu/unnepi-italok-katalogus-2026-11/page/1",
+            "title": "Metro Smart Chef",
+            "url": "https://katalogus.metro.hu/smart-chef-katalogus-yowojq7x8zmx/page/1",
             "kategoria": "haztartas",
-            "valid_from": "2026-11-02",
-            "valid_to": "2026-11-30",
+            "valid_from": null,
+            "valid_to": null,
+            "valtozat": null
+        },
+        {
+            "store": "Metro",
+            "title": "Metro Gasztronómia – professzionális konyhai eszközök, 02.18.-tól",
+            "url": "https://katalogus.metro.hu/gasztro-konyha-katalogus-rolo83m_wda4/page/1",
+            "kategoria": "egyeb",
+            "valid_from": "2026-02-18",
+            "valid_to": null,
+            "valtozat": null
+        },
+        {
+            "store": "Metro",
+            "title": "Metro Kantin megoldások",
+            "url": "https://katalogus.metro.hu/kantin-megoldasok-katalogus-7eweoeqzdgd8/page/1",
+            "kategoria": "egyeb",
+            "valid_from": null,
+            "valid_to": null,
+            "valtozat": null
+        },
+        {
+            "store": "Metro",
+            "title": "Metro Szezonális bútorok és kiegészítők, 02.16.-tól",
+            "url": "https://katalogus.metro.hu/szezonalis-butorok-es-kiegeszitok/page/1",
+            "kategoria": "egyeb",
+            "valid_from": "2026-02-16",
+            "valid_to": null,
             "valtozat": null
         },
         {
@@ -597,11 +597,11 @@
         },
         {
             "store": "Príma Szeged",
-            "title": "Príma Szeged (Príma 5, Nova, Cédrus, Mórahalom), 11.19.–11.25.",
-            "url": "https://issuu.com/dataedgekft/docs/prima_47_het_205x293mm_scpaper?v=261118111542",
+            "title": "Príma Szeged (Príma 5, Nova, Cédrus, Mórahalom), jövő hét: 11.26.–12.02.",
+            "url": "https://issuu.com/dataedgekft/docs/prima_47_het_205x293mm_scpaper?v=261125112735",
             "kategoria": "haztartas",
-            "valid_from": "2026-11-19",
-            "valid_to": "2026-11-25",
+            "valid_from": "2026-11-26",
+            "valid_to": "2026-12-02",
             "valtozat": null
         }
     ]
