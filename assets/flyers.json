@@ -1,5 +1,5 @@
 {
-    "last_updated": "2026-11-26 04:42:01",
+    "last_updated": "2026-11-26 16:42:00",
     "flyers": [
         {
             "store": "Aldi",
@@ -192,6 +192,24 @@
         },
         {
             "store": "Tesco",
+            "title": "Tesco Hipermarket akciós újság, 11.26.–12.02.",
+            "url": "https://www.tesco.hu/akciok/katalogusok/hipermarket/tesco-ujsag-2026-11-26/1",
+            "kategoria": "haztartas",
+            "valid_from": "2026-11-26",
+            "valid_to": "2026-12-02",
+            "valtozat": "Hipermarket"
+        },
+        {
+            "store": "Tesco",
+            "title": "Tesco Szupermarket akciós újság, 11.26.–12.02.",
+            "url": "https://www.tesco.hu/akciok/katalogusok/szupermarket/tesco-ujsag-2026-11-26/1",
+            "kategoria": "haztartas",
+            "valid_from": "2026-11-26",
+            "valid_to": "2026-12-02",
+            "valtozat": "Szupermarket"
+        },
+        {
+            "store": "Tesco",
             "title": "Tesco katalógus, 11.26.–12.24.",
             "url": "https://www.tesco.hu/akciok/katalogusok/katalogus/tesco-ujsag-2026-11-26/1",
             "kategoria": "haztartas",
@@ -242,6 +260,15 @@
             "kategoria": "haztartas",
             "valid_from": "2026-11-19",
             "valid_to": "2026-12-23",
+            "valtozat": "Hipermarket"
+        },
+        {
+            "store": "Auchan",
+            "title": "Auchan Nemzetközi bor ajánlataink, 11.26.–12.02.",
+            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/s48/2026-11-26-12-02-nemzetkozi-bor-ajanlataink/",
+            "kategoria": "haztartas",
+            "valid_from": "2026-11-26",
+            "valid_to": "2026-12-02",
             "valtozat": "Hipermarket"
         },
         {
@@ -300,19 +327,19 @@
         },
         {
             "store": "Metro",
-            "title": "Metro Ázsiai ízek, 07.01.-tól",
-            "url": "https://katalogus.metro.hu/azsiai-izek-katalogus/page/1",
+            "title": "Metro Élelmiszer és szezonális ajánlataink kiskereskedőknek, jövő hét: 12.01.–12.31.",
+            "url": "https://katalogus.metro.hu/elelmiszer-es-szezonalis-ajanlataink-kiskereskedoknek-2026-12/page/1",
             "kategoria": "haztartas",
-            "valid_from": "2026-07-01",
-            "valid_to": null,
+            "valid_from": "2026-12-01",
+            "valid_to": "2026-12-31",
             "valtozat": null
         },
         {
             "store": "Metro",
-            "title": "Metro Chef hasábburgonya-kollekció",
-            "url": "https://katalogus.metro.hu/sajat-markas-hasabburgonyak/page/1",
+            "title": "Metro Ázsiai ízek, 07.01.-tól",
+            "url": "https://katalogus.metro.hu/azsiai-izek-katalogus/page/1",
             "kategoria": "haztartas",
-            "valid_from": null,
+            "valid_from": "2026-07-01",
             "valid_to": null,
             "valtozat": null
         },
@@ -327,20 +354,20 @@
         },
         {
             "store": "Metro",
-            "title": "Metro Profi megoldások saját márkás kínálatunkból, 08.01.-tól",
-            "url": "https://katalogus.metro.hu/profi-megoldasok-sajat-markas-kinalatunkbol-k8z89w694w7g/page/1",
+            "title": "Metro Ünnepi italok, jövő hét: 12.01.–12.31.",
+            "url": "https://katalogus.metro.hu/unnepi-italok-katalogus-2026-12/page/1",
             "kategoria": "haztartas",
-            "valid_from": "2026-08-01",
-            "valid_to": null,
+            "valid_from": "2026-12-01",
+            "valid_to": "2026-12-31",
             "valtozat": null
         },
         {
             "store": "Metro",
-            "title": "Metro Smart Chef",
-            "url": "https://katalogus.metro.hu/smart-chef-katalogus-yowojq7x8zmx/page/1",
+            "title": "Metro Ünnepi katalógus, jövő hét: 12.01.–12.31.",
+            "url": "https://katalogus.metro.hu/unnepi-katalogus-2026-12/page/1",
             "kategoria": "haztartas",
-            "valid_from": null,
-            "valid_to": null,
+            "valid_from": "2026-12-01",
+            "valid_to": "2026-12-31",
             "valtozat": null
         },
         {
