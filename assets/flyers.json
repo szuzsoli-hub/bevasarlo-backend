@@ -1,18 +1,9 @@
 {
-    "last_updated": "2026-11-25 16:42:30",
+    "last_updated": "2026-11-26 04:42:01",
     "flyers": [
         {
             "store": "Aldi",
-            "title": "ALDI akciós újság, 11.19.–11.25.",
-            "url": "https://szorolap.aldi.hu/aldi_online_akcios_ujsag_2026_kw47",
-            "kategoria": "haztartas",
-            "valid_from": "2026-11-19",
-            "valid_to": "2026-11-25",
-            "valtozat": null
-        },
-        {
-            "store": "Aldi",
-            "title": "ALDI akciós újság, jövő hét: 11.26.–12.02.",
+            "title": "ALDI akciós újság, 11.26.–12.02.",
             "url": "https://szorolap.aldi.hu/aldi_online_akcios_ujsag_2026_kw48",
             "kategoria": "haztartas",
             "valid_from": "2026-11-26",
@@ -30,7 +21,7 @@
         },
         {
             "store": "Aldi",
-            "title": "ALDI Középső sor, jövő hét: 11.26.-tól",
+            "title": "ALDI Középső sor, 11.26.-tól",
             "url": "https://szorolap.aldi.hu/aldi_kozepso_sor_2026_kw48",
             "kategoria": "egyeb",
             "valid_from": "2026-11-26",
@@ -39,16 +30,7 @@
         },
         {
             "store": "Lidl",
-            "title": "Lidl akciós újság, 11.19.–11.25.",
-            "url": "https://www.lidl.hu/l/hu/ujsag/akcios-ujsag-47-het-2026/ar/0?lf=HHZ",
-            "kategoria": "haztartas",
-            "valid_from": "2026-11-19",
-            "valid_to": "2026-11-25",
-            "valtozat": null
-        },
-        {
-            "store": "Lidl",
-            "title": "Lidl akciós újság, jövő hét: 11.26.–12.02.",
+            "title": "Lidl akciós újság, 11.26.–12.02.",
             "url": "https://www.lidl.hu/l/hu/ujsag/akcios-ujsag-48-het-2026/ar/0?lf=HHZ",
             "kategoria": "haztartas",
             "valid_from": "2026-11-26",
@@ -75,16 +57,7 @@
         },
         {
             "store": "Lidl",
-            "title": "Lidl nonfood kínálat, 11.19.–11.25.",
-            "url": "https://www.lidl.hu/l/hu/ujsag/akcios-ujsag-nonfood-47-het-2026/ar/0?lf=HHZ",
-            "kategoria": "egyeb",
-            "valid_from": "2026-11-19",
-            "valid_to": "2026-11-25",
-            "valtozat": null
-        },
-        {
-            "store": "Lidl",
-            "title": "Lidl nonfood kínálat, jövő hét: 11.26.–12.02.",
+            "title": "Lidl nonfood kínálat, 11.26.–12.02.",
             "url": "https://www.lidl.hu/l/hu/ujsag/akcios-ujsag-nonfood-48-het-2026/ar/0?lf=HHZ",
             "kategoria": "egyeb",
             "valid_from": "2026-11-26",
@@ -111,16 +84,7 @@
         },
         {
             "store": "Penny",
-            "title": "Penny reklámújság, 11.19.–11.25.",
-            "url": "https://files.rewe.co.at/PennyIntLeaflet/HU/202647/",
-            "kategoria": "haztartas",
-            "valid_from": "2026-11-19",
-            "valid_to": "2026-11-25",
-            "valtozat": null
-        },
-        {
-            "store": "Penny",
-            "title": "Penny reklámújság, jövő hét: 11.26.–12.02.",
+            "title": "Penny reklámújság, 11.26.–12.02.",
             "url": "https://files.rewe.co.at/PennyIntLeaflet/HU/202648/",
             "kategoria": "haztartas",
             "valid_from": "2026-11-26",
@@ -138,17 +102,8 @@
         },
         {
             "store": "Spar",
-            "title": "SPAR szórólap, 11.19.–11.25.",
-            "url": "https://www.spar.hu/ajanlatok/spar/261119-1-spar-szorolap",
-            "kategoria": "haztartas",
-            "valid_from": "2026-11-19",
-            "valid_to": "2026-11-25",
-            "valtozat": "SPAR"
-        },
-        {
-            "store": "Spar",
-            "title": "SPAR szórólap, jövő hét: 11.26.–12.02.",
-            "url": "https://www.spar.hu/ajanlatok/spar/261126-1-spar-szorolap-p",
+            "title": "SPAR szórólap, 11.26.–12.02.",
+            "url": "https://www.spar.hu/ajanlatok/spar/261126-1-spar-szorolap",
             "kategoria": "haztartas",
             "valid_from": "2026-11-26",
             "valid_to": "2026-12-02",
@@ -156,17 +111,8 @@
         },
         {
             "store": "Spar",
-            "title": "INTERSPAR szórólap, 11.19.–11.25.",
-            "url": "https://www.spar.hu/ajanlatok/interspar/261119-2-interspar-szorolap",
-            "kategoria": "haztartas",
-            "valid_from": "2026-11-19",
-            "valid_to": "2026-11-25",
-            "valtozat": "INTERSPAR"
-        },
-        {
-            "store": "Spar",
-            "title": "INTERSPAR szórólap, jövő hét: 11.26.–12.02.",
-            "url": "https://www.spar.hu/ajanlatok/interspar/261126-2-interspar-szorolap-p",
+            "title": "INTERSPAR szórólap, 11.26.–12.02.",
+            "url": "https://www.spar.hu/ajanlatok/interspar/261126-2-interspar-szorolap",
             "kategoria": "haztartas",
             "valid_from": "2026-11-26",
             "valid_to": "2026-12-02",
@@ -174,16 +120,7 @@
         },
         {
             "store": "Spar",
-            "title": "SPAR market és City SPAR szórólap, 11.19.–11.25.",
-            "url": "https://www.spar.hu/ajanlatok/spar-market/261119-3-spar-market-city-spar",
-            "kategoria": "haztartas",
-            "valid_from": "2026-11-19",
-            "valid_to": "2026-11-25",
-            "valtozat": "SPAR market"
-        },
-        {
-            "store": "Spar",
-            "title": "SPAR market és City SPAR szórólap, jövő hét: 11.26.–12.02.",
+            "title": "SPAR market és City SPAR szórólap, 11.26.–12.02.",
             "url": "https://www.spar.hu/ajanlatok/spar-market/261126-3-spar-market-city-spar",
             "kategoria": "haztartas",
             "valid_from": "2026-11-26",
@@ -197,7 +134,7 @@
             "kategoria": "haztartas",
             "valid_from": "2026-11-18",
             "valid_to": "2026-12-28",
-            "valtozat": null
+            "valtozat": "INTERSPAR"
         },
         {
             "store": "Spar",
@@ -210,10 +147,10 @@
         },
         {
             "store": "Spar",
-            "title": "SPAR karácsonyi ínyenc katalógus, jövő hét: 11.26.–12.28.",
+            "title": "SPAR karácsonyi ínyenc katalógus, 11.25.–12.28.",
             "url": "https://www.spar.hu/ajanlatok/egyeb/261125-1-karacsonyi-inyenc-katalogus",
             "kategoria": "haztartas",
-            "valid_from": "2026-11-26",
+            "valid_from": "2026-11-25",
             "valid_to": "2026-12-28",
             "valtozat": null
         },
@@ -228,7 +165,7 @@
         },
         {
             "store": "Spar",
-            "title": "City SPAR Andrássy út (üzlet-újranyitás), jövő hét: 11.26.–12.02.",
+            "title": "City SPAR Andrássy út (üzlet-újranyitás), 11.26.–12.02.",
             "url": "https://www.spar.hu/ajanlatok/spar-market/261126-4-city-spar-andrassy-ut-uzlet-ujranyitas",
             "kategoria": "haztartas",
             "valid_from": "2026-11-26",
@@ -237,30 +174,12 @@
         },
         {
             "store": "Spar",
-            "title": "INTERSPAR Pécs (üzlet-újranyitás), 11.19.–11.25.",
-            "url": "https://www.spar.hu/ajanlatok/interspar/261119-5-interspar-pecs-uzlet-ujranyitas",
-            "kategoria": "haztartas",
-            "valid_from": "2026-11-19",
-            "valid_to": "2026-11-25",
-            "valtozat": "INTERSPAR"
-        },
-        {
-            "store": "Spar",
-            "title": "SPAR EASY Komárom (üzlet-újranyitás), jövő hét: 11.26.–12.02.",
+            "title": "SPAR EASY Komárom (üzlet-újranyitás), 11.26.–12.02.",
             "url": "https://www.spar.hu/ajanlatok/spar-market/261126-5-spar-easy-komarom-uzlet-ujranyitas",
             "kategoria": "haztartas",
             "valid_from": "2026-11-26",
             "valid_to": "2026-12-02",
             "valtozat": "SPAR market"
-        },
-        {
-            "store": "Spar",
-            "title": "SPAR Szentendre (üzlet-megújulás), 11.19.–11.25.",
-            "url": "https://www.spar.hu/ajanlatok/spar/261119-4-spar-szentendre-uzlet-megujulas",
-            "kategoria": "haztartas",
-            "valid_from": "2026-11-19",
-            "valid_to": "2026-11-25",
-            "valtozat": "SPAR"
         },
         {
             "store": "Spar",
@@ -273,52 +192,7 @@
         },
         {
             "store": "Tesco",
-            "title": "Tesco Hipermarket akciós újság, 11.19.–11.25.",
-            "url": "https://www.tesco.hu/akciok/katalogusok/hipermarket/tesco-ujsag-2026-11-19/1",
-            "kategoria": "haztartas",
-            "valid_from": "2026-11-19",
-            "valid_to": "2026-11-25",
-            "valtozat": "Hipermarket"
-        },
-        {
-            "store": "Tesco",
-            "title": "Tesco Hipermarket akciós újság, jövő hét: 11.26.–12.02.",
-            "url": "https://www.tesco.hu/akciok/katalogusok/hipermarket/tesco-ujsag-2026-11-26/1",
-            "kategoria": "haztartas",
-            "valid_from": "2026-11-26",
-            "valid_to": "2026-12-02",
-            "valtozat": "Hipermarket"
-        },
-        {
-            "store": "Tesco",
-            "title": "Tesco Szupermarket akciós újság, 11.19.–11.25.",
-            "url": "https://www.tesco.hu/akciok/katalogusok/szupermarket/tesco-ujsag-2026-11-19/1",
-            "kategoria": "haztartas",
-            "valid_from": "2026-11-19",
-            "valid_to": "2026-11-25",
-            "valtozat": "Szupermarket"
-        },
-        {
-            "store": "Tesco",
-            "title": "Tesco Szupermarket akciós újság, jövő hét: 11.26.–12.02.",
-            "url": "https://www.tesco.hu/akciok/katalogusok/szupermarket/tesco-ujsag-2026-11-26/1",
-            "kategoria": "haztartas",
-            "valid_from": "2026-11-26",
-            "valid_to": "2026-12-02",
-            "valtozat": "Szupermarket"
-        },
-        {
-            "store": "Tesco",
-            "title": "Tesco katalógus, 11.05.–11.25.",
-            "url": "https://www.tesco.hu/akciok/katalogusok/katalogus/tesco-ujsag-2026-11-05/1",
-            "kategoria": "haztartas",
-            "valid_from": "2026-11-05",
-            "valid_to": "2026-11-25",
-            "valtozat": "Hipermarket"
-        },
-        {
-            "store": "Tesco",
-            "title": "Tesco katalógus, jövő hét: 11.26.–12.24.",
+            "title": "Tesco katalógus, 11.26.–12.24.",
             "url": "https://www.tesco.hu/akciok/katalogusok/katalogus/tesco-ujsag-2026-11-26/1",
             "kategoria": "haztartas",
             "valid_from": "2026-11-26",
@@ -327,29 +201,29 @@
         },
         {
             "store": "Auchan",
-            "title": "Auchan heti Hipermarket ajánlataink, 11.19.–11.25.",
-            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr47/2026-11-19-11-25-heti-hipermarket-ajanlataink/",
+            "title": "Auchan heti Hipermarket ajánlataink, 11.26.–12.02.",
+            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr48/2026-11-26-12-02-heti-hipermarket-ajanlataink/",
             "kategoria": "haztartas",
-            "valid_from": "2026-11-19",
-            "valid_to": "2026-11-25",
+            "valid_from": "2026-11-26",
+            "valid_to": "2026-12-02",
             "valtozat": "Hipermarket"
         },
         {
             "store": "Auchan",
-            "title": "Auchan heti Szupermarket ajánlataink, 11.19.–11.25.",
-            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr47/2026-11-19-11-25-heti-szupermarket-ajanlataink/",
+            "title": "Auchan heti Szupermarket ajánlataink, 11.26.–12.02.",
+            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr48/2026-11-26-12-02-heti-szupermarket-ajanlataink/",
             "kategoria": "haztartas",
-            "valid_from": "2026-11-19",
-            "valid_to": "2026-11-25",
+            "valid_from": "2026-11-26",
+            "valid_to": "2026-12-02",
             "valtozat": "Szupermarket"
         },
         {
             "store": "Auchan",
-            "title": "Auchan hazai bor ajánlataink, 11.19.–11.25.",
-            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/s47/2026-11-19-11-25-hazai-bor-ajanlataink/",
+            "title": "Auchan Black Friday ajánlataink, 11.26.–11.29.",
+            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr48/2026-11-26-12-02-blackfriday-ajanlataink/",
             "kategoria": "haztartas",
-            "valid_from": "2026-11-19",
-            "valid_to": "2026-11-25",
+            "valid_from": "2026-11-26",
+            "valid_to": "2026-11-29",
             "valtozat": "Hipermarket"
         },
         {
@@ -363,15 +237,6 @@
         },
         {
             "store": "Auchan",
-            "title": "Auchan karácsonyi ajánlataink, 10.22.–11.25.",
-            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr43/2026-10-22-11-25-karacsonyi-ajanlataink/",
-            "kategoria": "haztartas",
-            "valid_from": "2026-10-22",
-            "valid_to": "2026-11-25",
-            "valtozat": "Hipermarket"
-        },
-        {
-            "store": "Auchan",
             "title": "Auchan karácsonyi élelmiszer ajánlataink, 11.19.–12.23.",
             "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr110/2026-11-19-12-23-karacsonyi-elelmiszer-ajanlataink/",
             "kategoria": "haztartas",
@@ -381,11 +246,29 @@
         },
         {
             "store": "Auchan",
-            "title": "Auchan Olasz napok, 11.19.–11.25.",
-            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr47/2026-11-19-11-25-olasz-napok/",
+            "title": "Auchan Budakalász (megújult áruház), 11.26.–12.02.",
+            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr48/2026-11-26-12-02-heti-hipermarket-ajanlataink-budakalasz/",
             "kategoria": "haztartas",
-            "valid_from": "2026-11-19",
-            "valid_to": "2026-11-25",
+            "valid_from": "2026-11-26",
+            "valid_to": "2026-12-02",
+            "valtozat": "Hipermarket"
+        },
+        {
+            "store": "Auchan",
+            "title": "Auchan Solymár (megújult áruház), 11.26.–12.02.",
+            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr48/2026-11-26-12-02-heti-hipermarket-ajanlataink-solymar/",
+            "kategoria": "haztartas",
+            "valid_from": "2026-11-26",
+            "valid_to": "2026-12-02",
+            "valtozat": "Hipermarket"
+        },
+        {
+            "store": "Auchan",
+            "title": "Auchan Újhegy (megújult áruház), 11.26.–12.02.",
+            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr48/2026-11-26-12-02-heti-hipermarket-ajanlataink-ujhegy/",
+            "kategoria": "haztartas",
+            "valid_from": "2026-11-26",
+            "valid_to": "2026-12-02",
             "valtozat": "Hipermarket"
         },
         {
@@ -404,6 +287,15 @@
             "kategoria": "egyeb",
             "valid_from": "2026-11-05",
             "valid_to": "2026-12-02",
+            "valtozat": "Hipermarket"
+        },
+        {
+            "store": "Auchan",
+            "title": "Auchan ünnepi ruházati ajánlataink, 11.26.–12.23.",
+            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr48/2026-11-26-12-23-unnepi-ruhazati-ajanlataink/",
+            "kategoria": "egyeb",
+            "valid_from": "2026-11-26",
+            "valid_to": "2026-12-23",
             "valtozat": "Hipermarket"
         },
         {
@@ -480,16 +372,7 @@
         },
         {
             "store": "Coop",
-            "title": "Coop Alföld (abc és szuper), 11.19.–11.25.",
-            "url": "https://katalogus.coop.hu/coop-alfold-szorolap-2026-november-4-het/",
-            "kategoria": "haztartas",
-            "valid_from": "2026-11-19",
-            "valid_to": "2026-11-25",
-            "valtozat": "Coop Alföld"
-        },
-        {
-            "store": "Coop",
-            "title": "Coop Alföld (abc és szuper), jövő hét: 11.26.–12.02.",
+            "title": "Coop Alföld (abc és szuper), 11.26.–12.02.",
             "url": "https://katalogus.coop.hu/coop-alfold-szorolap-2026-november-5-het/",
             "kategoria": "haztartas",
             "valid_from": "2026-11-26",
@@ -498,16 +381,7 @@
         },
         {
             "store": "Coop",
-            "title": "Coop Észak-Kelet, 11.19.–11.25.",
-            "url": "https://katalogus.coop.hu/coop-eszak-kelet-szorolap-2026-november-4-het/",
-            "kategoria": "haztartas",
-            "valid_from": "2026-11-19",
-            "valid_to": "2026-11-25",
-            "valtozat": "Coop Észak-Kelet"
-        },
-        {
-            "store": "Coop",
-            "title": "Coop Észak-Kelet, jövő hét: 11.26.–12.02.",
+            "title": "Coop Észak-Kelet, 11.26.–12.02.",
             "url": "https://katalogus.coop.hu/coop-eszak-kelet-szorolap-2026-november-5-het/",
             "kategoria": "haztartas",
             "valid_from": "2026-11-26",
@@ -543,16 +417,7 @@
         },
         {
             "store": "Coop",
-            "title": "Coop Tisza (abc és szuper), 11.19.–11.25.",
-            "url": "https://katalogus.coop.hu/coop-tisza-szorolap-2026-november-4-het-abc-szuper/",
-            "kategoria": "haztartas",
-            "valid_from": "2026-11-19",
-            "valid_to": "2026-11-25",
-            "valtozat": "Coop Tisza"
-        },
-        {
-            "store": "Coop",
-            "title": "Coop Tisza (abc és szuper), jövő hét: 11.26.–12.02.",
+            "title": "Coop Tisza (abc és szuper), 11.26.–12.02.",
             "url": "https://katalogus.coop.hu/coop-tisza-szorolap-2026-november-5-het/",
             "kategoria": "haztartas",
             "valid_from": "2026-11-26",
@@ -569,24 +434,6 @@
             "valtozat": "Hunor Coop"
         },
         {
-            "store": "CBA",
-            "title": "CBA akciós újság, 11.19.–11.25.",
-            "url": "https://www.cba.hu/3d-flip-book/november-19-25/",
-            "kategoria": "haztartas",
-            "valid_from": "2026-11-19",
-            "valid_to": "2026-11-25",
-            "valtozat": null
-        },
-        {
-            "store": "CBA Príma",
-            "title": "Príma akciós újság, 11.19.–11.25.",
-            "url": "https://www.prima.hu/3d-flip-book/november-19-25/",
-            "kategoria": "haztartas",
-            "valid_from": "2026-11-19",
-            "valid_to": "2026-11-25",
-            "valtozat": null
-        },
-        {
             "store": "CBA Príma",
             "title": "Príma borkatalógus (ősz–tél)",
             "url": "https://www.prima.hu/3d-flip-book/borkatalagus-osz-tel/",
@@ -597,7 +444,7 @@
         },
         {
             "store": "Príma Szeged",
-            "title": "Príma Szeged (Príma 5, Nova, Cédrus, Mórahalom), jövő hét: 11.26.–12.02.",
+            "title": "Príma Szeged (Príma 5, Nova, Cédrus, Mórahalom), 11.26.–12.02.",
             "url": "https://issuu.com/dataedgekft/docs/prima_47_het_205x293mm_scpaper?v=261125112735",
             "kategoria": "haztartas",
             "valid_from": "2026-11-26",
