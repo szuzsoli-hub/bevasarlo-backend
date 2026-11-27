@@ -1,5 +1,5 @@
 {
-    "last_updated": "2026-11-26 16:42:00",
+    "last_updated": "2026-11-27 04:41:18",
     "flyers": [
         {
             "store": "Aldi",
@@ -260,15 +260,6 @@
             "kategoria": "haztartas",
             "valid_from": "2026-11-19",
             "valid_to": "2026-12-23",
-            "valtozat": "Hipermarket"
-        },
-        {
-            "store": "Auchan",
-            "title": "Auchan Nemzetközi bor ajánlataink, 11.26.–12.02.",
-            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/s48/2026-11-26-12-02-nemzetkozi-bor-ajanlataink/",
-            "kategoria": "haztartas",
-            "valid_from": "2026-11-26",
-            "valid_to": "2026-12-02",
             "valtozat": "Hipermarket"
         },
         {
