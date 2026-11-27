@@ -1,5 +1,5 @@
 {
-    "last_updated": "2026-11-27 04:41:18",
+    "last_updated": "2026-11-27 16:42:55",
     "flyers": [
         {
             "store": "Aldi",
@@ -111,6 +111,15 @@
         },
         {
             "store": "Spar",
+            "title": "SPAR szórólap, jövő hét: 12.03.–12.09.",
+            "url": "https://www.spar.hu/ajanlatok/spar/261203-1-spar-szorolap-p",
+            "kategoria": "haztartas",
+            "valid_from": "2026-12-03",
+            "valid_to": "2026-12-09",
+            "valtozat": "SPAR"
+        },
+        {
+            "store": "Spar",
             "title": "INTERSPAR szórólap, 11.26.–12.02.",
             "url": "https://www.spar.hu/ajanlatok/interspar/261126-2-interspar-szorolap",
             "kategoria": "haztartas",
@@ -120,11 +129,29 @@
         },
         {
             "store": "Spar",
+            "title": "INTERSPAR szórólap, jövő hét: 12.03.–12.09.",
+            "url": "https://www.spar.hu/ajanlatok/interspar/261203-2-interspar-szorolap-p",
+            "kategoria": "haztartas",
+            "valid_from": "2026-12-03",
+            "valid_to": "2026-12-09",
+            "valtozat": "INTERSPAR"
+        },
+        {
+            "store": "Spar",
             "title": "SPAR market és City SPAR szórólap, 11.26.–12.02.",
             "url": "https://www.spar.hu/ajanlatok/spar-market/261126-3-spar-market-city-spar",
             "kategoria": "haztartas",
             "valid_from": "2026-11-26",
             "valid_to": "2026-12-02",
+            "valtozat": "SPAR market"
+        },
+        {
+            "store": "Spar",
+            "title": "SPAR market és City SPAR szórólap, jövő hét: 12.03.–12.09.",
+            "url": "https://www.spar.hu/ajanlatok/spar-market/261203-4-spar-market-city-spar",
+            "kategoria": "haztartas",
+            "valid_from": "2026-12-03",
+            "valid_to": "2026-12-09",
             "valtozat": "SPAR market"
         },
         {
@@ -174,11 +201,56 @@
         },
         {
             "store": "Spar",
+            "title": "City SPAR Budapest, Dombóvári út megújulás, jövő hét: 12.03.–12.09.",
+            "url": "https://www.spar.hu/ajanlatok/spar-market/261203-8-city-spar-bp-dombovari-utca-uzlet-megujulas",
+            "kategoria": "haztartas",
+            "valid_from": "2026-12-03",
+            "valid_to": "2026-12-09",
+            "valtozat": "SPAR market"
+        },
+        {
+            "store": "Spar",
+            "title": "INTERSPAR Keszthely újranyitás, jövő hét: 12.03.–12.09.",
+            "url": "https://www.spar.hu/ajanlatok/interspar/261203-3-interspar-keszthely-uzlet-ujranyitas",
+            "kategoria": "haztartas",
+            "valid_from": "2026-12-03",
+            "valid_to": "2026-12-09",
+            "valtozat": "INTERSPAR"
+        },
+        {
+            "store": "Spar",
             "title": "SPAR EASY Komárom (üzlet-újranyitás), 11.26.–12.02.",
             "url": "https://www.spar.hu/ajanlatok/spar-market/261126-5-spar-easy-komarom-uzlet-ujranyitas",
             "kategoria": "haztartas",
             "valid_from": "2026-11-26",
             "valid_to": "2026-12-02",
+            "valtozat": "SPAR market"
+        },
+        {
+            "store": "Spar",
+            "title": "SPAR market Nagykapornak, Zalalövő szórólap, jövő hét: 12.03.–12.09.",
+            "url": "https://www.spar.hu/ajanlatok/spar-market/261203-5-spar-market-nagykapornak-zalalovo-szorolap",
+            "kategoria": "haztartas",
+            "valid_from": "2026-12-03",
+            "valid_to": "2026-12-09",
+            "valtozat": "SPAR market"
+        },
+        {
+            "store": "Spar",
+            "title": "SPAR market Szentgotthárd megújulás, jövő hét: 12.03.–12.09.",
+            "url": "https://www.spar.hu/ajanlatok/spar-market/261203-6-spar-market-szentgotthard-uzlet-megujulas",
+            "kategoria": "haztartas",
+            "valid_from": "2026-12-03",
+            "valid_to": "2026-12-09",
+            "valtozat": "SPAR market"
+        },
+        {
+            "store": "Spar",
+            "title": "SPAR market Zalakaros üzletnyitás, jövő hét: 12.03.–12.09.",
+            "url": "https://www.spar.hu/ajanlatok/spar-market/261203-7-spar-market-zalakaros-uzletnyitas",
+            "kategoria": "haztartas",
+            "valid_from": "2026-12-03",
+            "valid_to": "2026-12-09",
             "valtozat": "SPAR market"
         },
         {
@@ -264,6 +336,15 @@
         },
         {
             "store": "Auchan",
+            "title": "Auchan Nemzetközi bor ajánlataink, 11.26.–12.02.",
+            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/s48/2026-11-26-12-02-nemzetkozi-bor-ajanlataink/",
+            "kategoria": "haztartas",
+            "valid_from": "2026-11-26",
+            "valid_to": "2026-12-02",
+            "valtozat": "Hipermarket"
+        },
+        {
+            "store": "Auchan",
             "title": "Auchan Budakalász (megújult áruház), 11.26.–12.02.",
             "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/tr48/2026-11-26-12-02-heti-hipermarket-ajanlataink-budakalasz/",
             "kategoria": "haztartas",
@@ -314,6 +395,15 @@
             "kategoria": "egyeb",
             "valid_from": "2026-11-26",
             "valid_to": "2026-12-23",
+            "valtozat": "Hipermarket"
+        },
+        {
+            "store": "Auchan",
+            "title": "Auchan Válogatott ajándékötletek, 11.26.–12.02.",
+            "url": "https://reklamujsag.auchan.hu/online-katalogusok/2026/s48/2026-11-26-12-02-valogatott-ajandek-otletek/",
+            "kategoria": "egyeb",
+            "valid_from": "2026-11-26",
+            "valid_to": "2026-12-02",
             "valtozat": "Hipermarket"
         },
         {
@@ -452,6 +542,24 @@
             "valtozat": "Hunor Coop"
         },
         {
+            "store": "CBA",
+            "title": "CBA és Príma havi ajánlat (óriásplakát), 11.05.–11.30.",
+            "url": "https://www.cba.hu/aktualis-ajanlataink/?v=CBA-Prima_OP_november",
+            "kategoria": "haztartas",
+            "valid_from": "2026-11-05",
+            "valid_to": "2026-11-30",
+            "valtozat": null
+        },
+        {
+            "store": "CBA Príma",
+            "title": "CBA és Príma havi ajánlat (óriásplakát), 11.05.–11.30.",
+            "url": "https://www.prima.hu/aktualis-ajanlataink/?v=CBA-Prima_OP_november",
+            "kategoria": "haztartas",
+            "valid_from": "2026-11-05",
+            "valid_to": "2026-11-30",
+            "valtozat": null
+        },
+        {
             "store": "CBA Príma",
             "title": "Príma borkatalógus (ősz–tél)",
             "url": "https://www.prima.hu/3d-flip-book/borkatalagus-osz-tel/",
@@ -468,6 +576,33 @@
             "valid_from": "2026-11-26",
             "valid_to": "2026-12-02",
             "valtozat": null
+        },
+        {
+            "store": "Privát",
+            "title": "Privát akciós újság, 11.26.–12.02.",
+            "url": "https://drive.google.com/file/d/1Xw6ozF4uKshA4aR4zjc2vuVYAJ5URYEb/view?usp=sharing&v=p_20261126_20261202_page-0001",
+            "kategoria": "haztartas",
+            "valid_from": "2026-11-26",
+            "valid_to": "2026-12-02",
+            "valtozat": "PRIVÁT"
+        },
+        {
+            "store": "Privát",
+            "title": "Privát Déli vármegyék akciós újság, 11.26.–12.02.",
+            "url": "https://drive.google.com/file/d/1cbvsBO0rvc5mCMUe_A32yFxG6mkFgdbF/view?usp=sharing&v=Privat-hansa-lanc_46_page-0001",
+            "kategoria": "haztartas",
+            "valid_from": "2026-11-26",
+            "valid_to": "2026-12-02",
+            "valtozat": "DÉLI VÁRMEGYÉK"
+        },
+        {
+            "store": "Privát",
+            "title": "Privát MAX akciós újság, 11.26.–12.02.",
+            "url": "https://drive.google.com/file/d/1b_fuO43TBfaamsBSflRwiEAyvYgyqyVe/view?usp=sharing&v=pm_20261126_20261202_page-0001",
+            "kategoria": "haztartas",
+            "valid_from": "2026-11-26",
+            "valid_to": "2026-12-02",
+            "valtozat": "PRIVÁT MAX"
         }
     ]
 }
