@@ -1,5 +1,5 @@
 {
-    "last_updated": "2026-11-28 04:42:57",
+    "last_updated": "2026-11-28 16:42:45",
     "flyers": [
         {
             "store": "Aldi",
@@ -116,6 +116,15 @@
             "kategoria": "haztartas",
             "valid_from": "2026-11-26",
             "valid_to": "2026-12-02",
+            "valtozat": null
+        },
+        {
+            "store": "Penny",
+            "title": "Penny reklámújság, jövő hét: 12.03.–12.09.",
+            "url": "https://files.rewe.co.at/PennyIntLeaflet/HU/202649/",
+            "kategoria": "haztartas",
+            "valid_from": "2026-12-03",
+            "valid_to": "2026-12-09",
             "valtozat": null
         },
         {
