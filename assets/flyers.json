@@ -1,5 +1,5 @@
 {
-    "last_updated": "2026-11-27 16:42:55",
+    "last_updated": "2026-11-28 04:42:57",
     "flyers": [
         {
             "store": "Aldi",
@@ -12,11 +12,11 @@
         },
         {
             "store": "Aldi",
-            "title": "ALDI Középső sor, 11.19.-tól",
-            "url": "https://szorolap.aldi.hu/aldi_kozepso_sor_2026_kw47",
-            "kategoria": "egyeb",
-            "valid_from": "2026-11-19",
-            "valid_to": null,
+            "title": "ALDI akciós újság, jövő hét: 12.03.–12.09.",
+            "url": "https://szorolap.aldi.hu/aldi_online_akcios_ujsag_2026_kw49",
+            "kategoria": "haztartas",
+            "valid_from": "2026-12-03",
+            "valid_to": "2026-12-09",
             "valtozat": null
         },
         {
@@ -29,12 +29,39 @@
             "valtozat": null
         },
         {
+            "store": "Aldi",
+            "title": "ALDI Középső sor, jövő hét: 12.03.-tól",
+            "url": "https://szorolap.aldi.hu/aldi_kozepso_sor_2026_kw49",
+            "kategoria": "egyeb",
+            "valid_from": "2026-12-03",
+            "valid_to": null,
+            "valtozat": null
+        },
+        {
             "store": "Lidl",
             "title": "Lidl akciós újság, 11.26.–12.02.",
             "url": "https://www.lidl.hu/l/hu/ujsag/akcios-ujsag-48-het-2026/ar/0?lf=HHZ",
             "kategoria": "haztartas",
             "valid_from": "2026-11-26",
             "valid_to": "2026-12-02",
+            "valtozat": null
+        },
+        {
+            "store": "Lidl",
+            "title": "Lidl akciós újság, jövő hét: 12.03.–12.09.",
+            "url": "https://www.lidl.hu/l/hu/ujsag/akcios-ujsag-49-het-2026/ar/0?lf=HHZ",
+            "kategoria": "haztartas",
+            "valid_from": "2026-12-03",
+            "valid_to": "2026-12-09",
+            "valtozat": null
+        },
+        {
+            "store": "Lidl",
+            "title": "Lidl ajándék katalógus, jövő hét: 12.03.–12.31.",
+            "url": "https://www.lidl.hu/l/hu/ujsag/ajandek-katalogus-49-het-2026/ar/0?lf=HHZ",
+            "kategoria": "haztartas",
+            "valid_from": "2026-12-03",
+            "valid_to": "2026-12-31",
             "valtozat": null
         },
         {
@@ -66,11 +93,11 @@
         },
         {
             "store": "Lidl",
-            "title": "Lidl játékkatalógus, 11.12.–11.27.",
-            "url": "https://www.lidl.hu/l/hu/ujsag/jatekkatalogus-46-het-2026/ar/0?lf=HHZ",
+            "title": "Lidl nonfood kínálat, jövő hét: 12.03.–12.09.",
+            "url": "https://www.lidl.hu/l/hu/ujsag/akcios-ujsag-nonfood-49-het-2026/ar/0?lf=HHZ",
             "kategoria": "egyeb",
-            "valid_from": "2026-11-12",
-            "valid_to": "2026-11-27",
+            "valid_from": "2026-12-03",
+            "valid_to": "2026-12-09",
             "valtozat": null
         },
         {
@@ -489,11 +516,29 @@
         },
         {
             "store": "Coop",
+            "title": "Coop Alföld (abc és szuper), jövő hét: 12.03.–12.09.",
+            "url": "https://katalogus.coop.hu/coop-alfold-szorolap-2026-december-1-het-abc-szuper/",
+            "kategoria": "haztartas",
+            "valid_from": "2026-12-03",
+            "valid_to": "2026-12-09",
+            "valtozat": "Coop Alföld"
+        },
+        {
+            "store": "Coop",
             "title": "Coop Észak-Kelet, 11.26.–12.02.",
             "url": "https://katalogus.coop.hu/coop-eszak-kelet-szorolap-2026-november-5-het/",
             "kategoria": "haztartas",
             "valid_from": "2026-11-26",
             "valid_to": "2026-12-02",
+            "valtozat": "Coop Észak-Kelet"
+        },
+        {
+            "store": "Coop",
+            "title": "Coop Észak-Kelet (abc és szuper), jövő hét: 12.03.–12.09.",
+            "url": "https://katalogus.coop.hu/coop-eszak-kelet-szorolap-2026-december-1-het-abc-szuper/",
+            "kategoria": "haztartas",
+            "valid_from": "2026-12-03",
+            "valid_to": "2026-12-09",
             "valtozat": "Coop Észak-Kelet"
         },
         {
@@ -525,6 +570,15 @@
         },
         {
             "store": "Coop",
+            "title": "Coop országos (abc és szuper), jövő hét: 12.03.–12.09.",
+            "url": "https://katalogus.coop.hu/coop-orszagos-szorolap-2026-december-1-het-abc-szuper/",
+            "kategoria": "haztartas",
+            "valid_from": "2026-12-03",
+            "valid_to": "2026-12-09",
+            "valtozat": "Coop országos"
+        },
+        {
+            "store": "Coop",
             "title": "Coop Tisza (abc és szuper), 11.26.–12.02.",
             "url": "https://katalogus.coop.hu/coop-tisza-szorolap-2026-november-5-het/",
             "kategoria": "haztartas",
@@ -534,12 +588,57 @@
         },
         {
             "store": "Coop",
+            "title": "Coop Tisza (abc és szuper), jövő hét: 12.03.–12.09.",
+            "url": "https://katalogus.coop.hu/coop-tisza-szorolap-2026-december-1-het-abc-szuper/",
+            "kategoria": "haztartas",
+            "valid_from": "2026-12-03",
+            "valid_to": "2026-12-09",
+            "valtozat": "Coop Tisza"
+        },
+        {
+            "store": "Coop",
+            "title": "Hunor Coop decemberi akció, jövő hét: 12.03.–12.23.",
+            "url": "https://katalogus.coop.hu/coop-hunor-coop-szorolap-2026-december-1-2-3-het/",
+            "kategoria": "haztartas",
+            "valid_from": "2026-12-03",
+            "valid_to": "2026-12-23",
+            "valtozat": "Hunor Coop"
+        },
+        {
+            "store": "Coop",
             "title": "Hunor Coop novemberi akció, 11.19.–11.29.",
             "url": "https://katalogus.coop.hu/coop-hunor-coop-szorolap-2026-november-4-het/",
             "kategoria": "haztartas",
             "valid_from": "2026-11-19",
             "valid_to": "2026-11-29",
             "valtozat": "Hunor Coop"
+        },
+        {
+            "store": "Coop",
+            "title": "Coop Alföld Szuper Plusz, jövő hét: 12.03.–12.09.",
+            "url": "https://katalogus.coop.hu/coop-alfold-szorolap-2026-december-1-het-szuper-plusz/",
+            "kategoria": "haztartas",
+            "valid_from": "2026-12-03",
+            "valid_to": "2026-12-09",
+            "valtozat": "Coop Alföld"
+        },
+        {
+            "store": "Coop",
+            "title": "Coop Észak-Kelet Szuper Plusz, jövő hét: 12.03.–12.09.",
+            "url": "https://katalogus.coop.hu/coop-eszak-kelet-szorolap-2026-december-1-het-szuper-plusz/",
+            "kategoria": "haztartas",
+            "valid_from": "2026-12-03",
+            "valid_to": "2026-12-09",
+            "valtozat": "Coop Észak-Kelet"
+        },
+        {
+            "store": "Coop",
+            "title": "Coop Tisza Szuper Plusz, jövő hét: 12.03.–12.09.",
+            "url": "https://katalogus.coop.hu/coop-tisza-szorolap-2026-december-1-het-szuper-plusz/",
+            "kategoria": "haztartas",
+            "valid_from": "2026-12-03",
+            "valid_to": "2026-12-09",
+            "valtozat": "Coop Tisza"
         },
         {
             "store": "CBA",
@@ -561,11 +660,11 @@
         },
         {
             "store": "CBA Príma",
-            "title": "Príma borkatalógus (ősz–tél)",
+            "title": "Príma borkatalógus (ősz–tél), 11.16.–12.31.",
             "url": "https://www.prima.hu/3d-flip-book/borkatalagus-osz-tel/",
             "kategoria": "haztartas",
-            "valid_from": null,
-            "valid_to": null,
+            "valid_from": "2026-11-16",
+            "valid_to": "2026-12-31",
             "valtozat": null
         },
         {
